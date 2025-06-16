@@ -6,4 +6,212 @@
   
 <mapper namespace="com.itwillbs.mapper.recommendMapper">
 
+	<!-- 구매 기반 추천 -->
+	<select id="findRecommendedBooks" resultType="com.itwillbs.domain.BookVO">
+			SELECT * FROM book
+			WHERE category_id IN (
+	           SELECT DISTINCT b.category_id
+	           FROM book b
+	           WHERE b.book_id IN (
+	               SELECT oi.book_id
+	               FROM orderitem oi
+	               WHERE oi.order_id IN (
+	                   SELECT o.order_id
+	                   FROM orders o
+	                   WHERE o.member_idx = #{member_idx}
+	               )
+	           )
+	       )
+	       ORDER BY RAND()
+	       LIMIT 10
+	</select>
+	
+	<!-- 찜 기반 도서 추천  -->
+	<select id="getRecommendByWishList" parameterType="int" resultType="com.itwillbs.domain.BookVO">
+    		SELECT * FROM book
+  			WHERE category_id IN (
+    			SELECT DISTINCT b.category_id
+    			FROM book b
+    			WHERE b.book_id IN (
+    				  SELECT oi.book_id
+      				  FROM orderitem oi
+      				  WHERE oi.order_id IN (
+                            SELECT o.order_id
+                            FROM wishlist w
+                            JOIN orders o ON w.member_idx = o.member_idx
+                            WHERE w.member_idx = #{member_idx}
+                      )
+                )
+             )
+	</select>
+
+
+	<!-- !!!인기순 추가하고 싶으면 테이블 고쳐야 함 나중에 하기!!!! -->
+	<!-- 추천 정렬 기능  -->
+	<select id="getRecommendBooksSorted" resultType="com.itwillbs.domain.BookVO">
+		SELECT *
+		FROM book
+		<choose>
+			<when test="_parameter == 'price_asc'">
+				ORDER by book_price ASC
+			</when>
+			<when test="_parameter == 'price_desc'">
+				ORDER by book_price DESC
+			</when>
+			<when test="_parameter == 'recent'">
+				ORDER BY book_popularity DESC
+			</when>
+			<otherwise>
+				ORDER BY publish_date DESC
+			</otherwise>
+			
+		</choose>
+	</select>
+	
+	
+	<!-- 추천 정렬 출력 기능  -->
+	
+	<select id="getRecommendList" parameterType="string" resultType="com.itwillbs.domain.BookVO">
+		SELECT * FROM book
+		
+		<choose>
+			<when test="_parameter == 'price_asc'">
+				ORDER by book_price ASC
+			</when>
+			<when test="_parameter == 'price_desc'">
+				ORDER by book_price DESC
+			</when>
+			<when test="_parameter == 'recent'">
+				ORDER BY publish_date DESC
+			</when>
+			<otherwise>
+				ORDER BY book_id DESC
+			</otherwise>
+		</choose>
+	 </select>
+
+	  
+	  <!-- 새로 추가.. member_idx와 sort 파라미터를 받는 쿼리! -->
+	  <select id="findRecommendedBooksSorted"
+          parameterType="map"
+          resultType="com.itwillbs.domain.BookVO">
+			    SELECT *
+			      FROM book
+			     WHERE category_id IN (
+			             SELECT DISTINCT b.category_id
+			               FROM book b
+			              WHERE b.book_id IN (
+			                      SELECT oi.book_id
+			                        FROM orderitem oi
+			                       WHERE oi.order_id IN (
+			                               SELECT o.order_id
+			                                 FROM orders o
+			                                WHERE o.member_idx = #{member_idx}
+			                             )
+			                    )
+			           )
+			    <choose>
+			      <when test="sort == 'popular'">
+			        ORDER BY popularity DESC
+			      </when>
+			      <when test="sort == 'recent'">
+			        ORDER BY publish_date DESC
+			      </when>
+			      <when test="sort == 'price_asc'">
+			        ORDER BY book_price ASC
+			      </when>
+			      <when test="sort == 'price_desc'">
+			        ORDER BY book_price DESC
+			      </when>
+			      <otherwise>
+			        <!-- 기본 정렬 (랜덤 혹은 다른) -->
+			        ORDER BY RAND()
+			      </otherwise>
+			    </choose>
+			    LIMIT 10
+			  </select>
+			  
+			  
+	<!-- 6.16 아침 6시.. 새로 추가 -->			
+	 <!-- 구매 기반 추천 + 정렬 -->
+			  <select id="findRecommendedBooksByPurchaseSorted"
+			          parameterType="map"
+			          resultType="com.itwillbs.domain.BookVO">
+			    SELECT b.*
+			      FROM book b
+			     WHERE b.category_id IN (
+			       SELECT DISTINCT b2.category_id
+			         FROM book b2
+			        WHERE b2.book_id IN (
+			          SELECT oi.book_id
+			            FROM orderitem oi
+			            JOIN orders o ON oi.order_id = o.order_id
+			           WHERE o.member_idx = #{member_idx}
+			        )
+			     )
+			    <choose>
+			      <when test="sort == 'popular'">
+			        ORDER BY (
+			          SELECT COUNT(*) 
+			            FROM orderitem oi2 
+			           WHERE oi2.book_id = b.book_id
+			        ) DESC
+			      </when>
+			      <when test="sort == 'recent'">
+			        ORDER BY b.publish_date DESC
+			      </when>
+			      <when test="sort == 'price_asc'">
+			        ORDER BY b.book_price ASC
+			      </when>
+			      <when test="sort == 'price_desc'">
+			        ORDER BY b.book_price DESC
+			      </when>
+			      <otherwise>
+			        ORDER BY RAND()
+			      </otherwise>
+			    </choose>
+			    LIMIT 10
+			  </select>
+			
+			  <!-- 찜(위시리스트) 기반 + 정렬 -->
+			  <select id="findRecommendedBooksByWishSorted"
+			          parameterType="map"
+			          resultType="com.itwillbs.domain.BookVO">
+			    SELECT b.*
+			      FROM book b
+			     WHERE b.category_id IN (
+			       SELECT DISTINCT b2.category_id
+			         FROM book b2
+			        WHERE b2.book_id IN (
+			          SELECT oi.book_id
+			            FROM orderitem oi
+			            JOIN orders o ON oi.order_id = o.order_id
+			            JOIN wishlist w ON w.member_idx = o.member_idx
+			           WHERE w.member_idx = #{member_idx}
+			        )
+			     )
+			    <choose>
+			      <when test="sort == 'popular'">
+			        ORDER BY (
+			          SELECT COUNT(*) 
+			            FROM orderitem oi2 
+			           WHERE oi2.book_id = b.book_id
+			        ) DESC
+			      </when>
+			      <when test="sort == 'recent'">
+			        ORDER BY b.publish_date DESC
+			      </when>
+			      <when test="sort == 'price_asc'">
+			        ORDER BY b.book_price ASC
+			      </when>
+			      <when test="sort == 'price_desc'">
+			        ORDER BY b.book_price DESC
+			      </when>
+			      <otherwise>
+			        ORDER BY RAND()
+			      </otherwise>
+			    </choose>
+			    LIMIT 10
+			  </select>
+
 </mapper> 
