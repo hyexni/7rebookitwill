@@ -25,19 +25,19 @@ public class AdminReceiptController {
     /**
      * 영수증 관리 페이지 (목록 조회)
      */
-    //http://localhost:8088/admin/receiptList
-    @GetMapping("/receiptList")
-    public String receiptListPage(Model model) throws Exception {
-        logger.info("GET - /admin/receipts 호출");
-        
-        // 서비스를 통해 모든 영수증 목록을 가져옴
-        List<ReceiptVO> receiptList = receiptService.getAllReceipts();
-        
-        // 모델에 담아 뷰로 전달
-        model.addAttribute("receiptList", receiptList);
-        
-        // 관리자 페이지 JSP로 이동
-        return "admin/receiptList";
-        
-    }
+//    //http://localhost:8088/admin/receiptList
+//    @GetMapping("/receiptList")
+//    public String receiptListPage(Model model) throws Exception {
+//        logger.info("GET - /admin/receipts 호출");
+////        
+//        // 서비스를 통해 모든 영수증 목록을 가져옴
+//        List<ReceiptVO> receiptList = receiptService.getAllReceipts();
+//        
+//        // 모델에 담아 뷰로 전달
+//        model.addAttribute("receiptList", receiptList);
+//        
+//        // 관리자 페이지 JSP로 이동
+//        return "admin/receiptList";
+//        
+//    
 }
