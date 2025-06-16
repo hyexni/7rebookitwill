@@ -1,14 +1,21 @@
 package com.itwillbs.service;
 
-import java.util.List;
-
 import com.itwillbs.domain.ReceiptVO;
+import com.itwillbs.dto.ReceiptDto;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 public interface ReceiptService {
    
-	public boolean isDuplicate(String originalFilename); 
-	public void ReceiptUpload(ReceiptVO vo) throws Exception;
-
-	// 모든 영수증 목록을 가져오는 메서드
-    public List<ReceiptVO> getAllReceipts() throws Exception;
+	boolean isDuplicate(String originalFilename);
+   
+    void uploadReceipt(ReceiptVO vo) throws Exception;
+    
+    List<ReceiptVO> getAllReceipts() throws Exception;
+    
+    ReceiptDto getInfoFromReceipt(MultipartFile imageFile) throws IOException;
+	
+    void ReceiptUpload(ReceiptVO vo);
 }

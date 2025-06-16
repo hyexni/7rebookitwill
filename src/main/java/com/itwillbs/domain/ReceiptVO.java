@@ -7,6 +7,7 @@ import java.util.List;
 // [해결] OcrUtil 내부에 있는 ReceiptItem 클래스를 import 합니다.
 import com.itwillbs.service.OcrUtil.ReceiptItem;
 
+import jdk.jfr.DataAmount;
 import lombok.Data;
 
 @Data

@@ -28,4 +28,8 @@
     ORDER BY upload_id DESC
      </select>
 
+
+  <select id="countByFilename" resultType="int" parameterType="string">
+        SELECT COUNT(*) FROM receipt WHERE original_filename = #{filename}
+    </select>
 </mapper> 
