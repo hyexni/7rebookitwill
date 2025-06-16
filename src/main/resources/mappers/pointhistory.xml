@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.mapper.pointhistoryMapper">
+
+<resultMap id="pointHistoryResultMap" type="com.itwillbs.domain.PointVO">
+        <id property="point_id" column="point_ID"/>
+        <result property="member_idx" column="member_idx"/>
+        <result property="point_amount" column="적립포인트"/>
+        <result property="change_amount" column="변경포인트"/>
+        <result property="change_reason" column="변경사유"/>
+        <result property="change_date" column="변경일시"/>
+        <result property="point_status" column="포인트적립상태"/>
+    </resultMap>
+
+    <select id="findMonthlyAccumulationSummary" resultType="map">
+        SELECT
+            SUM(CASE WHEN 변경사유 LIKE '%구매%' THEN 변경포인트 ELSE 0 END) AS purchaseAmount,
+            SUM(CASE WHEN 변경사유 LIKE '%영수증%' OR 변경사유 LIKE '%OCR%' THEN 변경포인트 ELSE 0 END) AS receiptAmount,
+            SUM(CASE WHEN 변경사유 LIKE '%리뷰%' THEN 변경포인트 ELSE 0 END) AS reviewAmount,
+            SUM(CASE WHEN 변경사유 LIKE '%이벤트%' OR 변경사유 LIKE '%로그인 보상%' OR 변경사유 LIKE '%가입 축하%' OR (변경사유 IS NOT NULL AND 변경사유 NOT LIKE '%구매%' AND 변경사유 NOT LIKE '%영수증%' AND 변경사유 NOT LIKE '%OCR%' AND 변경사유 NOT LIKE '%리뷰%') THEN 변경포인트 ELSE 0 END) AS eventAmount,
+            -- 참고: 이 SUM(변경포인트)는 WHERE 조건에 의해 적립(양수)만 합산됩니다.
+            SUM(변경포인트) AS totalBenefitAmount
+        FROM
+            point
+        WHERE
+            YEAR(변경일시) = #{year}
+            AND MONTH(변경일시) = #{month}
+            AND 변경포인트 > 0
+    </select>
+
+</mapper>
