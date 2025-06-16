@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+
+<mapper namespace="com.itwillbs.mapper.adminStatsMapper">
+
+	<!-- 전체 회원 수 -->
+	<select id="getTotalMembers" resultType="int">
+		SELECT COUNT(*) FROM member;
+	</select>
+
+	<!-- 오늘 가입한 회원 수 -->
+	<select id="getTodayNewMembers" resultType="int">
+		SELECT COUNT(*) FROM member
+		WHERE DATE(member_regdate) = CURDATE();	
+	</select>
+	
+	<!-- 이번 달 가입한 회원 수 -->
+	<select id="getMonthNewMembers" resultType="int">
+		SELECT COUNT(*) FROM member
+		WHERE YEAR(member_regdate) = YEAR(CURDATE())
+			AND MONTH(member_regdate) = MONTH(CURDATE());
+	</select>
+
+
+	<!-- 정상 회원 수 -->
+	<select id="getActiveMembers" resultType="int">
+		SELECT COUNT(*)	FROM member
+		WHERE member_status = '정상'
+	</select>
+	
+	<!-- 탈퇴 회원 수 -->
+	<select id="getWithdrawnMembers" resultType="int">
+		SELECT COUNT(*) FROM member
+		WHERE member_status = '탈퇴';
+	</select>
+	
+	
+	<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+	
+	<!-- 인기 장르 통계 조회 -->
+	<select id="getPopularGenres" resultType="com.itwillbs.domain.GenreStatsDTO">
+		SELECT
+			c.category_id,
+			c.category_name_ko AS categoryName,
+			IFNULL(SUM(oi.quantity), 0) AS totalSales,
+			IFNULL(COUNT(r.review_id), 0) AS totalReviews,
+			(IFNULL(SUM(oi.quantity), 0) * 0.7 + IFNULL(COUNT(r.review_id), 0) * 0.3) AS score
+		FROM category c
+		JOIN book b ON c.category_id = b.category_id
+		LEFT JOIN orderitem oi ON b.book_id = oi.book_id
+		LEFT JOIN orders o ON oi.order_id = o.order_id
+		LEFT JOIN review r ON b.book_id = r.book_id AND r.review_date BETWEEN #{startDate} AND #{endDate}
+		WHERE o.order_date BETWEEN #{startDate} AND #{endDate}
+		GROUP BY c.category_id, c.category_name_ko
+		ORDER BY score DESC
+		LIMIT 10
+	</select>
+	
+	<!-- 도서별 판매량 TOP5 -->
+	<select id="getTopSellingBooks" resultType="com.itwillbs.domain.BookStatsDTO">
+	    SELECT 
+	        b.book_id,
+	        b.book_title AS bookTitle,
+	        c.category_name_ko AS categoryName,
+	        b.cover_image AS coverImage,
+	        SUM(o.quantity) AS totalSales
+	    FROM book b
+	    JOIN orderitem o ON b.book_id = o.book_id
+	    JOIN category c ON b.category_id = c.category_id
+	    GROUP BY b.book_id
+	    ORDER BY totalSales DESC
+	    LIMIT 5
+	</select>
+	
+	<!-- 별점 높은 도서 TOP5 (리뷰 수 2개 이상 필터링 포함) -->
+	<select id="getTopRatedBooks" resultType="com.itwillbs.domain.BookStatsDTO">
+	    SELECT 
+	        b.book_id,
+	        b.book_title AS bookTitle,
+	        c.category_name_ko AS categoryName,
+	        b.cover_image AS coverImage,
+	        COUNT(r.review_id) AS totalReviews,
+	        ROUND(AVG(r.review_score), 1) AS avgRating
+	    FROM book b
+	    JOIN review r ON b.book_id = r.book_id
+	    JOIN category c ON b.category_id = c.category_id
+	    GROUP BY b.book_id
+	    HAVING totalReviews >= 2
+	    ORDER BY avgRating DESC, totalReviews DESC
+	    LIMIT 5
+	</select>	
+	
+
+</mapper>
+
+
+
