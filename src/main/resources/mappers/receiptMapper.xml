@@ -4,6 +4,28 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="com.itwillbs.mapper.receiptMapper">
+<mapper namespace="com.itwillbs.mapper.ReceiptMapper">
+
+	 	
+	 <insert id="insertReceipt">
+        INSERT INTO receipts (
+            member_idx, originalfilename, savedfilename, filepath, file_size, file_type, 
+            ocr_text, ocr_booktitle, ocr_date, ocr_amount, ocr_store, approvalnumber, upload_status
+        ) VALUES (
+            #{member_idx}, #{originalfilename}, #{savedfilename}, #{filepath}, #{file_size}, #{file_type},
+            #{ocr_text}, #{ocr_booktitle}, #{ocr_date}, #{ocr_amount}, #{ocr_store}, #{approvalnumber}, #{upload_status}
+        )
+    </insert>
+    
+    <select id="isDuplicate" resultType="int">
+    SELECT count(*)
+    FROM receipts
+    WHERE file_hash = #{fileHash}
+     </select>
+    
+    <select id="selectAllReceipts" resultType="com.itwillbs.domain.ReceiptVO">
+    SELECT * FROM receipts 
+    ORDER BY upload_id DESC
+     </select>
 
 </mapper> 
