@@ -58,7 +58,8 @@
 	</bean>
 
 	<!-- 어노테이션 기반 클래스 자동 스캔 -->
-	<context:component-scan base-package="com.itwillbs"/>
+	<context:component-scan base-package="com.itwillbs.service"/>
+    <context:component-scan base-package="com.itwillbs.persistence"/>
 
 
 	<!-- sqlSession : 
