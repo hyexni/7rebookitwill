@@ -2,92 +2,102 @@ package com.itwillbs.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.domain.ReceiptVO;
-import com.itwillbs.dto.GeminiRequest;
-import com.itwillbs.dto.GeminiResponse;
-import com.itwillbs.dto.ReceiptDto;
+import com.itwillbs.dto.ReceiptDto; // Gemini 응답 파싱용 DTO
 import com.itwillbs.persistence.ReceiptDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.inject.Inject;
-import java.io.IOException;
-import java.util.Base64;
-import java.util.List;
+import java.io.File;
+import java.security.MessageDigest;
+import java.util.UUID;
+// ... (Gemini 관련 import문은 이전 답변 참고) ...
 
 @Service
 public class ReceiptServiceImpl implements ReceiptService {
 
-    private final RestTemplate restTemplate;
+    private final ReceiptDAO receiptDAO;
     private final ObjectMapper objectMapper;
+    // ... (Gemini API 호출에 필요한 다른 의존성들) ...
 
-    @Inject
-    private ReceiptDAO receiptDAO;
+    @Value("${upload.path}")
+    private String uploadPath;
 
-    @Value("${gemini.api.key}")
-    private String apiKey;
-
-    public ReceiptServiceImpl(RestTemplate restTemplate, ObjectMapper objectMapper) {
-        this.restTemplate = restTemplate;
+    @Autowired
+    public ReceiptServiceImpl(ReceiptDAO receiptDAO, ObjectMapper objectMapper) {
+        this.receiptDAO = receiptDAO;
         this.objectMapper = objectMapper;
     }
 
-    /**
-     * Gemini API로 영수증 정보 추출
-     */
     @Override
-    public ReceiptDto getInfoFromReceipt(MultipartFile imageFile) throws IOException {
-        String apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=" + apiKey;
-
-        String base64ImageData = Base64.getEncoder().encodeToString(imageFile.getBytes());
-        String promptText = "이 이미지는 책을 구매한 영수증이야.\n" +
-                "여기서 '도서명', '판매처', '구매일시', '승인번호', '가격' 정보를 추출해서 아래 JSON 형식으로만 응답해줘.\n" +
-                "만약 특정 정보를 찾을 수 없으면, 값으로 \"정보 없음\"이라고 넣어줘.\n" +
-                "{\n" +
-                "  \"bookTitle\": \"여기에 도서명\",\n" +
-                "  \"seller\": \"여기에 판매처\",\n" +
-                "  \"purchaseDate\": \"YYYY-MM-DD HH:mm:ss 형식의 구매일시\",\n" +
-                "  \"approvalNumber\": \"여기에 승인번호\",\n" +
-                "  \"price\": \"여기에 가격 (숫자만)\"\n" +
-                "}";
-
-        GeminiRequest request = new GeminiRequest(promptText, base64ImageData);
-        GeminiResponse response = restTemplate.postForObject(apiUrl, request, GeminiResponse.class);
-
-        if (response != null && response.extractText() != null) {
-            String jsonResponse = response.extractText().replace("```json", "").replace("```", "").trim();
-            return objectMapper.readValue(jsonResponse, ReceiptDto.class);
-        } else {
-            throw new IOException("Gemini API 응답 실패");
+    @Transactional // 모든 과정이 하나의 트랜잭션으로 동작하도록 설정
+    public ReceiptVO processAndSaveReceipt(MultipartFile file, int memberIdx) throws Exception {
+        
+        // 1. 파일 해시 생성 및 중복 확인
+        String fileHash = generateFileHash(file);
+        if (receiptDAO.countByFileHash(fileHash) > 0) { // DAO에 countByFileHash 메서드가 있어야 함
+            throw new IllegalStateException("동일한 내용의 파일이 이미 등록되어 있습니다.");
         }
+
+        // 2. 파일 저장
+        String originalFilename = file.getOriginalFilename();
+        String savedFilename = UUID.randomUUID().toString() + "_" + originalFilename;
+        File targetFile = new File(uploadPath, savedFilename);
+        
+        File uploadDirFile = new File(uploadPath);
+        if (!uploadDirFile.exists()) {
+            uploadDirFile.mkdirs();
+        }
+        file.transferTo(targetFile);
+
+        // 3. Gemini API 호출하여 정보 추출 (이전 답변의 Gemini 호출 로직 사용)
+        // byte[] imageBytes = file.getBytes();
+        // ReceiptDto ocrDto = callGeminiApi(imageBytes, file.getContentType());
+        
+        // 임시 DTO 결과 (실제로는 API 호출 결과로 대체)
+        ReceiptDto ocrDto = new ReceiptDto();
+        ocrDto.setSeller("한솥서점");
+        ocrDto.setBookTitle("WHY? 왕자와공주");
+        ocrDto.setPrice("20800");
+        // ...
+        
+        // 4. 최종 VO 객체에 모든 정보 설정
+        ReceiptVO finalVO = new ReceiptVO();
+        finalVO.setMember_idx(memberIdx);
+        finalVO.setOriginalfilename(originalFilename);
+        finalVO.setSavedfilename(savedFilename);
+        finalVO.setFilepath(targetFile.getAbsolutePath());
+        finalVO.setFile_size((int) file.getSize());
+        finalVO.setFile_type(file.getContentType());
+        finalVO.setFileHash(fileHash);
+        
+        // 파싱된 OCR 결과 설정
+        finalVO.setOcr_store(ocrDto.getSeller());
+        finalVO.setOcr_booktitle(ocrDto.getBookTitle());
+        finalVO.setApprovalnumber(ocrDto.getApprovalNumber());
+        finalVO.setOcr_amount(Integer.parseInt(ocrDto.getPrice()));
+        // ... 날짜 변환 및 설정 ...
+
+        finalVO.setUpload_status("SUCCESS");
+
+        // 5. DB에 저장
+        receiptDAO.insertReceipt(finalVO);
+
+        return finalVO;
     }
 
-    /**
-     * 파일명이 DB에 이미 존재하는지 확인
-     */
-    @Override
-    public boolean isDuplicate(String originalFilename) {
-        System.out.println("isDuplicate 메소드 호출됨: " + originalFilename);
-        // TODO: 실제 구현 필요
-        return receiptDAO.countByFilename(originalFilename) > 0;
-    }
-
-    /**
-     * 추출된 영수증 정보 저장
-     */
-    @Override
-    public void uploadReceipt(ReceiptVO vo) throws Exception {
-        System.out.println("uploadReceipt 메소드 호출됨: " + vo.getOcr_booktitle());
-        receiptDAO.insertReceipt(vo);
-    }
-
-    /**
-     * 전체 영수증 목록 조회
-     */
-    @Override
-    public List<ReceiptVO> getAllReceipts() throws Exception {
-        System.out.println("getAllReceipts 메소드 호출됨");
-        return receiptDAO.selectAllReceipts();
+    // 파일 해시 생성 로직 (private 헬퍼 메서드로 변경)
+    private String generateFileHash(MultipartFile file) throws Exception {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(file.getBytes());
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
 }

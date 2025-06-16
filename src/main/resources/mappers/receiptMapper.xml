@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-<mapper namespace="com.itwillbs.mapper.ReceiptMapper">
 
-	 	
-	 <insert id="insertReceipt">
-        INSERT INTO receipts (
+<mapper namespace="com.itwillbs.persistence.ReceiptDAO">
+
+    <insert id="insertReceipt" parameterType="com.itwillbs.domain.ReceiptVO">
+        INSERT INTO c7d2503t1p1.receipts (
             member_idx, originalfilename, savedfilename, filepath, file_size, file_type, 
-            ocr_text, ocr_booktitle, ocr_date, ocr_amount, ocr_store, approvalnumber, upload_status
+            ocr_text, ocr_booktitle, ocr_date, ocr_amount, ocr_store, approvalnumber, 
+            upload_status, fileHash, verification_status
         ) VALUES (
             #{member_idx}, #{originalfilename}, #{savedfilename}, #{filepath}, #{file_size}, #{file_type},
-            #{ocr_text}, #{ocr_booktitle}, #{ocr_date}, #{ocr_amount}, #{ocr_store}, #{approvalnumber}, #{upload_status}
+            #{ocr_text}, #{ocr_booktitle}, #{ocr_date}, #{ocr_amount}, #{ocr_store}, #{approvalnumber}, 
+            #{upload_status}, #{fileHash}, #{verification_status}
         )
     </insert>
     
-    <select id="isDuplicate" resultType="int">
-    SELECT count(*)
-    FROM receipts
-    WHERE file_hash = #{fileHash}
-     </select>
+    <select id="countByFileHash" parameterType="string" resultType="int">
+        SELECT count(*)
+        FROM c7d2503t1p1.receipts
+        WHERE fileHash = #{fileHash}
+    </select>
     
     <select id="selectAllReceipts" resultType="com.itwillbs.domain.ReceiptVO">
-    SELECT * FROM receipts 
-    ORDER BY upload_id DESC
-     </select>
-
-
-  <select id="countByFilename" resultType="int" parameterType="string">
-        SELECT COUNT(*) FROM receipt WHERE original_filename = #{filename}
+        SELECT * FROM c7d2503t1p1.receipts 
+        ORDER BY upload_id DESC
     </select>
-</mapper> 
+
+    <select id="countByFilename" resultType="int" parameterType="string">
+        SELECT COUNT(*) 
+        FROM c7d2503t1p1.receipts 
+        WHERE originalfilename = #{filename}
+    </select>
+    
+</mapper>

@@ -2,10 +2,14 @@ package com.itwillbs.persistence;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.itwillbs.domain.ReceiptVO;
 
-//ReceiptUploadDAO : 서비스의 요청을 받아서 SQL 구문을 실행
 
+
+//ReceiptUploadDAO : 서비스의 요청을 받아서 SQL 구문을 실행
+@Mapper
 public interface ReceiptDAO {	
 	
 	public void ReceiptUploadInsert(ReceiptVO vo) throws Exception;
@@ -22,6 +26,9 @@ public interface ReceiptDAO {
     
     int countByFilename(String filename);
 	public void insertReceipt(ReceiptVO vo);
+	
+	// 파일 해시값(String)을 받아 중복된 개수(int)를 반환하는 메서드입니다.
+	public int countByFileHash(String fileHash);
 
 
 }
