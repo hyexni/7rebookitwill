@@ -19,6 +19,9 @@ public interface ReceiptDAO {
     
     // 모든 영수증 목록을 조회하는 메서드 선언
     public List<ReceiptVO> selectAllReceipts() throws Exception;
+    
+    int countByFilename(String filename);
+	public void insertReceipt(ReceiptVO vo);
 
 
 }
