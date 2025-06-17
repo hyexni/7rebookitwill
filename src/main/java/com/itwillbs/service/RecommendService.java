@@ -1,6 +1,9 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
+
+import com.itwillbs.domain.BookStatsDTO;
 import com.itwillbs.domain.BookVO;
 
 public interface RecommendService {
@@ -27,7 +30,16 @@ public interface RecommendService {
 
     // 구매 기반 추천 기본 메서드
     List<BookVO> findRecommendedBooks(int member_idx) throws Exception;
+    
+    // 구매 기반(파라미터 Map) 정렬용
+    List<BookStatsDTO> findRecommendedBooksByPurchaseSorted(Map<String, Object> params) throws Exception;
 
-    // 찜 기반 정렬 메서드
-	public List<BookVO> findRecommendedBooksByWishSorted(Integer member_idx, String sort) throws Exception;
+    // 찜 기반(파라미터 Map) 정렬용 */
+    List<BookStatsDTO> findRecommendedBooksByWishSorted    (Map<String, Object> params) throws Exception;
 }
+
+
+
+
+
+

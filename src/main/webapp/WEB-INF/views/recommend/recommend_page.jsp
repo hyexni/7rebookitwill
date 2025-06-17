@@ -29,6 +29,10 @@
 	
     <h2 style="margin-bottom: 20px;">📚 나만을 위한 도서 추천</h2>
     
+    <script>
+  		console.log("▶ session member_idx:", "${sessionScope.member_idx}");
+	</script>
+    
     <!-- 드롭다운 (정렬 기능) -->
     <%@ include file="sort.jsp" %>
 
@@ -48,6 +52,9 @@
 </c:if>
 
 
+</body>
+</html>
 
-<%@include file="../include/footer.jsp" %> 
+
+<%-- <%@include file="../include/footer.jsp" %>  --%>
 
