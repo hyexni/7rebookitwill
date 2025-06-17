@@ -190,6 +190,12 @@
     <version>2.10.1</version>
 </dependency>
         
+        
+<!-- Vertex AI 라이브러리 의존성을 추가 -->
+        <dependency>
+    <groupId>com.google.cloud</groupId>
+    <artifactId>google-cloud-vertexai</artifactId>
+    <version>1.5.0</version> </dependency>
  
        
        <!-- Jackson Core -->
@@ -215,7 +221,11 @@
        
               <!-- pom.xml -->
 <!-- Google Cloud Vertex AI (for Gemini) -->
- 
+ <dependency>
+    <groupId>com.google.protobuf</groupId>
+    <artifactId>protobuf-java</artifactId>
+    <version>3.25.3</version>
+</dependency>
         
        
 </dependencies>
