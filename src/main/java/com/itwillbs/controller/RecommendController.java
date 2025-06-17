@@ -6,7 +6,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import org.springframework.ui.Model;
+
+import com.itwillbs.domain.BookStatsDTO;
 import com.itwillbs.domain.BookVO;
+import com.itwillbs.domain.MemberVO;
 
 import javax.inject.Inject;
 import org.slf4j.Logger;
@@ -144,41 +147,33 @@ public class RecommendController {
 	    if (session.getAttribute("member_idx") == null) {
 	        session.setAttribute("member_idx", 1);
 	    }
+
 	    Integer memberIdx = (Integer) session.getAttribute("member_idx");
 	    // ───────────────────────
 
 	    // null-safe sort
 	    String safeSort = sort == null ? "" : sort;
 	    
-	    // (2) 파라미터 맵 구성 (정렬기준바꾸니까 자꾸 500 떠서 넣었음)
-        Map<String, Object> param = new HashMap<>();
-        param.put("member_idx", memberIdx);
-        param.put("sort", sort);
+	 // (2) 파라미터 맵 구성
+	    Map<String,Object> param = new HashMap<>();
+	    param.put("member_idx", memberIdx);
+	    param.put("sort",      sort);
+	    param.put("limit",     10);   // 원하는 개수
 
-	    // 1) 구매 기반 추천
-	    List<BookVO> purchaseList;
-	    if (!sort.isEmpty()) {
-	    	// 구매 기반 정렬된 추천
-	    	purchaseList = recommendService.findRecommendedBooksSorted(memberIdx, sort);
-	    } else {
-	    	// 기본 랜덤 추천
-	    	purchaseList = recommendService.findRecommendedBooks(memberIdx);
-	    }
-	    
-	    // 2) 찜 기반 추천
-	    List<BookVO> wishList;
-	    if (!sort.isEmpty()) {
-	    	// 찜 기반 정렬된 추천
-	        wishList = recommendService.findRecommendedBooksByWishSorted(memberIdx, sort);
-	    } else {
-	    	// 기본 찜 기반 추천
-	        wishList = recommendService.getRecommendWishList(memberIdx);
-	    }
-        
-        model.addAttribute("purchaseList", purchaseList);
-        model.addAttribute("wishList", wishList);
-        model.addAttribute("currentSort", sort);
-        return "recommend/recommend_page";
+	    // 1) 구매 기반 추천 + 정렬
+	    List<BookStatsDTO> purchaseList
+	        = recommendService.findRecommendedBooksByPurchaseSorted(param);
+
+	    // 2) 찜 기반 추천 + 정렬
+	    List<BookStatsDTO> wishList
+	        = recommendService.findRecommendedBooksByWishSorted(param);
+
+	    // 뷰로 넘기기
+	    model.addAttribute("purchaseList", purchaseList);
+	    model.addAttribute("wishList",     wishList);
+	    model.addAttribute("currentSort",  sort);
+	    return "recommend/recommend_page";
+
 	
 	}
 	

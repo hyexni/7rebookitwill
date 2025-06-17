@@ -1,7 +1,11 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
+
+import com.itwillbs.domain.BookStatsDTO;
 import com.itwillbs.domain.BookVO;
 import com.itwillbs.persistence.RecommendDAO;
 import org.slf4j.Logger;
@@ -71,11 +75,19 @@ public class RecommendServiceImpl implements RecommendService {
 
 
 	// 찜 기반 정렬 메서드 (6/16) 
-	@Override
-	public List<BookVO> findRecommendedBooksByWishSorted(Integer member_idx, String sort) throws Exception {
-		// TODO Auto-generated method stub
-		return rDao.findRecommendedBooksByWishSorted(member_idx, sort);
-	}
+    @Override
+    public List<BookStatsDTO> findRecommendedBooksByPurchaseSorted(Map<String, Object> params) throws Exception {
+        // DAO 쪽 XML id="findRecommendedBooksByPurchaseSorted" 호출
+        return rDao.findRecommendedBooksByPurchaseSorted(params);
+    }
+
+    @Override
+    public List<BookStatsDTO> findRecommendedBooksByWishSorted(Map<String, Object> params) throws Exception {
+        // DAO 쪽 XML id="findRecommendedBooksByWishSorted" 호출
+        return rDao.findRecommendedBooksByWishSorted(params);
+    }
+	
+	
 	
 	
 	

@@ -9,6 +9,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+
+import com.itwillbs.domain.BookStatsDTO;
 import com.itwillbs.domain.BookVO;
 
 @Repository
@@ -71,6 +73,23 @@ public class RecommendDAOImpl implements RecommendDAO {
 	    return sqlSession.selectList(
 	        NAMESPACE + "findRecommendedBooksByWishSorted",      // <-- 기존 id
 	        param
+	    );
+	}
+
+	@Override
+	public List<BookStatsDTO> findRecommendedBooksByPurchaseSorted(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(
+		        NAMESPACE + "findRecommendedBooksByPurchaseSorted",
+		        params);
+	}
+
+	@Override
+	public List<BookStatsDTO> findRecommendedBooksByWishSorted(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(
+		        NAMESPACE + "findRecommendedBooksByWishSorted",
+		        params
 	    );
 	}
 	
