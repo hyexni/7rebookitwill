@@ -35,11 +35,5 @@ public class BookServiceImpl implements BookService {
 		return bookDAO.getBookCount(criteria);
 	}
 
-	// Criteria 기반 탭별 도서 목록 조회 (추천/베스트셀러/신간 등)
-	@Override
-	public List<BookVO> getBookListByTab(Criteria criteria) {
-		logger.info("BookServiceImpl: getBookListByTab() 호출");
-		return bookDAO.getBookListByTab(criteria);
-	}
 
 }
