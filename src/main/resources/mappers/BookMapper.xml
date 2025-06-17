@@ -3,9 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.itwillbs.mapper.BookMapper">
+<mapper namespace="com.itwillbs.persistence.BookDAO">
 
-    <!-- [기본 도서 목록 조회] -->
+      <!--  [도서 목록 조회] -->
+    <!-- 카테고리, 검색어, 정렬 기준(sort), 페이징 정보를 기반으로 도서 목록 조회 -->
     <select id="getBookList" resultType="com.itwillbs.domain.BookVO">
         SELECT
             b.book_id,
@@ -22,8 +23,11 @@
             b.book_stock,
             b.created_at,
             b.updated_at,
-            COUNT(r.review_id) AS review_count
+            IFNULL(SUM(oi.book_quantity), 0) AS sales_count,       -- 판매 수량
+            IFNULL(AVG(r.review_score), 0) AS average_rating,      -- 평점 평균
+            COUNT(r.review_id) AS review_count                     -- 리뷰 수
         FROM book b
+        LEFT JOIN orderitem oi ON b.book_id = oi.book_id
         LEFT JOIN review r ON b.book_id = r.book_id
         <where>
             <if test="search != null and search != ''">
@@ -36,17 +40,17 @@
         </where>
         GROUP BY b.book_id
         <choose>
-            <when test="sort == 'recent'">ORDER BY b.created_at DESC</when>
-            <when test="sort == 'popular'">ORDER BY b.book_stock DESC</when>
-            <when test="sort == 'review'">ORDER BY review_count DESC</when>
-            <when test="sort == 'price_asc'">ORDER BY b.book_price ASC</when>
-            <when test="sort == 'price_desc'">ORDER BY b.book_price DESC</when>
+            <when test="sort == 'sales'">ORDER BY sales_count DESC</when>         <!-- 인기순 -->
+            <when test="sort == 'recent'">ORDER BY b.created_at DESC</when>       <!-- 최신순 -->
+            <when test="sort == 'review'">ORDER BY review_count DESC</when>       <!-- 리뷰 많은 순 -->
+            <when test="sort == 'rating'">ORDER BY average_rating DESC</when>     <!-- 평점 높은 순 -->
             <otherwise>ORDER BY b.book_id DESC</otherwise>
         </choose>
         LIMIT #{pageStart}, #{perPageNum}
     </select>
 
-    <!-- [도서 총 개수 조회] -->
+    <!-- 도서 총 개수 조회 -->
+    <!-- 페이징 처리를 위해 전체 도서 수를 조회 -->
     <select id="getBookCount" resultType="int">
         SELECT COUNT(*) FROM book
         <where>
@@ -58,44 +62,6 @@
                 AND category_id = #{category_id}
             </if>
         </where>
-    </select>
-
-    <!-- [탭별 도서 목록 조회] -->
-    <select id="getBookListByTab" resultType="com.itwillbs.domain.BookVO">
-        SELECT
-            b.book_id,
-            b.book_title,
-            b.author_name,
-            b.publisher,
-            b.publish_date,
-            b.book_price,
-            b.stock_status,
-            b.book_summary,
-            b.cover_image,
-            b.category_id,
-            b.isbn,
-            b.book_stock,
-            b.created_at,
-            b.updated_at,
-            IFNULL(COUNT(r.review_id), 0) AS review_count
-        FROM book b
-        LEFT JOIN review r ON b.book_id = r.book_id
-        <where>
-            <choose>
-                <when test="tabType == 'recommend'">
-                    b.stock_status = '추천'
-                </when>
-                <when test="tabType == 'bestseller'">
-                    b.stock_status = '베스트셀러'
-                </when>
-                <when test="tabType == 'new'">
-                    b.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
-                </when>
-            </choose>
-        </where>
-        GROUP BY b.book_id
-        ORDER BY b.created_at DESC
-        LIMIT #{pageStart}, #{perPageNum}
     </select>
 
 </mapper>

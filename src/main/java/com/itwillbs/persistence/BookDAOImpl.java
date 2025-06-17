@@ -39,12 +39,4 @@ public class BookDAOImpl implements BookDAO {
 		return sqlSession.selectOne(NAMESPACE + ".getBookCount", criteria);
 	}
 
-	/**
-	 * [탭별 도서 목록 조회] - 추천/베스트셀러/신간 구분용
-	 */
-	@Override
-	public List<BookVO> getBookListByTab(Criteria criteria) {
-		logger.info("getBookListByTab() 호출됨");
-		return sqlSession.selectList(NAMESPACE + ".getBookListByTab", criteria);
-	}
 }

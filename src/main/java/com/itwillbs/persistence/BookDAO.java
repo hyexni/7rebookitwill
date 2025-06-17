@@ -16,6 +16,4 @@ public interface BookDAO {
 	// [총 도서 수 조회] - 페이징 계산용
 	int getBookCount(Criteria criteria);
 
-	// [탭별 도서 조회] - 추천, 베스트셀러, 신간
-	List<BookVO> getBookListByTab(Criteria criteria);
 }

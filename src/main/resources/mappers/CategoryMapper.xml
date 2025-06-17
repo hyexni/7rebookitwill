@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.itwillbs.mapper.CategoryMapper">
+<mapper namespace="com.itwillbs.persistence.CategoryDAO">
 
     <!-- 카테고리 전체 조회 -->
     <select id="getCategoryList" resultType="com.itwillbs.domain.CategoryVO">

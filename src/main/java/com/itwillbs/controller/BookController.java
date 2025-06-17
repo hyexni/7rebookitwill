@@ -46,11 +46,12 @@ public class BookController {
 		criteria.setSearch(search);
 		criteria.setSort(sort);
 		criteria.setPage(page);
-		criteria.setPerPageNum(12);
+		criteria.setPerPageNum(10);
 
 		// 3️⃣ 도서 목록 및 전체 개수 조회
 		List<BookVO> bookList = bookService.getBookList(criteria);
 		int totalCount = bookService.getBookCount(criteria);
+		criteria.setTotalCount(totalCount);
 
 		// 4️⃣ JSP에서 사용할 데이터 추가
 		model.addAttribute("bookList", bookList);
