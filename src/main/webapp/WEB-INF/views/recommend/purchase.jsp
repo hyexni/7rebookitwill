@@ -48,29 +48,29 @@
         <div style="border: 1px solid #ccc; padding: 10px; width: 250px;">
           
           <!-- 이미지 (조금 낮은 높이로 조정) -->
-          <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}" 
-               alt="${book.book_title}" 
+          <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.coverImage}" 
+               alt="${book.bookTitle}" 
                style="width: 100%; height: 300px; object-fit: cover; border-radius: 5px;" />
 
           <!-- 제목 -->
-          <div style="font-weight: bold; margin-top: 10px;">${book.book_title}</div>
+          <div style="font-weight: bold; margin-top: 10px;">${book.bookTitle}</div>
 
           <!-- 저자 -->
-          <div style="color: #555;">${book.author_name}</div>
+          <div style="color: #555;">${book.authorName}</div>
 
           <!-- 가격 -->
           <div style="font-size: 16px; font-weight: bold; margin: 8px 0;">
-            <fmt:formatNumber value="${book.book_price}" type="number"/>원
+            <fmt:formatNumber value="${book.bookPrice}" type="number"/>원
           </div>
           
           <!-- **추가하기 별점 평균  -->
           
 
-  <%--         <!-- 별점 평균 -->
+  			<!-- 별점 평균 -->
           <div style="font-size: 14px;">
             <c:forEach var="i" begin="1" end="5">
               <c:choose>
-                <c:when test="${i <= book.avg_rating}">
+                <c:when test="${i <= book.avgRating}">
                   ⭐
                 </c:when>
                 <c:otherwise>
@@ -78,7 +78,7 @@
                 </c:otherwise>
               </c:choose>
             </c:forEach>
-          </div> --%>
+          </div>
 
         </div>
       </c:forEach>
