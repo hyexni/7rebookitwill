@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.BookMapper">
+
+    <!-- [기본 도서 목록 조회] -->
+    <select id="getBookList" resultType="com.itwillbs.domain.BookVO">
+        SELECT
+            b.book_id,
+            b.book_title,
+            b.author_name,
+            b.publisher,
+            b.publish_date,
+            b.book_price,
+            b.stock_status,
+            b.book_summary,
+            b.cover_image,
+            b.category_id,
+            b.isbn,
+            b.book_stock,
+            b.created_at,
+            b.updated_at,
+            COUNT(r.review_id) AS review_count
+        FROM book b
+        LEFT JOIN review r ON b.book_id = r.book_id
+        <where>
+            <if test="search != null and search != ''">
+                AND (b.book_title LIKE CONCAT('%', #{search}, '%')
+                     OR b.author_name LIKE CONCAT('%', #{search}, '%'))
+            </if>
+            <if test="category_id != null and category_id != ''">
+                AND b.category_id = #{category_id}
+            </if>
+        </where>
+        GROUP BY b.book_id
+        <choose>
+            <when test="sort == 'recent'">ORDER BY b.created_at DESC</when>
+            <when test="sort == 'popular'">ORDER BY b.book_stock DESC</when>
+            <when test="sort == 'review'">ORDER BY review_count DESC</when>
+            <when test="sort == 'price_asc'">ORDER BY b.book_price ASC</when>
+            <when test="sort == 'price_desc'">ORDER BY b.book_price DESC</when>
+            <otherwise>ORDER BY b.book_id DESC</otherwise>
+        </choose>
+        LIMIT #{pageStart}, #{perPageNum}
+    </select>
+
+    <!-- [도서 총 개수 조회] -->
+    <select id="getBookCount" resultType="int">
+        SELECT COUNT(*) FROM book
+        <where>
+            <if test="search != null and search != ''">
+                AND (book_title LIKE CONCAT('%', #{search}, '%')
+                     OR author_name LIKE CONCAT('%', #{search}, '%'))
+            </if>
+            <if test="category_id != null and category_id != ''">
+                AND category_id = #{category_id}
+            </if>
+        </where>
+    </select>
+
+    <!-- [탭별 도서 목록 조회] -->
+    <select id="getBookListByTab" resultType="com.itwillbs.domain.BookVO">
+        SELECT
+            b.book_id,
+            b.book_title,
+            b.author_name,
+            b.publisher,
+            b.publish_date,
+            b.book_price,
+            b.stock_status,
+            b.book_summary,
+            b.cover_image,
+            b.category_id,
+            b.isbn,
+            b.book_stock,
+            b.created_at,
+            b.updated_at,
+            IFNULL(COUNT(r.review_id), 0) AS review_count
+        FROM book b
+        LEFT JOIN review r ON b.book_id = r.book_id
+        <where>
+            <choose>
+                <when test="tabType == 'recommend'">
+                    b.stock_status = '추천'
+                </when>
+                <when test="tabType == 'bestseller'">
+                    b.stock_status = '베스트셀러'
+                </when>
+                <when test="tabType == 'new'">
+                    b.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                </when>
+            </choose>
+        </where>
+        GROUP BY b.book_id
+        ORDER BY b.created_at DESC
+        LIMIT #{pageStart}, #{perPageNum}
+    </select>
+
+</mapper>

@@ -1,0 +1,190 @@
+/* 📌 전체 레이아웃 */
+.book-page-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 20px 20px 0;  /* ✅ 왼쪽 padding 제거 */
+  gap: 16px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 📚 카테고리 사이드바 */
+.sidebar {
+  width: 200px;
+  padding: 20px 10px 20px 0;
+  margin-top: 40px; /* 위로 너무 붙지 않게 */
+  background-color: #fafafa;
+  border-right: 1px solid #eee;
+}
+
+.sidebar h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
+}
+
+.sidebar a {
+  display: block;
+  padding: 8px 4px;
+  font-size: 16px;
+  color: #333;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.sidebar a:hover {
+  background-color: #eee;
+}
+
+.sidebar a.active {
+  font-weight: bold;
+  background-color: #ffd700; /* 노란색 강조 */
+  color: #000;
+}
+
+/* 📘 본문 콘텐츠 */
+.book-content {
+  flex: 1;
+}
+
+/* 🔍 검색 + 정렬 영역 */
+.book-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-form input[type="text"] {
+  padding: 6px;
+  width: 320px; /* 넓게 보기 좋게 */
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.search-form button {
+  padding: 6px 12px;
+  margin-left: 5px;
+  background: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.sort-form select {
+  padding: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* 📖 도서 목록 그리드 */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 카드 더 넓게 */
+  gap: 28px;
+}
+
+.book-card {
+  border: 1px solid #ccc;
+  padding: 18px;
+  background-color: #fff;
+  text-align: center;
+  transition: box-shadow 0.3s;
+}
+
+.book-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-card img {
+  width: 180px;
+  height: 240px;
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+
+.book-title {
+  font-weight: bold;
+  font-size: 17px;
+  margin: 8px 0;
+}
+
+.book-author {
+  font-size: 15px;
+  color: #777;
+}
+
+.book-price {
+  font-size: 15px;
+  color: #333;
+  margin: 6px 0;
+}
+
+.btn-detail {
+  margin-top: 10px;
+  padding: 6px 14px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* ⏩ 페이징 */
+.pagination {
+  text-align: center;
+  margin: 40px 0 20px;
+}
+
+.pagination a {
+  display: inline-block;
+  margin: 0 5px;
+  padding: 6px 12px;
+  text-decoration: none;
+  border: 1px solid #ccc;
+  color: #333;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.pagination a.active {
+  background-color: #007acc;
+  color: #fff;
+  font-weight: bold;
+  border-color: #007acc;
+}
+
+.book-tab {
+  margin-bottom: 20px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.book-tab a {
+  display: inline-block;
+  margin-right: 12px;
+  padding: 6px 16px;
+  background-color: #f1f1f1;
+  border-radius: 20px;
+  color: #333;
+  text-decoration: none;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease;
+}
+
+.book-tab a:hover {
+  background-color: #ddd;
+}
+
+.book-tab a.active {
+  background-color: #ffd700;
+  color: #000;
+  font-weight: bold;
+  border-color: #ffd700;
+}

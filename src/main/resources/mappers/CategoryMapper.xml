@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.CategoryMapper">
+
+    <!-- 카테고리 전체 조회 -->
+    <select id="getCategoryList" resultType="com.itwillbs.domain.CategoryVO">
+        SELECT 
+            category_id,
+            category_name_ko,
+            category_name_en
+        FROM category
+    </select>
+
+</mapper>
