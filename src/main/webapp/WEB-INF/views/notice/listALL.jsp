@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file = "../include/header.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pagination.css">
 
 	<div class="content">
 		<h1> /notice/listALL.jsp </h1>
@@ -33,15 +34,25 @@
               </tbody></table>
             </div>
             <!-- /.box-body -->
-            <div class="box-footer clearfix">
-              <ul class="pagination pagination-sm no-margin pull-right">
-                <li><a href="#">«</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">»</a></li>
-              </ul>
-            </div>
+        <div class="box-footer clearfix">
+		  <ul class="pagination pagination-sm no-margin pull-right">
+		    <!-- 이전 버튼 -->
+		    <li class="${currentPage == 1 ? 'disabled' : ''}">
+		      <a href="?page=${currentPage-1}">&laquo;</a>
+		    </li>
+		    <!-- 1,2,3... 페이지 번호 -->
+		    <c:forEach begin="1" end="${totalPages}" var="i">
+		      <li class="${i == currentPage ? 'active' : ''}">
+		        <a href="?page=${i}">${i}</a>
+		      </li>
+		    </c:forEach>
+		    <!-- 다음 버튼 -->
+		    <li class="${currentPage == totalPages ? 'disabled' : ''}">
+		      <a href="?page=${currentPage+1}">&raquo;</a>
+		    </li>
+		  </ul>
+		</div>
+
           </div>
           
 	</div>
