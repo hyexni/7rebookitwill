@@ -26,24 +26,10 @@
 <body>
 <%@include file="./include/header.jsp" %>
 
-     <%-- 메인 콘텐츠 영역의 헤더 (여기에 검색창/로그인 위치) --%>
-            <header class="main-header">
-                <%-- ★★★ 검색/로그인/회원가입 그룹 ★★★ --%>
-                <div class="user-menu">
-                    <div class="search-box">
-                        <input type="search" name="search" placeholder="도서, 저자, 출판사 검색">
-                        <button type="submit">검색</button>
-                    </div>
-                    <div class="auth-buttons">
-                        <a href="#">로그인</a>
-                        <a href="#">회원가입</a>
-                    </div>
-                </div>
-            </header>
-
+    
     <main>
         <section class="main-banner">
-            <img src="<c:url value='/resources/images/main-banner.jpg'/>" alt="메인 배너 이미지"
+            <img src="<c:url value='resources/img/product-img/파이썬.jpg'/>" alt="메인 배너 이미지"
                  onerror="this.onerror=null; this.src='https://via.placeholder.com/1200x400';">
         </section>
 
@@ -51,7 +37,7 @@
             <h2>인기 도서</h2>
             <div class="book-list">
                 <div class="book-card">
-                    <img src="<c:url value='/resources/images/book-cover.png'/>" alt="책 표지"
+                    <img src="<c:url value='/resources/img/product-img/pro-big-1.jpg'/>" alt="책 표지"
                          onerror="this.onerror=null; this.src='https://via.placeholder.com/150x220';">
                     <h3>책 제목</h3>
                     <p>저자 이름</p>
@@ -62,6 +48,6 @@
     </main>
 
 
- <%@include file="./include/footer.jsp" %>
+<%--  <%@include file="./include/footer.jsp" %> --%>
 </body>
 </html>

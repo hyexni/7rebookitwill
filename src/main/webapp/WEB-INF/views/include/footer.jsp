@@ -4,6 +4,13 @@
                     
                          
 
+               
+            </div>
+        </div>
+        <!-- Product Catagories Area End -->
+    </div>
+    <!-- ##### Main Content Wrapper End ##### -->
+     
 
     <!-- ##### Footer Area Start ##### -->
     <footer class="footer_area clearfix">
