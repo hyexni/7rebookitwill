@@ -7,7 +7,7 @@
 <mapper namespace="com.itwillbs.mapper.noticeMapper">
 
 	<select id="getAllNotices" resultType="com.itwillbs.domain.NoticeVO">
-        SELECT * FROM notice ORDER BY notice_date DESC
+        SELECT * FROM notice ORDER BY notice_id DESC
     </select> 
 
 </mapper>
