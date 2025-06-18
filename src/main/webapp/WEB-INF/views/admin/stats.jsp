@@ -17,10 +17,6 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
 
-<html>
-<body>
-<%@include file="../include/footer.jsp" %> 
-
 <%@include file="../include/header.jsp" %> 
 
 
@@ -221,11 +217,10 @@
             <h4>${status.index+1}위 - ${book.bookTitle}</h4>
             <p>📚 장르: ${book.categoryName}</p>
             <p>
-              ⭐
               <c:set var="rating" value="${book.avgRating}"/>
               <c:forEach var="i" begin="1" end="5">
                 <c:choose>
-                  <c:when test="${i <= rating}">★</c:when>
+                  <c:when test="${i <= rating}">⭐</c:when>
                   <c:otherwise>☆</c:otherwise>
                 </c:choose>
               </c:forEach>
@@ -298,8 +293,6 @@
 	
 </div>	
 	
-	
-</body>
-</html>	
+<%@include file="../include/footer.jsp" %> 
 	
 	
