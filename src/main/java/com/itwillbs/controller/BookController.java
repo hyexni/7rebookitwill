@@ -3,10 +3,10 @@ package com.itwillbs.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.itwillbs.domain.BookVO;
 import com.itwillbs.domain.CategoryVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.service.BookService;
 import com.itwillbs.service.CategoryService;
+import com.itwillbs.service.ReviewService;
 
 /**
  * 도서 관련 요청을 처리하는 Controller 클래스
@@ -78,23 +81,48 @@ public class BookController {
 
 		return "book/BookList";
 	}
-
+	
+	
 	/**
 	 * 도서 상세 정보 페이지 요청 처리
 	 * - 도서 ID를 통해 상세 정보 조회
+	 * - 리뷰 목록도 함께 조회 (최신순/평점순 정렬 가능)
 	 * - 결과를 model에 담아 book/book-view.jsp로 이동
 	 */
+	@Inject
+	private ReviewService reviewService;
+
 	@RequestMapping(value = "/view", method = RequestMethod.GET)
-	public String bookDetail(@RequestParam("bookId") int bookId, Model model) {
-		logger.info(" bookDetail() 호출 - bookId: {}", bookId);
+	public String bookDetail(@RequestParam("book_id") int book_id,
+	                         @RequestParam(value = "sort", defaultValue = "recent") String sort,
+	                         @RequestParam(value = "page", defaultValue = "1") int page,
+	                         Model model,
+	                         HttpSession session) {
 
-		// 1️⃣ 도서 ID로 도서 상세 정보 조회
-		BookVO book = bookService.getBookDetail(bookId);
+	    logger.info("bookDetail() 호출 - book_id: {}, sort: {}", book_id, sort);
 
-		// 2️⃣ 조회된 도서 정보를 Model에 저장
-		model.addAttribute("book", book);
+	    
+	    BookVO book = bookService.getBookDetail(book_id);
+	    model.addAttribute("book", book);
 
-		// 3️⃣ 상세페이지 JSP로 이동
-		return "/book/BookView";
+	    Criteria criteria = new Criteria();
+	    criteria.setBook_id(book_id); 
+	    criteria.setSort(sort);
+	    criteria.setPage(page);
+	    criteria.setPerPageNum(5);
+
+	    List<ReviewVO> reviewList = reviewService.getReviewList(criteria);
+	    int reviewCount = reviewService.getReviewCount(criteria);
+	    criteria.setTotalCount(reviewCount);
+
+	    model.addAttribute("reviewList", reviewList);
+	    model.addAttribute("reviewCount", reviewCount);
+	    model.addAttribute("criteria", criteria);
+	    model.addAttribute("reviewSort", sort);
+	   
+
+	    return "book/BookView";
 	}
+	
+	
 }
