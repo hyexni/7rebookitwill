@@ -1,0 +1,99 @@
+@charset "UTF-8";
+
+/* 전체 페이지에 적용될 기본 스타일 */
+body {
+    font-family: "Noto Sans KR", sans-serif;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ================================
+   새로운 2단 레이아웃을 위한 스타일
+   ================================ */
+
+/* 전체 페이지 컨테이너 */
+.page-container {
+    display: flex; /* 사이드바와 메인 콘텐츠를 가로로 배치 */
+}
+
+/* 1. 왼쪽 사이드바 */
+.sidebar {
+    width: 280px; /* 사이드바 너비 고정 */
+    min-height: 100vh; /* 화면 전체 높이를 차지하도록 */
+    padding: 40px;
+    box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+    border-right: 1px solid #eee;
+    background-color: #f8f9fa; /* 사이드바 배경색 */
+}
+
+.sidebar .logo a {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 사이드바의 주 메뉴 */
+.sidebar .main-nav {
+    margin-top: 50px;
+}
+.sidebar .main-nav ul {
+    padding: 0;
+    list-style: none;
+}
+.sidebar .main-nav li a {
+    display: block;
+    padding: 15px 0;
+    font-size: 16px;
+}
+/* ... 기타 사이드바 내부 요소 스타일 추가 ... */
+
+
+/* 2. 오른쪽 메인 콘텐츠 */
+.main-content {
+    flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+/* 메인 콘텐츠 영역 안의 헤더 */
+.main-header {
+    display: flex;
+    justify-content: flex-end; /* ★★★ 자식 요소를 오른쪽 끝으로 정렬 ★★★ */
+    align-items: center;
+    margin-bottom: 40px; /* 헤더와 아래 콘텐츠 사이의 여백 */
+    width: 100%;
+}
+
+/* 검색창과 사용자 메뉴 그룹 */
+.user-menu {
+    display: flex;
+    align-items: center;
+}
+
+.search-box input {
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    padding: 12px;
+    margin-right: 5px;
+}
+
+.search-box button, .auth-buttons a {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px 12px;
+    background-color: #febb61;
+    cursor: pointer;
+}
+
+.auth-buttons {
+    margin-left: 20px;
+    display: flex; /* 버튼들을 나란히 배치 */
+}
+
+.auth-buttons a {
+    margin-left: 5px;
+}

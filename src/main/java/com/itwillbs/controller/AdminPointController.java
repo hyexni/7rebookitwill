@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/points")
+@RequestMapping("/admin")
 public class AdminPointController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminPointController.class);
@@ -26,7 +26,7 @@ public class AdminPointController {
         this.pointService = pointService;
     }
 
-    @GetMapping("/history")
+    @GetMapping("/pointHistory")
     public String userPointHistoryPage(@RequestParam("member_idx") int member_idx, Model model) throws Exception {
         logger.info("GET - /admin/points/history?member_idx={} 호출", member_idx);
 
