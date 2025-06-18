@@ -49,4 +49,12 @@ public class PointHistoryServiceImpl implements PointHistoryService {
         // [수정] 로그 메시지도 현재 상황에 맞게 변경
         logger.info("{}번 회원 포인트 {} 변동 내역 기록 완료", vo.getMember_idx(), vo.getChange_amount());
     }
+
+	@Override
+	public List<PointVO> getPointHistoryByMemberIdx(int member_idx) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+    
+    
 }

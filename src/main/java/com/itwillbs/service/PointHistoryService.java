@@ -14,4 +14,6 @@ public interface PointHistoryService {
      * 포인트 변동 내역을 기록하는 메서드
      */
     public void addPointHistory(PointVO vo) throws Exception;
+
+	public List<PointVO> getPointHistoryByMemberIdx(int member_idx);
 }

@@ -12,7 +12,7 @@ public interface ReceiptService {
      * @return 모든 처리가 완료된 최종 영수증 정보
      * @throws Exception 모든 종류의 예외
      */
-    ReceiptVO processAndSaveReceipt(MultipartFile file, int memberIdx) throws Exception;
+    ReceiptVO processAndSaveReceipt(MultipartFile file, int member_idx) throws Exception;
 
     // isDuplicate, ReceiptUpload 등의 메서드는 이제 processAndSaveReceipt 내부에서만
     // 사용되므로, 외부로 노출할 필요가 없습니다. (인터페이스에서 제거 가능)

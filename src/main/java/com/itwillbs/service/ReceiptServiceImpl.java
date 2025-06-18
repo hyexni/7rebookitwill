@@ -13,6 +13,7 @@ import com.google.protobuf.ByteString;
 import com.itwillbs.domain.ReceiptVO;
 import com.itwillbs.dto.ReceiptDto;
 import com.itwillbs.persistence.ReceiptDAO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     @Transactional(rollbackFor = Exception.class) // 모든 예외 발생 시 롤백
-    public ReceiptVO processAndSaveReceipt(MultipartFile file, int memberIdx) throws Exception {
+    public ReceiptVO processAndSaveReceipt(MultipartFile file, int member_idx) throws Exception {
 
         // 1. 파일 해시 생성 및 중복 확인
         String fileHash = generateFileHash(file);
@@ -63,7 +64,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         }
 
         // 4. 최종 VO 객체 생성 및 모든 정보 설정
-        ReceiptVO finalVO = createReceiptVO(file, ocrDto, memberIdx, savedFilename, fileHash);
+        ReceiptVO finalVO = createReceiptVO(file, ocrDto, member_idx, savedFilename, fileHash);
 
         // 5. DB에 영수증 정보 저장
         receiptDAO.insertReceipt(finalVO);
@@ -142,9 +143,9 @@ public class ReceiptServiceImpl implements ReceiptService {
      * Google Gemini API를 호출하여 이미지에서 텍스트 정보를 추출합니다.
      */
     private ReceiptDto callGeminiApi(byte[] imageBytes, String mimeType) throws Exception {
-        String projectId = "radiant-micron-463205-k3"; // [필수] 자신의 프로젝트 ID로 변경
+        String projectId = "Gemini API"; // [필수] 자신의 프로젝트 ID로 변경
         String location = "asia-northeast3";              // 서울 리전
-        String modelName = "gemini-1.5-flash-001";         // 사용할 모델
+        String modelName = "gemini-1.5-pro-002";         // 사용할 모델
 
         String promptText = "이 영수증 이미지에서 다음 정보를 JSON 형식으로 추출해줘: "
             + "1. 'seller': 서점 또는 상점 이름 "
@@ -167,7 +168,7 @@ public class ReceiptServiceImpl implements ReceiptService {
             GenerateContentResponse response = model.generateContent(
                 ContentMaker.fromMultiModalData(
                     Part.newBuilder().setText(promptText).build()
-                   // Part.newBuilder().setMimeType(mimeType).setData(ByteString.copyFrom(imageBytes)).build()
+                    //Part.newBuilder().setMimeType(mimeType).setData(ByteString.copyFrom(imageBytes)).build()
                 )
             );
 

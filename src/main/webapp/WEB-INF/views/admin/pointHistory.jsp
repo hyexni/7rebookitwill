@@ -1,58 +1,68 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@include file="../include/header.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>관리자 - 포인트 관리</title>
-    <style> /* 이전 답변의 CSS 스타일 참고 */ </style>
+    <meta charset="UTF-8">
+    <title>회원 포인트 상세 내역</title>
+    <style>
+        /* 이전 답변의 CSS 스타일 코드를 여기에 붙여넣으세요 */
+        body { font-family: sans-serif; padding: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        .reason { text-align: left; }
+        .point-plus { color: blue; font-weight: bold; }
+        .point-minus { color: red; font-weight: bold; }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>
-            <c:out value="${member.user_name}"/> (ID: <c:out value="${member.user_id}"/>) 님의 포인트 내역
+            <c:out value="${member.member_name}"/> 님의 포인트 내역 (회원번호: <c:out value="${member.member_idx}"/>)
         </h1>
-        <h3>현재 보유 포인트: <fmt:formatNumber value="${member.point}" pattern="#,###" /> P</h3>
-        
-        <table class="items-table">
+        <h3>현재 보유 포인트: <fmt:formatNumber value="${currentPoints}" pattern="#,###" /> P</h3>
+        <hr>
+
+        <h3>상세 적립/사용 내역</h3>
+        <table>
             <thead>
                 <tr>
-                    <th>내역 ID</th>
-                    <th>거래 시점</th>
-                    <th>사유</th>
-                    <th>변동 포인트</th>
-                    <th>연동 주문번호</th>
+                    <th>일시</th>
+                    <th class="reason">내용</th>
+                    <th>상태</th>
+                    <th>포인트 변동</th>
+                    <th>잔여 포인트</th>
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="history" items="${historyList}">
-                    <tr>
-                        <td>${history.historyId}</td>
-                        <td><fmt:formatDate value="${history.transactionDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                        <td><c:out value="${history.reason}"/></td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${history.pointChange > 0}">
-                                    <span style="color:blue; font-weight:bold;">+<fmt:formatNumber value="${history.pointChange}" pattern="#,###" /></span>
-                                </c:when>
-                                <c:otherwise>
-                                    <span style="color:red; font-weight:bold;"><fmt:formatNumber value="${history.pointChange}" pattern="#,###" /></span>
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                        <td>
-                            <c:if test="${not empty history.orderId}">
-                                <a href="/admin/orders/${history.orderId}">${history.orderId}</a>
-                            </c:if>
-                            <c:if test="${empty history.orderId}">
-                                -
-                            </c:if>
-                        </td>
-                    </tr>
-                </c:forEach>
+                <c:choose>
+                    <c:when test="${empty historyList}">
+                        <tr><td colspan="5">포인트 내역이 없습니다.</td></tr>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="history" items="${historyList}">
+                            <tr>
+                                <td><fmt:formatDate value="${history.change_date}" pattern="yyyy-MM-dd HH:mm"/></td>
+                                <td class="reason"><c:out value="${history.change_reason}"/></td>
+                                <td><c:out value="${history.point_status}"/></td>
+                                <td>
+                                    <c:if test="${history.change_amount > 0}">
+                                        <span class="point-plus">+<fmt:formatNumber value="${history.change_amount}" pattern="#,###"/></span>
+                                    </c:if>
+                                    <c:if test="${history.change_amount < 0}">
+                                        <span class="point-minus"><fmt:formatNumber value="${history.change_amount}" pattern="#,###"/></span>
+                                    </c:if>
+                                </td>
+                                <td><fmt:formatNumber value="${history.point_amount}" pattern="#,###"/></td>
+                            </tr>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
     </div>
 </body>
 </html>
- <%@include file="../include/footer.jsp" %> 
