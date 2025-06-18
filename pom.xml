@@ -192,12 +192,11 @@
         
         
 <!-- Vertex AI 라이브러리 의존성을 추가 -->
-        <dependency>
+  <dependency>
     <groupId>com.google.cloud</groupId>
     <artifactId>google-cloud-vertexai</artifactId>
-    <version>1.5.0</version> </dependency>
- 
-       
+    <version>1.5.0</version>  </dependency>
+    
        <!-- Jackson Core -->
 <dependency>
     <groupId>com.fasterxml.jackson.core</groupId>
@@ -226,7 +225,18 @@
     <artifactId>protobuf-java</artifactId>
     <version>3.25.3</version>
 </dependency>
-        
+
+        <!-- google 클라우드 연결 -->
+        <dependency>
+    <groupId>com.google.cloud</groupId>
+    <artifactId>google-cloud-vertexai</artifactId>
+    <version>1.5.0</version> </dependency>
+       
+       <!-- google 라이브러리 연결 -->
+       <dependency>
+    <groupId>com.google.auth</groupId>
+    <artifactId>google-auth-library-oauth2-http</artifactId>
+    <version>1.23.0</version> </dependency>
        
 </dependencies>
 

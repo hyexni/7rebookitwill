@@ -1,0 +1,11 @@
+@charset "UTF-8";
+/* custom.css */
+/* Rebook 프로젝트를 위한 커스텀 스타일 시트 */
+
+/* 모든 요소(*)와 body, input, button, select, textarea에
+  'Noto Sans KR' 폰트를 최우선으로 강제 적용합니다.
+  !important는 기존 템플릿의 모든 폰트 설정을 무시하고 덮어쓰기 위한 강력한 옵션입니다.
+*/
+* {
+    font-family: 'Noto Sans KR', sans-serif !important;
+}

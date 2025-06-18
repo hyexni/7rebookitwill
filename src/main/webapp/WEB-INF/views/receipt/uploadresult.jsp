@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<%-- <%@include file="../include/header.jsp" %> --%>
+<%@include file="../include/header.jsp" %> -
 <html>
 <head>
     <title>OCR 결과 보기</title>
@@ -107,6 +107,6 @@
         
         <a href="${pageContext.request.contextPath}/receipt/upload" class="btn-link">🔄 다시 업로드하기</a>
     </div>
+ <%@include file="../include/footer.jsp" %>
 </body>
 </html>
-<%-- <%@include file="../include/footer.jsp" %> --%>

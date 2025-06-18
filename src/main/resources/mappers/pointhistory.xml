@@ -31,5 +31,11 @@
             AND MONTH(변경일시) = #{month}
             AND 변경포인트 > 0
     </select>
+    
+    <select id="selectPointHistoryByMemberIdx" resultType="com.itwillbs.domain.PointVO" parameterType="int">
+    SELECT * FROM point
+    WHERE member_idx = #{memberIdx}
+    ORDER BY change_date DESC
+</select>
 
 </mapper>

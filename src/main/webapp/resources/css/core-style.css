@@ -24,7 +24,7 @@
   padding: 0; }
 
 body {
-  font-family: "helveticaneuemedium";
+  font-family: "NotoSansKR-Bold";
   font-size: 16px; }
 
 h1,
@@ -450,7 +450,7 @@ img {
       margin-bottom: 100px;
       display: block; }
     .main-content-wrapper .header-area .amado-nav li a {
-      font-size: 14px;
+      font-size: 20px;
       text-transform: uppercase;
       position: relative;
       z-index: 1;

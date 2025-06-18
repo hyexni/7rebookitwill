@@ -14,10 +14,13 @@
     <!-- Favicon  -->
     <link rel="icon" href="${pageContext.request.contextPath }/resources/img/core-img/favicon.ico">
 
-    <!-- Core Style CSS -->
+	<!-- Core Style CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/core-style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/style.css">
-
+   
+   
+   <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/custom.css">
+   
 </head>
 
 <body>
@@ -40,6 +43,39 @@
         </div>
     </div>
     <!-- Search Wrapper Area End -->
+    
+    <!-- ##### Search Login Area Start ##### -->
+    <section class="newsletter-area section-padding-100-0">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- 메인 상단화면 수정중 -->
+                <div class="col-12 col-lg-6 col-xl-7">
+                    <div class="newsletter-text mb-100">
+                        <h2>도서판매 전문점 <span>ReBook</span></h2>
+                        <p>도서구매, 영수증적립시스템까지 모든 것을 한번에 !</p>
+                    </div>
+                </div>
+                <!-- 메인상단화면 검색창 수정 -->
+                <div class="col-12 col-lg-6 col-xl-5">
+                    <div class="user-menu">
+                    <div class="search-box">
+                        <input type="search" name="search" placeholder="도서, 저자, 출판사 검색">
+                        <button type="submit">검색</button>
+                    </div>
+                    <div class="auth-buttons">
+                        <a href="#">로그인</a>
+                        <a href="#">회원가입</a>
+                    </div>
+                </div>
+                
+                
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Search Login Area End ##### -->
+    
 
     <!-- ##### Main Content Wrapper Start ##### -->
     <div class="main-content-wrapper d-flex clearfix">
@@ -69,17 +105,17 @@
             <!-- Amado Nav -->
             <nav class="amado-nav">
                 <ul>
-                    <li class="active"><a href="index.html">Home</a></li>
-                    <li><a href="shop.html">Shop</a></li>
-                    <li><a href="product-details.html">Product</a></li>
-                    <li><a href="cart.html">Cart</a></li>
-                    <li><a href="checkout.html">Checkout</a></li>
+                    <li><a href="<c:url value='/books'/>">도서 목록</a></li>
+                    <li><a href="<c:url value='/recommend'/>">추천 도서</a></li>
+                    <li><a href="<c:url value='/mypage'/>">마이페이지</a></li>
+                    <li><a href="<c:url value='/notices'/>">공지사항</a></li>
+                    <li><a href="<c:url value='/point/history'/>">포인트확인</a></li>
                 </ul>
             </nav>
             <!-- Button Group -->
             <div class="amado-btn-group mt-30 mb-100">
-                <a href="#" class="btn amado-btn mb-15">%Discount%</a>
-                <a href="#" class="btn amado-btn active">New this week</a>
+                <a href="#" class="btn amado-btn mb-15">WISHLIST</a>
+                <a href="#" class="btn amado-btn active">영수증업로드</a>
             </div>
             <!-- Cart Menu -->
             <div class="cart-fav-search mb-100">
@@ -101,7 +137,15 @@
         <div class="products-catagories-area clearfix">
             <div class="amado-pro-catagory clearfix" style="position: relative; height: 1692.03px;">
 
-  <p style="white-space: pre-line;"> "               "  </p>
+  <p style="white-space: pre-line;"> "     여기가 문제니??          "  </p>
 
 
+               
+            </div>
+        </div>
+        <!-- Product Catagories Area End -->
+    </div>
+    <!-- ##### Main Content Wrapper End ##### -->
+     
+    
               
