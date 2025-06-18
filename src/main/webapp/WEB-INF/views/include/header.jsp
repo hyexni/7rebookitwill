@@ -9,7 +9,7 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title  -->
-    <title>Rebook - Furniture Ecommerce Template | Home</title>
+    <title>Rebook - BookStore | Home</title>
 
     <!-- Favicon  -->
     <link rel="icon" href="${pageContext.request.contextPath }/resources/img/core-img/favicon.ico">
@@ -44,37 +44,39 @@
     </div>
     <!-- Search Wrapper Area End -->
     
-    <!-- ##### Search Login Area Start ##### -->
-    <section class="newsletter-area section-padding-100-0">
-        <div class="container">
-            <div class="row align-items-center">
-                <!-- 메인 상단화면 수정중 -->
-                <div class="col-12 col-lg-6 col-xl-7">
-                    <div class="newsletter-text mb-100">
-                        <h2>도서판매 전문점 <span>ReBook</span></h2>
-                        <p>도서구매, 영수증적립시스템까지 모든 것을 한번에 !</p>
-                    </div>
-                </div>
-                <!-- 메인상단화면 검색창 수정 -->
-                <div class="col-12 col-lg-6 col-xl-5">
-                    <div class="user-menu">
-                    <div class="search-box">
-                        <input type="search" name="search" placeholder="도서, 저자, 출판사 검색">
-                        <button type="submit">검색</button>
-                    </div>
-                    <div class="auth-buttons">
-                        <a href="#">로그인</a>
-                        <a href="#">회원가입</a>
-                    </div>
-                </div>
-                
-                
-                    </div>
-                </div>
-            </div>
+    <%-- ##### 새로운 메인 검색/소개 영역 시작 ##### --%>
+<section class="main-visual-area">
+    
+    <%-- 1. 왼쪽: 로고와 소개 문구 --%>
+    <div class="intro-img">
+        <a href="/">
+            <img src="${pageContext.request.contextPath}/resources/img/core-img/logo2.png" alt="ReBook 로고">
+        </a>
+        
         </div>
-    </section>
-    <!-- ##### Search Login Area End ##### -->
+        
+        <div class = "intro-text">
+        <h2>도서판매 전문점 <span>ReBook</span></h2>
+        <p>도서구매, 영수증적립시스템까지 모든 것을 한번에!</p>
+    </div>
+
+    <%-- 2. 오른쪽: 검색창과 버튼들 --%>
+    <div class="search-auth-area">
+        <div class="search-container">
+            <input type="search" name="search" placeholder="도서, 저자, 출판사 검색">
+            <button type="submit" class="search-btn">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+         </div>
+        <div class="auth-buttons">
+            <a href="#" class="btn-login">로그인</a>
+            <a href="#" class="btn-signup">회원가입</a>
+        </div>
+   
+
+</section>
+<%-- ##### 새로운 메인 검색/소개 영역 끝 ##### --%>
     
 
     <!-- ##### Main Content Wrapper Start ##### -->
@@ -137,15 +139,7 @@
         <div class="products-catagories-area clearfix">
             <div class="amado-pro-catagory clearfix" style="position: relative; height: 1692.03px;">
 
-  <p style="white-space: pre-line;"> "     여기가 문제니??          "  </p>
+  
 
-
-               
-            </div>
-        </div>
-        <!-- Product Catagories Area End -->
-    </div>
-    <!-- ##### Main Content Wrapper End ##### -->
-     
     
               
