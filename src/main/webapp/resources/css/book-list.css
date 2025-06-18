@@ -173,6 +173,23 @@
   margin-top: 40px;
 }
 
+.btn-detail {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  text-decoration: none;
+  color: #333;
+  border-radius: 4px;
+  transition: 0.2s;
+}
+
+.btn-detail:hover {
+  background-color: #fdd835;
+  color: #000;
+  font-weight: bold;
+}
+
 	@media (max-width: 768px) {
 	  .book-page-container {
 	    flex-direction: column;
