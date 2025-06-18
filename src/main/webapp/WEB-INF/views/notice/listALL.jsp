@@ -17,16 +17,16 @@
               <table class="table table-bordered">
                 <tbody>
                 <tr class="text-center">
-                  <th>NO.</th>
-                  <th style="width:20px;">제목</th>
+                  <th style="width:30px;">NO.</th>
+                  <th style="width:200px;">제목</th>
                   <th style="width:130px;">등록일자</th>
                 </tr>
                 
                <c:forEach var="vo" items="${noticeList}">
                 <tr>
-                  <td>${vo.notice_id }</td>
-                  <td>${vo.notice_title }</td>
-                  <td>${vo.notice_date }</td>
+                  <td class="text-center">${vo.notice_id }</td>
+                  <td class="text-center">${vo.notice_title }</td>
+                  <td class="text-center">${vo.notice_date }</td>
                 </tr>
                </c:forEach>
      
