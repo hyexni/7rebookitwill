@@ -1,6 +1,16 @@
 
 	< 사용자 공지사항 기능 설계 >
 	
+	*컨트롤러 : NoticeController		=> 공지사항 관련 요청 처리
+	*서비스 : NoticeService				=> 공지사항 서비스 인터페이스
+	          NoticeServiceImpl			=> 구현체
+	*DAO : NoticeDAO					=> 공지사항 DAO 인터페이스
+	*VO : NoticeVO						=> 공지사항 데이터 객체
+	*매퍼 : noticeMapper
+	*jsp : listALL						=> 공지사항 목록
+		   detail	          			=> 공지사항 상세
+	    
+	
 	- 공지사항 목록 보기(조회)
   	1) 컨트롤러에 리스트 출력하는 동작 페이지 생성
   	 - 컨트롤러는 /notice/* 로 매핑한다
