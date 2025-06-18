@@ -1,12 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@include file="../include/header.jsp" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<html>
-<head>
-    <title>영수증 업로드</title>
-</head>
-<body>
+<%-- 1. 페이지 기본 골격과 CSS/폰트 링크를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+
+<%-- 2. 상단 헤더를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/header.jsp" %> 
+
+<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+
+<%-- 4. 여기서부터 '영수증 업로드 내역' 페이지만의 고유한 컨텐츠가 시작됩니다. --%>
 <div class="box box-primary">
     <div class="box-header with-border">
         <h3 class="box-title">영수증 파일을 업로드해주세요</h3>

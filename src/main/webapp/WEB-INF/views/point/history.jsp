@@ -1,100 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%@include file="../include/header.jsp" %> 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>포인트 내역</title>
-<style>
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        color: #333;
-        margin: 0;
-        padding: 20px;
-        background-color: #f4f4f9;
-    }
-    .container {
-        max-width: 800px;
-        margin: 20px auto;
-        background-color: #fff;
-        padding: 20px 30px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    h1, h3 {
-        color: #1a1a1a;
-        border-bottom: 2px solid #eee;
-        padding-bottom: 10px;
-    }
-    .summary-box {
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        padding: 20px;
-        margin-bottom: 30px;
-    }
-    .summary-box p {
-        margin: 0 0 10px 0;
-        font-size: 14px;
-        color: #6c757d;
-    }
-    .summary-box h2 {
-        margin: 0 0 15px 0;
-        font-size: 24px;
-        text-align: right;
-    }
-    .summary-box ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        font-size: 15px;
-    }
-    .summary-box ul li {
-        margin-bottom: 8px;
-        display: flex;
-        justify-content: space-between;
-    }
-    .details-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-    .details-table th, .details-table td {
-        border-bottom: 1px solid #ddd;
-        padding: 12px 8px;
-        text-align: center;
-        vertical-align: middle;
-    }
-    .details-table th {
-        background-color: #f7f7f7;
-        font-weight: 600;
-    }
-    .details-table .reason {
-        text-align: left;
-    }
-    .point-plus {
-        color: #007bff; /* 적립: 파란색 */
-        font-weight: bold;
-    }
-    .point-minus {
-        color: #dc3545; /* 사용: 빨간색 */
-        font-weight: bold;
-    }
-    .no-data {
-        text-align: center;
-        padding: 50px;
-        color: #777;
-        font-size: 16px;
-    }
-</style>
-</head>
-<body>
+<%-- 1. 페이지 기본 골격과 CSS/폰트 링크를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 
-    <div class="container">
+<%-- 2. 상단 헤더를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/header.jsp" %> 
+
+<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+
+<%-- 4. 여기서부터 '포인트 내역' 페이지만의 고유한 컨텐츠가 시작됩니다. --%>
+<div class="products-catagories-area clearfix">
+    <div class="container point-history-container"> <%-- 식별을 위한 클래스 추가 --%>
         <h1>${currentMonth}월 포인트 내역</h1>
 
         <div class="summary-box">
@@ -131,17 +50,10 @@
                     <c:otherwise>
                         <c:forEach var="history" items="${pointHistoryList}">
                             <tr>
+                                <td><fmt:formatDate value="${history.change_date}" pattern="yyyy-MM-dd HH:mm"/></td>
+                                <td class="reason"><c:out value="${history.change_reason}"/></td>
+                                <td><c:out value="${history.point_status}"/></td>
                                 <td>
-                                    <fmt:formatDate value="${history.change_date}" pattern="yyyy-MM-dd HH:mm"/>
-                                </td>
-                                <td class="reason">
-                                    <c:out value="${history.change_reason}"/>
-                                </td>
-                                <td>
-                                    <c:out value="${history.point_status}"/>
-                                </td>
-                                <td>
-                                    <%-- 포인트가 양수(적립)이면 파란색, 음수(사용)이면 빨간색으로 표시 --%>
                                     <c:if test="${history.change_amount > 0}">
                                         <span class="point-plus">+<fmt:formatNumber value="${history.change_amount}" pattern="#,###"/></span>
                                     </c:if>
@@ -156,6 +68,8 @@
             </tbody>
         </table>
     </div>
- <%@include file="../include/footer.jsp" %>
-</body>
-</html>
+</div>
+<%-- '포인트 내역' 페이지 컨텐츠 끝 --%>
+
+<%-- 5. 페이지의 끝을 마무리하는 footer 파일을 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
