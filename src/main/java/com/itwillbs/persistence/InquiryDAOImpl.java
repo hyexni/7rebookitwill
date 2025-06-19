@@ -1,5 +1,7 @@
 package com.itwillbs.persistence;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -19,13 +21,10 @@ public class InquiryDAOImpl implements InquiryDAO {
 	@Inject
 	private SqlSession sqlSession;
 	
-	private static final String NAMESPACE="com.itwillbs.mapper.BoardMapper.";
+	private static final String NAMESPACE="com.itwillbs.mapper.inquiryMapper.";
 
-	
-	
-	
 	@Override
-	public void inquiryInsert(InquiryVO vo) throws Exception {
+	public void insertInquiry(InquiryVO vo) throws Exception {
 		// 1:1 문의 글 입력하는 SQL 구문을 실행
 		// 디비연결
 		// SQL 구문 & pstmt 객체
@@ -35,6 +34,16 @@ public class InquiryDAOImpl implements InquiryDAO {
 		logger.info(" 1:1 문의 글쓰기 완료! ");
 		
 	}
+
+	
+	// 1:1 문의 목록
+	@Override
+	public List<InquiryVO> getInquiryList(int member_idx) {
+        // inquiryMapper.xml의 getInquiryList 쿼리 호출
+        return sqlSession.selectList(NAMESPACE + "getInquiryList", member_idx);
+    }
+	
+	
 	
 	
 	

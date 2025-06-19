@@ -13,9 +13,61 @@
 
 <%-- 4. 여기서부터 '1:1 문의하기' 페이지만의 고유한 컨텐츠가 시작됩니다. --%>
 
-<h1> /cs/write.jsp </h1>
 
+	<div class="content">
+	<h1> /cs/write.jsp </h1>
+	
+	<!-- <div class="box box-primary">
+	            <div class="box-header with-border">
+	              <h3 class="box-title">1:1 문의하기</h3>
+	            </div>
+	            /.box-header
+	            form start
+	            <form role="form">
+	              <div class="box-body">
+	                <div class="form-group">
+	                  <label for="exampleInputEmail1">문의 제목</label>
+	                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="제목을 입력하세요!">
+	                </div>
+	                <div class="form-group">
+	                  <label for="exampleInputPassword1">내용</label>
+	                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="내용을 입력하세요!">
+	                </div>
+	                  <label>
+	                    <input type="checkbox"> Check me out
+	                  </label>
+	                </div>
+	              </div>
+	              /.box-body
+	
+	              <div class="box-footer">
+	                <button type="submit" class="btn btn-primary">문의 접수</button>
+	              </div>
+	            </form>
+	          </div> -->
+	          
+	          <form action="/cs/write" method="post">
+				  <label for="category">문의 분류</label>
+				  <select id="category" name="category" required class="form-select mb-2">
+				    <option value="">분류를 선택하세요</option>
+				    <option value="이용문의">이용문의</option>
+				    <option value="배송문의">배송문의</option>
+				    <option value="서비스제안">서비스 제안</option>
+				    <option value="기타">기타</option>
+				  </select>
+				
+				  <label for="title">문의 제목</label>
+				  <input type="text" id="title" name="title" class="form-control mb-2" placeholder="제목을 입력하세요!" required>
+				
+				  <label for="content">내용</label>
+				  <textarea id="content" name="content" class="form-control mb-3" placeholder="내용을 입력하세요!" rows="5" required></textarea>
+				
+				  <button type="submit" class="btn btn-primary">문의 접수</button>
+				  <a href="/cs/list" class="btn btn-outline-secondary">과거 1:1문의 확인</a>
+				</form>
+	          
 
+	<div class="content"></div>
 
 
 

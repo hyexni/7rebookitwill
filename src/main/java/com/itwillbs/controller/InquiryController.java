@@ -1,10 +1,15 @@
 package com.itwillbs.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -48,6 +53,44 @@ public class InquiryController {
 		
 		return "redirect:/cs/listAll";
 	}
+	
+	
+	
+	// http://localhost:8088/cs/list
+	// 문의 내역 (조회) / GET
+	@GetMapping("/list")
+	public String inquiryList(HttpSession session, Model model) throws Exception {
+	    System.out.println("🧪[DEBUG] iService = " + iService);
+	    
+	    // ✅ 임시 로그인 처리 (테스트용)
+	    if (session.getAttribute("member_idx") == null) {
+	        session.setAttribute("member_idx", 1);  // 💡 테스트용 회원 번호 (예: 1번)
+	        System.out.println("✅ 테스트용으로 member_idx=1 세션에 저장됨");
+	    }
+
+	    Integer member_idx = (Integer) session.getAttribute("member_idx");
+	    System.out.println("🧪[DEBUG] member_idx = " + member_idx);
+
+	    List<InquiryVO> inquiryList = iService.getInquiryList(member_idx);
+	    model.addAttribute("inquiryList", inquiryList);
+
+	    return "/cs/list";
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
