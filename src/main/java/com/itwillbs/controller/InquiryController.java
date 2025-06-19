@@ -17,6 +17,7 @@ public class InquiryController {
 	
 	// 기능을 정의
 	
+	// http://localhost:8088/cs/write
 	// 글쓰기 (정보 입력) / GET
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public void inquiryWriteGET() throws Exception {
