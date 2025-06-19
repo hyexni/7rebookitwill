@@ -36,6 +36,14 @@ public class InquiryServiceImpl implements InquiryService {
 	}
 	
 	
+	// 상세 조회
+	@Override
+	public InquiryVO getInquiry(int inquiry_id) {
+	    return iDAO.getInquiry(inquiry_id);
+	}
+
+	
+	
 
 	
 }

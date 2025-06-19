@@ -15,5 +15,8 @@ public interface InquiryService {
 	// 1:1 문의 목록
 	List<InquiryVO> getInquiryList(int member_idx);
 	
+	// 상세 조회
+	InquiryVO getInquiry(int inquiry_id);
+	
 
 }

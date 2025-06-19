@@ -31,7 +31,7 @@
 	      <tr>
 	        <td>${vo.inquiry_id}</td>
 	        <td>${vo.category}</td>
-	        <td>${vo.title}</td>
+	        <td><a href="/cs/read?inquiry_id=${vo.inquiry_id}">${vo.title}</a></td>
 	        <td><fmt:formatDate value="${vo.created_at}" pattern="yyyy-MM-dd"/></td>
 	        <td>${vo.status}</td>
 	      </tr>

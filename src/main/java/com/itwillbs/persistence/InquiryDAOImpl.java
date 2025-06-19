@@ -42,6 +42,14 @@ public class InquiryDAOImpl implements InquiryDAO {
         // inquiryMapper.xml의 getInquiryList 쿼리 호출
         return sqlSession.selectList(NAMESPACE + "getInquiryList", member_idx);
     }
+
+
+	@Override
+    public InquiryVO getInquiry(int inquiry_id) {
+        return sqlSession.selectOne(NAMESPACE + ".getInquiry", inquiry_id);
+    }
+	
+	
 	
 	
 	

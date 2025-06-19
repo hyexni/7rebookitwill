@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.domain.InquiryVO;
 import com.itwillbs.service.InquiryService;
@@ -75,6 +76,18 @@ public class InquiryController {
 	    model.addAttribute("inquiryList", inquiryList);
 
 	    return "/cs/list";
+	}
+
+	
+	// 문의 상세 조회
+	@GetMapping("/read")
+	public String inquiryRead(@RequestParam("inquiry_id") int inquiry_id, Model model) throws Exception {
+	    logger.info(" 📄 inquiryRead() 실행 - 문의번호: " + inquiry_id);
+
+	    InquiryVO vo = iService.getInquiry(inquiry_id);
+	    model.addAttribute("vo", vo);
+
+	    return "/cs/read";  // 👉 상세 페이지 JSP 경로
 	}
 
 

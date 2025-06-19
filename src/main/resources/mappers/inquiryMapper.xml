@@ -23,7 +23,12 @@
 	
 	
 	
-	<!-- 4) SELECT ONE : 상세 조회 -->
+	<!-- SELECT ONE : 상세 조회 -->
+	<select id="getInquiry" parameterType="int" resultType="com.itwillbs.domain.InquiryVO">
+   	 SELECT * FROM inquiry
+   	 WHERE inquiry_id = #{inquiry_id}
+	</select>
+	
 
 
 </mapper>
