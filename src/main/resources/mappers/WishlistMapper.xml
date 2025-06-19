@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.persistence.WishlistDAO">
+
+  <select id="checkWishlist" parameterType="map" resultType="int">
+    SELECT COUNT(*) FROM wishlist
+    WHERE member_idx = #{member_idx}
+      AND book_id = #{book_id}
+  </select>
+
+  <insert id="insertWishlist" parameterType="com.itwillbs.domain.WishlistVO">
+    INSERT INTO wishlist (member_idx, book_id)
+    VALUES (#{member_idx}, #{book_id})
+  </insert>
+
+  <delete id="deleteWishlist" parameterType="com.itwillbs.domain.WishlistVO">
+    DELETE FROM wishlist
+    WHERE member_idx = #{member_idx}
+      AND book_id = #{book_id}
+  </delete>
+
+</mapper>

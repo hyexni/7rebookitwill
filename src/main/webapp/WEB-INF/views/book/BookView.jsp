@@ -132,32 +132,97 @@
 	</script>
 	</div>
 	
-	<!-- 하트 버튼 (찜 여부에 따라 채움/비움) -->
-	<c:choose>
-	  <c:when test="${not empty sessionScope.loginUser}">
-	    <c:if test="${book.wish_yn eq 'Y'}">
-	      <button onclick="toggleWish(${book.book_id})">❤️ 찜 해제</button>
-	    </c:if>
-	    <c:if test="${book.wish_yn ne 'Y'}">
-	      <button onclick="toggleWish(${book.book_id})">🤍 찜하기</button>
-	    </c:if>
-	  </c:when>
-	  <c:otherwise>
-	    <button onclick="goLogin()">🤍 찜하려면 로그인</button>
-	  </c:otherwise>
-	</c:choose>
+<!-- ❤️ 찜 버튼 (이미지로 표시) -->
+<div class="wishlist-btn">
+  <button id="wishlistBtn" onclick="toggleWishlist()" style="background: none; border: none;">
+    <img id="wishlistIcon" src="${pageContext.request.contextPath}/resources/img/icon/heart-gray.png" 
+         alt="찜 하트" width="36" height="36" />
+  </button>
+</div>
 
-	<script>
-	  function toggleWish(bookId) {
-	    fetch(`/wish/toggle?book_id=${bookId}`)
-	      .then(() => location.reload());
-	  }
-	  function goLogin() {
-	    if (confirm('찜하려면 로그인이 필요합니다. 로그인 하시겠습니까?')) {
-	      location.href = '/member/login';
-	    }
-	  }
-	</script>
+<!-- ✅ 알림 메시지 -->
+<div id="wishlistAlert" style="display: none; color: red; font-weight: bold; margin-top: 10px;">
+  찜 목록에 추가되었습니다.
+</div>
+
+<script>
+  let isWishlisted = false;
+
+  // 페이지 로딩 시 찜 여부 체크
+  window.addEventListener("load", function () {
+    checkWishlistStatus();
+  });
+
+  // ✅ 서버에 찜 여부 요청
+  function checkWishlistStatus() {
+    const bookId = "${book.book_id}";
+
+    fetch('/wishlist/check', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `book_id=${bookId}`
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'ok') {
+        isWishlisted = data.isWishlisted;
+        updateHeartIcon(); // 상태에 따라 하트 이미지 변경
+      }
+    });
+  }
+
+  // ✅ 찜 등록/해제 토글 처리
+  function toggleWishlist() {
+    const bookId = "${book.book_id}";
+
+    if ('${sessionScope.loginUser}' === '') {
+      if (confirm("찜 기능은 로그인 후 이용 가능합니다. 로그인 하시겠습니까?")) {
+        location.href = "/member/login";
+      }
+      return;
+    }
+
+    const url = isWishlisted ? '/wishlist/remove' : '/wishlist/add';
+
+    fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ book_id: bookId })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'added') {
+        isWishlisted = true;
+        showWishlistAlert("찜 목록에 추가되었습니다.");
+      } else if (data.status === 'removed') {
+        isWishlisted = false;
+        showWishlistAlert("찜이 해제되었습니다.");
+      }
+      updateHeartIcon(); // 상태 변경 후 하트 아이콘도 반영
+    });
+  }
+
+  // ✅ 하트 이미지 src 교체
+  function updateHeartIcon() {
+    const icon = document.getElementById("wishlistIcon");
+    if (isWishlisted) {
+      icon.src = "${pageContext.request.contextPath}/resources/img/icon/heart-red.png";
+    } else {
+      icon.src = "${pageContext.request.contextPath}/resources/img/icon/heart-gray.png";
+    }
+  }
+
+  // ✅ 알림 잠깐 표시
+  function showWishlistAlert(msg) {
+    const el = document.getElementById("wishlistAlert");
+    el.innerText = msg;
+    el.style.display = "block";
+    setTimeout(function () {
+      el.style.display = "none";
+    }, 2000);
+  }
+</script>
+
 		
   
 
