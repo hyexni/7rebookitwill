@@ -6,25 +6,10 @@
          
 <mapper namespace="com.itwillbs.mapper.inquiryMapper">
 
-	<!-- 1) 결과매핑 : InquiryVO 필드 - 컬럼 매핑 -->
-	<resultMap id="inquiryResultMap" type="com.itwillbs.domain.InquiryVO">
-		<id	property="inquiry_id" column="inquiry_id" />
-		<result property="member_idx" column="member_idx" />
-		<result property="title" column="title" />
-		<result property="content" column="content" />
-		<result property="status" column="status" />
-		<result property="created_at" column="created_at" />
-	</resultMap>
-	
-	<!-- 2) INSERT : 새 문의 등록 -->
-	<insert id = "insertInquiry"
-			parameterType="com.itwillbs.domain.InquiryVO"
-			useGeneratedKeys="true"
-			keyProperty="inquiry_id">
-		Insert into inquiry
-		 (member_idx, title, content, status, created_at)
-		values
-		 (#{member_idx}, #{title}, #{content}, #{status}, #{created_at})
+	<!-- 1) INSERT : 새 문의 등록 -->
+	<insert id="insertInquiry">
+		insert into tbl_board (title,content,member_idx)
+		values(#{title},#{content},#{member_idx})
 	</insert>
 	
 	

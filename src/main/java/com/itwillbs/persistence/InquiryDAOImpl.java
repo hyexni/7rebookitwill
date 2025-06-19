@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.itwillbs.domain.NoticeVO;
+import com.itwillbs.domain.InquiryVO;
 
 @Repository
 public class InquiryDAOImpl implements InquiryDAO {
@@ -25,7 +25,7 @@ public class InquiryDAOImpl implements InquiryDAO {
 	
 	
 	@Override
-	public void inquiryInsert(NoticeVO vo) throws Exception {
+	public void inquiryInsert(InquiryVO vo) throws Exception {
 		// 1:1 문의 글 입력하는 SQL 구문을 실행
 		// 디비연결
 		// SQL 구문 & pstmt 객체

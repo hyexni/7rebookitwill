@@ -3,7 +3,7 @@ package com.itwillbs.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.itwillbs.domain.NoticeVO;
+import com.itwillbs.domain.InquiryVO;
 
 public class InquiryServiceImpl implements InquiryService {
 	
@@ -15,7 +15,7 @@ public class InquiryServiceImpl implements InquiryService {
 
 	// 1:1 문의하기 글쓰기
 	@Override
-	public void inquiryWrite(NoticeVO vo) throws Exception {
+	public void inquiryWrite(InquiryVO vo) throws Exception {
 		
 		
 		

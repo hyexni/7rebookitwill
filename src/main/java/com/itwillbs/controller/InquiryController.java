@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.itwillbs.domain.NoticeVO;
+import com.itwillbs.domain.InquiryVO;
 
 @Controller
 @RequestMapping(value = "/cs/*")
@@ -29,7 +29,7 @@ public class InquiryController {
 	
 	// 글쓰기 (정보 처리) / POST
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public String inquiryWritePOST(NoticeVO vo) {
+	public String inquiryWritePOST(InquiryVO vo) {
 		logger.info(" inquiryWritePOST() 실행");
 		
 		// 글쓰기 동작을 처리
