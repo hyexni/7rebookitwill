@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xmlns:context="http://www.springframework.org/schema/context"
-   xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
-   xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-      http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd">
 
-   <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-      <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
-      <property name="jdbcUrl" value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c7d2503t1p1" />
-      <property name="username" value="c7d2503t1p1" />
-      <property name="password" value="1234" />
-   </bean>
-   
-   <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-      <constructor-arg ref="hikariConfig" />
-   </bean>
-   
-   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-      <property name="dataSource" ref="dataSource" />
-      <property name="configLocation" value="classpath:/mybatis-config.xml" />
-      <property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" />
-   </bean>
-   
-   <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close">
-      <constructor-arg ref="sqlSessionFactory" />
-   </bean>
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c7d2503t1p1" />
+		<property name="username" value="c7d2503t1p1" />
+		<property name="password" value="1234" />
+	</bean>
+	
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" />
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
 
-   <context:component-scan base-package="com.itwillbs.persistence" />
-   <!-- <mybatis-spring:scan base-package="com.itwillbs.persistence" />    -->
-   <context:component-scan base-package="com.itwillbs.service" />
- 
-   
-   <bean id="restTemplate" class="org.springframework.web.client.RestTemplate" /> 
-   
-   <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" /> 
+	<mybatis-spring:scan base-package="com.itwillbs.persistence" />
+	
+
+	<context:component-scan base-package="com.itwillbs.service" />
+	
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate" />
+	
+	<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
 
 </beans>
