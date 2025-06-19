@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.itwillbs.domain.NoticeVO;
+
 @Controller
 @RequestMapping(value = "/cs/*")
 public class InquiryController {
@@ -23,6 +25,18 @@ public class InquiryController {
 	public void inquiryWriteGET() throws Exception {
 		logger.info(" inquiryWriteGET() 실행 ");
 		
+	}
+	
+	// 글쓰기 (정보 처리) / POST
+	@RequestMapping(value = "/write", method = RequestMethod.POST)
+	public String inquiryWritePOST(NoticeVO vo) {
+		logger.info(" inquiryWritePOST() 실행");
+		
+		// 글쓰기 동작을 처리
+		
+		// 한글처리 인코딩 => web.xml 필터설정
+		
+		return "";
 	}
 	
 	
