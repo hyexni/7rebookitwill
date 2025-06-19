@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
 <!-- 페이지 제목 설정 -->
 <c:set var="pageTitle" value="도서 상세 페이지" />
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
@@ -92,14 +93,72 @@
         <c:otherwise>${book.book_summary}</c:otherwise>
       </c:choose>
     </p>
+	
 
-    <p><strong>판매 상태:</strong> 
-      <c:choose>
-        <c:when test="${empty book.stock_status}">판매 상태 미정</c:when>
-        <c:otherwise>${book.stock_status}</c:otherwise>
-      </c:choose>
-    </p>
-  </div>
+    <!-- ✅ 도서 상태 안내 및 구매 버튼 -->
+	    <!-- 판매 중: 구매 가능 -->
+	    <!-- 품절: 메시지 + 버튼 비활성 -->
+	    <!-- 그 외: 알 수 없음 -->
+	<div>
+	  <c:choose>
+	    <c:when test="${fn:trim(book.stock_status) eq '판매중'}">
+	      <button onclick="goBuy('${book.book_id}')">🛒 구매하기</button>
+	    </c:when>
+	
+	      <c:when test="${fn:trim(book.stock_status) eq '품절'}">
+	      <p>⚠ 현재 품절된 도서입니다</p>
+	      <button disabled>구매하기</button>
+	    </c:when>
+	
+	    <c:otherwise>
+	      <p>도서 상태 정보 없음</p>
+	      <button disabled>구매하기</button>
+	    </c:otherwise>
+	  </c:choose>
+	</div>
+	</div>
+	
+		<script>
+	  function goBuy(bookId) {
+	    const isLoggedIn = '${not empty sessionScope.loginUser}';
+	    if (isLoggedIn === 'true') {
+	      location.href = '/order/buy?book_id=' + bookId;
+	    } else {
+	      if (confirm('로그인이 필요합니다. 로그인 하시겠습니까?')) {
+	        location.href = '/member/login';
+	      }
+	    }
+	  }
+	</script>
+	</div>
+	
+	<!-- 하트 버튼 (찜 여부에 따라 채움/비움) -->
+	<c:choose>
+	  <c:when test="${not empty sessionScope.loginUser}">
+	    <c:if test="${book.wish_yn eq 'Y'}">
+	      <button onclick="toggleWish(${book.book_id})">❤️ 찜 해제</button>
+	    </c:if>
+	    <c:if test="${book.wish_yn ne 'Y'}">
+	      <button onclick="toggleWish(${book.book_id})">🤍 찜하기</button>
+	    </c:if>
+	  </c:when>
+	  <c:otherwise>
+	    <button onclick="goLogin()">🤍 찜하려면 로그인</button>
+	  </c:otherwise>
+	</c:choose>
+
+	<script>
+	  function toggleWish(bookId) {
+	    fetch(`/wish/toggle?book_id=${bookId}`)
+	      .then(() => location.reload());
+	  }
+	  function goLogin() {
+	    if (confirm('찜하려면 로그인이 필요합니다. 로그인 하시겠습니까?')) {
+	      location.href = '/member/login';
+	    }
+	  }
+	</script>
+		
   
 
 <!-- ======================== 리뷰 전체 영역 ======================== -->

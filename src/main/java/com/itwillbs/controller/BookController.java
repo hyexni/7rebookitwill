@@ -100,7 +100,8 @@ public class BookController {
 	                         HttpSession session) {
 
 	    logger.info("bookDetail() 호출 - book_id: {}, sort: {}", book_id, sort);
-
+	 
+	    
 	    // 로그인 유저 정보는 있을 경우만 추가 (로그인 안했으면 null)
 	    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 	    if (loginUser != null) {
@@ -125,7 +126,6 @@ public class BookController {
 	    model.addAttribute("criteria", criteria);
 	    model.addAttribute("reviewSort", sort);
 	   
-
 	    return "book/BookView";
 	}
 	
