@@ -38,7 +38,7 @@ a {
 
 /* 사이드바의 주 메뉴 */
 .sidebar .main-nav {
-    margin-top: 50px;
+    margin-top: 20px;
 }
 .sidebar .main-nav ul {
     padding: 0;
@@ -155,28 +155,6 @@ a {
     border-color: #fca94a;
 }
 
-/* 'ReBook' 글자와 검색창/로그인 영역을 포함하는 부모 컨테이너 스타일 */
-.newsletter-area .row {
-    display: flex;                  /* 1. 자식 요소들을 가로로 배치 */
-    justify-content: space-between; /* 2. 자식 요소들을 양쪽 끝으로 밀어서 정렬 */
-    align-items: center;            /* 3. 세로 중앙 정렬 */
-    width: 100%;                    /* 너비를 꽉 채우도록 설정 */
-}
-
-/* 'ReBook' 글자 부분 스타일 수정 */
-.newsletter-area .newsletter-text {
-    margin-bottom: 30 !important; /* 기존에 있던 아래쪽 여백(mb-100) 제거 */
-}
-
-/* h2, p 태그의 기본 마진을 조정하여 세로 정렬이 더 잘 맞도록 합니다 */
-.newsletter-area .newsletter-text h2 {
-    margin-bottom: 5px;
-}
-
-.newsletter-area .newsletter-text p {
-    margin-bottom: 0;
-}
-
 
 /* 검색창과 사용자 메뉴 그룹은 기존 스타일을 대부분 유지합니다. */
 .user-menu {
@@ -203,9 +181,15 @@ a {
     justify-content: center;        /* 2. 자식 요소들을 가로축 중앙에 배치 */
     align-items: center;            /* 3. 자식 요소들을 세로축 중앙에 배치 */
     
-    padding: 10px 40px;             /* 상하, 좌우 여백 */
+    padding: 40px 40px;             /* 상하, 좌우 여백 */
     background-color: #404040;      /* 어두운 배경색 */
     color: #fff;                    /* 기본 글자색 흰색 */
+    
+    }
+    
+    /* 메인 헤더와 컨텐츠 영역 사이의 공간 추가 */
+.main-visual-area {
+    margin-bottom: 30px; /* 이 값을 조절하여 원하시는 만큼 공간을 설정할 수 있습니다. (예: 40px, 2rem) */
 }
 
 /* 1. 왼쪽: 로고와 소개 문구 영역 */
@@ -237,11 +221,6 @@ a {
     margin: 0;
 }
 
-
-/* 2. 오른쪽: 검색창과 인증 버튼 영역 */
-.search-auth-area {
-    /* 이 영역은 특별한 스타일 없이 내부 요소에 의해 크기가 결정됩니다. */
-}
 
 .search-container {
     position: relative; 

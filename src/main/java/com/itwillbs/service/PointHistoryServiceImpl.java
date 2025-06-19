@@ -1,60 +1,89 @@
 package com.itwillbs.service;
 
-import com.itwillbs.domain.PointVO;
-// [임시 주석 처리] MemberDAO가 준비될 때까지 import하지 않습니다.
-// import com.itwillbs.persistence.MemberDAO; 
-import com.itwillbs.persistence.PointHistoryDAO;
+import java.sql.Timestamp; // Timestamp 사용을 위해 추가
+import java.time.LocalDateTime; // LocalDateTime 사용을 위해 추가
+import java.util.List;
+
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional; // 트랜잭션 관리를 위해 추가
 
-import javax.inject.Inject;
-import java.util.List;
+import com.itwillbs.domain.PointVO;
+import com.itwillbs.persistence.PointHistoryDAO;
 
 @Service
 public class PointHistoryServiceImpl implements PointHistoryService {
-    
-    private static final Logger logger = LoggerFactory.getLogger(PointHistoryServiceImpl.class);
 
-    // [수정] 변수명은 소문자 카멜 케이스로 변경 (PDao -> pdao)
     @Inject
-    private PointHistoryDAO pdao;
+    private PointHistoryDAO pointHistoryDAO;
     
-    // [임시 주석 처리] MemberDAO가 준비될 때까지 주입받지 않습니다.
-    // @Inject
-    // private MemberDAO mdao; 
 
-    /**
-     * 특정 회원의 포인트 내역을 조회하는 메서드
-     */
-    @Override
-    public List<PointVO> getPointHistoryByMember(int memberIdx) throws Exception {
-        logger.info("사용자 {}의 포인트 내역 조회", memberIdx);
-        return pdao.selectPointHistoryByMember(memberIdx);
-    }
+    private static final Logger logger = LoggerFactory.getLogger(PointHistoryServiceImpl.class);
     
-    /**
-     * [수정] 포인트 변동 내역을 기록하는 메서드 (메서드명 변경: Point -> addPointHistory)
-     */
     @Override
+    public List<PointVO> getPointHistory(int memberIdx) throws Exception {
+    	
+    	System.out.println("1111111111111111111111111111111");
+    	System.out.println(pointHistoryDAO.getPointHistory(memberIdx));
+    	
+        return null;
+    }
+
+    @Override
+    public Integer getTotalPoints(int memberIdx) throws Exception {
+        return pointHistoryDAO.getTotalPoints(memberIdx);
+    }
+
+    // 포인트 적립 트랜잭션 처리
     @Transactional
-    public void addPointHistory(PointVO vo) throws Exception {
-        // 1. 포인트 변동 내역을 point_history 테이블에 기록 (이 기능은 정상 동작)
-        pdao.insertPointHistory(vo);
-        
-        // [임시 주석 처리] MemberDAO가 없으므로, 회원의 총 포인트를 업데이트하는 로직은 잠시 제외합니다.
-        // mdao.updateMemberPoint(vo.getMemberIdx(), vo.getPointChange());
-        
-        // [수정] 로그 메시지도 현재 상황에 맞게 변경
-        logger.info("{}번 회원 포인트 {} 변동 내역 기록 완료", vo.getMember_idx(), vo.getChange_amount());
+    @Override
+    public void earnPoint(PointVO pointVO) throws Exception {
+        // 1. 현재 총 포인트 조회
+        Integer currentTotal = pointHistoryDAO.getTotalPoints(pointVO.getMember_idx());
+        if (currentTotal == null) {
+            currentTotal = 0; // 포인트 내역이 없으면 0으로 시작
+        }
+
+        // 2. 새로운 총 포인트 계산
+        int newTotal = currentTotal + pointVO.getChange_amount();
+
+        // 3. PointVO에 최종 포인트 잔액 및 현재 시간 설정
+        pointVO.setPoint_amount(newTotal); // 현재 시점의 총 포인트
+        pointVO.setChange_date(Timestamp.valueOf(LocalDateTime.now())); // 현재 시간 기록
+
+        // 4. 포인트 내역 DB에 삽입
+        pointHistoryDAO.insertPointHistory(pointVO);
+
+        // 5. (선택) 회원 테이블의 총 포인트 필드 업데이트 (만약 회원 테이블에 총 포인트 필드가 있다면)
+        // pointHistoryDAO.updateMemberTotalPoints(pointVO.getMember_idx(), newTotal);
+        // 이 부분은 시스템 설계에 따라 달라질 수 있습니다.
+        // 일반적으로는 포인트 내역 테이블만 관리하고, 총 포인트는 내역을 합산하여 조회하는 방식이 더 유연합니다.
     }
 
-	@Override
-	public List<PointVO> getPointHistoryByMemberIdx(int member_idx) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
-    
+    // 포인트 사용 트랜잭션 처리
+    @Transactional
+    @Override
+    public void usePoint(PointVO pointVO) throws Exception {
+        // 1. 현재 총 포인트 조회
+        Integer currentTotal = pointHistoryDAO.getTotalPoints(pointVO.getMember_idx());
+        if (currentTotal == null || currentTotal < Math.abs(pointVO.getChange_amount())) {
+            throw new Exception("포인트가 부족합니다."); // 사용하려는 포인트보다 현재 포인트가 적을 경우 예외 발생
+        }
+
+        // 2. 새로운 총 포인트 계산
+        int newTotal = currentTotal + pointVO.getChange_amount(); // change_amount는 이미 음수
+
+        // 3. PointVO에 최종 포인트 잔액 및 현재 시간 설정
+        pointVO.setPoint_amount(newTotal); // 현재 시점의 총 포인트
+        pointVO.setChange_date(Timestamp.valueOf(LocalDateTime.now())); // 현재 시간 기록
+
+        // 4. 포인트 내역 DB에 삽입
+        pointHistoryDAO.insertPointHistory(pointVO);
+
+        // 5. (선택) 회원 테이블의 총 포인트 필드 업데이트 (만약 회원 테이블에 총 포인트 필드가 있다면)
+        // pointHistoryDAO.updateMemberTotalPoints(pointVO.getMember_idx(), newTotal);
+    }
 }

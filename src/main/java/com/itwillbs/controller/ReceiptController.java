@@ -37,13 +37,13 @@ public class ReceiptController {
     public String receiptUploadPost(MultipartFile file, RedirectAttributes redirectAttributes, HttpSession session) {
         logger.info("POST - /receipt/upload - 파일명: {}", file.getOriginalFilename());
 
-        // 로그인된 회원 ID 가져오기 (임시로 1번 사용)
-        // Integer memberIdx = (Integer) session.getAttribute("member_idx");
-        // if (memberIdx == null) {
-        //     redirectAttributes.addFlashAttribute("message", "오류: 로그인이 필요합니다.");
-        //     return "redirect:/member/login";
-        // }
-        int memberIdx = 1; // 임시 회원 ID
+        //Integer memberIdx = (Integer) session.getAttribute("member_idx");
+       // if (memberIdx == null) {
+       //     redirectAttributes.addFlashAttribute("message", "오류: 로그인이 필요합니다.");
+     //       return "redirect:/member/login";
+     //   } // [수정] if문을 닫는 괄호 '}'를 추가했습니다.
+
+       int memberIdx = 1; // 임시 회원 ID
 
         try {
             // ✅ 아래 메서드 이름을 인터페이스와 일치하도록 수정했습니다.
@@ -59,6 +59,7 @@ public class ReceiptController {
             logger.error("영수증 처리 중 오류 발생", e);
             redirectAttributes.addFlashAttribute("message", e.getMessage());
             return "redirect:/receipt/upload";
+        
         }
     }
 

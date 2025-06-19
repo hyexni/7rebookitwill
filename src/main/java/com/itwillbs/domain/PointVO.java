@@ -13,4 +13,7 @@ public class PointVO {
 	private Timestamp change_date;
 	private String point_status;
 	
+	
+	
 }
+

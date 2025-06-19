@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.inject.Inject;
 import java.util.List;
 
-@Repository
+
 public abstract class ReceiptDAOImpl implements ReceiptDAO {
 
     @Inject

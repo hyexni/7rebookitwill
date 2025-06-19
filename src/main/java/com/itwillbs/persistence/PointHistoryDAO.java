@@ -1,17 +1,19 @@
 package com.itwillbs.persistence;
 
-import com.itwillbs.domain.PointVO;
 import java.util.List;
 
-public interface PointHistoryDAO {
+import com.itwillbs.domain.PointVO;
 
-    /**
-     * [추가] 특정 회원의 포인트 내역을 조회하는 메서드 선언
-     */
-    public List<PointVO> selectPointHistoryByMember(int memberIdx) throws Exception;
-    
-    /**
-     * 포인트 변동 내역을 기록하는 메서드
-     */
-    public void insertPointHistory(PointVO vo) throws Exception;
+public interface PointHistoryDAO {
+    // 특정 회원의 포인트 내역을 DB에서 가져오는 메서드
+    public List<PointVO> getPointHistory(int memberIdx) throws Exception;
+
+    // 회원의 현재 총 포인트를 DB에서 가져오는 메서드 (추가)
+    public Integer getTotalPoints(int memberIdx) throws Exception;
+
+    // 포인트 내역을 DB에 삽입하는 메서드 (추가)
+    public void insertPointHistory(PointVO pointVO) throws Exception;
+
+    // (선택 사항) 회원 테이블의 총 포인트를 업데이트하는 메서드 (필요시 추가)
+    // public void updateMemberTotalPoints(@Param("memberIdx") int memberIdx, @Param("totalPoints") int totalPoints) throws Exception;
 }

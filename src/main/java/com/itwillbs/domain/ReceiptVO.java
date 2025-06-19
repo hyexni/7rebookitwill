@@ -28,9 +28,11 @@ public class ReceiptVO {
     // 여러 개의 구매 품목 정보를 담는 리스트
     private List<ReceiptVO> items;
 
-    // 파일 해시와 검증 상태를 담을 필드
-    private String fileHash;
-    private String verification_status;
+    // 파일 해시와 검증 상태를 담을 필드     
+	public void setFileHash(String fileHash) {
+	
+		
+	}
     
  
 }

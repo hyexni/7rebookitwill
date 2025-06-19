@@ -29,16 +29,16 @@
             <!-- Amado Nav -->
             <nav class="amado-nav">
                 <ul>
-                    <li><a href="<c:url value='/books'/>">도서 목록</a></li>
-                    <li><a href="<c:url value='/recommend'/>">추천 도서</a></li>
-                    <li><a href="<c:url value='/mypage'/>">마이페이지</a></li>
+                    <li><a href="<c:url value='/book/BookList'/>">도서 목록</a></li>
+                    <li><a href="<c:url value='/recommend/recommend_page'/>">추천 도서</a></li>
+                    <li><a href="<c:url value='/mypage'/>">독후감</a></li>
                     <li><a href="<c:url value='/notices'/>">공지사항</a></li>
                     <li><a href="<c:url value='/point/history'/>">포인트확인</a></li>
                 </ul>
             </nav>
             <!-- Button Group -->
             <div class="amado-btn-group mt-30 mb-100">
-                <a href="#" class="btn amado-btn mb-15">WISHLIST</a>
+                <a href="<c:url value='/recommend/wishlist'/>" class="btn amado-btn mb-15">WISHLIST</a>
                 <a href="<c:url value='/receipt/upload'/>" class="btn amado-btn active">영수증업로드</a>
             </div>
             <!-- Cart Menu -->
