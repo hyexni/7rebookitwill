@@ -20,7 +20,7 @@ public class GeminiOcrUtil {
 
     private static final String PROJECT_ID = "gen-lang-client-0137886470";
     private static final String LOCATION = "asia-northeast3";
-    private static final String MODEL_NAME = "gemini-1.5-pro-001";
+    private static final String MODEL_NAME = "gemini-1.5-pro-002";
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

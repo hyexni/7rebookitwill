@@ -1,0 +1,161 @@
+/* Google Web Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+/* Basic Reset & Body Style */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f8f9fa; /* 부드러운 회색 배경 */
+    color: #343a40;
+    margin: 0;
+    padding: 30px 15px;
+}
+
+/* Main Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #212529;
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Search Form */
+.search-form {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f1f3f5;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.search-form select,
+.search-form input[type="text"] {
+    padding: 9px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 15px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-form select:focus,
+.search-form input[type="text"]:focus {
+    outline: none;
+    border-color: #4c6ef5;
+    box-shadow: 0 0 0 2px rgba(76, 110, 245, 0.2);
+}
+.search-form input[type="submit"] {
+    padding: 9px 25px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    background-color: #4c6ef5;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.search-form input[type="submit"]:hover {
+    background-color: #364fc7;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+thead {
+    background-color: #f8f9fa;
+}
+th, td {
+    padding: 14px 10px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+}
+th {
+    color: #495057;
+    font-weight: 500;
+    vertical-align: middle;
+}
+tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* [핵심] 정렬 기능 시각적 표현 (화살표) */
+th a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    position: relative;
+    padding-right: 15px; /* 화살표 공간 확보 */
+}
+th.asc a::after,
+th.desc a::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    border: 5px solid transparent;
+}
+th.asc a::after {
+    content: '▲';
+    font-size: 10px;
+    transform: translateY(-50%);
+    color: #4c6ef5;
+}
+th.desc a::after {
+    content: '▼';
+    font-size: 10px;
+    transform: translateY(-50%);
+    color: #4c6ef5;
+}
+
+/* No Records Message */
+.no-records {
+    text-align: center;
+    padding: 60px 20px;
+    color: #868e96;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 30px;
+    text-align: center;
+}
+.pagination a {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    margin: 0 4px;
+    text-align: center;
+    text-decoration: none;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+.pagination a:hover {
+    background-color: #f1f3f5;
+    border-color: #4c6ef5;
+    color: #4c6ef5;
+}
+.pagination a.active {
+    background-color: #4c6ef5;
+    border-color: #4c6ef5;
+    color: #fff;
+    font-weight: 500;
+    cursor: default;
+}

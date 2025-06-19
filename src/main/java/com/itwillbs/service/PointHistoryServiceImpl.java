@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional; // 트랜잭션 관리를 위해 추가
 
 import com.itwillbs.domain.PointVO;
+import com.itwillbs.domain.SearchCriteria;
+import com.itwillbs.dto.PointHistoryDTO;
 import com.itwillbs.persistence.PointHistoryDAO;
 
 @Service
@@ -86,4 +88,22 @@ public class PointHistoryServiceImpl implements PointHistoryService {
         // 5. (선택) 회원 테이블의 총 포인트 필드 업데이트 (만약 회원 테이블에 총 포인트 필드가 있다면)
         // pointHistoryDAO.updateMemberTotalPoints(pointVO.getMember_idx(), newTotal);
     }
+    
+ // [수정] 수정된 DAO 메서드를 호출하도록 변경
+    @Override
+    public List<PointHistoryDTO> getPointHistoryList(SearchCriteria cri) {
+        return pointHistoryDAO.getPointHistoryAdmin(cri);
+    }
+
+    // [수정] 수정된 DAO 메서드를 호출하도록 변경
+    @Override
+    public int getPointHistoryCount(SearchCriteria cri) {
+        return pointHistoryDAO.getPointHistoryCount(cri);
+    }
+    
+    
+    
+    
+    
+    
 }

@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.PointVO;
+import com.itwillbs.domain.SearchCriteria;
+import com.itwillbs.dto.PointHistoryDTO;
 
 @Repository
 public class PointHistoryDAOImpl implements PointHistoryDAO {
@@ -39,13 +41,26 @@ public class PointHistoryDAOImpl implements PointHistoryDAO {
     public void insertPointHistory(PointVO pointVO) throws Exception {
         sqlSession.insert(NAMESPACE + ".insertPointHistory", pointVO);
     }
+    
+    
+ //관리자모드
+    /**
+     * 포인트 내역 목록을 조회합니다.
+     */
+    @Override
+    public List<PointHistoryDTO> getPointHistoryAdmin(SearchCriteria cri) {
+        // sqlSession 객체를 사용하여 Mapper의 SQL을 직접 호출합니다.
+        // 첫 번째 파라미터: "namespace.id"
+        // 두 번째 파라미터: SQL에 전달할 데이터
+        return sqlSession.selectList(NAMESPACE + ".getPointHistory", cri);
+    }
 
-    // (선택 사항)
-    // @Override
-    // public void updateMemberTotalPoints(int memberIdx, int totalPoints) throws Exception {
-    //    sqlSession.update(NAMESPACE + ".updateMemberTotalPoints", new HashMap<String, Object>() {{
-    //        put("memberIdx", memberIdx);
-    //        put("totalPoints", totalPoints);
-    //    }});
-    // }
+    /**
+     * 포인트 내역의 총 개수를 조회합니다.
+     */
+    @Override
+    public int getPointHistoryCount(SearchCriteria cri) {
+        // 단일 행을 조회할 때는 selectOne 메서드를 사용합니다.
+        return sqlSession.selectOne(NAMESPACE + ".getPointHistoryCount", cri);
+    }
 }

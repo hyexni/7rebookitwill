@@ -12,7 +12,7 @@ import com.google.cloud.vertexai.generativeai.GenerativeModel;
 import com.google.cloud.vertexai.generativeai.ResponseHandler;
 import com.google.protobuf.ByteString;
 import com.itwillbs.domain.ReceiptVO;
-import com.itwillbs.dto.ReceiptDto;
+import com.itwillbs.dto.ReceiptDTO;
 import com.itwillbs.persistence.ReceiptDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,7 +60,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         // 3. Gemini API 호출하여 영수증 정보 추출
         byte[] imageBytes = file.getBytes();
-        ReceiptDto ocrDto = callGeminiApi(imageBytes, file.getContentType());
+        ReceiptDTO ocrDto = callGeminiApi(imageBytes, file.getContentType());
         if (ocrDto == null) {
             throw new RuntimeException("영수증 정보를 추출하는 데 실패했습니다. 이미지 품질이나 형식을 확인해주세요.");
         }
@@ -79,7 +79,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     /**
      * 최종적으로 DB에 저장할 ReceiptVO 객체를 생성하고 모든 정보를 설정합니다.
      */
-    private ReceiptVO createReceiptVO(MultipartFile file, ReceiptDto ocrDto, int memberIdx, String savedFilename, String fileHash) {
+    private ReceiptVO createReceiptVO(MultipartFile file, ReceiptDTO ocrDto, int memberIdx, String savedFilename, String fileHash) {
         ReceiptVO finalVO = new ReceiptVO();
 
         // 파일 기본 정보
@@ -153,8 +153,8 @@ public class ReceiptServiceImpl implements ReceiptService {
     /**
      * Google Gemini API를 호출하여 이미지에서 텍스트 정보를 추출합니다.
      */
-    private ReceiptDto callGeminiApi(byte[] imageBytes, String mimeType) throws Exception {
-        String projectId = "Gemini API"; // [필수] 자신의 프로젝트 ID로 변경
+    private ReceiptDTO callGeminiApi(byte[] imageBytes, String mimeType) throws Exception {
+        String projectId = "gen-lang-client-0137886470"; // [필수] 자신의 프로젝트 ID로 변경
         String location = "asia-northeast3";              // 서울 리전
         String modelName = "gemini-1.5-pro-002";         // 사용할 모델
 
@@ -202,7 +202,7 @@ public class ReceiptServiceImpl implements ReceiptService {
             String jsonResponse = ResponseHandler.getText(response).replace("```json", "").replace("```", "").trim();
             System.out.println("Gemini 응답 (JSON): " + jsonResponse);
 
-            return objectMapper.readValue(jsonResponse, ReceiptDto.class);
+            return objectMapper.readValue(jsonResponse, ReceiptDTO.class);
 
         } catch (Exception e) {
             System.err.println("Gemini API 호출 중 오류 발생: " + e.getMessage());

@@ -1,0 +1,154 @@
+@charset "UTF-8";
+/* src/main/resources/static/css/admin.css */
+
+/* 전체 레이아웃 및 폰트 설정 */
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+    margin: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* 페이지 컨테이너 */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 메인 타이틀 */
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+/* 검색 폼 스타일 */
+.search-form {
+    text-align: center;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #f2f6fa;
+    border-radius: 5px;
+}
+
+.search-form select,
+.search-form input[type="text"] {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 5px;
+    min-width: 120px;
+}
+
+.search-form input[type="text"] {
+    min-width: 250px;
+}
+
+.search-form input[type="submit"] {
+    padding: 8px 20px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-form input[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+/* 데이터 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+thead th {
+    background-color: #eaf2f8;
+    color: #333;
+    font-weight: 600;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+/* 정렬 링크 스타일 */
+th a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+th a:hover {
+    color: #0056b3;
+}
+
+th a.active {
+    color: #007bff;
+    font-weight: bold;
+}
+
+
+/* 페이지네이션 스타일 */
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+    padding: 10px 0;
+}
+
+.pagination a,
+.pagination strong {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 4px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #007bff;
+    background-color: #fff;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.pagination strong {
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    cursor: default;
+}
+
+.pagination .disabled {
+    color: #ccc;
+    pointer-events: none;
+    border-color: #ccc;
+}

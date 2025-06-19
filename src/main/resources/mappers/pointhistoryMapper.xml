@@ -5,6 +5,7 @@
 
 <mapper namespace="com.itwillbs.persistence.PointHistoryDAO">
 
+ <!-- 사용자 모드 -->
     <select id="getPointHistory" resultType="com.itwillbs.domain.PointVO">
         SELECT
             point_id,
@@ -45,6 +46,51 @@
         )
     </insert>
     
+<!-- 사용자 모드 끝 -->
+    
+<!-- 관리자 모드 -->
+<sql id="searchCondition">
+        <if test="keyword != null and keyword != ''">
+            <choose>
+                <when test="searchType == 'member_idx_exact'">
+                    AND p.member_idx = #{keyword}
+                </when>
+                <when test="searchType == 'member_id'">
+                    AND m.member_id LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'change_reason'">
+                    AND p.change_reason LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                 <when test="searchType == 'point_status'">
+                    AND p.point_status LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+            </choose>
+        </if>
+    </sql>
 
+    <select id="getPointHistoryAdmin" resultType="com.itwillbs.dto.PointHistoryDTO">
+        SELECT
+            p.point_id, p.member_idx, m.member_id, p.point_amount, p.change_amount,
+            p.change_reason, p.change_date, p.point_status
+        FROM
+            point p
+        JOIN
+            member m ON p.member_idx = m.member_idx
+        WHERE 1=1
+            <include refid="searchCondition"/>  ORDER BY
+            ${sortColumn} ${sortOrder}
+        LIMIT #{pageStart}, #{perPageNum}
+    </select>
+
+    <select id="getPointHistoryCount" resultType="int">
+        SELECT COUNT(*)
+        FROM
+            point p
+        JOIN
+            member m ON p.member_idx = m.member_idx
+        WHERE 1=1
+            <include refid="searchCondition"/> </select>
+            
+            <!-- 관리자 모드 끝 -->
 
     </mapper>
