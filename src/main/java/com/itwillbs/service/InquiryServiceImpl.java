@@ -2,9 +2,11 @@ package com.itwillbs.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.InquiryVO;
 
+@Service
 public class InquiryServiceImpl implements InquiryService {
 	
 	// mylog
