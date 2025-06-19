@@ -6,11 +6,11 @@ import lombok.Data;
 @Data
 public class InquiryVO {
 	
-	private int inquiry_id;
-	private int member_idx;
-	private String title;
-	private String content;
-	private String status;
-	private Timestamp created_at;
+	private int inquiry_id;				// 문의ID
+	private int member_idx;				// 회원 고유번호
+	private String title;				// 문의 제목
+	private String content;				// 문의 내용
+	private String status;				// 처리 상태
+	private Timestamp created_at;		// 작성 일시
 
 }
