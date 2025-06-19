@@ -16,4 +16,6 @@ public interface BookDAO {
 	// [총 도서 수 조회] - 페이징 계산용
 	int getBookCount(Criteria criteria);
 
+	// [도서 상세 조회] - 도서 ID 기준
+	BookVO getBookDetail(int bookId);
 }

@@ -55,7 +55,11 @@
           <p class="book-title">${book.book_title}</p>
           <p class="book-author">${book.author_name}</p>
           <p class="book-price">${book.book_price}원</p>
-          <button class="btn-detail">상세보기</button>
+          
+           <!-- 상세보기 링크로 수정 -->
+   		  <a href="${pageContext.request.contextPath}/book/view?book_id=${book.book_id}" class="btn-detail">
+ 		 상세보기
+		  </a>
         </div>
       </c:forEach>
     </div>

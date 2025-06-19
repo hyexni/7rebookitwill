@@ -19,6 +19,9 @@ public class Criteria {
 
 	// 정렬 기준 (sales, recent, review, rating)
 	private String sort;
+	
+	// 도서 ID (리뷰 페이징용)
+	private int book_id;
 
 	//  현재 페이지 번호(기본값 1)
 	private int page = 1;
@@ -77,6 +80,8 @@ public class Criteria {
         // 4) 이전, 다음 블록 존재 여부 설정
         prev = startPage > 1;
         next = endPage * perPageNum < totalCount;
+        
+   
     }
 }
 

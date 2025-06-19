@@ -63,5 +63,15 @@
             </if>
         </where>
     </select>
+    
+	 <!--
+		  도서 상세 정보 조회 SQL
+		  - bookId 기준으로 도서 1개 조회
+	-->
+	<select id="getBookDetail" resultType="com.itwillbs.domain.BookVO">
+	    SELECT * FROM book
+	    WHERE book_id = #{bookId}
+	</select>
+
 
 </mapper>

@@ -34,6 +34,11 @@ public class BookServiceImpl implements BookService {
 		logger.info("BookServiceImpl: getBookCount() 호출");
 		return bookDAO.getBookCount(criteria);
 	}
-
-
+	
+	// 도서 상세 정보 조회 기능 구현
+	// Mapper 호출
+	@Override
+	public BookVO getBookDetail(int bookId) {
+		return bookDAO.getBookDetail(bookId);
+	}
 }

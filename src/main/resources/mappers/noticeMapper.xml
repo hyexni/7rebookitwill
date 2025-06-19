@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.persistence.NoticeDAO">
+
+	<select id="getAllNotices" resultType="com.itwillbs.domain.NoticeVO">
+        SELECT * FROM notice ORDER BY notice_id DESC
+    </select> 
+    
+    <select id="selectNoticeById" parameterType="int" resultType="com.itwillbs.domain.NoticeVO">
+    	SELECT * FROM notice WHERE notice_id = #{notice_id}
+	</select>
+
+</mapper>
