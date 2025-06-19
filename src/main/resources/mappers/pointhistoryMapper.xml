@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.persistence.PointHistoryDAO">
+
+    <select id="getPointHistory" resultType="com.itwillbs.domain.PointVO">
+        SELECT
+            point_id,
+            member_idx,
+            point_amount,
+            change_amount,
+            change_reason,
+            change_date,
+            point_status
+        FROM point
+        WHERE
+            member_idx = #{memberIdx}
+        ORDER BY
+            change_date DESC, point_id DESC
+    </select>
+
+    <select id="getTotalPoints" resultType="java.lang.Integer">
+        SELECT COALESCE(SUM(change_amount), 0)
+        FROM point
+        WHERE member_idx = #{memberIdx}
+    </select>
+    
+    <insert id="insertPointHistory" parameterType="com.itwillbs.domain.PointVO">
+        INSERT INTO point (
+            member_idx,
+            point_amount,
+            change_amount,
+            change_reason,
+            change_date,
+            point_status
+        ) VALUES (
+            #{member_idx},
+            #{point_amount},
+            #{change_amount},
+            #{change_reason},
+            #{change_date},
+            #{point_status}
+        )
+    </insert>
+    
+
+
+    </mapper>

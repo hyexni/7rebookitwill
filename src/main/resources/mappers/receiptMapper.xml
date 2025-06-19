@@ -17,11 +17,10 @@
         )
     </insert>
     
-    <select id="countByFileHash" parameterType="string" resultType="int">
-        SELECT count(*)
-        FROM c7d2503t1p1.receipts
-        WHERE fileHash = #{fileHash}
-    </select>
+        
+    <select id="countByFileHash" resultType="int" parameterType="string">
+    SELECT count(*) FROM c7d2503t1p1.receipts WHERE file_hash = #{fileHash}
+	</select>
     
     <select id="selectAllReceipts" resultType="com.itwillbs.domain.ReceiptVO">
         SELECT * FROM c7d2503t1p1.receipts 

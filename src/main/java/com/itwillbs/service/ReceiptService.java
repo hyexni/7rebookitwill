@@ -17,3 +17,4 @@ public interface ReceiptService {
     // isDuplicate, ReceiptUpload 등의 메서드는 이제 processAndSaveReceipt 내부에서만
     // 사용되므로, 외부로 노출할 필요가 없습니다. (인터페이스에서 제거 가능)
 }
+

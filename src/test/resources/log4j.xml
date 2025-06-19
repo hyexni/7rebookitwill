@@ -15,6 +15,15 @@
 		<level value="info" />
 	</logger>
 	
+	<!-- Application Loggers -->
+	<logger name="com.itwillbs.persistence">
+		<level value="info" />
+	</logger>
+		<!-- Application Loggers -->
+	<logger name="com.itwillbs.service">
+		<level value="info" />
+	</logger>
+	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
 		<level value="info" />
