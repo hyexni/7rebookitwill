@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.persistence.ReviewDAO">
+
+  <!-- [리뷰 목록 조회] -->
+  <select id="getReviewList" resultType="com.itwillbs.domain.ReviewVO" parameterType="com.itwillbs.domain.Criteria">
+  SELECT
+    r.*,             -- review 테이블 전체
+    m.member_name    -- member 테이블에서 가져온 작성자 이름
+  FROM
+    review r
+    LEFT JOIN member m ON r.member_idx = m.member_idx
+  WHERE
+    r.book_id = #{book_id}
+  <choose>
+    <when test="sort == 'rating'">
+      ORDER BY r.review_score DESC
+    </when>
+    <otherwise>
+      ORDER BY r.review_date DESC
+    </otherwise>
+  </choose>
+  LIMIT #{pageStart}, #{perPageNum}
+</select>
+
+  <!-- [리뷰 개수 조회] -->
+  <select id="getReviewCount" resultType="int" parameterType="com.itwillbs.domain.Criteria">
+    SELECT COUNT(*) FROM review
+    WHERE book_id = #{book_id}
+  </select>
+  
+  <!-- [리뷰 등록] -->
+  <insert id="insertReview" parameterType="com.itwillbs.domain.ReviewVO">
+  INSERT INTO review (
+    member_idx,  
+    book_id,
+    review_text,
+    review_score,
+    review_image1,
+    review_image2,
+    review_image3,
+    review_date
+ 	 ) VALUES (
+    #{member_idx},  
+    #{book_id},
+    #{review_text},
+    #{review_score},
+    #{review_image1},
+    #{review_image2},
+    #{review_image3},
+    NOW()
+ 	 )
+  </insert>
+  	
+	<!-- [리뷰 수정 처리] - 이미지 포함, 실제로 DB에 null 저장됨 -->
+	<update id="updateReview" parameterType="com.itwillbs.domain.ReviewVO">
+	  UPDATE review
+	  SET
+	    review_score = #{review_score},
+	    review_text = #{review_text},
+	    review_image1 = #{review_image1}, <!-- null이면 null로 저장됨 -->
+	    review_image2 = #{review_image2},
+	    review_image3 = #{review_image3},
+	    review_date = NOW()
+	  WHERE
+	    review_id = #{review_id}
+	    AND member_idx = #{member_idx}  <!-- 로그인한 사용자만 수정 가능하게 -->
+	</update>
+	
+	<!-- [리뷰 단건 조회] - 수정 페이지에서 기존 텍스트/별점/이미지 불러오기 -->
+	<select id="getReviewById" parameterType="int" resultType="com.itwillbs.domain.ReviewVO">
+	  SELECT *
+	  FROM review
+	  WHERE review_id = #{review_id}
+	</select>
+	
+	<!-- ✅ [리뷰 삭제 처리] - 작성자(member_idx) 본인만 삭제 가능 -->
+	<delete id="deleteReview" parameterType="com.itwillbs.domain.ReviewVO">
+	  DELETE FROM review
+	  WHERE review_id = #{review_id}
+	    AND member_idx = #{member_idx}
+	</delete>
+</mapper>
