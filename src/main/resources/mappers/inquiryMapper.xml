@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+         
+<mapper namespace="com.itwillbs.persistence.InquiryDAO">
+
+	<!-- 새 문의 등록 -->
+	<insert id="insertInquiry" parameterType="com.itwillbs.domain.InquiryVO">
+		  INSERT INTO inquiry (member_idx, category, title, content, status, created_at)
+		  VALUES (#{member_idx}, #{category}, #{title}, #{content}, '대기중', NOW());
+	</insert>
+
+	
+	
+	<!-- 문의 내역 리스트 가져오기 -->
+	  <select id="getInquiryList" parameterType="int" resultType="com.itwillbs.domain.InquiryVO">
+	    SELECT * FROM inquiry
+	    WHERE member_idx = #{member_idx}
+	    ORDER BY created_at DESC
+	  </select>
+	
+	
+	
+	<!-- SELECT ONE : 상세 조회 -->
+	<select id="getInquiry" parameterType="int" resultType="com.itwillbs.domain.InquiryVO">
+   	 SELECT * FROM inquiry
+   	 WHERE inquiry_id = #{inquiry_id}
+	</select>
+	
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
