@@ -7,8 +7,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.ReviewVO;
 
 @Repository
 public class ReviewDAOImpl implements ReviewDAO {
@@ -44,5 +44,24 @@ public class ReviewDAOImpl implements ReviewDAO {
     @Override
     public void insertReview(ReviewVO vo) throws Exception {
         sqlSession.insert(NAMESPACE + ".insertReview", vo);
+    }
+    
+    // [리뷰 수정 처리] - SqlSession을 이용해서 실제 SQL 실행
+    @Override
+    public void updateReview(ReviewVO vo) throws Exception {
+        // Mapper에 정의된 updateReview SQL문을 실행하고, ReviewVO 데이터 전달
+        sqlSession.update(NAMESPACE + ".updateReview", vo);
+    }
+    
+    // [리뷰 단건 조회 - 리뷰 수정 페이지에서 기존 내용 불러오기]
+    @Override
+    public ReviewVO getReviewById(int review_id) {
+        return sqlSession.selectOne(NAMESPACE + ".getReviewById", review_id);
+    }
+    
+ // 리뷰 삭제
+    @Override
+    public int deleteReview(ReviewVO vo) {
+        return sqlSession.delete(NAMESPACE + ".deleteReview", vo);
     }
 }

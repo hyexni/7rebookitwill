@@ -10,4 +10,13 @@ public interface ReviewDAO {
 
     // [리뷰 등록]
     void insertReview(ReviewVO vo) throws Exception;
+    
+    // [리뷰 수정 처리] - DB에 리뷰 내용을 수정하는 메서드 선언
+    void updateReview(ReviewVO vo) throws Exception;
+    
+    // [리뷰 단건 조회 - 수정폼에서 사용할 리뷰 1건 조회]
+    ReviewVO getReviewById(int review_id);
+    
+    // 리뷰 삭제
+    int deleteReview(ReviewVO vo);
 }

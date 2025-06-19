@@ -54,5 +54,33 @@
     NOW()
  	 )
   </insert>
-
+  	
+	<!-- [리뷰 수정 처리] - 이미지 포함, 실제로 DB에 null 저장됨 -->
+	<update id="updateReview" parameterType="com.itwillbs.domain.ReviewVO">
+	  UPDATE review
+	  SET
+	    review_score = #{review_score},
+	    review_text = #{review_text},
+	    review_image1 = #{review_image1}, <!-- null이면 null로 저장됨 -->
+	    review_image2 = #{review_image2},
+	    review_image3 = #{review_image3},
+	    review_date = NOW()
+	  WHERE
+	    review_id = #{review_id}
+	    AND member_idx = #{member_idx}  <!-- 로그인한 사용자만 수정 가능하게 -->
+	</update>
+	
+	<!-- [리뷰 단건 조회] - 수정 페이지에서 기존 텍스트/별점/이미지 불러오기 -->
+	<select id="getReviewById" parameterType="int" resultType="com.itwillbs.domain.ReviewVO">
+	  SELECT *
+	  FROM review
+	  WHERE review_id = #{review_id}
+	</select>
+	
+	<!-- ✅ [리뷰 삭제 처리] - 작성자(member_idx) 본인만 삭제 가능 -->
+	<delete id="deleteReview" parameterType="com.itwillbs.domain.ReviewVO">
+	  DELETE FROM review
+	  WHERE review_id = #{review_id}
+	    AND member_idx = #{member_idx}
+	</delete>
 </mapper>

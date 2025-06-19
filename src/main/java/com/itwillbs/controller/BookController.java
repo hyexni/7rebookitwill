@@ -101,6 +101,11 @@ public class BookController {
 
 	    logger.info("bookDetail() 호출 - book_id: {}, sort: {}", book_id, sort);
 
+	    // 로그인 유저 정보는 있을 경우만 추가 (로그인 안했으면 null)
+	    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+	    if (loginUser != null) {
+	        model.addAttribute("loginUser", loginUser);
+	    }
 	    
 	    BookVO book = bookService.getBookDetail(book_id);
 	    model.addAttribute("book", book);

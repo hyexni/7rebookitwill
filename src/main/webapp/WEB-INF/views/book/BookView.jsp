@@ -7,6 +7,40 @@
 <c:set var="pageTitle" value="도서 상세 페이지" />
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
 
+
+<!-- 1. SweetAlert2 CDN 추가 (header.jsp에 넣어도 OK) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- 2. msg 플래시 메시지로 알림 띄우기 -->
+<c:if test="${not empty msg}">
+  <script>
+    window.onload = function() {
+      Swal.fire({
+        icon: 'success',
+        title: '완료!',
+        text: '${msg}',
+        confirmButtonText: '확인',
+        backdrop: true
+      });
+    };
+  </script>
+</c:if>
+
+<!-- 3. 에러 메시지 (❗이 부분 추가하는 거야!) -->
+<c:if test="${not empty errorMsg}">
+  <script>
+    window.onload = function() {
+      Swal.fire({
+        icon: 'error',
+        title: '오류!',
+        text: '${errorMsg}',
+        confirmButtonText: '확인',
+        backdrop: true
+      });
+    };
+  </script>
+</c:if>
+
 <!-- ======================== 도서 상세 정보 영역 ======================== -->
 <div class="book-detail-wrapper">
   <!-- 도서 이미지 -->
@@ -66,7 +100,7 @@
       </c:choose>
     </p>
   </div>
-</div>
+  
 
 <!-- ======================== 리뷰 전체 영역 ======================== -->
 <div class="review-section">
@@ -142,21 +176,31 @@
             ${review.member_name} |
             <fmt:formatDate value="${review.review_date}" pattern="yyyy.MM.dd"/>
           </div>
+          
+          <!-- ✅ 수정/삭제 버튼: 로그인한 본인일 때만 보이도록 -->
+		<c:if test="${sessionScope.loginUser.member_idx == review.member_idx}">
+		  <div class="review-actions">
+		    <a href="${pageContext.request.contextPath}/review/edit?review_id=${review.review_id}">
+		      <button type="button">수정</button>
+		    </a>
+		    <button type="button" onclick="deleteReview(${review.review_id})">삭제</button>
+		  </div>
+		</c:if>
 
           <!-- 리뷰 본문 + 더보기 버튼 -->
-          <div class="review-text">
-            <c:choose>
-              <c:when test="${not empty review.review_text and fn:length(review.review_text) > 100}">
-                <p class="short-text">${fn:substring(review.review_text, 0, 100)}...</p>
-                <p class="full-text" style="display: none;">${review.review_text}</p>
-                <button type="button" class="toggle-btn" onclick="toggleReview(this)">더보기</button>
-              </c:when>
-              <c:otherwise>
-                <p>${review.review_text}</p>
-              </c:otherwise>
-            </c:choose>
-          </div>
-
+          <div id="review-text-${review.review_id}" data-text="${review.review_text}">
+		  <c:choose>
+		    <c:when test="${not empty review.review_text and fn:length(review.review_text) > 100}">
+		      <p class="short-text">${fn:substring(review.review_text, 0, 100)}...</p>
+		      <p class="full-text" style="display: none;">${review.review_text}</p>
+		      <button type="button" class="toggle-btn" onclick="toggleReview(this)">더보기</button>
+		    </c:when>
+		    <c:otherwise>
+		      <p>${review.review_text}</p>
+		    </c:otherwise>
+		  </c:choose>
+		 </div>
+		 
           <!-- 리뷰 이미지 -->
           <c:if test="${not empty review.review_image1}">
             <div class="review-image">
@@ -182,5 +226,69 @@
     </c:if>
   </div>
 </div>
+
+
+		<!-- ✅ 리뷰 수정/삭제 관련 스크립트 -->
+	<script>
+	  // 리뷰 수정 폼 보여주기
+	  function showEditForm(reviewId) {
+	    const reviewTextDiv = document.querySelector(`#review-text-${reviewId}`);
+	    const originalText = reviewTextDiv.dataset.text;
+	
+	    reviewTextDiv.innerHTML = `
+	      <textarea id="edit-input-${reviewId}" rows="4" cols="60">${originalText}</textarea><br>
+	      <button onclick="submitEdit(${reviewId})">저장</button>
+	    `;
+	  }
+
+	  // 리뷰 수정 제출
+	  function submitEdit(reviewId) {
+	    const newText = document.querySelector(`#edit-input-${reviewId}`).value;
+	
+	    if (!newText.trim()) {
+	      alert("내용을 입력해주세요!");
+	      return;
+	    }
+	
+	    const form = document.createElement("form");
+	    form.method = "post";
+	    form.action = "${pageContext.request.contextPath}/review/update";
+	
+	    const idInput = document.createElement("input");
+	    idInput.type = "hidden";
+	    idInput.name = "review_id";
+	    idInput.value = reviewId;
+	
+	    const textInput = document.createElement("input");
+	    textInput.type = "hidden";
+	    textInput.name = "review_text";
+	    textInput.value = newText;
+	
+	    form.appendChild(idInput);
+	    form.appendChild(textInput);
+	    document.body.appendChild(form);
+	    form.submit();
+	  }
+	
+	  // 리뷰 삭제
+	  function deleteReview(review_id) {
+	    alert("삭제 함수 진입 확인: " + review_id); // ✅ 디버깅용
+	
+	    if (!confirm("정말 삭제하시겠습니까?")) return;
+	
+	    const form = document.createElement("form");
+	    form.method = "POST";
+	    form.action = "${pageContext.request.contextPath}/review/delete";
+	
+	    const input = document.createElement("input");
+	    input.type = "hidden";
+	    input.name = "review_id";
+	    input.value = review_id;
+	
+	    form.appendChild(input);
+	    document.body.appendChild(form);
+	    form.submit();
+	  }
+	</script>
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
