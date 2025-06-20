@@ -4,6 +4,7 @@ package com.itwillbs.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.vertexai.VertexAI;
 import com.google.cloud.vertexai.api.Blob; // [추가] Blob 클래스 import
+import com.google.cloud.vertexai.api.Candidate;
 import com.google.cloud.vertexai.api.Content;
 import com.google.cloud.vertexai.api.GenerateContentResponse;
 import com.google.cloud.vertexai.api.GenerationConfig;
@@ -13,8 +14,11 @@ import com.google.cloud.vertexai.generativeai.ResponseHandler;
 import com.google.protobuf.ByteString;
 import com.itwillbs.domain.ReceiptVO;
 import com.itwillbs.dto.ReceiptDTO;
+import com.itwillbs.dto.ReceiptItemDTO;
 import com.itwillbs.persistence.ReceiptDAO;
 import lombok.RequiredArgsConstructor;
+
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +31,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor // final 필드에 대한 생성자를 자동으로 생성합니다.
@@ -43,8 +49,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Value("${gcp.project-id}")
     private String gcpProjectId;
 
-    // 명시적인 생성자 코드가 사라져 클래스가 더 깔끔해졌습니다.
-
+    
     @Override
     @Transactional(rollbackFor = Exception.class) // 모든 예외 발생 시 롤백
     public ReceiptVO processAndSaveReceipt(MultipartFile file, int member_idx) throws Exception {
@@ -64,6 +69,8 @@ public class ReceiptServiceImpl implements ReceiptService {
         if (ocrDto == null) {
             throw new RuntimeException("영수증 정보를 추출하는 데 실패했습니다. 이미지 품질이나 형식을 확인해주세요.");
         }
+        
+       System.out.println(ocrDto);
 
         // 4. 최종 VO 객체 생성 및 모든 정보 설정
         ReceiptVO finalVO = createReceiptVO(file, ocrDto, member_idx, savedFilename, fileHash);
@@ -71,7 +78,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         // 5. DB에 영수증 정보 저장
         receiptDAO.insertReceipt(finalVO);
 
-        return finalVO;
+       return finalVO;
     }
 
     // --- Private 헬퍼 메서드들 ---
@@ -90,20 +97,28 @@ public class ReceiptServiceImpl implements ReceiptService {
         finalVO.setFile_size((int) file.getSize());
         finalVO.setFile_type(file.getContentType());
         finalVO.setFileHash(fileHash);
+        finalVO.setItems(ocrDto.getItems());
+        
 
         // OCR 결과 정보
         finalVO.setOcr_store(ocrDto.getSeller());
-        finalVO.setOcr_booktitle(ocrDto.getBookTitle());
+        
+        String totalTitle="";
+        for(ReceiptItemDTO recDTO:ocrDto.getItems()) {
+        	totalTitle += recDTO.getBookTitle() + "/";
+        }
+               
+        finalVO.setOcr_booktitle(totalTitle);
         finalVO.setApprovalnumber(ocrDto.getApprovalNumber());
 
         // 가격 정보 처리 안정성 강화
-        if (ocrDto.getPrice() != null && !ocrDto.getPrice().isEmpty()) {
+       // if (ocrDto.getPrice() != null && !ocrDto.getPrice().isEmpty()) {
             // 숫자 외 모든 문자(콤마, 원 등)를 제거하여 NumberFormatException 방지
-            String priceOnlyNumbers = ocrDto.getPrice().replaceAll("[^0-9]", "");
-            if (!priceOnlyNumbers.isEmpty()) {
-                finalVO.setOcr_amount(Integer.parseInt(priceOnlyNumbers));
-            }
-        }
+           // String priceOnlyNumbers = ocrDto.getPrice().replaceAll("[^0-9]", "");
+           // if (!priceOnlyNumbers.isEmpty()) {
+               finalVO.setOcr_amount(ocrDto.getTotalPrice());
+          //  }
+      //  }
 
         // 날짜 정보 처리 안정성 강화
         String dateStr = ocrDto.getPurchaseDate();
@@ -155,18 +170,23 @@ public class ReceiptServiceImpl implements ReceiptService {
      */
     private ReceiptDTO callGeminiApi(byte[] imageBytes, String mimeType) throws Exception {
         String projectId = "gen-lang-client-0137886470"; // [필수] 자신의 프로젝트 ID로 변경
-        String location = "asia-northeast3";              // 서울 리전
-        String modelName = "gemini-1.5-pro-002";         // 사용할 모델
+        String location = "us-central1";              // 미국
+        String modelName = "gemini-2.0-flash-001";         // 사용할 모델
 
-        String promptText = "당신은 영수증 분석 전문가입니다. 주어진 영수증 이미지에서 다음 정보를 JSON 형식으로 정확히 추출해주세요: "
-                + "1. 'seller': 서점 또는 상점 이름 "
-                + "2. 'bookTitle': 책 제목 (여러 개일 경우 쉼표(,)로 구분) "
-                + "3. 'price': '총금액' 또는 '합계'에 해당하는 최종 결제 금액 (문자나 콤마 없이 오직 숫자만) "
-                + "4. 'purchaseDate': 구매 날짜 (반드시<y_bin_46>-MM-dd 형식) "
-                + "5. 'approvalNumber': 카드 승인 번호. "
-                + "만약 특정 항목을 찾을 수 없다면, 그 값은 null로 설정해주세요. "
-                + "절대로 설명이나 추가적인 텍스트 없이 순수한 JSON 객체만 응답해야 합니다.";
-
+        String promptText = "당신은 영수증 분석 전문가입니다. 주어진 영수증 이미지에서 다음 정보를 JSON 형식으로 정확히 추출해주세요 : "
+        										+ "1. 'seller': 서점 또는 상점 이름 "
+        										+ "2. 'purchaseDate': 구매 날짜 (반드시<y_bin_46>-MM-DD 형식) "
+        										+ "3. 'approvalNumber': 카드 승인 번호 "
+        		 								+ "4. 'totalPrice': '총금액' 또는 '결제금액'에 해당하는 최종 결제 금액 (문자나 콤마 없이 오직 숫자만) "
+        		                                 + "5. 'items': 구매한 모든 상품 목록을 담는 배열(Array). 각 상품은 다음 정보를 포함하는 별개의 객체(Object)로 분류해야 합니다: " 
+                                                 + "- 'bookTitle': 개별 책 제목 " 
+        		 								 + "- 'quantity': 수량 (숫자만) "
+        		 								 + "- 'price': 해당 상품의 금액 (숫자만) "
+        		                                 + "만약 특정 최상위 항목(seller, purchaseDate 등)을 찾을 수 없다면, 그 값은 null로 설정해주세요. " 
+        		                                 + "절대로 설명이나 추가적인 텍스트 없이 순수한 JSON 객체만 응답해야 합니다.";  
+       
+        
+        
         try (VertexAI vertexAi = new VertexAI(projectId, location)) {
             GenerationConfig generationConfig = GenerationConfig.newBuilder()
                     .setMaxOutputTokens(2048)
@@ -176,10 +196,7 @@ public class ReceiptServiceImpl implements ReceiptService {
             GenerativeModel model = new GenerativeModel(modelName, vertexAi)
                     .withGenerationConfig(generationConfig);
 
-            // [핵심 수정] setMimeType 오류 해결을 위해 Part 객체 생성 방식을 변경합니다.
-            // Part.newBuilder().setInlineData()를 사용하여 MIME 타입과 이미지 데이터를
-            // Blob 객체로 감싸서 전달합니다. 이 방식은 구버전 SDK와의 호환성이 더 좋습니다.
-            Part imagePart = Part.newBuilder()
+              Part imagePart = Part.newBuilder()
                 .setInlineData(
                     Blob.newBuilder()
                         .setMimeType(mimeType)
@@ -193,21 +210,49 @@ public class ReceiptServiceImpl implements ReceiptService {
                 .build();
 
             Content content = Content.newBuilder()
+            	.setRole("user")
                 .addParts(imagePart)
                 .addParts(textPart)
                 .build();
 
+         // 1. API 응답 생성
             GenerateContentResponse response = model.generateContent(content);
 
-            String jsonResponse = ResponseHandler.getText(response).replace("```json", "").replace("```", "").trim();
-            System.out.println("Gemini 응답 (JSON): " + jsonResponse);
+            // 2. 응답 유효성 검사 (결과가 없거나 안전 문제로 차단된 경우)
+            if (response.getCandidatesCount() == 0) {
+                throw new RuntimeException("Gemini API로부터 유효한 응답 후보(Candidate)를 받지 못했습니다.");
+            }
 
+            // 3. 응답에서 원본 텍스트 추출
+            //    Candidate -> Content -> Part -> Text 순서로 안전하게 접근합니다.
+            Candidate candidate = response.getCandidates(0);
+            String rawText = candidate.getContent().getParts(0).getText();
+            System.out.println("Gemini 원본 응답: " + rawText);
+
+            // 4. 정규식을 사용하여 JSON 부분만 정확하게 추출
+            //    패턴: ```json 과 ``` 사이의 내용 또는 { 와 } 사이의 내용을 찾습니다.
+            Pattern jsonPattern = Pattern.compile("```json\\s*(\\{.*?\\})\\s*```|(\\{.*\\})", Pattern.DOTALL);
+            Matcher matcher = jsonPattern.matcher(rawText);
+
+            String jsonResponse;
+            if (matcher.find()) {
+                // 첫 번째 캡처 그룹(```json ...```)이 없으면 두 번째 캡처 그룹({ ... })을 사용합니다.
+                jsonResponse = (matcher.group(1) != null) ? matcher.group(1) : matcher.group(2);
+            } else {
+                // 응답에서 JSON 형식을 찾지 못한 경우
+                throw new RuntimeException("Gemini API 응답에서 JSON 형식의 콘텐츠를 찾을 수 없습니다.");
+            }
+            
+            System.out.println("추출된 JSON: " + jsonResponse);
+
+            // 5. 추출된 JSON 문자열을 DTO 객체로 변환
             return objectMapper.readValue(jsonResponse, ReceiptDTO.class);
 
         } catch (Exception e) {
-            System.err.println("Gemini API 호출 중 오류 발생: " + e.getMessage());
+            // 예외 발생 시 로그를 남기고, 필요한 경우 상위로 예외를 다시 던집니다.
+            System.err.println("Gemini 응답 처리 중 심각한 오류 발생: " + e.getMessage());
             e.printStackTrace();
-            throw e;
+            throw new RuntimeException("Gemini 응답 처리 중 오류가 발생했습니다.", e); // 원인 예외(e)를 포함하여 throw
         }
     }
 }

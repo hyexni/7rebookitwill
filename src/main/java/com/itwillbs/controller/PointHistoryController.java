@@ -34,13 +34,13 @@ public class PointHistoryController {
         logger.info("GET - /point/history 요청: 회원 포인트 내역 조회");
 
         // [수정] 기존 세션 로그인 확인 로직을 주석 처리합니다.
-        /*
+       
         // 1. 세션에서 로그인된 회원 ID(member_idx) 가져오기
         logger.info("8888888888888888888888888888");
-        Integer memberIdx = (Integer) session.getAttribute("member_idx");
+        Integer member_idx = (Integer) session.getAttribute("member_idx");
         logger.info("000000000000000000000000000000000");
 
-        if (memberIdx == null) {
+        if (member_idx == null) {
             logger.info("로그인되지 않은 사용자입니다. 로그인 페이지로 리다이렉트합니다.");
             
             // ==== 추가된 부분 시작 ====
@@ -57,39 +57,38 @@ public class PointHistoryController {
             logger.info("로그인필요()");// 로그인 페이지에 메시지 전달
             return "redirect:/member/login";
         }
-        */
+        
 
         // [추가] 개발 및 테스트를 위해 member_idx를 1로 고정합니다.
-        Integer memberIdx = 1;
-        logger.info("테스트용 회원 ID 고정: member_idx = {}", memberIdx);
+       // Integer member_idx = 1;
+        //logger.info("테스트용 회원 ID 고정: member_idx = {}", member_idx);
 
 
         try {
         	logger.info("5555555555555555555555555555555555");
-        	logger.info(memberIdx+"");
+        	logger.info(member_idx+"");
             // 2. PointHistoryService를 호출하여 해당 회원의 포인트 내역 목록 가져오기
-           List<PointVO> pointHistoryList = pointHistoryService.getPointHistory(memberIdx);
+           List<PointVO> pointHistoryList = pointHistoryService.getPointHistory(member_idx);
                   
             logger.info("로그인 포인트내역목록");
 
             // 3. 현재 회원의 총 포인트 잔액도 함께 가져와 모델에 추가 (옵션)
-            // 이 기능이 PointHistoryService에 추가되어야 합니다. (예: getTotalPoints(memberIdx))
-            Integer totalPoints = pointHistoryService.getTotalPoints(memberIdx); // getTotalPoints() 메서드 추가 필요
+            // 이 기능이 PointHistoryService에 추가되어야 합니다. (예: getTotalPoints(member_idx))
+            Integer totalPoints = pointHistoryService.getTotalPoints(member_idx); // getTotalPoints() 메서드 추가 필요
 
             // 4. 가져온 데이터를 Model에 담아 View로 전달
             model.addAttribute("pointHistoryList", pointHistoryList);
             model.addAttribute("totalPoints", totalPoints); // 총 포인트 잔액
-            logger.info("회원 ID {} 의 포인트 내역 (총 포인트: {})을 성공적으로 조회했습니다.", memberIdx, totalPoints);
+            logger.info("회원 ID {} 의 포인트 내역 (총 포인트: {})을 성공적으로 조회했습니다.", member_idx, totalPoints);
         
-            logger.info("포인트 리스트야 나와라",pointHistoryList);
-
+            
             // 5. 포인트 내역을 보여줄 View 페이지 이름 반환
             return "point/history"; // src/main/webapp/WEB-INF/views/point/history.jsp
             
             
         } catch (Exception e) {
             // 6. 포인트 내역 조회 중 오류 발생 시, 오류 메시지를 Model에 담아 에러 페이지로 전달
-            logger.error("회원 ID {} 의 포인트 내역 조회 중 오류 발생: {}", memberIdx, e.getMessage());
+            logger.error("회원 ID {} 의 포인트 내역 조회 중 오류 발생: {}", member_idx, e.getMessage());
             model.addAttribute("errorMessage", "포인트 내역을 불러오는 중 오류가 발생했습니다.");
             return "error/errorPage"; // 공통 에러 페이지
         }
@@ -108,8 +107,8 @@ public class PointHistoryController {
 //  	
 //      Logger.info("POST - /point/use 요청: 포인트 사용 시도 - 금액: {}, 사유: {}", amount, reason);
 //
-//      Integer memberIdx = (Integer) session.getAttribute("member_idx");
-//      if (memberIdx == null) {
+//      Integer member_idx = (Integer) session.getAttribute("member_idx");
+//      if (member_idx == null) {
 //          rttr.addFlashAttribute("message", "로그인이 필요합니다.");
 //          return "redirect:/member/login";
 //      }
@@ -121,14 +120,14 @@ public class PointHistoryController {
 //
 //      try {
 //          // 현재 사용 가능한 총 포인트 확인 (필요시)
-//          Integer currentTotalPoints = pointHistoryService.getTotalPoints(memberIdx);
+//          Integer currentTotalPoints = pointHistoryService.getTotalPoints(member_idx);
 //          if (currentTotalPoints == null || currentTotalPoints < amount) {
 //              rttr.addFlashAttribute("message", "사용할 포인트가 부족합니다. 현재 포인트: " + (currentTotalPoints != null ? currentTotalPoints : 0));
 //              return "/point/history";
 //          }
 //
 //          PointVO pointVO = new PointVO();
-//          pointVO.setMember_idx(memberIdx);
+//          pointVO.setMember_idx(member_idx);
 //          pointVO.setChange_amount(-amount); // 사용은 음수
 //          pointVO.setChange_reason(reason);
 //          pointVO.setPoint_status("사용완료"); // 상태 설정
@@ -136,10 +135,10 @@ public class PointHistoryController {
 //          pointHistoryService.usePoint(pointVO); // 포인트 사용 서비스 호출
 //
 //          rttr.addFlashAttribute("message", amount + " 포인트가 성공적으로 사용되었습니다.");
-//          logger.info("회원 ID {} 에게 {} 포인트 사용 성공. 사유: {}", memberIdx, amount);
+//          logger.info("회원 ID {} 에게 {} 포인트 사용 성공. 사유: {}", member_idx, amount);
 //          return "redirect:/point/history"; // 사용 후 포인트 내역 페이지로 리다이렉트
 //      } catch (Exception e) {
-//          logger.error("회원 ID {} 의 포인트 {} 사용 중 오류 발생: {}", memberIdx, amount);
+//          logger.error("회원 ID {} 의 포인트 {} 사용 중 오류 발생: {}", member_idx, amount);
 //          rttr.addFlashAttribute("message", "포인트 사용 중 오류가 발생했습니다: " + e.getMessage());
 //          return "/point/history"; // 오류 발생 시에도 내역 페이지로 리다이렉트
 //      }

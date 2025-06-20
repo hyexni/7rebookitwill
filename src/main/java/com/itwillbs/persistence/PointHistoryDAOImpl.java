@@ -23,9 +23,9 @@ public class PointHistoryDAOImpl implements PointHistoryDAO {
     private static final String NAMESPACE = "com.itwillbs.mapper.PointHistoryMapper";
 
     @Override
-    public List<PointVO> getPointHistory(int memberIdx) throws Exception {
+    public List<PointVO> getPointHistory(int member_idx) throws Exception {
     	System.out.println("2222222222222222222222222");
-        return sqlSession.selectList(NAMESPACE + ".getPointHistory", memberIdx);
+        return sqlSession.selectList(NAMESPACE + ".getPointHistory", member_idx);
 //        return null;
     }
 
