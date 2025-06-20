@@ -1,10 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<!-- 소수점 자르기 format 태그 -->
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!-- Swiper CSS & JS CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
@@ -17,17 +13,20 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
 
-<html>
-<body>
-<%@include file="../include/footer.jsp" %> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- 소수점 자르기 format 태그 -->
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%@include file="../include/header.jsp" %> 
+<%-- 1. 페이지 기본 골격과 공통 CSS/폰트 링크를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 
+<%-- 2. 상단 헤더를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/admin/header.jsp" %>
+
+<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/admin/sidebar.jsp" %>
 
     
-<!-- 템플릿 해더 추가 -->
-<!-- ./  상대주소 ./views <=> /webapp/WEB-INF/views -->
-<!-- ../ 절대주소 상위폴더로 이동-->
 
 <!-- stats.jsp 본문 -->
 
@@ -298,8 +297,8 @@
 	
 </div>	
 	
-	
-</body>
-</html>	
+
+<%-- 4. 하단 푸터를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/admin/footer.jsp" %>
 	
 	
