@@ -25,7 +25,7 @@
     </style>
 </head>
 <body>
-${uploadResult}
+
     <div class="container">
         <h1>🧾 영수증 인식 결과</h1>
 
@@ -113,9 +113,7 @@ ${uploadResult}
             </c:otherwise>
         </c:choose>
 
-        <br>
-        <h2>📄 OCR 원본 텍스트</h2>
-        <pre>${uploadResult.ocr_text}</pre>
+       
         
         <a href="${pageContext.request.contextPath}/receipt/upload" class="btn-link">🔄 다시 업로드하기</a>
     </div>

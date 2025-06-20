@@ -30,6 +30,8 @@ import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -77,6 +79,36 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         // 5. DB에 영수증 정보 저장
         receiptDAO.insertReceipt(finalVO);
+        
+     // =======================================================================
+     // [수정된 포인트 적립 로직]
+     // =======================================================================
+     int ocrAmount = finalVO.getOcr_amount();
+
+     if (ocrAmount > 0) {
+         // 1. 포인트 내역(History) 저장을 위한 파라미터 맵 생성
+         Map<String, Object> historyParams = new HashMap<>();
+         historyParams.put("member_idx", member_idx);
+         historyParams.put("ocr_amount", ocrAmount);
+         
+         // DAO를 호출하여 SQL로 계산 및 INSERT
+         receiptDAO.addPointHistory(historyParams);
+
+         // 2. 회원 총 포인트 업데이트
+         Map<String, Object> updateUserParams = new HashMap<>();
+         updateUserParams.put("member_idx", member_idx);
+         updateUserParams.put("amountToAdd", (int)(ocrAmount * 0.05)); // Java에서도 계산은 필요
+         
+         receiptDAO.updateUserPoint(updateUserParams);
+     }
+     // =======================================================================
+
+        
+        
+        
+        
+        
+        
 
        return finalVO;
     }
@@ -111,14 +143,8 @@ public class ReceiptServiceImpl implements ReceiptService {
         finalVO.setOcr_booktitle(totalTitle);
         finalVO.setApprovalnumber(ocrDto.getApprovalNumber());
 
-        // 가격 정보 처리 안정성 강화
-       // if (ocrDto.getPrice() != null && !ocrDto.getPrice().isEmpty()) {
-            // 숫자 외 모든 문자(콤마, 원 등)를 제거하여 NumberFormatException 방지
-           // String priceOnlyNumbers = ocrDto.getPrice().replaceAll("[^0-9]", "");
-           // if (!priceOnlyNumbers.isEmpty()) {
-               finalVO.setOcr_amount(ocrDto.getTotalPrice());
-          //  }
-      //  }
+        finalVO.setOcr_amount(ocrDto.getTotalPrice());
+       
 
         // 날짜 정보 처리 안정성 강화
         String dateStr = ocrDto.getPurchaseDate();

@@ -36,9 +36,9 @@ public class PointHistoryController {
         // [수정] 기존 세션 로그인 확인 로직을 주석 처리합니다.
        
         // 1. 세션에서 로그인된 회원 ID(member_idx) 가져오기
-        logger.info("8888888888888888888888888888");
+       
         Integer member_idx = (Integer) session.getAttribute("member_idx");
-        logger.info("000000000000000000000000000000000");
+       
 
         if (member_idx == null) {
             logger.info("로그인되지 않은 사용자입니다. 로그인 페이지로 리다이렉트합니다.");
@@ -65,7 +65,7 @@ public class PointHistoryController {
 
 
         try {
-        	logger.info("5555555555555555555555555555555555");
+        	
         	logger.info(member_idx+"");
             // 2. PointHistoryService를 호출하여 해당 회원의 포인트 내역 목록 가져오기
            List<PointVO> pointHistoryList = pointHistoryService.getPointHistory(member_idx);
@@ -94,62 +94,4 @@ public class PointHistoryController {
         }
     }
 }
-    
-//  
-//// --- 포인트 사용 기능 ---
-//  // 예시: 상품 구매 시 포인트 사용, 쿠폰 교환 시 포인트 사용
-//  // http://localhost:8088/point/use
-//  @PostMapping("/use")
-//  public String usePoint(@RequestParam("amount") int amount,
-//                           @RequestParam(value = "reason", defaultValue = "포인트 사용") String reason,
-//                           HttpSession session,
-//                           RedirectAttributes rttr) {
-//  	
-//      Logger.info("POST - /point/use 요청: 포인트 사용 시도 - 금액: {}, 사유: {}", amount, reason);
-//
-//      Integer member_idx = (Integer) session.getAttribute("member_idx");
-//      if (member_idx == null) {
-//          rttr.addFlashAttribute("message", "로그인이 필요합니다.");
-//          return "redirect:/member/login";
-//      }
-//
-//      if (amount <= 0) {
-//          rttr.addFlashAttribute("message", "사용할 포인트는 0보다 커야 합니다.");
-//          return "redirect:/point/history"; // 또는 사용 폼 페이지
-//      }
-//
-//      try {
-//          // 현재 사용 가능한 총 포인트 확인 (필요시)
-//          Integer currentTotalPoints = pointHistoryService.getTotalPoints(member_idx);
-//          if (currentTotalPoints == null || currentTotalPoints < amount) {
-//              rttr.addFlashAttribute("message", "사용할 포인트가 부족합니다. 현재 포인트: " + (currentTotalPoints != null ? currentTotalPoints : 0));
-//              return "/point/history";
-//          }
-//
-//          PointVO pointVO = new PointVO();
-//          pointVO.setMember_idx(member_idx);
-//          pointVO.setChange_amount(-amount); // 사용은 음수
-//          pointVO.setChange_reason(reason);
-//          pointVO.setPoint_status("사용완료"); // 상태 설정
-//
-//          pointHistoryService.usePoint(pointVO); // 포인트 사용 서비스 호출
-//
-//          rttr.addFlashAttribute("message", amount + " 포인트가 성공적으로 사용되었습니다.");
-//          logger.info("회원 ID {} 에게 {} 포인트 사용 성공. 사유: {}", member_idx, amount);
-//          return "redirect:/point/history"; // 사용 후 포인트 내역 페이지로 리다이렉트
-//      } catch (Exception e) {
-//          logger.error("회원 ID {} 의 포인트 {} 사용 중 오류 발생: {}", member_idx, amount);
-//          rttr.addFlashAttribute("message", "포인트 사용 중 오류가 발생했습니다: " + e.getMessage());
-//          return "/point/history"; // 오류 발생 시에도 내역 페이지로 리다이렉트
-//      }
-//  }
-//
-//  // 포인트 적립/사용 폼을 보여주는 GET 요청 (선택 사항)
-//  // 실제로는 각 기능에 맞는 별도의 폼 페이지가 있을 수 있습니다.
-//  @GetMapping("/form")
-//  public String showPointForm() {
-//      return "point/pointForm"; // 포인트 적립/사용 폼 페이지
-//  }
-//
-//
-//  
+ 
