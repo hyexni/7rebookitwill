@@ -4,10 +4,12 @@
 
 <%-- 1. 페이지 기본 골격과 공통 CSS/폰트 링크를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+
 <%-- 2. 상단 헤더를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/header.jsp" %>
-<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. (관리자용 사이드바가 있다면 경로 수정) --%>
-<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+<%@ include file="include/header.jsp" %> 
+
+<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
+<%@ include file="include/sidebar.jsp" %> 
 
 <%-- 
 =========================================================================
@@ -238,4 +240,4 @@
 </main> <%-- /.main-content --%>
 
 <%-- 4. 하단 푸터를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<%@ include file="include/footer.jsp" %> 
