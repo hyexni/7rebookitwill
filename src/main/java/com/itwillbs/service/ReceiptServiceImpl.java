@@ -12,9 +12,11 @@ import com.google.cloud.vertexai.api.Part;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
 import com.google.cloud.vertexai.generativeai.ResponseHandler;
 import com.google.protobuf.ByteString;
+import com.itwillbs.domain.PointVO;
 import com.itwillbs.domain.ReceiptVO;
 import com.itwillbs.dto.ReceiptDTO;
 import com.itwillbs.dto.ReceiptItemDTO;
+import com.itwillbs.persistence.PointHistoryDAO;
 import com.itwillbs.persistence.ReceiptDAO;
 import lombok.RequiredArgsConstructor;
 
@@ -80,39 +82,10 @@ public class ReceiptServiceImpl implements ReceiptService {
         // 5. DB에 영수증 정보 저장
         receiptDAO.insertReceipt(finalVO);
         
-     // =======================================================================
-     // [수정된 포인트 적립 로직]
-     // =======================================================================
-     int ocrAmount = finalVO.getOcr_amount();
-
-     if (ocrAmount > 0) {
-         // 1. 포인트 내역(History) 저장을 위한 파라미터 맵 생성
-         Map<String, Object> historyParams = new HashMap<>();
-         historyParams.put("member_idx", member_idx);
-         historyParams.put("ocr_amount", ocrAmount);
-         
-         // DAO를 호출하여 SQL로 계산 및 INSERT
-         receiptDAO.addPointHistory(historyParams);
-
-         // 2. 회원 총 포인트 업데이트
-         Map<String, Object> updateUserParams = new HashMap<>();
-         updateUserParams.put("member_idx", member_idx);
-         updateUserParams.put("amountToAdd", (int)(ocrAmount * 0.05)); // Java에서도 계산은 필요
-         
-         receiptDAO.updateUserPoint(updateUserParams);
-     }
-     // =======================================================================
-
-        
-        
-        
-        
-        
-        
-
        return finalVO;
     }
 
+    
     // --- Private 헬퍼 메서드들 ---
 
     /**

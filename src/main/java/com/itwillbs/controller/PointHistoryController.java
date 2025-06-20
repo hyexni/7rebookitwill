@@ -33,8 +33,6 @@ public class PointHistoryController {
     public String getMemberPointHistory(HttpSession session, Model model, HttpServletRequest request) {
         logger.info("GET - /point/history 요청: 회원 포인트 내역 조회");
 
-        // [수정] 기존 세션 로그인 확인 로직을 주석 처리합니다.
-       
         // 1. 세션에서 로그인된 회원 ID(member_idx) 가져오기
        
         Integer member_idx = (Integer) session.getAttribute("member_idx");
