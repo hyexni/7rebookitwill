@@ -1,10 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<!-- 소수점 자르기 format 태그 -->
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!-- Swiper CSS & JS CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
@@ -17,60 +13,44 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
 
-<html>
-<body>
-<%@include file="../include/footer.jsp" %> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- 소수점 자르기 format 태그 -->
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%@include file="../include/header.jsp" %> 
+<%-- 1. 페이지 기본 골격과 공통 CSS/폰트 링크를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 
+<%-- 2. 상단 헤더를 불러옵니다. --%>
+<%@ include file="include/header.jsp" %> 
+
+<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
+<%@ include file="include/sidebar.jsp" %> 
 
     
-<!-- 템플릿 해더 추가 -->
-<!-- ./  상대주소 ./views <=> /webapp/WEB-INF/views -->
-<!-- ../ 절대주소 상위폴더로 이동-->
 
 <!-- stats.jsp 본문 -->
 
 
-<div style="padding: 40px; background: #fff; width: 100%; max-width: 900px; margin: 0 auto;">
+<div style="padding: 40px; width: 100%; margin: 0 auto;">
 
+	<script>
+		  const stats = {
+		    activeMembers: ${stats.activeMembers},
+		    withdrawnMembers: ${stats.withdrawnMembers},
+		    todayNewMembers: ${stats.todayNewMembers},
+		    monthNewMembers: ${stats.monthNewMembers},
+		    totalMembers: ${stats.totalMembers}
+		  };
+	</script>
+
+</div>	
 
 
 <!-- ────────────────────────────────────── -->
 <!-- 2) 차트 그리드 -->
 <h2 style="margin-top: 40px;">📊 관리자 통계 페이지</h2>
 <!-- 📌 스타일 정의 -->
-<style>
 
-  .stats-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* PC: 5개 정렬 */
-    gap: 20px;
-    margin-top: 20px;
-  }
-
-  .stats-card {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  }
-
-  /* 태블릿: 2개씩 */
-  @media (max-width: 1024px) {
-    .stats-container {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  /* 모바일: 1개씩 */
-  @media (max-width: 600px) {
-    .stats-container {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
 
 <div class="stats-container">
   <div class="stats-card">
@@ -124,53 +104,6 @@
   </div>
 </div>
 
-<!-- ────────────────────────────────────── -->
-<!-- 3) 차트 초기화 -->
-<script>
-  // 도넛
-  new Chart(
-    document.getElementById("statusChart").getContext("2d"),
-    {
-      type: "doughnut",
-      data: {
-        labels: ["활성 회원", "탈퇴 회원"],
-        datasets: [{
-          data: [${stats.activeMembers}, ${stats.withdrawnMembers}],
-          backgroundColor: ["#4CAF50", "#F44336"]
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { position: "bottom" } },
-        layout: { padding: 10 }
-      }
-    }
-  );
-
-  // 막대
-  new Chart(
-    document.getElementById("joinChart").getContext("2d"),
-    {
-      type: "bar",
-      data: {
-        labels: ["오늘", "이번 달", "전체"],
-        datasets: [{
-          label: "가입자 수",
-          data: [${stats.todayNewMembers}, ${stats.monthNewMembers}, ${stats.totalMembers}],
-          backgroundColor: ["#2196F3", "#3F51B5", "#9C27B0"]
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        layout: { padding: { top: 10, bottom: 0 } },
-        scales: { y: { beginAtZero: true, grace: "5%" } },
-        plugins: { legend: { display: false } }
-      }
-    }
-  );
-</script>
 
 <!-- ────────────────────────────────────── -->
 <!-- 4) 슬라이더 레이아웃 -->
@@ -221,11 +154,10 @@
             <h4>${status.index+1}위 - ${book.bookTitle}</h4>
             <p>📚 장르: ${book.categoryName}</p>
             <p>
-              ⭐
               <c:set var="rating" value="${book.avgRating}"/>
               <c:forEach var="i" begin="1" end="5">
                 <c:choose>
-                  <c:when test="${i <= rating}">★</c:when>
+                  <c:when test="${i <= rating}">⭐</c:when>
                   <c:otherwise>☆</c:otherwise>
                 </c:choose>
               </c:forEach>
@@ -249,35 +181,13 @@
     padding:15px;
     background:#fff;
     box-sizing:border-box;
-    width:100%;
+    width:200%;
     min-height:350px;
     display:flex;
     flex-direction:column;
   }
 </style>
 
-<script>
-  const salesSwiper = new Swiper(".salesSwiper", {
-    loop: true,
-    pagination: { el: ".salesSwiper .swiper-pagination", clickable: true },
-    autoplay: false,
-    slidesPerView: 1,
-    spaceBetween: 20,
-  });
-  const ratingSwiper = new Swiper(".ratingSwiper", {
-    loop: true,
-    pagination: { el: ".ratingSwiper .swiper-pagination", clickable: true },
-    autoplay: false,
-    slidesPerView: 1,
-    spaceBetween: 20,
-  });
-
-  // 4초마다 **동시에** 넘기기
-  setInterval(() => {
-    salesSwiper.slideNext();
-    ratingSwiper.slideNext();
-  }, 4000);
-</script>
 
 
 
@@ -298,8 +208,8 @@
 	
 </div>	
 	
-	
-</body>
-</html>	
+
+<%-- 4. 하단 푸터를 불러옵니다. --%>
+<%@ include file="include/footer.jsp" %> 
 	
 	
