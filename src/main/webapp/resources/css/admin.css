@@ -155,49 +155,55 @@ th a.active {
 
 /* 사이드 메뉴 스타일 */
 .admin-menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 15px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 .admin-menu li {
-    padding: 12px 16px;
-    border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
-.admin-menu li a {
-    text-decoration: none;
-    color: #333;
-    display: block;
+.admin-menu li a,
+.menu-title { 
+  display: block;
+  padding: 14px 20px;
+  font-size: 13px; /* 고객센터 관리 */
+  color: #333;
+  text-decoration: none;
 }
 
-.admin-menu li a:hover {
-    color: #007bff;
-}
-
-/* 아코디언 상위 메뉴 */
 .menu-title {
-    cursor: pointer;
-    font-weight: bold;
-    background-color: #f1f1f1;
-    padding: 12px 16px;
-    user-select: none;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* 아코디언 화살표 (선택사항) */
 .menu-title .arrow {
-    float: right;
+  font-size: 16px;
 }
 
 /* 하위 메뉴 */
 .submenu {
-    display: none;  /* 처음엔 닫혀 있음 */
-    background-color: #fafafa;
-    padding-left: 20px;
+  display: none;
+  background-color: #fff;
+  padding-left: 20px;
 }
 
 .submenu li {
-    padding: 8px 12px;
-    border-bottom: none;
+  border-bottom: none;
+}
+
+.submenu li a {
+  padding: 10px 20px;
+  font-size: 15px;
+  color: #555;
+}
+
+.submenu li a:hover {
+  background-color: #f5f5f5;
+  color: #222;
 }
