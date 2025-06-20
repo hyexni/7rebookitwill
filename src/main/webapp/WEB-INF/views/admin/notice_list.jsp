@@ -1,0 +1,57 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+		<!-- 공지사항 목록 화면 (notice_list.jsp) - 스크린샷 기반 UI 구현 -->
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<h2>공지사항 관리</h2>
+
+<td>${notice.ad_id}</td>
+
+<table border="1" width="100%" style="border-collapse: collapse; text-align: center;">
+  <thead>
+    <tr>
+      <th>등록번호</th>
+      <th>제목</th>
+      <th>등록일자</th>
+      <th>수정 / 삭제</th>
+    </tr>
+  </thead>
+  <tbody>
+    <c:forEach var="notice" items="${noticeList}">
+      <tr>
+        <td>${notice.notice_id}</td>
+        <td>
+          <c:if test="${notice.fixed}">
+            <span style="color: red; font-weight: bold;">[공지]</span>
+          </c:if>
+          <a href="${pageContext.request.contextPath}/admin/read?notice_id=${notice.notice_id}">
+            ${notice.notice_title}
+          </a>
+        </td>
+        <td>${notice.notice_date}</td>
+        <td>
+          <form action="${pageContext.request.contextPath}/admin/edit" method="get" style="display:inline;">
+            <input type="hidden" name="notice_id" value="${notice.notice_id}" />
+            <button type="submit">수정</button>
+          </form>
+          <form action="${pageContext.request.contextPath}/admin/delete" method="post" style="display:inline;">
+            <input type="hidden" name="notice_id" value="${notice.notice_id}" />
+            <button type="submit" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
+          </form>
+        </td>
+      </tr>
+    </c:forEach>
+  </tbody>
+</table>
+
+<br/>
+<div style="text-align: right;">
+  <a href="${pageContext.request.contextPath}/admin/notice_write">
+    <button>새 글 등록</button>
+  </a>
+</div>
+
+<!-- 페이징 처리는 이후 구현 가능 -->
+<p style="text-align: center; color: gray;">(10건 단위로 페이징 처리)</p>
