@@ -5,24 +5,24 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 
-<mapper namespace="com.itwillbs.mapper.adminStatsMapper">
+<mapper namespace="com.itwillbs.persistence.AdminStatsDAO">
 
 	<!-- 전체 회원 수 -->
 	<select id="getTotalMembers" resultType="int">
-		SELECT COUNT(*) FROM member;
+		SELECT COUNT(*) FROM member
 	</select>
 
 	<!-- 오늘 가입한 회원 수 -->
 	<select id="getTodayNewMembers" resultType="int">
 		SELECT COUNT(*) FROM member
-		WHERE DATE(member_regdate) = CURDATE();	
+		WHERE DATE(member_regdate) = CURDATE()
 	</select>
 	
 	<!-- 이번 달 가입한 회원 수 -->
 	<select id="getMonthNewMembers" resultType="int">
 		SELECT COUNT(*) FROM member
 		WHERE YEAR(member_regdate) = YEAR(CURDATE())
-			AND MONTH(member_regdate) = MONTH(CURDATE());
+			AND MONTH(member_regdate) = MONTH(CURDATE())
 	</select>
 
 
@@ -35,7 +35,7 @@
 	<!-- 탈퇴 회원 수 -->
 	<select id="getWithdrawnMembers" resultType="int">
 		SELECT COUNT(*) FROM member
-		WHERE member_status = '탈퇴';
+		WHERE member_status = '탈퇴'
 	</select>
 	
 	

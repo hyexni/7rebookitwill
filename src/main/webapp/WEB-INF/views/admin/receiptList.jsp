@@ -1,7 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
- <%@include file="../include/header.jsp" %> 
+
+<%-- 2. 상단 헤더를 불러옵니다. --%>
+<%@ include file="include/header.jsp" %> 
+
+<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
+<%@ include file="include/sidebar.jsp" %> 
+
 <html>
 <head>
     <title>관리자 - 영수증 관리</title>
@@ -117,5 +123,6 @@
         </table>
     </div>
 </body>
-</html>
- <%@include file="../include/footer.jsp" %> 
+
+<%-- 4. 하단 푸터를 불러옵니다. --%>
+<%@ include file="include/footer.jsp" %> 
