@@ -1,9 +1,17 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-		<!-- 공지사항 목록 화면 (notice_list.jsp) - 스크린샷 기반 UI 구현 -->
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%-- 1. 페이지 기본 골격과 공통 CSS/폰트 링크를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+
+<%-- 2. 상단 헤더를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/admin/header.jsp" %>
+
+<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/admin/sidebar.jsp" %>
+
+
 
 <h2>공지사항 관리</h2>
 
@@ -55,3 +63,9 @@
 
 <!-- 페이징 처리는 이후 구현 가능 -->
 <p style="text-align: center; color: gray;">(10건 단위로 페이징 처리)</p>
+
+
+
+
+<%-- 4. 하단 푸터를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/admin/footer.jsp" %>
