@@ -33,43 +33,22 @@
 
 <div style="padding: 40px; background: #fff; width: 100%; max-width: 900px; margin: 0 auto;">
 
+<script>
+  const stats = {
+    activeMembers: ${stats.activeMembers},
+    withdrawnMembers: ${stats.withdrawnMembers},
+    todayNewMembers: ${stats.todayNewMembers},
+    monthNewMembers: ${stats.monthNewMembers},
+    totalMembers: ${stats.totalMembers}
+  };
+</script>
 
 
 <!-- ────────────────────────────────────── -->
 <!-- 2) 차트 그리드 -->
 <h2 style="margin-top: 40px;">📊 관리자 통계 페이지</h2>
 <!-- 📌 스타일 정의 -->
-<style>
 
-  .stats-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* PC: 5개 정렬 */
-    gap: 20px;
-    margin-top: 20px;
-  }
-
-  .stats-card {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  }
-
-  /* 태블릿: 2개씩 */
-  @media (max-width: 1024px) {
-    .stats-container {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  /* 모바일: 1개씩 */
-  @media (max-width: 600px) {
-    .stats-container {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
 
 <div class="stats-container">
   <div class="stats-card">
@@ -123,53 +102,6 @@
   </div>
 </div>
 
-<!-- ────────────────────────────────────── -->
-<!-- 3) 차트 초기화 -->
-<script>
-  // 도넛
-  new Chart(
-    document.getElementById("statusChart").getContext("2d"),
-    {
-      type: "doughnut",
-      data: {
-        labels: ["활성 회원", "탈퇴 회원"],
-        datasets: [{
-          data: [${stats.activeMembers}, ${stats.withdrawnMembers}],
-          backgroundColor: ["#4CAF50", "#F44336"]
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { position: "bottom" } },
-        layout: { padding: 10 }
-      }
-    }
-  );
-
-  // 막대
-  new Chart(
-    document.getElementById("joinChart").getContext("2d"),
-    {
-      type: "bar",
-      data: {
-        labels: ["오늘", "이번 달", "전체"],
-        datasets: [{
-          label: "가입자 수",
-          data: [${stats.todayNewMembers}, ${stats.monthNewMembers}, ${stats.totalMembers}],
-          backgroundColor: ["#2196F3", "#3F51B5", "#9C27B0"]
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        layout: { padding: { top: 10, bottom: 0 } },
-        scales: { y: { beginAtZero: true, grace: "5%" } },
-        plugins: { legend: { display: false } }
-      }
-    }
-  );
-</script>
 
 <!-- ────────────────────────────────────── -->
 <!-- 4) 슬라이더 레이아웃 -->
@@ -255,28 +187,6 @@
   }
 </style>
 
-<script>
-  const salesSwiper = new Swiper(".salesSwiper", {
-    loop: true,
-    pagination: { el: ".salesSwiper .swiper-pagination", clickable: true },
-    autoplay: false,
-    slidesPerView: 1,
-    spaceBetween: 20,
-  });
-  const ratingSwiper = new Swiper(".ratingSwiper", {
-    loop: true,
-    pagination: { el: ".ratingSwiper .swiper-pagination", clickable: true },
-    autoplay: false,
-    slidesPerView: 1,
-    spaceBetween: 20,
-  });
-
-  // 4초마다 **동시에** 넘기기
-  setInterval(() => {
-    salesSwiper.slideNext();
-    ratingSwiper.slideNext();
-  }, 4000);
-</script>
 
 
 

@@ -33,9 +33,9 @@
 					  <li><a href="/admin/member">회원 관리</a></li>
 					  <li><a href="/admin/book">도서 관리</a></li>
 					  <li><a href="/admin/sales">판매 관리</a></li>
-					  <li><a href="/admin/point">포인트 관리</a></li>
+					  <li><a href="/admin/pointHistory">포인트 관리</a></li>
 					  <li><a href="/admin/review">리뷰 관리</a></li>
-					  <li><a href="/admin/receipt">영수증 관리</a></li>
+					  <li><a href="/admin/receiptList">영수증 관리</a></li>
 					
 					  <!-- ✅ 아코디언 메뉴 -->
 					  <li class="accordion">
@@ -43,7 +43,7 @@
 					      고객센터 관리 <span class="arrow">▾</span>
 					    </div>
 					    <ul class="submenu">
-					      <li><a href="/admin/notice">공지사항 관리</a></li>
+					      <li><a href="/admin/notice_list">공지사항 관리</a></li>
 					      <li><a href="/admin/inquiry">1:1 문의 관리</a></li>
 					    </ul>
 					  </li>
