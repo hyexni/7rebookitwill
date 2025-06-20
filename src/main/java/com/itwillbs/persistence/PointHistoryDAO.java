@@ -11,10 +11,10 @@ public interface PointHistoryDAO {
 	//-사용자 모드-//
 	
     // 특정 회원의 포인트 내역을 DB에서 가져오는 메서드
-    public List<PointVO> getPointHistory(int memberIdx) throws Exception;
+    public List<PointVO> getPointHistory(int member_idx) throws Exception;
 
     // 회원의 현재 총 포인트를 DB에서 가져오는 메서드 (추가)
-    public Integer getTotalPoints(int memberIdx) throws Exception;
+    public Integer getTotalPoints(int member_idx) throws Exception;
 
     // 포인트 내역을 DB에 삽입하는 메서드 (추가)
     public void insertPointHistory(PointVO pointVO) throws Exception;

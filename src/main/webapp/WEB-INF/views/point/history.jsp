@@ -148,6 +148,7 @@
         </div>
             
         <%-- 포인트 상세 내역 테이블 --%>
+    
         <h2 class="section-title">상세 변동 내역</h2>
         
         <c:choose>

@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<%@include file="../include/header.jsp" %> -
 <html>
 <head>
     <title>OCR 결과 보기</title>
@@ -26,6 +25,7 @@
     </style>
 </head>
 <body>
+${uploadResult}
     <div class="container">
         <h1>🧾 영수증 인식 결과</h1>
 
@@ -49,6 +49,18 @@
                 <c:choose>
                     <c:when test="${not empty uploadResult.ocr_date}">
                         <fmt:formatDate value="${uploadResult.ocr_date}" pattern="yyyy년 MM월 dd일 HH:mm:ss"/>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="text-muted">인식된 정보 없음</span>
+                    </c:otherwise>
+                </c:choose>
+            </p>
+            <p>
+                <strong>도서명:</strong>
+                <%-- [개선] ocr_store 값이 비어있지 않을 때만 표시 --%>
+                <c:choose>
+                    <c:when test="${not empty uploadResult.ocr_booktitle}">
+                        ${uploadResult.ocr_booktitle}
                     </c:when>
                     <c:otherwise>
                         <span class="text-muted">인식된 정보 없음</span>
@@ -86,7 +98,7 @@
                     <tbody>
                         <c:forEach var="item" items="${uploadResult.items}">
                             <tr>
-                                <td>${item.title}</td>
+                                <td>${item.bookTitle}</td>
                                 <td class="center">${item.quantity}</td>
                                 <td class="right">
                                     <fmt:formatNumber value="${item.price}" pattern="#,###"/> 원
@@ -107,6 +119,5 @@
         
         <a href="${pageContext.request.contextPath}/receipt/upload" class="btn-link">🔄 다시 업로드하기</a>
     </div>
- <%@include file="../include/footer.jsp" %>
 </body>
 </html>

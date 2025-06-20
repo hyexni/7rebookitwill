@@ -37,18 +37,20 @@ public class ReceiptController {
     public String receiptUploadPost(MultipartFile file, RedirectAttributes redirectAttributes, HttpSession session) {
         logger.info("POST - /receipt/upload - 파일명: {}", file.getOriginalFilename());
 
-        //Integer memberIdx = (Integer) session.getAttribute("member_idx");
-       // if (memberIdx == null) {
-       //     redirectAttributes.addFlashAttribute("message", "오류: 로그인이 필요합니다.");
-     //       return "redirect:/member/login";
-     //   } // [수정] if문을 닫는 괄호 '}'를 추가했습니다.
+        Integer memberIdx = (Integer) session.getAttribute("member_idx");
+        if (memberIdx == null) {
+            redirectAttributes.addFlashAttribute("message", "오류: 로그인이 필요합니다.");
+           return "redirect:/member/login";
+     } // [수정] if문을 닫는 괄호 '}'를 추가했습니다.
 
-       int memberIdx = 1; // 임시 회원 ID
+       //int memberIdx = 1; // 임시 회원 ID
 
         try {
             // ✅ 아래 메서드 이름을 인터페이스와 일치하도록 수정했습니다.
             // rService.processReceiptUpload(file, memberIdx) -> receiptService.processAndSaveReceipt(file, memberIdx)
             ReceiptVO resultVO = receiptService.processAndSaveReceipt(file, memberIdx);
+             
+            
             
             // 처리가 성공하면 결과 객체를 다음 페이지로 전달
             redirectAttributes.addFlashAttribute("uploadResult", resultVO);

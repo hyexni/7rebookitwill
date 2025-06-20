@@ -31,7 +31,7 @@ public class PointHistoryServiceImpl implements PointHistoryService {
     	System.out.println("1111111111111111111111111111111");
     	System.out.println(pointHistoryDAO.getPointHistory(memberIdx));
     	
-        return null;
+        return pointHistoryDAO.getPointHistory(memberIdx);
     }
 
     @Override
