@@ -31,17 +31,19 @@
 <!-- stats.jsp 본문 -->
 
 
-<div style="padding: 40px; background: #fff; width: 100%; max-width: 900px; margin: 0 auto;">
+<div style="padding: 40px; width: 100%; margin: 0 auto;">
 
-<script>
-  const stats = {
-    activeMembers: ${stats.activeMembers},
-    withdrawnMembers: ${stats.withdrawnMembers},
-    todayNewMembers: ${stats.todayNewMembers},
-    monthNewMembers: ${stats.monthNewMembers},
-    totalMembers: ${stats.totalMembers}
-  };
-</script>
+	<script>
+		  const stats = {
+		    activeMembers: ${stats.activeMembers},
+		    withdrawnMembers: ${stats.withdrawnMembers},
+		    todayNewMembers: ${stats.todayNewMembers},
+		    monthNewMembers: ${stats.monthNewMembers},
+		    totalMembers: ${stats.totalMembers}
+		  };
+	</script>
+
+</div>	
 
 
 <!-- ────────────────────────────────────── -->
@@ -152,11 +154,10 @@
             <h4>${status.index+1}위 - ${book.bookTitle}</h4>
             <p>📚 장르: ${book.categoryName}</p>
             <p>
-              ⭐
               <c:set var="rating" value="${book.avgRating}"/>
               <c:forEach var="i" begin="1" end="5">
                 <c:choose>
-                  <c:when test="${i <= rating}">★</c:when>
+                  <c:when test="${i <= rating}">⭐</c:when>
                   <c:otherwise>☆</c:otherwise>
                 </c:choose>
               </c:forEach>
@@ -180,7 +181,7 @@
     padding:15px;
     background:#fff;
     box-sizing:border-box;
-    width:100%;
+    width:200%;
     min-height:350px;
     display:flex;
     flex-direction:column;

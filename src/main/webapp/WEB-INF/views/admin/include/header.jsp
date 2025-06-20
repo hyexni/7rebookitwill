@@ -22,7 +22,6 @@
         <div class="search-close">
             <i class="fa fa-close" aria-hidden="true"></i>
         </div>
-        <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="search-content">
@@ -33,7 +32,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
     <!-- Search Wrapper Area End -->
     
@@ -50,7 +48,7 @@
         
         <div class = "intro-text">
         <h2>도서판매 전문점 <span>ReBook</span></h2>
-        <p>도서구매, 영수증적립시스템까지 모든 것을 한번에!</p>
+        <p>관리자 페이지</p>
     </div>
 
     <%-- 2. 오른쪽: 검색창과 버튼들 --%>

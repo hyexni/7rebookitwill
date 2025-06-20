@@ -8,7 +8,9 @@
         <div class="mobile-nav">
             <!-- Navbar Brand -->
             <div class="amado-navbar-brand">
-                <a href="index.html"><img src="${pageContext.request.contextPath }/resources/img/core-img/logo3.png" alt=""></a>
+                <a href="/admin/stats">
+                	<img src="${pageContext.request.contextPath }/resources/img/core-img/logo3.png" alt="">
+                </a>
             </div>
             <!-- Navbar Toggler -->
             <div class="amado-navbar-toggler">
@@ -24,7 +26,7 @@
             </div>
             <!-- Logo -->
             <div class="logo">
-                <a href="index.html"><img src="${pageContext.request.contextPath }/resources/img/core-img/logo3.png" alt=""></a>
+                <a href="${pageContext.request.contextPath }/admin/stats"><img src="${pageContext.request.contextPath }/resources/img/core-img/logo3.png" alt="관리자 홈 로고"></a>
             </div>
             <!-- Amado Nav -->
             <nav class="amado-nav">
@@ -44,7 +46,7 @@
 					    </div>
 					    <ul class="submenu">
 					      <li><a href="/admin/notice_list">공지사항 관리</a></li>
-					      <li><a href="/admin/inquiry">1:1 문의 관리</a></li>
+					      <li><a href="/admin/list">1:1 문의 관리</a></li>
 					    </ul>
 					  </li>
 				</ul>
