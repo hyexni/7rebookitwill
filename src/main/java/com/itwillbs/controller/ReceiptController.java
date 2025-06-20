@@ -5,7 +5,6 @@ import com.itwillbs.service.ReceiptService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest; // ✅ HttpServletRequest 임포트
 import javax.servlet.http.HttpSession;
 
-//http://localhost:8088/receipt/upload
+// http://localhost:8088/receipt/upload
 @Controller
 @RequestMapping("/receipt")
 public class ReceiptController {
@@ -27,8 +27,29 @@ public class ReceiptController {
 
     // GET 요청: 업로드 폼 페이지를 보여줌
     @GetMapping("/upload")
-    public String receiptUploadForm() {
+    public String receiptUploadForm(HttpSession session, RedirectAttributes redirectAttributes, HttpServletRequest request) { // ✅ HttpServletRequest 파라미터 추가
         logger.info("GET - /receipt/upload");
+
+        // 세션에서 회원 정보를 가져옴
+        Integer memberIdx = (Integer) session.getAttribute("member_idx");
+
+        // 만약 로그인되어 있지 않다면(memberIdx가 null이라면)
+        if (memberIdx == null) {
+            // 리다이렉트 시 메시지를 일회성으로 전달
+            redirectAttributes.addFlashAttribute("message", "로그인이 필요한 서비스입니다.");
+            
+            // ✅==== 기능 추가 시작 ====
+            // 사용자가 원래 요청했던 목적지 URL을 세션에 저장
+            String destination = request.getRequestURI();
+            session.setAttribute("redirectAfterLogin", destination);
+            logger.info("로그인 후 이동할 URL 저장: {}", destination);
+            // ✅==== 기능 추가 끝 ====
+
+            // 로그인 페이지로 이동시킴
+            return "redirect:/member/login";
+        }
+        
+        // 로그인 상태라면 정상적으로 업로드 페이지를 보여줌
         return "receipt/upload";
     }
 
@@ -40,17 +61,13 @@ public class ReceiptController {
         Integer memberIdx = (Integer) session.getAttribute("member_idx");
         if (memberIdx == null) {
             redirectAttributes.addFlashAttribute("message", "오류: 로그인이 필요합니다.");
-           return "redirect:/member/login";
-     } // [수정] if문을 닫는 괄호 '}'를 추가했습니다.
-
-       //int memberIdx = 1; // 임시 회원 ID
+            // POST 요청에서는 이전 목적지를 저장할 필요가 없으므로 바로 리다이렉트
+            return "redirect:/member/login";
+        }
 
         try {
-            // ✅ 아래 메서드 이름을 인터페이스와 일치하도록 수정했습니다.
-            // rService.processReceiptUpload(file, memberIdx) -> receiptService.processAndSaveReceipt(file, memberIdx)
+            // 영수증 처리 로직
             ReceiptVO resultVO = receiptService.processAndSaveReceipt(file, memberIdx);
-             
-            
             
             // 처리가 성공하면 결과 객체를 다음 페이지로 전달
             redirectAttributes.addFlashAttribute("uploadResult", resultVO);

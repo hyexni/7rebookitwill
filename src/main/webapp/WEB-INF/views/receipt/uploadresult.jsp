@@ -25,6 +25,7 @@
     </style>
 </head>
 <body>
+${uploadResult.ocr_amount}*0.05
 
     <div class="container">
         <h1>🧾 영수증 인식 결과</h1>

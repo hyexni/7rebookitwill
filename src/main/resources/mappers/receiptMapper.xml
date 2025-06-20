@@ -33,19 +33,6 @@
         WHERE originalfilename = #{filename}
     </select>
     
-    <insert id="addPointHistory" parameterType="map">
-    INSERT INTO point (
-        member_idx,
-        change_reason,
-        change_amount, 
-        point_status
-        ) VALUES (
-        #{member_idx},
-        '영수증 인증 적립', 
-        FLOOR(#{ocr_amount} * 0.05),  -- SQL에서 직접 5% 계산 (소수점 버림)
-        '적립'
-    )
-</insert>
     
     
     

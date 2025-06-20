@@ -17,24 +17,9 @@
         FROM point
         WHERE member_idx = #{memberIdx}
     </select>
-    
-    <insert id="insertPointHistory" parameterType="com.itwillbs.domain.PointVO">
-        INSERT INTO point (
-            member_idx, 
-            point_amount,
-            change_amount,
-            change_reason,
-            change_date,
-            point_status
-        ) VALUES (
-            #{member_idx},
-            #{point_amount},
-            #{change_amount},
-            #{change_reason},
-            #{change_date},
-            #{point_status}
-        )
-    </insert>
+     
+
+
     
 <!-- 사용자 모드 끝 -->
     
