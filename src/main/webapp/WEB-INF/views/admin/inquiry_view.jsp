@@ -6,10 +6,10 @@
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 
 <%-- 2. 상단 헤더를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/header.jsp" %>
+<%@ include file="include/header.jsp" %> 
 
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+<%@ include file="include/sidebar.jsp" %> 
 
 
 
@@ -76,6 +76,5 @@
 
 
 
-
 <%-- 4. 하단 푸터를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<%@ include file="include/footer.jsp" %> 
