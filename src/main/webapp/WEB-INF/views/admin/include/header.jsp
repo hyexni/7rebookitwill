@@ -25,7 +25,7 @@
     
     <%-- 1. 왼쪽: 로고와 소개 문구 --%>
     <div class="intro-img">
-        <a href="/">
+        <a href="/admin/stats">
             <img src="${pageContext.request.contextPath}/resources/img/core-img/logo2.png" alt="ReBook 로고">
         </a>
         
@@ -36,19 +36,17 @@
         <p>관리자 페이지</p>
     </div>
 
-    <%-- 2. 오른쪽: 검색창과 버튼들 --%>
-    <div class="search-auth-area">
-        <div class="search-container">
-            <input type="search" name="search" placeholder="도서, 저자, 출판사 검색">
-            <button type="submit" class="search-btn">
-                <i class="fa fa-search"></i>검색
-            </button>
-        </div>
-         </div>
-        <div class="auth-buttons">
-            <a href="#" class="btn-login">로그인</a>
-            <a href="#" class="btn-signup">회원가입</a>
-        </div>
+    <%-- 2. 오른쪽: 사용자 버튼들 --%>
+        <div class="user-dropdown">
+		  <button class="user-icon">
+		    <i class="fas fa-user-circle"></i>
+		  </button>
+		  <div class="dropdown-menu">
+		    <a href="/admin/stats">서비스 홈</a>
+		    <a href="/logout">로그아웃</a>
+		  </div>
+		</div>
+
    
 
 </section>

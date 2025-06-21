@@ -212,8 +212,3 @@
 <%-- 4. 하단 푸터를 불러옵니다. --%>
 <%@ include file="include/footer.jsp" %> 
 
-<!-- 관리자 통계용 -->
-<script src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
-
-	
-	

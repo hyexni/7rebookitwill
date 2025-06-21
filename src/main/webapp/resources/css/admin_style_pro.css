@@ -278,44 +278,45 @@ a {
 }
 
 /* 2. 로그인/회원가입 버튼 스타일 */
-.auth-buttons {
-    margin-left: 25px; 
-    display: flex;
-    align-items: center;
-}
+	.user-dropdown {
+	  position: relative;
+	  display: inline-block;
+	}
+	
+	.user-icon {
+	  background-color: transparent;
+	  border: none;
+	  font-size: 26px;
+	  color: white;
+	  cursor: pointer;
+	  padding: 6px;
+	}
+	
+	.dropdown-menu {
+	  display: none;
+	  position: absolute;
+	  right: 0;
+	  top: 120%;
+	  background-color: #fff;
+	  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+	  border-radius: 8px;
+	  overflow: hidden;
+	  z-index: 999;
+	  min-width: 130px;
+	}
+	
+	.dropdown-menu a {
+	  display: block;
+	  padding: 10px 16px;
+	  color: #333;
+	  text-decoration: none;
+	  font-size: 14px;
+	}
+	
+	.dropdown-menu a:hover {
+	  background-color: #f1f1f1;
+	}
 
-.auth-buttons a {
-    font-size: 15px;
-    font-weight: 500;
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 20px; 
-    transition: all 0.2s ease; 
-    margin-left: 8px;
-    border: 1px solid; /* 테두리 속성을 미리 지정 */
-}
-
-/* ★★★ 로그인 버튼 스타일 (회색 계열) ★★★ */
-.auth-buttons .btn-login {
-    background-color: #fff; /* 흰색 배경 */
-    border-color: #fbb710;     /* 회색 테두리 */
-    color: #555;             /* 어두운 회색 글자 */
-}
-.auth-buttons .btn-login:hover {
-    background-color: #f5f5f5;
-    border-color: #ccc;
-}
-
-/* ★★★ 회원가입 버튼 스타일 (노란색/주황색 계열) ★★★ */
-.auth-buttons .btn-signup {
-    background-color: #febb61; 
-    border-color: #fbb710;     /* 배경과 동일한 색 테두리 */
-    color: #fff;               /* 흰색 글자 */
-}
-.auth-buttons .btn-signup:hover {
-    background-color: #fca94a;
-    border-color: #fca94a;
-}
 
 
 /* 검색창과 사용자 메뉴 그룹은 기존 스타일을 대부분 유지합니다. */
