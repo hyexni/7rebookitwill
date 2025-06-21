@@ -1,18 +1,28 @@
 
 // 토글 메뉴
 
-function toggleSubMenu(el) {
-  const submenu = el.nextElementSibling;
-  const arrow = el.querySelector(".arrow");
+function toggleSubMenu(elem) {
+  const submenu = elem.nextElementSibling;
 
-  if (submenu && submenu.style.display === "block") {
-    submenu.style.display = "none";
-    if (arrow) arrow.textContent = "▾";
-  } else if (submenu) {
-    submenu.style.display = "block";
-    if (arrow) arrow.textContent = "▴";
+  document.querySelectorAll('.menu-title').forEach(title => {
+    if (title !== elem) {
+      title.classList.remove('open');
+      const sib = title.nextElementSibling;
+      if (sib && sib.classList.contains('submenu')) {
+        sib.style.display = 'none';
+      }
+    }
+  });
+
+  if (submenu.style.display === 'block') {
+    submenu.style.display = 'none';
+    elem.classList.remove('open');
+  } else {
+    submenu.style.display = 'block';
+    elem.classList.add('open');
   }
 }
+
 
 
 //도넛 차트

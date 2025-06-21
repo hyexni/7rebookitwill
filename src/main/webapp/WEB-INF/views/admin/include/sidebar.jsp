@@ -40,15 +40,17 @@
 					  <li><a href="/admin/receiptList">영수증 관리</a></li>
 					
 					  <!-- ✅ 아코디언 메뉴 -->
-					  <li class="accordion">
-					    <div class="menu-title" onclick="toggleSubMenu(this)">
+					  <!-- ✅ 더 안전한 구조 -->
+					  <li>
+					    <a class="menu-title" onclick="toggleSubMenu(this)">
 					      고객센터 관리 <span class="arrow">▾</span>
-					    </div>
+					    </a>
 					    <ul class="submenu">
 					      <li><a href="/admin/notice_list">공지사항 관리</a></li>
-					      <li><a href="/admin/list">1:1 문의 관리</a></li>
+			 	  	      <li><a href="/admin/list">1:1 문의 관리</a></li>
 					    </ul>
-					  </li>
+					  </li> 
+
 				</ul>
              </nav>
             
