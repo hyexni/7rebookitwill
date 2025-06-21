@@ -14,11 +14,11 @@
 	
 	
 	<!-- 관리자 공지사항 목록 조회 -->
-	<select id="getNoticeList" resultType="com.itwillbs.domain.NoticeVO">
+	<!-- <select id="getNoticeList" resultType="com.itwillbs.domain.NoticeVO">
 		  SELECT notice_id, notice_title, notice_date
 		  FROM notice
 		  ORDER BY notice_date DESC
-	</select>
+	</select> -->
 	
 	
 	<!-- 공지사항 상세/수정/삭제 -->
@@ -36,6 +36,26 @@
 	<delete id="deleteNotice">
 	  DELETE FROM notice WHERE notice_id = #{notice_id}
 	</delete>
+	
+	<!-- 페이징된 공지사항 목록 조회 -->
+	<select id="getNoticeListPage" resultType="com.itwillbs.domain.NoticeVO">
+	  SELECT notice_id, notice_title, notice_date, fixed
+      FROM notice
+      ORDER BY fixed DESC, notice_id DESC
+      LIMIT #{startRow}, #{pageSize}
+	</select>
+	
+	<!-- 전체 글 개수 조회 -->
+	<select id="getNoticeCount" resultType="int">
+	  SELECT COUNT(*) FROM notice
+	</select>
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

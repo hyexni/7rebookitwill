@@ -124,14 +124,16 @@ th.desc a::after {
 /* Pagination */
 .pagination {
     margin-top: 30px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
 }
 .pagination a {
     display: inline-block;
     width: 36px;
     height: 36px;
     line-height: 36px;
-    margin: 0 4px;
+    margin: 0;
     text-align: center;
     text-decoration: none;
     color: #495057;
@@ -152,6 +154,12 @@ th.desc a::after {
     font-weight: 500;
     cursor: default;
 }
+.pagination a.disabled {
+    pointer-events: none;
+    color: #ccc;
+    border-color: #eee;
+}
+
 
 
 /* 전체 페이지에 적용될 기본 스타일 */
@@ -741,3 +749,160 @@ a {
 .submenu .menu-icon {
   display: none;
 }
+
+
+
+/* 공지사항 관리 */
+
+  .btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 2px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-decoration: none;
+    color: white;
+    background-color: #007bff;
+    font-size: 14px;
+  }
+
+  .btn-outline-primary {
+    color: #007bff;
+    background-color: white;
+    border: 1px solid #007bff;
+  }
+
+  .btn-outline-danger {
+    color: #dc3545;
+    background-color: white;
+    border: 1px solid #dc3545;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+  }
+
+
+/* 공지사항 수정 폼 스타일 */
+.notice-form-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 40px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.notice-form-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: #212529;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #495057;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 150px;
+}
+
+.btn-wrapper {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.btn-primary {
+  background-color: #4c6ef5;
+  color: #fff;
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+  background-color: #364fc7;
+}
+
+/* 공지사항 상세 보기 */
+
+.notice-detail {
+  font-size: 16px;
+  color: #333;
+  margin-top: 20px;
+  line-height: 1.8;
+}
+
+.notice-detail p {
+  margin-bottom: 12px;
+}
+
+.btn-wrapper {
+  margin-top: 30px;
+  text-align: center;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-outline-primary,
+.btn-outline-danger {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  text-decoration: none;
+}
+
+.btn-outline-primary {
+  color: #4c6ef5;
+  border-color: #4c6ef5;
+  background-color: white;
+}
+
+.btn-outline-primary:hover {
+  background-color: #4c6ef5;
+  color: white;
+}
+
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+  background-color: white;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+

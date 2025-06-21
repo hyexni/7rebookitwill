@@ -18,12 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.itwillbs.domain.NoticeVO;
 import com.itwillbs.service.AdminNoticeService;
 
-//@RequestMapping(value = "/admin/*")
-//=> 실행하는 주소가 /admin/~ 시작하는 모든 주소를
-// 해당컨트롤러가 처리하겠다 
 
 @Controller
-@RequestMapping(value = "/admin/*")
+@RequestMapping(value = "/admin/")
 public class AdminNoticeController {
 	
 		//mylog
@@ -53,7 +50,7 @@ public class AdminNoticeController {
 	 * "redirect:/admin/notice_list"; }
 	 */
 		
-		@PostMapping("/admin/notice_write")
+		@PostMapping("/notice_write")
 		public String adminNoticeWritePOST(HttpSession session, NoticeVO vo) throws Exception {
 		    String ad_id = (String) session.getAttribute("ad_id");
 		    if (ad_id == null) {
@@ -71,12 +68,12 @@ public class AdminNoticeController {
 		
 		// http://localhost:8088/admin/notice_list
 		// 관리자 공지사항 목록 조회
-		@RequestMapping(value = "/notice_list", method = RequestMethod.GET)
-		public String noticeList(Model model) throws Exception {
-		    List<NoticeVO> noticeList = anService.getNoticeList();
-		    model.addAttribute("noticeList", noticeList);
-		    return "admin/notice_list";
-		}
+	/*
+	 * @RequestMapping(value = "/notice_list", method = RequestMethod.GET) public
+	 * String noticeList(Model model) throws Exception { List<NoticeVO> noticeList =
+	 * anService.getNoticeList(); model.addAttribute("noticeList", noticeList);
+	 * return "admin/notice_list"; }
+	 */
 		
 		// http://localhost:8088/admin/notice_read
 		// 공지사항 상세/수정/삭제
@@ -95,19 +92,41 @@ public class AdminNoticeController {
 		    return "admin/notice_edit";
 		}
 
+		
 		// 수정 처리
 		@PostMapping("edit")
 		public String editPost(NoticeVO vo) throws Exception {
 		    anService.updateNotice(vo);
-		    return "redirect:/admin/notice/read?notice_id=" + vo.getNotice_id();
+		    return "redirect:/admin/read?notice_id=" + vo.getNotice_id();
 		}
 
 		// 삭제 처리
 		@PostMapping("delete")
 		public String delete(@RequestParam("notice_id") int notice_id) throws Exception {
 		    anService.deleteNotice(notice_id);
-		    return "redirect:/admin/notice/list";
+		    return "redirect:/admin/notice_list";
 		}
+		
+		
+		// 페이징 처리
+		@RequestMapping(value = "/notice_list", method = RequestMethod.GET)
+		public String noticeListPage(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+
+		    int pageSize = 10;
+		    int totalCount = anService.getNoticeCount();
+		    int startRow = (page - 1) * pageSize;
+
+		    List<NoticeVO> noticeList = anService.getNoticeListPage(startRow, pageSize);
+		    int totalPages = (int)Math.ceil((double)totalCount / pageSize);
+
+		    model.addAttribute("noticeList", noticeList);
+		    model.addAttribute("currentPage", page);
+		    model.addAttribute("totalPages", totalPages);
+
+		    return "admin/notice_list";
+		}
+
+		
 
 
 		

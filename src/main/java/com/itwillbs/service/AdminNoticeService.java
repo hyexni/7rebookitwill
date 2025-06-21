@@ -11,7 +11,7 @@ public interface AdminNoticeService {
 
 		
 		// 관리자 공지사항 목록 조회
-		List<NoticeVO> getNoticeList() throws Exception;
+	/* List<NoticeVO> getNoticeList() throws Exception; */
 		
 		
 		// 공지사항 상세/수정/삭제
@@ -19,5 +19,8 @@ public interface AdminNoticeService {
 		void updateNotice(NoticeVO vo) throws Exception;
 		void deleteNotice(int notice_id) throws Exception;
 
+		// 페이징 처리
+		List<NoticeVO> getNoticeListPage(int startRow, int pageSize);
+		int getNoticeCount();
 		
 }

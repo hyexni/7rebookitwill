@@ -11,16 +11,33 @@
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="include/sidebar.jsp" %> 
 
-
-
-	<h2>공지사항 수정</h2>
+	<div class="notice-form-container">
+	  <div class="notice-meta">
+	   공지사항 번호: ${notice.notice_id}
+	  </div>
 	
-	<form action="${pageContext.request.contextPath}/admin/edit" method="post">
-	  <input type="hidden" name="notice_id" value="${notice.notice_id}" />
-	  <p>제목: <input type="text" name="notice_title" value="${notice.notice_title}" /></p>
-	  <p>내용: <textarea name="notice_content" rows="5" cols="60">${notice.notice_content}</textarea></p>
-	  <button type="submit">수정 완료</button>
-	</form>
+	  <h1>공지사항 수정</h1>
+	
+	  <form action="${pageContext.request.contextPath}/admin/edit" method="post">
+	    <input type="hidden" name="notice_id" value="${notice.notice_id}" />
+	
+	    <div class="form-group">
+	      <label for="title">제목</label>
+	      <input type="text" id="title" name="notice_title" value="${notice.notice_title}" placeholder="제목을 입력하세요" required />
+	    </div>
+	
+	    <div class="form-group">
+	      <label for="content">내용</label>
+	      <textarea id="content" name="notice_content" rows="8" placeholder="내용을 입력하세요" required>${notice.notice_content}</textarea>
+	    </div>
+	
+	    <div class="form-group btn-wrapper">
+	      <button type="submit" class="btn-primary">수정 완료</button>
+	    </div>
+	  </form>
+	</div>
+
+
 
 
 <%-- 4. 하단 푸터를 불러옵니다. --%>

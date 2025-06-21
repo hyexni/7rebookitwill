@@ -1,7 +1,9 @@
 package com.itwillbs.persistence;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -37,10 +39,10 @@ public class AdminNoticeDAOImpl implements AdminNoticeDAO{
 
 
 	// 공지사항 목록 조회
-	@Override
-	public List<NoticeVO> getNoticeList() throws Exception {
-	    return sqlSession.selectList(NAMESPACE + "getNoticeList");
-	}
+	/*
+	 * @Override public List<NoticeVO> getNoticeList() throws Exception { return
+	 * sqlSession.selectList(NAMESPACE + "getNoticeList"); }
+	 */
 	
 	
 	// 공지사항 상세/수정/삭제 메서드
@@ -57,6 +59,22 @@ public class AdminNoticeDAOImpl implements AdminNoticeDAO{
 	@Override
 	public void deleteNotice(int notice_id) throws Exception {
 	    sqlSession.delete(NAMESPACE + "deleteNotice", notice_id);
+	}
+
+	
+	// 페이징된 목록 가져오기
+	@Override
+	public List<NoticeVO> getNoticeListPage(int startRow, int pageSize) {
+	    Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("startRow", startRow);
+	    paramMap.put("pageSize", pageSize);
+	    return sqlSession.selectList(NAMESPACE + "getNoticeListPage", paramMap);
+	}
+
+	// 전체 개수
+	@Override
+	public int getNoticeCount() {
+	    return sqlSession.selectOne(NAMESPACE + "getNoticeCount");
 	}
 
 	
