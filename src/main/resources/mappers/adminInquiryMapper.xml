@@ -95,7 +95,7 @@
    		 WHEN '답변완료' THEN 2 
    		 ELSE 3
   	   END,
-  	   i.created_at DESC
+ 	   i.inquiry_id DESC
 	   LIMIT #{startRow}, #{pageSize}
 	 </select>
 
