@@ -28,7 +28,6 @@ public class PointHistoryServiceImpl implements PointHistoryService {
     @Override
     public List<PointVO> getPointHistory(int memberIdx) throws Exception {
     	
-    	System.out.println("1111111111111111111111111111111");
     	System.out.println(pointHistoryDAO.getPointHistory(memberIdx));
     	
         return pointHistoryDAO.getPointHistory(memberIdx);
@@ -85,17 +84,17 @@ public class PointHistoryServiceImpl implements PointHistoryService {
         // 4. 포인트 내역 DB에 삽입
         pointHistoryDAO.insertPointHistory(pointVO);
 
-        // 5. (선택) 회원 테이블의 총 포인트 필드 업데이트 (만약 회원 테이블에 총 포인트 필드가 있다면)
-        // pointHistoryDAO.updateMemberTotalPoints(pointVO.getMember_idx(), newTotal);
+        // 5. 회원 테이블의 총 포인트 필드 업데이트 (만약 회원 테이블에 총 포인트 필드가 있다면)
+        //pointHistoryDAO.updateMemberTotalPoints(pointVO.getMember_idx(), newTotal);
     }
     
- // [수정] 수정된 DAO 메서드를 호출하도록 변경
+ // 수정된 DAO 메서드를 호출하도록 변경
     @Override
     public List<PointHistoryDTO> getPointHistoryList(SearchCriteria cri) {
         return pointHistoryDAO.getPointHistoryAdmin(cri);
     }
 
-    // [수정] 수정된 DAO 메서드를 호출하도록 변경
+    //수정된 DAO 메서드를 호출하도록 변경
     @Override
     public int getPointHistoryCount(SearchCriteria cri) {
         return pointHistoryDAO.getPointHistoryCount(cri);

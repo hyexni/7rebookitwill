@@ -22,10 +22,13 @@
         .btn-link { text-decoration: none; background-color: #007bff; color: white; padding: 10px 15px; border-radius: 5px; display: inline-block; margin-top: 2em; }
         /* [개선] 정보가 없을 때 표시할 텍스트 스타일 추가 */
         .text-muted { color: #6c757d; font-style: italic; }
+        .highlight { background-color: #e8f6ff; padding: 15px; border-radius: 5px; margin-top: 20px; }
+        .highlight strong { font-size: 20px; color: #007bff; }
+        
     </style>
 </head>
 <body>
-${uploadResult.ocr_amount}*0.05
+${uploadResult.ocr_amount*0.05}
 
     <div class="container">
         <h1>🧾 영수증 인식 결과</h1>
@@ -83,6 +86,14 @@ ${uploadResult.ocr_amount}*0.05
                 </c:choose>
             </p>
         </div>
+        
+        <%-- ========================================================== --%>
+        <%-- ★★★★★ uploadResult 객체에 추가한 earnedPoints를 출력합니다. ★★★★★ --%>
+        <%-- ========================================================== --%>
+        <div class="highlight">
+            <p>적립된 포인트: <strong><fmt:formatNumber value="${uploadResult.earnedPoints}" pattern="#,##0" /> 점</strong></p>
+        </div>
+        
 
         <h2>구매 품목 목록</h2>
         <%-- [개선] items 리스트가 비어있지 않을 때만 테이블을 표시 --%>

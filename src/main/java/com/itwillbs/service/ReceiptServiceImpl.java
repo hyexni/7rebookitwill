@@ -79,8 +79,37 @@ public class ReceiptServiceImpl implements ReceiptService {
         // 4. 최종 VO 객체 생성 및 모든 정보 설정
         ReceiptVO finalVO = createReceiptVO(file, ocrDto, member_idx, savedFilename, fileHash);
 
+                
         // 5. DB에 영수증 정보 저장
         receiptDAO.insertReceipt(finalVO);
+        
+     // ==========================================================
+        // [수정] 포인트 적립 로직 추가
+        // ==========================================================
+        // 6. 저장된 영수증 금액을 기준으로 포인트 계산 및 적립
+        int ocrAmount = finalVO.getOcr_amount();
+        if (ocrAmount > 0) {
+            // 5% 포인트 계산 (소수점 버림)
+            int pointsToCredit = (int) (ocrAmount * 0.05);
+
+            if (pointsToCredit > 0) {
+                // PointVO 객체 생성
+                PointVO pointVO = new PointVO();
+                pointVO.setMember_idx(member_idx);
+                pointVO.setChange_amount(pointsToCredit);
+                pointVO.setPoint_amount(pointsToCredit); // 예시: 변동량과 동일하게 설정
+                pointVO.setChange_reason("영수증 인증 적립");
+
+                // 포인트 내역(history) DB에 저장
+                PointHistoryDAO.insertReceiptPoint(pointVO);
+                
+             // [추가] 컨트롤러로 반환할 finalVO 객체에 적립된 포인트 값을 설정
+                finalVO.setEarnedPoints(pointsToCredit); 
+                
+                // ✅ 중요: 실제 회원 테이블의 총 포인트도 업데이트해야 합니다.
+                // memberDAO.updateMemberTotalPoints(member_idx, pointsToCredit);
+            }
+        }
         
        return finalVO;
     }

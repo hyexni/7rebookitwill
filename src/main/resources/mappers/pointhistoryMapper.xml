@@ -18,7 +18,10 @@
         WHERE member_idx = #{memberIdx}
     </select>
      
-
+<!-- <insert id="insertPointHistory" parameterType="com.itwillbs.domain.PointVO"> -->
+<!--         INSERT INTO point (member_idx, point_amount,change_amount, change_reason, change_date) -->
+<!--         VALUES (#{member_idx}, #{change_amount},  #{change_amount}, #{change_reason}, NOW()) -->
+<!--     </insert> -->
 
     
 <!-- 사용자 모드 끝 -->
