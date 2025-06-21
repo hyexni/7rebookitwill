@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.persistence.MemberCategoryDAO">
+
+ 	  <!-- 1. 관심 카테고리 저장 -->
+  <insert id="insertMemberCategory" parameterType="com.itwillbs.domain.MemberCategoryVO">
+    INSERT INTO member_category (member_idx, category_id)
+    VALUES (#{member_idx}, #{category_id})
+  </insert>
+
+  <!-- 2. 회원별 관심 카테고리 목록 조회 (VO 목록 반환) -->
+  <select id="getCategoryListByMember" parameterType="int" resultType="com.itwillbs.domain.MemberCategoryVO">
+    SELECT * FROM member_category
+    WHERE member_idx = #{member_idx}
+  </select>
+
+  <!-- 3. 회원 관심 카테고리 전체 삭제 (수정 전에 비우기용) -->
+  <delete id="deleteMemberCategoryByMemberId" parameterType="int">
+    DELETE FROM member_category
+    WHERE member_idx = #{member_idx}
+  </delete>
+
+  <!-- 4. 추천용: 회원 관심 카테고리 ID 목록만 가져오기 -->
+  <select id="getCategoryIdsByMemberId" parameterType="int" resultType="int">
+    SELECT category_id FROM member_category
+    WHERE member_idx = #{member_idx}
+  </select>
+
+</mapper>

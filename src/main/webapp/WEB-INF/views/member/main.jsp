@@ -2,46 +2,43 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%-- 1. 페이지 기본 골격과 CSS/폰트 링크를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+<%-- 1. 공통 레이아웃 구성 요소 불러오기 --%>
+<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>  <%-- CSS/폰트 등 --%>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>       <%-- 상단 헤더 --%>
+<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>      <%-- 왼쪽 사이드 메뉴 --%>
 
-<%-- 2. 상단 헤더를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/header.jsp" %> 
-
-<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
-
-<%-- 4. 여기서부터 '로그인 메인' 페이지만의 고유한 컨텐츠가 시작됩니다. --%>
+	<%-- 2. 메인 페이지 컨텐츠 시작 --%>
 	<h1>/member/main.jsp</h1>
-
-	<!-- 사용자가 로그인 정보없이 메인페이지 호출시
-	     로그인페이지로 이동후 처리 
-	 -->
-	 
-	 <c:if test="${ empty sessionScope.id }">
-	 	 <c:redirect url="/member/login"/>
-	 </c:if>
-	 
-		
-	<!-- 로그인한 사용자의 아이디 정보를 출력 -->
-	<h2>${sessionScope.id }님 환영합니다</h2>
 	
-	<input type="button" value="로그아웃" 
-	 	onclick=" location.href='/member/logout'; " >
-	 	
+	<%-- 로그인 안 한 사용자는 로그인 페이지로 리다이렉트 시킴 --%>
+	<c:if test="${empty sessionScope.id}">
+	  <c:redirect url="/member/login" />
+	</c:if>
+	
+	<%--  로그인 성공 메시지 출력 (FlashAttribute) --%>
+	<c:if test="${not empty message}">
+	  <div style="padding: 10px; background-color: #e0ffe0; border: 1px solid #00c853; color: #2e7d32; font-weight: bold; margin-bottom: 15px;">
+	    ✅ ${message}
+	  </div>
+	</c:if>
+	
+	<%--  로그인한 사용자 정보 출력 --%>
+	<h2>${sessionScope.id}님, 환영합니다!</h2>
+	
+	<%--  로그아웃 버튼 --%>
+	<input type="button" value="로그아웃"
+	       onclick="location.href='/member/logout';"
+	       style="margin: 10px 0;" />
 	
 	<hr>
-	<a href="/member/info"> 회원정보 조회(마이페이지) </a>
+	
+	<%-- 회원정보 조회 페이지 이동 --%>
+	<a href="/member/info">🔎 회원정보 조회 (마이페이지)</a>
 	
 	<hr>
-	<a href="/member/update"> 회원정보 수정 </a>
 	
-	 	
+	<%-- 회원정보 수정 페이지 이동 --%>
+	<a href="/member/update">✏️ 회원정보 수정</a>
 	
-	
-	
-	
-<%-- '로그인 메인' 페이지 컨텐츠 끝 --%>
-
-<%-- 5. 페이지의 끝을 마무리하는 footer 파일을 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+	<%-- 3. 공통 푸터 불러오기 --%>
+	<%@ include file="/WEB-INF/views/include/footer.jsp" %>

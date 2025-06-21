@@ -1,0 +1,117 @@
+/* ✅ 기본 설정 */
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #f8f8f8;
+  margin: 0;
+  padding: 0;
+}
+
+/* ✅ 회원가입 전체 컨테이너 */
+.join-container {
+  max-width: 600px;
+  margin: 50px auto;
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ✅ 제목 */
+.join-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #333;
+}
+
+/* ✅ 라벨 및 입력 요소 */
+.join-container label {
+  display: block;
+  margin-top: 18px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #222;
+}
+
+.join-container input[type="text"],
+.join-container input[type="password"],
+.join-container select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+/* ✅ 직접입력 이메일 */
+#email_direct {
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* ✅ 실시간 결과 메시지 */
+span#idResult,
+span#pwFormatResult,
+span#pwMatchResult,
+span#nickResult,
+span#phoneResult,
+span#emailResult {
+  font-size: 13px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* ✅ 성별/내외국인 선택 */
+.join-container input[type="radio"] {
+  margin-right: 5px;
+}
+
+/* ✅ 에러 메시지 (성별, 내외국인 선택 안 했을 경우) */
+.error {
+  font-size: 13px;
+  color: red;
+  margin-left: 10px;
+}
+
+/* ✅ 주소 검색 버튼 */
+.join-container button[type="button"] {
+  margin-top: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #555;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.join-container button[type="button"]:hover {
+  background-color: #333;
+}
+
+/* ✅ 가입 버튼 */
+.join-container button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 30px;
+  font-size: 16px;
+  background-color: #ffcc00;
+  color: #222;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.join-container button[type="submit"]:hover {
+  background-color: #e6b800;
+}
+
+/* ✅ 체크박스 라벨 */
+.checkbox-inline {
+  display: block;
+  margin: 5px 0;
+}
