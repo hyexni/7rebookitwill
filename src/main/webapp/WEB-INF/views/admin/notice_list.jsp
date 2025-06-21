@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%-- 1. 페이지 기본 골격과 공통 CSS/폰트 링크를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+<%@ include file="include/layout_head.jsp" %>
 
 <%-- 2. 상단 헤더를 불러옵니다. --%>
 <%@ include file="include/header.jsp" %> 
