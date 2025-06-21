@@ -83,15 +83,16 @@ public class AdminInquiryDAOImpl implements AdminInquiryDAO {
     
     // 페이징 처리
     @Override
-    public List<InquiryVO> getInquiryList(int startRow, int pageSize) {
-        Map<String, Integer> params = new HashMap<>();
+    public List<InquiryVO> getInquiryList(int startRow, int pageSize, String keyword) {
+        Map<String, Object> params = new HashMap<>();
         params.put("startRow", startRow);
         params.put("pageSize", pageSize);
+        params.put("keyword", keyword);
         return sqlSession.selectList(NAMESPACE + "getInquiryList", params);
     }
 
     @Override
-    public int getInquiryCount() {
-        return sqlSession.selectOne(NAMESPACE + "getInquiryCount");
+    public int getInquiryCount(String keyword) {
+        return sqlSession.selectOne(NAMESPACE + "getInquiryCount", keyword);
     }
 }

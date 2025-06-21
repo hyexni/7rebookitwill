@@ -83,12 +83,31 @@
 	   FROM inquiry i
 	   JOIN member m ON i.member_idx = m.member_idx
 	   LEFT JOIN response r ON i.inquiry_id = r.inquiry_id
-	   ORDER BY i.created_at DESC
+	   <where>
+	    <if test="keyword != null and keyword != ''">
+	      (i.title LIKE CONCAT('%', #{keyword}, '%') OR m.member_id LIKE CONCAT('%', #{keyword}, '%'))
+	    </if>
+ 	   </where>
+	   ORDER BY 
+  	  	 CASE i.status 
+   		 WHEN '접수' THEN 0 
+   		 WHEN '보류' THEN 1 
+   		 WHEN '답변완료' THEN 2 
+   		 ELSE 3
+  	   END,
+  	   i.created_at DESC
 	   LIMIT #{startRow}, #{pageSize}
 	 </select>
 
 	  <select id="getInquiryCount" resultType="int">
-	    SELECT COUNT(*) FROM inquiry
+	  	 SELECT COUNT(*)
+	 	 FROM inquiry i
+	 	 JOIN member m ON i.member_idx = m.member_idx
+	 	 <where>
+	 	   <if test="keyword != null and keyword != ''">
+	  	    (i.title LIKE CONCAT('%', #{keyword}, '%') OR m.member_id LIKE CONCAT('%', #{keyword}, '%'))
+	 	   </if>
+		 </where>
 	  </select>
 
 </mapper>

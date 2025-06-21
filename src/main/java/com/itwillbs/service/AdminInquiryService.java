@@ -21,6 +21,6 @@ public interface AdminInquiryService {
     void deleteResponse(int response_id, int inquiry_id);
     
     // 페이징 처리
-    List<InquiryVO> getInquiryList(int startRow, int pageSize);
-    int getInquiryCount();
+    List<InquiryVO> getInquiryList(int startRow, int pageSize, String keyword);
+    int getInquiryCount(String keyword);
 }

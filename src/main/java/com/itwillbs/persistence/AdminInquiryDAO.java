@@ -35,7 +35,9 @@ public interface AdminInquiryDAO {
 
     
     // 페이징 처리
-    List<InquiryVO> getInquiryList(@Param("startRow") int startRow, @Param("pageSize") int pageSize);
-    public int getInquiryCount();
+    List<InquiryVO> getInquiryList(@Param("startRow") int startRow, 
+    							   @Param("pageSize") int pageSize,
+    							   @Param("keyword") String keyword);
+    public int getInquiryCount(@Param("keyword") String keyword);
 
 }

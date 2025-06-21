@@ -61,13 +61,13 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
     
     // 페이징 처리
     @Override
-    public List<InquiryVO> getInquiryList(int startRow, int pageSize) {
-        return aiDao.getInquiryList(startRow, pageSize);
+    public List<InquiryVO> getInquiryList(int startRow, int pageSize, String keyword) {
+        return aiDao.getInquiryList(startRow, pageSize, keyword);
     }
 
     @Override
-    public int getInquiryCount() {
-        return aiDao.getInquiryCount();
+    public int getInquiryCount(String keyword) {
+        return aiDao.getInquiryCount(keyword);
     }
 }
 

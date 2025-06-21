@@ -52,19 +52,22 @@ public class AdminInquiryController {
     
     // 페이징 처리
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String inquiryList(Model model,
-                              @RequestParam(defaultValue = "1") int page) throws Exception {
+    public String inquiryList(@RequestParam(defaultValue = "1") int page,
+                              @RequestParam(value = "keyword", required = false) String keyword,
+                              Model model) throws Exception {
     	int pageSize = 10;
-        int totalCount = adminInquiryService.getInquiryCount();
         int startRow = (page - 1) * pageSize;
 
-        List<InquiryVO> inquiryList = adminInquiryService.getInquiryList(startRow, pageSize);
+        List<InquiryVO> inquiryList = adminInquiryService.getInquiryList(startRow, pageSize, keyword);
+        int totalCount = adminInquiryService.getInquiryCount(keyword);
         int totalPages = (int)Math.ceil((double)totalCount / pageSize);
         
         model.addAttribute("inquiryList", inquiryList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("keyword", keyword); // ✅ 검색어 유지용
+        
         return "admin/inquiry_list";
     }
 

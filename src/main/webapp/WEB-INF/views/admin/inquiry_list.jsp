@@ -21,7 +21,7 @@
 
     <!-- 🔍 검색 영역 -->
     <form class="search-form" method="get" action="list">
-        <input type="text" name="keyword" placeholder="제목/작성자 검색" value="${param.keyword}">
+        <input type="text" name="keyword" placeholder="제목/작성자 검색" value="${keyword}">
         <input type="submit" value="검색">
     </form>
 
