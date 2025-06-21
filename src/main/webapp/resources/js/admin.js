@@ -23,6 +23,16 @@ function toggleSubMenu(elem) {
   }
 }
 
+//하위 메뉴 hover 시 상위 메뉴 강조 제거 방지
+document.querySelectorAll('.submenu li a').forEach(item => {
+  item.addEventListener('mouseenter', () => {
+    document.querySelectorAll('.menu-title').forEach(title => {
+      title.classList.remove('hovered');
+    });
+  });
+});
+
+
 
 
 //도넛 차트
