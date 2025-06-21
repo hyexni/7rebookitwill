@@ -72,6 +72,7 @@ public class ReceiptController {
             // 처리가 성공하면 결과 객체를 다음 페이지로 전달
             redirectAttributes.addFlashAttribute("uploadResult", resultVO);
             return "redirect:/receipt/upload-result";
+          
 
         } catch (Exception e) {
             // 서비스 처리 중 예외 발생 시, 에러 메시지를 업로드 페이지로 전달

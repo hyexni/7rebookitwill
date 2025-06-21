@@ -24,7 +24,7 @@ public class PointHistoryDAOImpl implements PointHistoryDAO {
 
     @Override
     public List<PointVO> getPointHistory(int member_idx) throws Exception {
-    	System.out.println("2222222222222222222222222");
+    	
         return sqlSession.selectList(NAMESPACE + ".getPointHistory", member_idx);
 //        return null;
     }
@@ -42,8 +42,9 @@ public class PointHistoryDAOImpl implements PointHistoryDAO {
         sqlSession.insert(NAMESPACE + ".insertPointHistory", pointVO);
     }
     
-    
- //관리자모드
+
+
+	//관리자모드
     /**
      * 포인트 내역 목록을 조회합니다.
      */

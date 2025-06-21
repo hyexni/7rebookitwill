@@ -22,6 +22,12 @@ public interface PointHistoryDAO {
     // (선택 사항) 회원 테이블의 총 포인트를 업데이트하는 메서드 (필요시 추가)
     // public void updateMemberTotalPoints(@Param("memberIdx") int memberIdx, @Param("totalPoints") int totalPoints) throws Exception;
 
+    //영수증에서 적립된 포인트를 포인트로 전환
+   	public static void insertReceiptPoint(PointVO pointVO) {
+   		// TODO Auto-generated method stub
+   		
+   	}
+    
     //-관리자 모드-//
     
     // 파라미터를 SearchCriteria 객체로 변경
@@ -30,7 +36,11 @@ public interface PointHistoryDAO {
     // 파라미터를 SearchCriteria 객체로 변경
     public int getPointHistoryCount(SearchCriteria cri);
 
-	
+   
+
+    //회원 테이블의 총 포인트 필드 업데이트
+	//public void updateMemberTotalPoints(int member_idx, int newTotal);
+
     
     
     

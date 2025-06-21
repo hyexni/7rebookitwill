@@ -27,6 +27,7 @@ public class ReceiptVO {
     private String ocr_store;
     private String approvalnumber;
     private String verification_status;
+    private int earnedPoints; 
 
     // 여러 개의 구매 품목 정보를 담는 리스트
     private List<ReceiptItemDTO> items;
