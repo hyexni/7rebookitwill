@@ -66,7 +66,7 @@ Copyright ©<script>document.write(new Date().getFullYear());</script>2025 All r
     <!-- ##### Footer Area End ##### -->
 
     <!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
-    <script src="${pageContext.request.contextPath }/resources/js/jquery/jquery-2.2.4.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/jquery/jquery-2.2.4.min.js"></script>
     <!-- Popper js -->
     <script src="${pageContext.request.contextPath }/resources/js/popper.min.js"></script>
     <!-- Bootstrap js -->
