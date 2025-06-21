@@ -286,7 +286,7 @@ a {
 	.user-icon {
 	  background-color: transparent;
 	  border: none;
-	  font-size: 26px;
+	  font-size: 32px;
 	  color: white;
 	  cursor: pointer;
 	  padding: 6px;
@@ -341,14 +341,12 @@ a {
 /* 전체 영역 스타일 */
 .main-visual-area {
     display: flex;                  /* 1. Flexbox 레이아웃 적용 */
-    justify-content: center;        /* 2. 자식 요소들을 가로축 중앙에 배치 */
+    justify-content: space-between; /* 2. 좌우정렬 */
     align-items: center;            /* 3. 자식 요소들을 세로축 중앙에 배치 */
-    
-    padding: 40px 40px;             /* 상하, 좌우 여백 */
+    padding: 40px 80px;             /* 상하, 좌우 여백 */
     background-color: #404040;      /* 어두운 배경색 */
     color: #fff;                    /* 기본 글자색 흰색 */
-    
-    }
+}
     
     /* 메인 헤더와 컨텐츠 영역 사이의 공간 추가 */
 .main-visual-area {
@@ -419,6 +417,19 @@ a {
     font-size: 20px; 
     color: #555; 
 }
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-height: 80px;
+}
+
+.header-logo {
+  height: 110px;
+  max-height: 110px;
+}
+
 
 
 /* 로그인 버튼 스타일 */

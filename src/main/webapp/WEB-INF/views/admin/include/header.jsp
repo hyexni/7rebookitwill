@@ -21,35 +21,35 @@
     <!-- Search Wrapper Area End -->
     
     <%-- ##### 새로운 메인 검색/소개 영역 시작 ##### --%>
-<section class="main-visual-area">
-    
-    <%-- 1. 왼쪽: 로고와 소개 문구 --%>
-    <div class="intro-img">
-        <a href="/admin/stats">
-            <img src="${pageContext.request.contextPath}/resources/img/core-img/logo2.png" alt="ReBook 로고">
-        </a>
-        
-        </div>
-        
-        <div class = "intro-text">
-        <h2>도서판매 전문점 <span>ReBook</span></h2>
-        <p>관리자 페이지</p>
-    </div>
+	<section class="main-visual-area admin-header">
 
-    <%-- 2. 오른쪽: 사용자 버튼들 --%>
-        <div class="user-dropdown">
-		  <button class="user-icon">
-		    <i class="fas fa-user-circle"></i>
-		  </button>
-		  <div class="dropdown-menu">
-		    <a href="/admin/stats">서비스 홈</a>
-		    <a href="/logout">로그아웃</a>
+	  <!-- 왼쪽: 로고 + 텍스트 -->
+	  <!-- 왼쪽 영역 -->
+		<div class="header-left">
+		  <a href="/admin/stats">
+		    <img src="${pageContext.request.contextPath}/resources/img/core-img/logo2.png" alt="ReBook 로고" class="header-logo">
+		  </a>
+		  <div class="intro-text">
+		    <h2>도서판매 전문점 <span>ReBook</span></h2>
+		    <p>관리자 페이지</p>
 		  </div>
 		</div>
 
-   
-
-</section>
+	
+	  <!-- 오른쪽: 사용자 아이콘 -->
+	  <div class="header-right">
+	    <div class="user-dropdown">
+	      <button class="user-icon">
+	        <i class="fas fa-user-circle"></i>
+	      </button>
+	      <div class="dropdown-menu">
+	        <a href="/admin/stats">서비스 홈</a>
+	        <a href="/logout">로그아웃</a>
+	      </div>
+	    </div>
+	  </div>
+	
+	</section>
 
     
               

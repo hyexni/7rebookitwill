@@ -31,184 +31,148 @@
 <!-- stats.jsp 본문 -->
 
 
-<div style="padding: 40px; width: 100%; margin: 0 auto;">
-
-	<script>
-		  const stats = {
-		    activeMembers: ${stats.activeMembers},
-		    withdrawnMembers: ${stats.withdrawnMembers},
-		    todayNewMembers: ${stats.todayNewMembers},
-		    monthNewMembers: ${stats.monthNewMembers},
-		    totalMembers: ${stats.totalMembers}
-		  };
-	</script>
-
-</div>	
-
-
-<!-- ────────────────────────────────────── -->
 <!-- 2) 차트 그리드 -->
-<h2 style="margin-top: 40px;">📊 관리자 통계 페이지</h2>
-<!-- 📌 스타일 정의 -->
-
-
-<div class="stats-container">
-  <div class="stats-card">
-    <div style="font-size: 14px; color: #555;">전체 회원 수</div>
-    <div style="font-size: 24px; font-weight: bold; margin-top: 5px;">${stats.totalMembers} 명</div>
-  </div>
-
-  <div class="stats-card">
-    <div style="font-size: 14px; color: #555;">오늘 가입자 수</div>
-    <div style="font-size: 24px; font-weight: bold; margin-top: 5px;">${stats.todayNewMembers} 명</div>
-  </div>
-
-  <div class="stats-card">
-    <div style="font-size: 14px; color: #555;">이번 달 가입자 수</div>
-    <div style="font-size: 24px; font-weight: bold; margin-top: 5px;">${stats.monthNewMembers} 명</div>
-  </div>
-
-  <div class="stats-card">
-    <div style="font-size: 14px; color: #555;">활성 회원 수</div>
-    <div style="font-size: 24px; font-weight: bold; margin-top: 5px;">${stats.activeMembers} 명</div>
-  </div>
-
-  <div class="stats-card">
-    <div style="font-size: 14px; color: #555;">탈퇴 회원 수</div>
-    <div style="font-size: 24px; font-weight: bold; margin-top: 5px;">${stats.withdrawnMembers} 명</div>
-  </div>
-</div>
-
-
-
-
-
-
-<div style="
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
-    gap: 30px;
-    margin-top: 30px;
-  ">
-  <!-- 도넛 차트 -->
-  <div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:20px;
-  			display:flex;flex-direction:column;height:280px;">
-    <h4 style="text-align:center;margin-bottom:10px;">회원 상태 비율</h4>
-    <canvas id="statusChart" style="flex:1;width:100% !important;height:auto !important;"></canvas>
-  </div>
-  <!-- 막대 차트 -->
-  <div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:20px;
-  			display:flex;flex-direction:column;height:280px;">
-    <h4 style="text-align:center;margin-bottom:10px;">가입자 수 추이</h4>
-    <canvas id="joinChart" style="flex:1;width:100% !important;height:auto !important;"></canvas>
-  </div>
-</div>
-
-
-<!-- ────────────────────────────────────── -->
-<!-- 4) 슬라이더 레이아웃 -->
-<h2 style="margin-top: 50px;">📊 인기 도서 순위</h2>
-<div style="
-    display: flex;
-    gap: 40px;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: stretch;
-    margin-top: 20px;
-  ">
-  <!-- 판매량 -->
-  <div style="flex:1; min-width:300px; max-width:500px;">
-    <h3>📘 판매량 상위 도서</h3>
-    <div class="swiper salesSwiper">
-      <div class="swiper-wrapper">
-        <c:forEach var="book" items="${topSellingBooks}" varStatus="status">
-          <div class="swiper-slide">
-            <img
-              src="${pageContext.request.contextPath}/resources/img/product-img/${book.coverImage}"
-              alt="${book.bookTitle}"
-              style="width:100%;height:200px;object-fit:cover;border-radius:6px;margin-bottom:10px;"
-              onerror="this.src='${pageContext.request.contextPath}/resources/img/core-img/default.jpg'"
-            />
-            <h4>${status.index+1}위 - ${book.bookTitle}</h4>
-            <p>📚 장르: ${book.categoryName}</p>
-            <p>📦 판매 수량: ${book.totalSales}권</p>
-          </div>
-        </c:forEach>
-      </div>
-      <div class="swiper-pagination"></div>
-    </div>
-  </div>
-  <!-- 별점 -->
-  <div style="flex:1; min-width:300px; max-width:500px;">
-    <h3>⭐ 별점 평균 상위 도서</h3>
-    <div class="swiper ratingSwiper">
-      <div class="swiper-wrapper">
-        <c:forEach var="book" items="${topRatedBooks}" varStatus="status">
-          <div class="swiper-slide">
-            <img
-              src="${pageContext.request.contextPath}/resources/img/product-img/${book.coverImage}"
-              alt="${book.bookTitle}"
-              style="width:100%;height:200px;object-fit:cover;border-radius:6px;margin-bottom:10px;"
-              onerror="this.src='${pageContext.request.contextPath}/resources/img/core-img/default.jpg'"
-            />
-            <h4>${status.index+1}위 - ${book.bookTitle}</h4>
-            <p>📚 장르: ${book.categoryName}</p>
-            <p>
-              <c:set var="rating" value="${book.avgRating}"/>
-              <c:forEach var="i" begin="1" end="5">
-                <c:choose>
-                  <c:when test="${i <= rating}">⭐</c:when>
-                  <c:otherwise>☆</c:otherwise>
-                </c:choose>
-              </c:forEach>
-              (<fmt:formatNumber value="${book.avgRating}" pattern="#0.0"/>)
-            </p>
-          </div>
-        </c:forEach>
-      </div>
-      <div class="swiper-pagination"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ──────────────────────────────────────── -->
-<!-- 5) 슬라이더 초기화 (autoplay: false + setInterval 동기화) -->
-<style>
-  /* 카드 사이즈만 한 번! */
-  .swiper-slide {
-    border:1px solid #ddd;
-    border-radius:10px;
-    padding:15px;
-    background:#fff;
-    box-sizing:border-box;
-    width:200%;
-    min-height:350px;
-    display:flex;
-    flex-direction:column;
-  }
-</style>
-
-
-
-
- 
+<div class="content-wrapper">
+	<h2 style="margin-top: 40px;">📊 관리자 통계 페이지</h2>
+	<!-- 📌 스타일 정의 -->
+	
+	
+	<div class="stats-container">
+	  <div class="stats-card">
+	    <div style="font-size: 14px; color: #555;">전체 회원 수</div>
+	    <div style="font-size: 24px; font-weight: bold; margin-top: 5px;">${stats.totalMembers} 명</div>
+	  </div>
+	
+	  <div class="stats-card">
+	    <div style="font-size: 14px; color: #555;">오늘 가입자 수</div>
+	    <div style="font-size: 24px; font-weight: bold; margin-top: 5px;">${stats.todayNewMembers} 명</div>
+	  </div>
+	
+	  <div class="stats-card">
+	    <div style="font-size: 14px; color: #555;">이번 달 가입자 수</div>
+	    <div style="font-size: 24px; font-weight: bold; margin-top: 5px;">${stats.monthNewMembers} 명</div>
+	  </div>
+	
+	  <div class="stats-card">
+	    <div style="font-size: 14px; color: #555;">활성 회원 수</div>
+	    <div style="font-size: 24px; font-weight: bold; margin-top: 5px;">${stats.activeMembers} 명</div>
+	  </div>
+	
+	  <div class="stats-card">
+	    <div style="font-size: 14px; color: #555;">탈퇴 회원 수</div>
+	    <div style="font-size: 24px; font-weight: bold; margin-top: 5px;">${stats.withdrawnMembers} 명</div>
+	  </div>
+	</div>
 	
 	
 	
-
-
-
-
-
-
-
-
 	
 	
 	
-</div>	
+	<div style="
+	    display: grid;
+	    grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
+	    gap: 30px;
+	    margin-top: 30px;
+	  ">
+	  <!-- 도넛 차트 -->
+	  <div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:20px;
+	  			display:flex;flex-direction:column;height:280px;">
+	    <h4 style="text-align:center;margin-bottom:10px;">회원 상태 비율</h4>
+	    <canvas id="statusChart" style="flex:1;width:100% !important;height:auto !important;"></canvas>
+	  </div>
+	  <!-- 막대 차트 -->
+	  <div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:20px;
+	  			display:flex;flex-direction:column;height:280px;">
+	    <h4 style="text-align:center;margin-bottom:10px;">가입자 수 추이</h4>
+	    <canvas id="joinChart" style="flex:1;width:100% !important;height:auto !important;"></canvas>
+	  </div>
+	</div>
 	
+	
+	<!-- ────────────────────────────────────── -->
+	<!-- 4) 슬라이더 레이아웃 -->
+	<h2 style="margin-top: 50px;">📊 인기 도서 순위</h2>
+	<div style="
+	    display: flex;
+	    gap: 40px;
+	    flex-wrap: wrap;
+	    justify-content: center;
+	    align-items: stretch;
+	    margin-top: 20px;
+	  ">
+	  <!-- 판매량 -->
+	  <div style="flex:1; min-width:300px; max-width:500px;">
+	    <h3>📘 판매량 상위 도서</h3>
+	    <div class="swiper salesSwiper">
+	      <div class="swiper-wrapper">
+	        <c:forEach var="book" items="${topSellingBooks}" varStatus="status">
+	          <div class="swiper-slide">
+	            <img
+	              src="${pageContext.request.contextPath}/resources/img/product-img/${book.coverImage}"
+	              alt="${book.bookTitle}"
+	              style="width:100%;height:200px;object-fit:cover;border-radius:6px;margin-bottom:10px;"
+	              onerror="this.src='${pageContext.request.contextPath}/resources/img/core-img/default.jpg'"
+	            />
+	            <h4>${status.index+1}위 - ${book.bookTitle}</h4>
+	            <p>📚 장르: ${book.categoryName}</p>
+	            <p>📦 판매 수량: ${book.totalSales}권</p>
+	          </div>
+	        </c:forEach>
+	      </div>
+	      <div class="swiper-pagination"></div>
+	    </div>
+	  </div>
+	  <!-- 별점 -->
+	  <div style="flex:1; min-width:300px; max-width:500px;">
+	    <h3>⭐ 별점 평균 상위 도서</h3>
+	    <div class="swiper ratingSwiper">
+	      <div class="swiper-wrapper">
+	        <c:forEach var="book" items="${topRatedBooks}" varStatus="status">
+	          <div class="swiper-slide">
+	            <img
+	              src="${pageContext.request.contextPath}/resources/img/product-img/${book.coverImage}"
+	              alt="${book.bookTitle}"
+	              style="width:100%;height:200px;object-fit:cover;border-radius:6px;margin-bottom:10px;"
+	              onerror="this.src='${pageContext.request.contextPath}/resources/img/core-img/default.jpg'"
+	            />
+	            <h4>${status.index+1}위 - ${book.bookTitle}</h4>
+	            <p>📚 장르: ${book.categoryName}</p>
+	            <p>
+	              <c:set var="rating" value="${book.avgRating}"/>
+	              <c:forEach var="i" begin="1" end="5">
+	                <c:choose>
+	                  <c:when test="${i <= rating}">⭐</c:when>
+	                  <c:otherwise>☆</c:otherwise>
+	                </c:choose>
+	              </c:forEach>
+	              (<fmt:formatNumber value="${book.avgRating}" pattern="#0.0"/>)
+	            </p>
+	          </div>
+	        </c:forEach>
+	      </div>
+	      <div class="swiper-pagination"></div>
+	    </div>
+	  </div>
+	
+	</div>	
+</div>		
 
 <%-- 4. 하단 푸터를 불러옵니다. --%>
-<%@ include file="include/footer.jsp" %> 
+<%@ include file="include/footer.jsp" %>
+
+<div style="padding: 40px; width: 100%; margin: 0 auto;">
+	<script>
+	  window.stats = {
+	    activeMembers: ${stats.activeMembers},
+	    withdrawnMembers: ${stats.withdrawnMembers},
+	    todayNewMembers: ${stats.todayNewMembers},
+	    monthNewMembers: ${stats.monthNewMembers},
+	    totalMembers: ${stats.totalMembers}
+	  };
+	</script>
+</div>	
+
+<script src="${pageContext.request.contextPath}/resources/js/chart-script.js"></script>
+ 
 
