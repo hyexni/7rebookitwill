@@ -14,6 +14,6 @@ public class InquiryVO {
 	private String content;				// 문의 내용
 	private String status;				// 처리 상태
 	private Timestamp created_at;		// 작성 일시
-
+	private Timestamp processed_at;
 
 }

@@ -1,5 +1,6 @@
 package com.itwillbs.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,18 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
 
     @Override
     public void insertResponse(ResponseVO response) {
+    	 // 1) 동일한 시간 생성
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        response.setCreated_at(now); // ✅ response 객체에도 시간 넣기
+    	
+        // 답변 등록
         aiDao.insertResponse(response);
+        
+        // 2. 문의 상태 '답변완료'로 변경
+        aiDao.updateInquiryStatus(response.getInquiry_id());
+        
+        // 처리일자 설정
+        aiDao.setInquiryProcessedAt(response.getInquiry_id(), now); // 처리일자 '동일한 now'
     }
 
     @Override
@@ -41,8 +53,10 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
     }
 
     @Override
-    public void deleteResponse(int response_id) {
-        aiDao.deleteResponse(response_id);
+    public void deleteResponse(int response_id, int inquiry_id) {
+        aiDao.deleteResponse(response_id); // 답변 삭제
+        aiDao.resetInquiryStatus(inquiry_id); // 상태 → 접수
+        aiDao.resetInquiryProcessedAt(inquiry_id); 
     }
     
     // 페이징 처리

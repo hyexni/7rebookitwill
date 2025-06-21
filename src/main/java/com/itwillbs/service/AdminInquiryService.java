@@ -17,7 +17,8 @@ public interface AdminInquiryService {
     
     void updateResponse(ResponseVO response);
     
-    void deleteResponse(int response_id);
+    // 답변 삭제 + 상태 변경
+    void deleteResponse(int response_id, int inquiry_id);
     
     // 페이징 처리
     List<InquiryVO> getInquiryList(int startRow, int pageSize);

@@ -20,9 +20,9 @@ public class AdminInquiryController {
     private AdminInquiryService adminInquiryService;
 
     @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public String view(@RequestParam("inquiry_id") int inquiryId, Model model) {
-        InquiryVO inquiry = adminInquiryService.getInquiry(inquiryId);
-        ResponseVO response = adminInquiryService.getResponse(inquiryId);
+    public String view(@RequestParam("inquiry_id") int inquiry_id, Model model) {
+        InquiryVO inquiry = adminInquiryService.getInquiry(inquiry_id);
+        ResponseVO response = adminInquiryService.getResponse(inquiry_id);
         model.addAttribute("inquiry", inquiry);
         model.addAttribute("response", response);
         return "admin/inquiry_view"; // view_43
@@ -44,10 +44,10 @@ public class AdminInquiryController {
 
     // 답변 삭제
     @GetMapping("/inquiry/responseDelete")
-    public String deleteResponse(@RequestParam("response_id") int responseId,
-                                 @RequestParam("inquiry_id") int inquiryId) {
-        adminInquiryService.deleteResponse(responseId);
-        return "redirect:/admin/view?inquiry_id=" + inquiryId;
+    public String deleteResponse(@RequestParam("response_id") int response_id,
+                                 @RequestParam("inquiry_id") int inquiry_id) {
+        adminInquiryService.deleteResponse(response_id, inquiry_id);
+        return "redirect:/admin/view?inquiry_id=" + inquiry_id;
     }
     
     // 페이징 처리

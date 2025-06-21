@@ -60,8 +60,8 @@
                     </td>
                     <td>
                         <c:choose>
-                            <c:when test="${not empty response.created_at}">
-                                <fmt:formatDate value="${response.created_at}" pattern="yyyy-MM-dd" />
+                            <c:when test="${not empty inquiry.processed_at}">
+                                <fmt:formatDate value="${inquiry.processed_at}" pattern="yyyy-MM-dd HH:mm" />
                             </c:when>
                             <c:otherwise>-</c:otherwise>
                         </c:choose>
