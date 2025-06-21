@@ -32,5 +32,26 @@
     DELETE FROM response WHERE response_id = #{response_id}
   </delete>
 
+	
+	<!-- 페이징 처리 -->
+	<select id="getInquiryList" resultType="com.itwillbs.domain.InquiryVO">
+    	SELECT 
+		    i.inquiry_id,
+		    m.member_id,
+		    i.title,
+		    i.status,
+		    i.created_at,
+		    r.created_at AS response_created_at
+	   FROM inquiry i
+	   JOIN member m ON i.member_idx = m.member_idx
+	   LEFT JOIN response r ON i.inquiry_id = r.inquiry_id
+	   ORDER BY i.created_at DESC
+	   LIMIT #{startRow}, #{pageSize}
+	 </select>
+
+	  <select id="getInquiryCount" resultType="int">
+	    SELECT COUNT(*) FROM inquiry
+	  </select>
+
 </mapper>
   

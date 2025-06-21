@@ -21,13 +21,13 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
     }
 
     @Override
-    public InquiryVO getInquiry(int inquiryId) {
-        return aiDao.getInquiry(inquiryId);
+    public InquiryVO getInquiry(int inquiry_id) {
+        return aiDao.getInquiry(inquiry_id);
     }
 
     @Override
-    public ResponseVO getResponse(int inquiryId) {
-        return aiDao.getResponse(inquiryId);
+    public ResponseVO getResponse(int inquiry_id) {
+        return aiDao.getResponse(inquiry_id);
     }
 
     @Override
@@ -41,8 +41,19 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
     }
 
     @Override
-    public void deleteResponse(int responseId) {
-        aiDao.deleteResponse(responseId);
+    public void deleteResponse(int response_id) {
+        aiDao.deleteResponse(response_id);
+    }
+    
+    // 페이징 처리
+    @Override
+    public List<InquiryVO> getInquiryList(int startRow, int pageSize) {
+        return aiDao.getInquiryList(startRow, pageSize);
+    }
+
+    @Override
+    public int getInquiryCount() {
+        return aiDao.getInquiryCount();
     }
 }
 

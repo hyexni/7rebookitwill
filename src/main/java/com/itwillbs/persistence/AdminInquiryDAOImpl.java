@@ -1,6 +1,8 @@
 package com.itwillbs.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.itwillbs.domain.InquiryVO;
 import com.itwillbs.domain.ResponseVO;
@@ -45,5 +47,20 @@ public class AdminInquiryDAOImpl implements AdminInquiryDAO {
     @Override
     public void deleteResponse(int response_id) {
         sqlSession.delete(NAMESPACE + "deleteResponse", response_id);
+    }
+    
+    
+    // 페이징 처리
+    @Override
+    public List<InquiryVO> getInquiryList(int startRow, int pageSize) {
+        Map<String, Integer> params = new HashMap<>();
+        params.put("startRow", startRow);
+        params.put("pageSize", pageSize);
+        return sqlSession.selectList(NAMESPACE + "getInquiryList", params);
+    }
+
+    @Override
+    public int getInquiryCount() {
+        return sqlSession.selectOne(NAMESPACE + "getInquiryCount");
     }
 }

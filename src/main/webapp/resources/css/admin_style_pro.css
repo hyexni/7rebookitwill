@@ -766,23 +766,6 @@ a {
     font-size: 14px;
   }
 
-  .btn-outline-primary {
-    color: #007bff;
-    background-color: white;
-    border: 1px solid #007bff;
-  }
-
-  .btn-outline-danger {
-    color: #dc3545;
-    background-color: white;
-    border: 1px solid #dc3545;
-  }
-
-  .btn-primary {
-    background-color: #007bff;
-    border: none;
-  }
-
 
 /* 공지사항 수정 폼 스타일 */
 .notice-form-container {
@@ -880,6 +863,7 @@ a {
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
+  box-sizing: border-box;
   transition: background-color 0.2s, color 0.2s;
   text-decoration: none;
 }
@@ -893,6 +877,7 @@ a {
 .btn-outline-primary:hover {
   background-color: #4c6ef5;
   color: white;
+  border: 1px solid #4c6ef5;
 }
 
 .btn-outline-danger {
@@ -904,5 +889,34 @@ a {
 .btn-outline-danger:hover {
   background-color: #dc3545;
   color: white;
+  border: 1px solid #dc3545;
 }
 
+
+/* 1:1 문의 처리 상태 배지화 */
+		/* 상태 배지 스타일 */
+		.status-badge {
+		  display: inline-block;
+		  padding: 4px 10px;
+		  font-size: 13px;
+		  font-weight: 500;
+		  border-radius: 12px;
+		  color: white;
+		}
+		.status-received {
+		  background-color: #868e96; /* 접수: 회색 */
+		}
+		.status-done {
+		  background-color: #51cf66; /* 답변완료: 초록 */
+		}
+		
+		/* 표 스타일 */
+		.table-bordered th,
+		.table-bordered td {
+		  border-right: 1px solid #dee2e6;
+		}
+		
+		.table-bordered th:last-child,
+		.table-bordered td:last-child {
+		  border-right: none;
+		}
