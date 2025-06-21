@@ -9,13 +9,18 @@ public interface AdminInquiryService {
 	
     List<InquiryVO> getAllInquiries();
     
-    InquiryVO getInquiry(int inquiryId);
+    InquiryVO getInquiry(int inquiry_id);
     
-    ResponseVO getResponse(int inquiryId);
+    ResponseVO getResponse(int inquiry_id);
     
     void insertResponse(ResponseVO response);
     
     void updateResponse(ResponseVO response);
     
-    void deleteResponse(int responseId);
+    // 답변 삭제 + 상태 변경
+    void deleteResponse(int response_id, int inquiry_id);
+    
+    // 페이징 처리
+    List<InquiryVO> getInquiryList(int startRow, int pageSize, String keyword);
+    int getInquiryCount(String keyword);
 }

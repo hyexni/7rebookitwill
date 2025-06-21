@@ -29,13 +29,13 @@
 	<!-- 정상 회원 수 -->
 	<select id="getActiveMembers" resultType="int">
 		SELECT COUNT(*)	FROM member
-		WHERE member_status = '정상'
+		WHERE member_status = 'Y'
 	</select>
 	
 	<!-- 탈퇴 회원 수 -->
 	<select id="getWithdrawnMembers" resultType="int">
 		SELECT COUNT(*) FROM member
-		WHERE member_status = '탈퇴'
+		WHERE member_status = 'N'
 	</select>
 	
 	

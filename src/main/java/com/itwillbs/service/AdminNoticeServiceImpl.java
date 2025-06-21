@@ -31,10 +31,10 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
 	}
 	
 	// 관리자 공지사항 목록 조회
-	@Override
-	public List<NoticeVO> getNoticeList() throws Exception {
-	    return anDao.getNoticeList();
-	}
+	/*
+	 * @Override public List<NoticeVO> getNoticeList() throws Exception { return
+	 * anDao.getNoticeList(); }
+	 */
 	
 	// 공지사항 상세/수정/삭제
 	@Override
@@ -51,6 +51,20 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
 	public void deleteNotice(int notice_id) throws Exception {
 		anDao.deleteNotice(notice_id);
 	}
+	
+	
+	// 페이징 처리
+	// 구현체
+	@Override
+	public List<NoticeVO> getNoticeListPage(int startRow, int pageSize) {
+	    return anDao.getNoticeListPage(startRow, pageSize);
+	}
+
+	@Override
+	public int getNoticeCount() {
+	    return anDao.getNoticeCount();
+	}
+
 
 
 	

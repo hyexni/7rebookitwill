@@ -10,7 +10,12 @@
   </select>
 
   <select id="getInquiry" resultType="com.itwillbs.domain.InquiryVO">
-    SELECT * FROM inquiry WHERE inquiry_id = #{inquiry_id}
+    SELECT 
+    i.*, 
+    m.member_id
+ 	FROM inquiry i
+    JOIN member m ON i.member_idx = m.member_idx
+    WHERE i.inquiry_id = #{inquiry_id}
   </select>
 
   <select id="getResponse" resultType="com.itwillbs.domain.ResponseVO">
@@ -19,9 +24,15 @@
 
   <insert id="insertResponse">
     INSERT INTO response (inquiry_id, ad_id, response_content, created_at)
-    VALUES (#{inquiry_id}, #{ad_id}, #{response_content}, NOW())
+    VALUES (#{inquiry_id}, #{ad_id}, #{response_content}, #{created_at})
   </insert>
-
+  
+  <update id="updateInquiryStatus">
+	  UPDATE inquiry
+	  SET status = '답변완료'
+	  WHERE inquiry_id = #{inquiry_id}
+  </update>
+  
   <update id="updateResponse">
     UPDATE response
     SET response_content = #{response_content}
@@ -31,6 +42,73 @@
   <delete id="deleteResponse">
     DELETE FROM response WHERE response_id = #{response_id}
   </delete>
+  
+  <!-- 답변삭제시 처리상태 '접수' -->
+  <update id="resetInquiryStatus">
+	  UPDATE inquiry
+	  SET status = '접수'
+	  WHERE inquiry_id = #{inquiry_id}
+  </update>
+  
+  
+  <!-- 처리일자 저장 쿼리 -->
+  <update id="setInquiryProcessedAt">
+	  UPDATE inquiry
+	  SET processed_at = #{created_at}
+	  WHERE inquiry_id = #{inquiry_id}
+  </update>
+  
+  
+  
+  
+  <!-- 처리일자 초기화 쿼리 -->
+  <update id="resetInquiryProcessedAt">
+	  UPDATE inquiry
+	  SET processed_at = NULL
+	  WHERE inquiry_id = #{inquiry_id}
+  </update>
+  
+
+	
+	<!-- 페이징 처리 -->
+	<select id="getInquiryList" resultType="com.itwillbs.domain.InquiryVO">
+    	SELECT 
+		    i.inquiry_id,
+		    m.member_id,
+		    i.title,
+		    i.status,
+		    i.created_at,
+		    i.processed_at, 
+		    r.created_at AS response_created_at
+	   FROM inquiry i
+	   JOIN member m ON i.member_idx = m.member_idx
+	   LEFT JOIN response r ON i.inquiry_id = r.inquiry_id
+	   <where>
+	    <if test="keyword != null and keyword != ''">
+	      (i.title LIKE CONCAT('%', #{keyword}, '%') OR m.member_id LIKE CONCAT('%', #{keyword}, '%'))
+	    </if>
+ 	   </where>
+	   ORDER BY 
+  	  	 CASE i.status 
+   		 WHEN '접수' THEN 0 
+   		 WHEN '보류' THEN 1 
+   		 WHEN '답변완료' THEN 2 
+   		 ELSE 3
+  	   END,
+ 	   i.inquiry_id DESC
+	   LIMIT #{startRow}, #{pageSize}
+	 </select>
+
+	  <select id="getInquiryCount" resultType="int">
+	  	 SELECT COUNT(*)
+	 	 FROM inquiry i
+	 	 JOIN member m ON i.member_idx = m.member_idx
+	 	 <where>
+	 	   <if test="keyword != null and keyword != ''">
+	  	    (i.title LIKE CONCAT('%', #{keyword}, '%') OR m.member_id LIKE CONCAT('%', #{keyword}, '%'))
+	 	   </if>
+		 </where>
+	  </select>
 
 </mapper>
   

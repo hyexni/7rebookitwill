@@ -1,21 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   
-<html lang="en"><head>
-    <meta charset="UTF-8">
-    <meta name="description" content="">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-   
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css">
-		
-	<!-- jQuery 2.1.4 -->
-    <script src="${pageContext.request.contextPath }/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
-    
-    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-
+<!DOCTYPE html>
 <body>
     <!-- Search Wrapper Area Start -->
     <div class="search-wrapper section-padding-100">
@@ -36,37 +21,35 @@
     <!-- Search Wrapper Area End -->
     
     <%-- ##### 새로운 메인 검색/소개 영역 시작 ##### --%>
-<section class="main-visual-area">
-    
-    <%-- 1. 왼쪽: 로고와 소개 문구 --%>
-    <div class="intro-img">
-        <a href="/">
-            <img src="${pageContext.request.contextPath}/resources/img/core-img/logo2.png" alt="ReBook 로고">
-        </a>
-        
-        </div>
-        
-        <div class = "intro-text">
-        <h2>도서판매 전문점 <span>ReBook</span></h2>
-        <p>관리자 페이지</p>
-    </div>
+	<section class="main-visual-area admin-header">
 
-    <%-- 2. 오른쪽: 검색창과 버튼들 --%>
-    <div class="search-auth-area">
-        <div class="search-container">
-            <input type="search" name="search" placeholder="도서, 저자, 출판사 검색">
-            <button type="submit" class="search-btn">
-                <i class="fa fa-search"></i>검색
-            </button>
-        </div>
-         </div>
-        <div class="auth-buttons">
-            <a href="#" class="btn-login">로그인</a>
-            <a href="#" class="btn-signup">회원가입</a>
-        </div>
-   
+	  <!-- 왼쪽: 로고 + 텍스트 -->
+	  <!-- 왼쪽 영역 -->
+		<div class="header-left">
+		  <a href="/admin/stats">
+		    <img src="${pageContext.request.contextPath}/resources/img/core-img/logo2.png" alt="ReBook 로고" class="header-logo">
+		  </a>
+		  <div class="intro-text">
+		    <h2>도서판매 전문점 <span>ReBook</span></h2>
+		    <p>관리자 페이지</p>
+		  </div>
+		</div>
 
-</section>
+	
+	  <!-- 오른쪽: 사용자 아이콘 -->
+	  <div class="header-right">
+	    <div class="user-dropdown">
+	      <button class="user-icon">
+	        <i class="fas fa-user-circle"></i>
+	      </button>
+	      <div class="dropdown-menu">
+	        <a href="/admin/stats">서비스 홈</a>
+	        <a href="/logout">로그아웃</a>
+	      </div>
+	    </div>
+	  </div>
+	
+	</section>
 
     
               
