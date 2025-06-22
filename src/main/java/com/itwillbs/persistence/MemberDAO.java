@@ -41,7 +41,10 @@ public interface MemberDAO {
 	// 휴대폰으로 회원 조회
 	MemberVO selectMemberByPhone(String phone);
 
-	// ✅ 이름과 휴대폰 번호로 아이디 찾기
+	// 이름과 휴대폰 번호로 아이디 찾기
 	String findIdByNamePhone(@Param("member_name") String member_name, @Param("member_phone") String member_phone);
+
+	// 비밀번호 찾기
+	String findPwByInfo(MemberVO vo);
 
 }

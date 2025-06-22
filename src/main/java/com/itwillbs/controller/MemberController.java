@@ -271,4 +271,34 @@ public class MemberController {
 		return "/member/findId"; // 실제 JSP 위치: /WEB-INF/views/member/find_id.jsp
 	}
 
+	// 비밀번호 찾기 폼 페이지로 이동
+	@GetMapping("/findPw")
+	public String goFindPwPage() {
+		return "/member/findPw"; // JSP 경로
+	}
+
+	@PostMapping("/findPw")
+	public String findPwByInfo(@RequestParam("member_id") String member_id,
+			@RequestParam("member_name") String member_name, @RequestParam("member_phone") String member_phone,
+			Model model) {
+
+		// 📦 VO에 담아서 전달
+		MemberVO vo = new MemberVO();
+		vo.setMember_id(member_id);
+		vo.setMember_name(member_name);
+		vo.setMember_phone(member_phone);
+
+		// 💡 mService로 서비스 호출
+		String pw = mService.findPwByInfo(vo);
+
+		// 결과 모델에 담기
+		if (pw != null) {
+			model.addAttribute("resultPw", pw);
+		} else {
+			model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
+		}
+
+		return "member/findPwResult";
+	}
+
 }// controller

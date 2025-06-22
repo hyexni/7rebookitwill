@@ -107,4 +107,14 @@
 	    AND member_status = 'Y'
 	</select>
 
+	<!--  비밀번호 찾기  -->
+		<select id="findPwByInfo" parameterType="com.itwillbs.domain.MemberVO" resultType="string">
+	  SELECT member_pw
+	  FROM member
+	  WHERE member_id = #{member_id}
+	    AND member_name = #{member_name}
+	    AND member_phone = #{member_phone}
+	</select>
+	
+
 </mapper>

@@ -129,4 +129,10 @@ public class MemberServiceImpl implements MemberService {
 	public String findIdByNamePhone(String member_name, String member_phone) {
 		return mdao.findIdByNamePhone(member_name, member_phone);
 	}
+
+	// 비밀번호 찾기
+	@Override
+	public String findPwByInfo(MemberVO vo) {
+		return mdao.findPwByInfo(vo);
+	}
 }

@@ -129,7 +129,16 @@ public class MemberDAOImpl implements MemberDAO {
 	// 아이디찾기
 	@Override
 	public String findIdByNamePhone(String member_name, String member_phone) {
-		return sqlSession.selectOne(NAMESPACE + ".findIdByNamePhone",
-				Map.of("member_name", member_name, "member_phone", member_phone));
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("member_name", member_name);
+		paramMap.put("member_phone", member_phone);
+
+		return sqlSession.selectOne(NAMESPACE + ".findIdByNamePhone", paramMap);
+	}
+
+	// 비밀번호 찾기
+	@Override
+	public String findPwByInfo(MemberVO vo) {
+		return sqlSession.selectOne(NAMESPACE + ".findPwByInfo", vo);
 	}
 }
