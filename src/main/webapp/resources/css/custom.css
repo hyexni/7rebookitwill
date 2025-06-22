@@ -402,6 +402,17 @@ small.text-danger {
 }
 
 
+/* 회원 상태 - 활성, 탈퇴 */
+.status-active {
+  color: #228B22;  /* forestgreen */
+  font-weight: 600;
+}
+
+.status-deleted {
+  color: #d6336c;  /* 진한 핑크/빨강 */
+  font-weight: 600;
+}
+
 
 
 

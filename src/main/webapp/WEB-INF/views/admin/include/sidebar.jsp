@@ -32,7 +32,7 @@
             <nav class="amado-nav">
                 <ul class="admin-menu">
 					  <li><a href="/admin/stats">관리자 홈</a></li>
-					  <li><a href="/admin/member">회원 관리</a></li>
+					  <li><a href="/admin/member_list">회원 관리</a></li>
 					  <li><a href="/admin/book">도서 관리</a></li>
 					  <li><a href="/admin/sales">판매 관리</a></li>
 					  <li><a href="/admin/pointHistory">포인트 관리</a></li>

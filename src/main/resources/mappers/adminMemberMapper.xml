@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.persistence.AdminMemberDAO">
+
+	<select id="getMemberList" resultType="com.itwillbs.domain.MemberVO">
+	  SELECT m.member_idx, m.member_id, m.member_status, m.member_nick,
+	         m.member_name, m.member_phone, m.member_email
+	  FROM member m
+	  <choose>
+	    <when test="sort == 'name'">ORDER BY m.member_name ASC</when>
+	    <otherwise>ORDER BY m.member_regdate DESC</otherwise>
+	  </choose>
+	  LIMIT #{startRow}, #{pageSize}
+	</select>
+	
+	<select id="searchMembers" resultType="com.itwillbs.domain.MemberVO">
+	  SELECT m.member_idx, m.member_id, m.member_status, m.member_nick,
+	         m.member_name, m.member_phone, m.member_email
+	  FROM member m
+	  WHERE m.member_id LIKE CONCAT('%', #{keyword}, '%')
+	     OR m.member_name LIKE CONCAT('%', #{keyword}, '%')
+	     OR m.member_email LIKE CONCAT('%', #{keyword}, '%')
+	  <choose>
+	   <when test="sort == 'name'">ORDER BY m.member_name ASC</when>
+	   <otherwise>ORDER BY m.member_regdate DESC</otherwise>
+	  </choose>
+	  
+	  LIMIT #{startRow}, #{pageSize}
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+	  SELECT COUNT(*) FROM member
+	</select>
+	
+	<select id="getSearchCount" parameterType="String" resultType="int">
+	  SELECT COUNT(*) FROM member
+	  WHERE member_id LIKE CONCAT('%', #{keyword}, '%')
+	     OR member_name LIKE CONCAT('%', #{keyword}, '%')
+	     OR member_email LIKE CONCAT('%', #{keyword}, '%')
+	</select>
+		
+	
+	
+	
+
+</mapper>  
