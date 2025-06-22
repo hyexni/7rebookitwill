@@ -298,6 +298,15 @@ public class ReceiptServiceImpl implements ReceiptService {
         }
     }
 
+    @Override
+	public ReceiptVO getReceiptDetails(int upload_id) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+    
+    
+    
+    //관리자페이지 //
 
     @Override
     public List<AdminReceiptDTO> getReceiptListAdmin(Criteria cri) throws Exception {
@@ -308,8 +317,10 @@ public class ReceiptServiceImpl implements ReceiptService {
     public int getReceiptTotalCount(Criteria cri) throws Exception {
         return receiptDAO.getReceiptTotalCount(cri);
     }
-    
-    //관리자페이지 //
+
+
+	
+
     
     
 }

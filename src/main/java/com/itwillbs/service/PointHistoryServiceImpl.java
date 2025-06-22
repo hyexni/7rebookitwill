@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional; // 트랜잭션 관리를 위해 추가
 
 import com.itwillbs.domain.PointVO;
+import com.itwillbs.domain.ReceiptVO;
 import com.itwillbs.domain.SearchCriteria;
 import com.itwillbs.dto.PointHistoryDTO;
 import com.itwillbs.persistence.PointHistoryDAO;
@@ -85,8 +86,18 @@ public class PointHistoryServiceImpl implements PointHistoryService {
         pointHistoryDAO.insertPointHistory(pointVO);
 
         // 5. 회원 테이블의 총 포인트 필드 업데이트 (만약 회원 테이블에 총 포인트 필드가 있다면)
-        //pointHistoryDAO.updateMemberTotalPoints(pointVO.getMember_idx(), newTotal);
+       // pointHistoryDAO.updateMemberTotalPoints(pointVO.getMember_idx(), newTotal);
+    
     }
+    
+   //영수증으로 적립된 포인트 가져오기
+	@Override
+	public int earnPointsFromReceipt(ReceiptVO receipt) throws Exception {
+		
+		return 0;
+	}
+    
+    
     
  // 수정된 DAO 메서드를 호출하도록 변경
     @Override
@@ -99,7 +110,7 @@ public class PointHistoryServiceImpl implements PointHistoryService {
     public int getPointHistoryCount(SearchCriteria cri) {
         return pointHistoryDAO.getPointHistoryCount(cri);
     }
-    
+
     
     
     
