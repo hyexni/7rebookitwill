@@ -15,6 +15,14 @@
 	<h1>/member/login.jsp</h1>
 	
 	<fieldset>
+
+	  <!-- 로그인 실패 메시지 출력 -->
+	  <c:if test="${not empty message}">
+	    <div style="color:red; font-weight:bold; margin: 10px 0;">
+	      ${message}
+	    </div>
+	  </c:if>
+		
 		<form action="/member/login" method="post">
 			아이디 : <input type="text" name="member_id"> <br>
 			비밀번호 : <input type="password" name="member_pw"> <br>
