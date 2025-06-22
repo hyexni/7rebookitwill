@@ -1,6 +1,11 @@
 package com.itwillbs.service;
 
 import com.itwillbs.domain.ReceiptVO;
+import com.itwillbs.domain.Criteria;
+import com.itwillbs.dto.AdminReceiptDTO;
+
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ReceiptService {
@@ -16,5 +21,12 @@ public interface ReceiptService {
 
     // isDuplicate, ReceiptUpload 등의 메서드는 이제 processAndSaveReceipt 내부에서만
     // 사용되므로, 외부로 노출할 필요가 없습니다. (인터페이스에서 제거 가능)
+
+    /** [관리자] 페이징 처리된 전체 영수증 목록 조회 */
+    public List<AdminReceiptDTO> getReceiptListAdmin(Criteria cri) throws Exception;
+
+    /** [관리자] 전체 영수증 개수 조회 */
+    public int getReceiptTotalCount(Criteria cri) throws Exception;
+
 }
 

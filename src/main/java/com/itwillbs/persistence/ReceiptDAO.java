@@ -5,7 +5,10 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.ReceiptVO;
+import com.itwillbs.domain.SearchCriteria;
+import com.itwillbs.dto.AdminReceiptDTO;
 
 
 
@@ -36,5 +39,12 @@ public interface ReceiptDAO {
 
     // 회원 총 포인트 업데이트 메서드는 그대로 사용
     public void updateUserPoint(Map<String, Object> params);
+    
+    
+    /** [관리자] 페이징 처리된 전체 영수증 목록 조회 */
+    public List<AdminReceiptDTO> getReceiptListAdmin(Criteria cri) throws Exception;
 
+    /** [관리자] 전체 영수증 개수 조회 (페이징 계산용) */
+    public int getReceiptTotalCount(Criteria cri) throws Exception;
+	
 }

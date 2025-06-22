@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.persistence.ReceiptDAO">
-
+ <!--  사용자 부분 -->
     <insert id="insertReceipt" parameterType="com.itwillbs.domain.ReceiptVO">
         INSERT INTO c7d2503t1p1.receipts (
             member_idx, originalfilename, savedfilename, filepath, file_size, file_type, 
@@ -32,8 +32,52 @@
         FROM c7d2503t1p1.receipts 
         WHERE originalfilename = #{filename}
     </select>
+  <!--  사용자 부분 -->   
     
+   <!--/관리자페이지 부분  -->
+   <sql id="adminSearchCondition">
+        <if test="search != null and search != ''">
+            AND (m.member_id LIKE CONCAT('%', #{search}, '%')
+                 OR m.member_name LIKE CONCAT('%', #{search}, '%')
+                 OR r.ocr_store LIKE CONCAT('%', #{search}, '%'))
+        </if>
+    </sql>
+
+    <select id="getReceiptListAdmin" 
+            resultType="com.itwillbs.dto.AdminReceiptDTO"
+            parameterType="com.itwillbs.domain.Criteria">
+        SELECT 
+            r.upload_id, r.member_idx, r.ocr_store, r.ocr_amount, r.ocr_date, r.upload_time, r.upload_status,
+            m.member_id, m.member_name
+        FROM 
+            receipts r
+        JOIN 
+            member m ON r.member_idx = m.member_idx
+        <where>
+            <include refid="adminSearchCondition"></include>
+        </where>
+        <choose>
+            <when test="sort == 'amount_desc'">ORDER BY r.ocr_amount DESC</when>
+            <when test="sort == 'amount_asc'">ORDER BY r.ocr_amount ASC</when>
+            <otherwise>ORDER BY r.upload_id DESC</otherwise>
+        </choose>
+        LIMIT #{pageStart}, #{perPageNum}
+    </select>
     
-    
-    
+    <select id="getReceiptTotalCount" 
+            resultType="int"
+            parameterType="com.itwillbs.domain.Criteria">
+        SELECT 
+            count(*) 
+        FROM 
+            receipts r
+        JOIN
+            member m ON r.member_idx = m.member_idx
+        <where>
+            <include refid="adminSearchCondition"></include>
+        </where>
+    </select>
+
+
+       <!--/관리자페이지 부분  -->
 </mapper>

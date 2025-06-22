@@ -14,6 +14,8 @@ import com.google.cloud.vertexai.generativeai.ResponseHandler;
 import com.google.protobuf.ByteString;
 import com.itwillbs.domain.PointVO;
 import com.itwillbs.domain.ReceiptVO;
+import com.itwillbs.domain.Criteria;
+import com.itwillbs.dto.AdminReceiptDTO;
 import com.itwillbs.dto.ReceiptDTO;
 import com.itwillbs.dto.ReceiptItemDTO;
 import com.itwillbs.persistence.MemberDAO;
@@ -34,6 +36,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -294,4 +297,19 @@ public class ReceiptServiceImpl implements ReceiptService {
             throw new RuntimeException("Gemini 응답 처리 중 오류가 발생했습니다.", e); // 원인 예외(e)를 포함하여 throw
         }
     }
+
+
+    @Override
+    public List<AdminReceiptDTO> getReceiptListAdmin(Criteria cri) throws Exception {
+        return receiptDAO.getReceiptListAdmin(cri);
+    }
+
+    @Override
+    public int getReceiptTotalCount(Criteria cri) throws Exception {
+        return receiptDAO.getReceiptTotalCount(cri);
+    }
+    
+    //관리자페이지 //
+    
+    
 }
