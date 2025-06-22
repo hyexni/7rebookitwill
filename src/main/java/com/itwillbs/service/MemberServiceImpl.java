@@ -20,81 +20,83 @@ public class MemberServiceImpl implements MemberService {
 	@Inject
 	private MemberCategoryDAO mcdao;
 
-	// 서버시간 가져오기
+	// 서버 시간 조회
 	@Override
 	public String getServerTime() {
 		return mdao.getServerTime();
 	}
 
-	// 로그인 체크
+	// 로그인 체크 (아이디/비밀번호)
 	@Override
 	public MemberVO memberLoginCheck(MemberVO vo) {
 		return mdao.memberLoginCheck(vo);
 	}
 
-	// 기존 단일 회원가입 (미사용 가능)
+	// 기본 회원가입 (단일 정보만 - 사용 안 함)
 	@Override
 	public void memberJoin(MemberVO vo) {
 		mdao.insertMember(vo);
 	}
 
-	// 관심 카테고리까지 포함한 회원가입 처리
+	// 관심 카테고리 포함 회원가입
 	@Override
 	public void joinMemberWithCategory(MemberVO vo, List<Integer> categoryIds) {
-		// 1. 회원 정보 insert
-		mdao.insertMember(vo); // insert 후 vo.getMember_idx()에 PK값 들어가야 함 (selectKey 설정 필수)
+		// 1. 회원정보 등록
+		mdao.insertMember(vo); // PK가 vo.getMember_idx()에 들어감
 
+		// 2. 관심 카테고리 등록
 		int member_idx = vo.getMember_idx();
-
-		// 2. 관심 카테고리 insert
 		for (int cateId : categoryIds) {
 			MemberCategoryVO mcvo = new MemberCategoryVO();
 			mcvo.setMember_idx(member_idx);
 			mcvo.setCategory_id(cateId);
-
 			mcdao.insertMemberCategory(mcvo);
 		}
 	}
 
-	// 닉네임 조회 메서드
+	// 닉네임으로 회원 조회
 	@Override
 	public MemberVO getMemberByNick(String member_nick) {
 		return mdao.getMemberByNick(member_nick);
 	}
 
-	// 닉네임 중복 확인 (중복이면 true, 사용 가능하면 false)
+	// 닉네임 중복 확인
 	@Override
 	public boolean checkNickname(String nickname) {
-		MemberVO vo = mdao.getMemberByNick(nickname);
-		return vo != null;
+		return mdao.getMemberByNick(nickname) != null;
 	}
 
-	// 아이디 중복 확인 (중복이면 true, 사용 가능하면 false)
+	// 아이디 중복 확인
 	@Override
 	public boolean checkId(String member_id) {
-		MemberVO vo = mdao.getMember(member_id); // memberInfo() 대신 getMember() 썼으니 여기도 일치시킴
-		return vo != null;
+		return mdao.getMember(member_id) != null;
 	}
 
-	// 회원정보 조회
+	// 아이디로 회원정보 조회 (마이페이지, 로그인용)
 	@Override
 	public MemberVO memberInfo(String member_id) {
 		return mdao.getMember(member_id);
 	}
 
-	// Email 조회
+	// 이메일로 회원 조회
 	@Override
 	public MemberVO memberInfoByEmail(String email) {
 		return mdao.selectMemberByEmail(email);
 	}
 
-	// 휴대폰 번호 조회
+	// 휴대폰 번호로 회원 조회
 	@Override
 	public MemberVO memberInfoByPhone(String phone) {
 		return mdao.selectMemberByPhone(phone);
 	}
 
-	// 회원정보 수정
+	// PK(member_idx)로 회원정보 조회
+	@Override
+	public MemberVO memberInfo(int member_idx) {
+		return mdao.getMemberByIdx(member_idx);
+	}
+
+	// 회원정보 수정 (닉네임, 이메일 등)
 	@Override
 	public void memberUpdate(MemberVO uvo) {
 		mdao.updateMember(uvo);
@@ -106,16 +108,16 @@ public class MemberServiceImpl implements MemberService {
 		return mdao.deleteMember(dvo);
 	}
 
-	// 📌 회원정보 + 관심 카테고리 수정
+	// 회원정보 + 관심 카테고리 수정
 	@Override
 	public void updateMemberWithCategories(MemberVO vo, List<Integer> categoryIds) {
 		// 1. 회원 기본 정보 수정
 		mdao.updateMember(vo);
 
-		// 2. 기존 관심 카테고리 삭제
+		// 2. 기존 카테고리 삭제
 		mcdao.deleteMemberCategoryByMemberId(vo.getMember_idx());
 
-		// 3. 새 관심 카테고리 등록
+		// 3. 새 카테고리 등록
 		for (int categoryId : categoryIds) {
 			MemberCategoryVO mcvo = new MemberCategoryVO();
 			mcvo.setMember_idx(vo.getMember_idx());
@@ -124,7 +126,7 @@ public class MemberServiceImpl implements MemberService {
 		}
 	}
 
-	// 이름 + 휴대폰 번호 아이디 찾기
+	// 이름 + 휴대폰으로 아이디 찾기
 	@Override
 	public String findIdByNamePhone(String member_name, String member_phone) {
 		return mdao.findIdByNamePhone(member_name, member_phone);
@@ -134,5 +136,17 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public String findPwByInfo(MemberVO vo) {
 		return mdao.findPwByInfo(vo);
+	}
+
+	// 회원이 선택한 카테고리 ID 목록 조회
+	@Override
+	public List<Integer> getSelectedCategoryIds(int member_idx) {
+		return mcdao.getCategoryIdsByMemberId(member_idx);
+	}
+
+	// 회원 고유번호로 회원정보 조회 (마이페이지 등에서 사용)
+	@Override
+	public MemberVO getMemberByIdx(int member_idx) {
+		return mdao.getMemberByIdx(member_idx);
 	}
 }

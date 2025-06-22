@@ -244,3 +244,25 @@ span#emailResult {
 .login-links a:hover {
   text-decoration: underline;
 }
+
+/* ✅ 폼 레이블 & 인풋 정렬 */
+.join-container label {
+  display: block;
+  margin-top: 18px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #222;
+}
+
+.join-container input[type="text"],
+.join-container input[type="email"],
+.join-container input[type="password"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}

@@ -15,13 +15,19 @@
 	  <c:redirect url="/member/login" />
 	</c:if>
 	
-	<%--  로그인 성공 메시지 출력 (FlashAttribute) --%>
+	<%-- 로그인/회원정보 수정 메시지 출력 (FlashAttribute) --%>
 	<c:if test="${not empty message}">
 	  <div style="padding: 10px; background-color: #e0ffe0; border: 1px solid #00c853; color: #2e7d32; font-weight: bold; margin-bottom: 15px;">
 	    ✅ ${message}
 	  </div>
 	</c:if>
 	
+	<c:if test="${not empty msg}">
+	  <div style="padding: 10px; background-color: #e0ffe0; border: 1px solid #00c853; color: #2e7d32; font-weight: bold; margin-bottom: 15px;">
+	    ✅ ${msg}
+	  </div>
+	</c:if>
+		
 	<%--  로그인한 사용자 정보 출력 --%>
 	<h2>${sessionScope.id}님, 환영합니다!</h2>
 	
