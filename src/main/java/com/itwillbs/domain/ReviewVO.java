@@ -17,6 +17,13 @@ public class ReviewVO {
 	private Integer review_score;
 	private Timestamp review_date;
 	private String member_name;  // 작성자 이름 추가
+	private String review_status; // 리뷰 상태 추가 (관리자 필요)
+
+	private String book_title;
+	private String member_id;
+	private String reason;
+
+
 	
 
 }
