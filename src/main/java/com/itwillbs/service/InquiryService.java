@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.InquiryVO;
+import com.itwillbs.domain.ResponseVO;
 
 @Service
 public interface InquiryService {
@@ -18,5 +19,14 @@ public interface InquiryService {
 	// 상세 조회
 	InquiryVO getInquiry(int inquiry_id);
 	
+	// ✅ 답변 조회
+    ResponseVO getResponse(int inquiry_id);
+    
+    // 수정
+    void updateInquiry(InquiryVO vo) throws Exception;
+
+    // 삭제
+    void deleteInquiry(int inquiry_id) throws Exception;
+
 
 }

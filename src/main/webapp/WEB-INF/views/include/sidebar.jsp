@@ -30,9 +30,10 @@
             <nav class="amado-nav">
                 <ul>
                     <li><a href="<c:url value='/book/BookList'/>">도서 목록</a></li>
-                    <li><a href="<c:url value='/recommend/recommend_page'/>">추천 도서</a></li>
+                    <li><a href="<c:url value='/recommend/list'/>">추천 도서</a></li>
                     <li><a href="<c:url value='/mypage'/>">독후감</a></li>
-                    <li><a href="<c:url value='/notices'/>">공지사항</a></li>
+                    <li><a href="<c:url value='/notice/list'/>">공지사항</a></li>
+                    <li><a href="<c:url value='/cs/list'/>">1:1 문의</a></li>
                     <li><a href="<c:url value='/point/history'/>">포인트확인</a></li>
                 </ul>
             </nav>

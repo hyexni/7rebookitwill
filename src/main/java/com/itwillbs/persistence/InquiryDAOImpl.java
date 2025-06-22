@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.InquiryVO;
+import com.itwillbs.domain.ResponseVO;
 
 @Repository
 public class InquiryDAOImpl implements InquiryDAO {
@@ -50,6 +51,24 @@ public class InquiryDAOImpl implements InquiryDAO {
     }
 	
 	
+	// 답변
+	@Override
+	public ResponseVO getResponse(int inquiry_id) {
+	    return sqlSession.selectOne(NAMESPACE + "getResponse", inquiry_id);
+	}
+	
+	// 수정
+	@Override
+	public void updateInquiry(InquiryVO vo) throws Exception {
+	    sqlSession.update(NAMESPACE + "updateInquiry", vo);
+	}
+
+	// 삭제
+	@Override
+	public void deleteInquiry(int inquiry_id) throws Exception {
+	    sqlSession.delete(NAMESPACE + "deleteInquiry", inquiry_id);
+	}
+
 	
 	
 	

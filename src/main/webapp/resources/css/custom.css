@@ -6,6 +6,406 @@
   'Noto Sans KR' 폰트를 최우선으로 강제 적용합니다.
   !important는 기존 템플릿의 모든 폰트 설정을 무시하고 덮어쓰기 위한 강력한 옵션입니다.
 */
-* {
-    font-family: 'Noto Sans KR', sans-serif !important;
+
+.section-title {
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #212529;
 }
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.search-bar input[type="text"] {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 300px;
+}
+
+.btn-search {
+  padding: 8px 16px;
+  border: none;
+  background-color: #4c6ef5;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.notice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: auto;
+  max-width: 1000px;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.notice-table th, .notice-table td {
+  padding: 14px 16px;
+  text-align: center;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.notice-table thead {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.notice-table tr:hover {
+  background-color: #f1f3f5;
+}
+
+.notice-table a {
+  text-decoration: none;
+  color: #212529;
+  font-weight: 500;
+}
+
+
+
+/* 1:1 문의 */
+.mypage-inquiry-list {
+  margin-top: 100px; /* 헤더와의 간격 확보 */
+  padding: 0 60px 40px; /* 좌우, 아래 여백 유지 */
+}
+
+.inquiry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.inquiry-header h2 {
+  font-size: 26px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-write {
+  padding: 8px 16px;
+  background-color: #4c6ef5;
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-write:hover {
+  background-color: #3b5bdb;
+}
+
+.inquiry-link {
+  color: #212529;
+  font-size: 16px;         /* ⬅️ 제목 글씨 크기 증가 */
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.inquiry-link:hover {
+  font-size: 16px;   /* ✅ 고정 */
+  font-weight: 500;
+  color: #1c7ed6;
+  text-decoration: underline;
+}
+
+/* 기본 테이블 스타일 복구 */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.styled-table th, .styled-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e9ecef;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.styled-table thead th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #343a40;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+.styled-table th:nth-child(1), .styled-table td:nth-child(1) { width: 8%; }
+.styled-table th:nth-child(2), .styled-table td:nth-child(2) { width: 18%; }
+.styled-table th:nth-child(3), .styled-table td:nth-child(3) { width: 40%; }
+.styled-table th:nth-child(4), .styled-table td:nth-child(4) { width: 20%; }
+.styled-table th:nth-child(5), .styled-table td:nth-child(5) { width: 14%; }
+
+
+
+/* 문의 상세 */
+.inquiry-detail {
+  margin: 80px 60px 60px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.inquiry-detail h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inquiry-card {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  max-width: 900px;
+}
+
+/* ① 상단 정보 구분 강조 */
+.inquiry-meta {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 15px;
+  color: #555;
+  border-bottom: 1px solid #e9ecef;  /* ✅ 구분선 추가 */
+  padding-bottom: 12px;              /* ✅ 여백 추가 */
+}
+
+.inquiry-meta li {
+  flex: 1 1 40%;
+}
+
+/* ② 제목 강조 & 구역 분리 */
+.inquiry-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  margin-top: 20px;                  /* ✅ 상단 여백 추가 */
+  margin-bottom: 12px;
+  color: #212529;
+}
+
+
+/* ③ 본문 영역 여백 살짝 조정 */
+.inquiry-content .inquiry-body {
+  font-size: 16px;
+  color: #495057;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  background-color: #f9f9f9;  /* ✅ 배경 살짝 */
+  padding: 16px 20px;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.inquiry-back {
+  margin-top: 30px;
+  text-align: right;
+}
+
+.btn-back {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #dee2e6;
+  color: #343a40;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-back:hover {
+  background-color: #ced4da;
+}
+
+.inquiry-response {
+  margin-top: 40px;
+  background-color: #f8f9fa;
+  border-left: 4px solid #4c6ef5;
+  padding: 20px 24px;
+  border-radius: 8px;
+  max-width: 900px;
+}
+
+.response-header {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #343a40;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.response-content {
+  font-size: 16px;
+  color: #212529;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin-bottom: 10px;
+}
+
+.response-meta {
+  font-size: 13px;
+  color: #868e96;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.response-writer::before {
+  content: "👤 ";
+}
+
+/* 1:1 문의 수정/삭제 버튼  */
+.inquiry-actions {
+  margin-top: 20px;
+  text-align: right;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn-edit, .btn-delete {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.btn-edit {
+  background-color: #4c6ef5;
+  color: white;
+}
+
+.btn-edit:hover {
+  background-color: #3b5bdb;
+}
+
+.btn-delete {
+  background-color: #f03e3e;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #c92a2a;
+}
+
+form .form-control {
+  font-size: 16px;			
+  padding: 10px;		
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+form button {
+  padding: 10px 18px;
+  border-radius: 6px;
+}
+
+
+/* nice-select 텍스트 중앙 정렬 */
+.nice-select .current {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+/* 전체 select 높이 지정 */
+.nice-select {
+  height: 45px;
+  line-height: 45px;
+}
+
+/* custom.css에 추가 */
+input.invalid, textarea.invalid, select.invalid {
+  border: 2px solid #ffc107;
+  border-radius: 6px;
+  background-color: #fffbea; /* 부드러운 노란 배경 */
+  transition: all 0.3s ease;
+}
+
+small.text-danger {
+  font-size: 13px;
+  margin-top: 5px;
+  color: #d99e00; /* 좀 더 따뜻한 노랑 계열 */
+}
+
+/* 공통 에러 메시지 스타일 */
+.input-error {
+  border: 2px solid #f4c430 !important;
+  background-color: #fffdee;
+}
+
+.text-error {
+  color: #e53935;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.text-error i {
+  font-size: 14px;
+  color: #e53935;
+}
+
+
+.form-control {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 15px;
+}
+
+.form-control:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  outline: none;
+}
+
+
+/* 현업에서 사용하는 경고 */
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: 4px;
+  display: none;
+}
+
+.is-invalid {
+  border-color: #dc3545;
+  background-color: #fff;
+}
+
+
+
+
+
+
+
+
+

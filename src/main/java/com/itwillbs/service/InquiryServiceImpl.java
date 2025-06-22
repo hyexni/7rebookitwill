@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.InquiryVO;
+import com.itwillbs.domain.ResponseVO;
 import com.itwillbs.persistence.InquiryDAO;
 
 @Service
@@ -41,7 +42,29 @@ public class InquiryServiceImpl implements InquiryService {
 	public InquiryVO getInquiry(int inquiry_id) {
 	    return iDAO.getInquiry(inquiry_id);
 	}
+	
+	// 답변
+	@Override
+	public ResponseVO getResponse(int inquiry_id) {
+	    return iDAO.getResponse(inquiry_id); // DAO로 위임
+	}
+	
+	// 수정
+	@Override
+	public void updateInquiry(InquiryVO vo) throws Exception {
+		iDAO.updateInquiry(vo);
+	}
 
+	// 삭제
+	@Override
+	public void deleteInquiry(int inquiry_id) throws Exception {
+	    iDAO.deleteInquiry(inquiry_id);
+	}
+
+
+	
+	
+	
 	
 	
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.domain.InquiryVO;
+import com.itwillbs.domain.ResponseVO;
 import com.itwillbs.service.InquiryService;
 
 @Controller
@@ -39,20 +40,24 @@ public class InquiryController {
 	
 	// 글쓰기 (정보 처리) / POST
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public String inquiryWritePOST(InquiryVO vo) throws Exception {
-		logger.info(" inquiryWritePOST() 실행");
+	public String inquiryWritePOST(InquiryVO vo, HttpSession session) throws Exception {
+		// 1. 세션에 임시 로그인 회원 번호 세팅 (없을 경우만)
+	    if (session.getAttribute("member_idx") == null) {
+	        session.setAttribute("member_idx", 1); // 💡 실제 존재하는 회원 번호로
+	        System.out.println("✅ 테스트용으로 member_idx=1 세션에 저장됨");
+	    }
+
+	    // 2. 세션에서 member_idx 꺼내서 InquiryVO에 설정
+	    Integer member_idx = (Integer) session.getAttribute("member_idx");
+	    vo.setMember_idx(member_idx);
+
+	    logger.info(" vo : {}", vo);
+
+	    // 3. 글쓰기 처리
+	    iService.inquiryWrite(vo);
 		
-		// 글쓰기 동작을 처리
 		
-		// 한글처리 인코딩 => web.xml 필터설정
-		// 1) 전달정보(파라메터)를 저장 / 제목, 내용, 고유번호
-		logger.info(" vo : {}", vo);
-		
-		// 서비스기능 -> DAO 기능 -> DB에 저장
-		iService.inquiryWrite(vo);
-		
-		
-		return "redirect:/cs/listAll";
+		return "redirect:/cs/list";
 	}
 	
 	
@@ -84,71 +89,46 @@ public class InquiryController {
 	public String inquiryRead(@RequestParam("inquiry_id") int inquiry_id, Model model) throws Exception {
 	    logger.info(" 📄 inquiryRead() 실행 - 문의번호: " + inquiry_id);
 
+	    // 문의 정보
 	    InquiryVO vo = iService.getInquiry(inquiry_id);
 	    model.addAttribute("vo", vo);
+	    
+	    // ✅ 답변 정보도 함께 조회
+	    ResponseVO responseVO = iService.getResponse(inquiry_id);
+	    model.addAttribute("responseVO", responseVO);
+
 
 	    return "/cs/read";  // 👉 상세 페이지 JSP 경로
 	}
+	
+	
+	/* 수정 기능 */
+	@GetMapping("/update")
+	public String inquiryUpdateGET(@RequestParam("inquiry_id") int inquiry_id, Model model) throws Exception {
+	    InquiryVO vo = iService.getInquiry(inquiry_id);
+	    model.addAttribute("vo", vo);
+	    return "/cs/update";  // 수정 form 페이지
+	}
+	
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public String inquiryUpdatePOST(InquiryVO vo) throws Exception {
+	    iService.updateInquiry(vo);
+	    return "redirect:/cs/read?inquiry_id=" + vo.getInquiry_id();
+	}
+	
+	
+	
+	/* 삭제 기능 */
+	@GetMapping("/delete")
+	public String inquiryDelete(@RequestParam("inquiry_id") int inquiry_id) throws Exception {
+	    iService.deleteInquiry(inquiry_id);
+	    return "redirect:/cs/list";
+	}
 
 
+
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 } // InquiryController 끝

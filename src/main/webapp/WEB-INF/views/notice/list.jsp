@@ -12,10 +12,29 @@
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
 
-<h2>${notice.notice_title}</h2>
-<p><strong>작성일:</strong> <fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd" /></p>
-<hr />
-<p>${notice.notice_content}</p>
+<h2>📢 공지사항</h2>
+<table class="notice-table">
+  <thead>
+    <tr>
+      <th>번호</th>
+      <th>제목</th>
+      <th>등록일</th>
+    </tr>
+  </thead>
+  <tbody>
+    <c:forEach var="vo" items="${noticeList}">
+      <tr>
+        <td>${vo.notice_id}</td>
+        <td>
+          <a href="read?notice_id=${vo.notice_id}">
+            ${vo.notice_title}
+          </a>
+        </td>
+        <td><fmt:formatDate value="${vo.notice_date}" pattern="yyyy-MM-dd" /></td>
+      </tr>
+    </c:forEach>
+  </tbody>
+</table>
 
 <%-- 4. 하단 푸터를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
