@@ -14,7 +14,8 @@ public interface AdminReviewDAO {
     int getReviewCount(@Param("keyword") String keyword);
     ReviewVO getReviewById(@Param("review_id") int review_id);
 
-    void hideReview(@Param("review_id") int review_id);
-    void deleteReview(@Param("review_id") int review_id);
+    void hideReview(@Param("review_id") int review_id, @Param("reason") String reason);
+    void deleteReview(@Param("review_id") int review_id, @Param("reason") String reason);
+
 }
 

@@ -40,12 +40,20 @@ public class AdminReviewDAOImpl implements AdminReviewDAO {
     }
 
     @Override
-    public void hideReview(int review_id) {
-        sqlSession.update(NAMESPACE + "hideReview", review_id);
+    public void hideReview(int review_id, String reason) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("review_id", review_id);
+        paramMap.put("reason", reason);
+        sqlSession.update(NAMESPACE + ".hideReview", paramMap);
     }
 
+
     @Override
-    public void deleteReview(int review_id) {
-        sqlSession.delete(NAMESPACE + "deleteReview", review_id);
+    public void deleteReview(int review_id, String reason) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("review_id", review_id);
+        paramMap.put("reason", reason);
+        sqlSession.update(NAMESPACE + ".deleteReview", review_id);
     }
+
 }

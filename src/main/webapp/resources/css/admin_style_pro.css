@@ -906,29 +906,131 @@ a {
 
 
 /* 1:1 문의 처리 상태 배지화 */
-		/* 상태 배지 스타일 */
-		.status-badge {
-		  display: inline-block;
-		  padding: 4px 10px;
-		  font-size: 13px;
-		  font-weight: 500;
-		  border-radius: 12px;
-		  color: white;
-		}
-		.status-received {
-		  background-color: #868e96; /* 접수: 회색 */
-		}
-		.status-done {
-		  background-color: #51cf66; /* 답변완료: 초록 */
-		}
+	/* 상태 배지 스타일 */
+	.status-badge {
+	  display: inline-block;
+	  padding: 4px 10px;
+	  font-size: 13px;
+	  font-weight: 500;
+	  border-radius: 12px;
+	  color: white;
+	}
+	.status-received {
+	  background-color: #868e96; /* 접수: 회색 */
+	}
+	.status-done {
+	  background-color: #51cf66; /* 답변완료: 초록 */
+	}
+	
+	/* 표 스타일 */
+	.table-bordered th,
+	.table-bordered td {
+	  border-right: 1px solid #dee2e6;
+	}
+	
+	.table-bordered th:last-child,
+	.table-bordered td:last-child {
+	  border-right: none;
+	}
+
+
+
+/* 리뷰관리 모달창 */
+	.modal {
+	  position: fixed;
+	  z-index: 1000;
+	  left: 50%;
+	  top: 50%;
+	  transform: translate(-50%, -50%);
+	  width: 700px;
+	  max-height: 90vh;
+	  overflow-y: auto;
+	  background-color: rgba(0,0,0,0.4);
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	}
+	
+	.modal-content {
+	  background-color: #fff;
+	  padding: 25px 30px;
+	  border-radius: 10px;
+	  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+	  width: 100%;
+	  max-height: 90vh;
+	  overflow-y: auto;
+	}
+	
+	.modal-buttons {
+  margin-top: 20px;
+  text-align: right;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}
+
+	.modal-buttons button {
+	  padding: 8px 20px;
+	  font-size: 15px;
+	  border-radius: 6px;
+	  margin-left: 10px;
+	  transition: all 0.2s ease-in-out;
+	}
+	
+	.modal-buttons .btn-outline-primary:hover {
+	  background-color: #4c6ef5;
+	  color: #fff;
+	}
+	
+	.modal-buttons .btn-outline-danger:hover {
+	  background-color: #dc3545;
+	  color: #fff;
+	}
+
+	
+
+	
+	.btn-modern {
+	  padding: 6px 14px;
+	  background-color: #4c6ef5;
+	  color: #fff;
+	  border: none;
+	  border-radius: 6px;
+	  font-size: 14px;
+	  font-weight: 500;
+	  cursor: pointer;
+	  transition: background-color 0.2s;
+	}
+	
+	.btn-modern:hover {
+	  background-color: #3b5bdb;
+	}
+	
+	.btn-outline {
+	  padding: 6px 14px;
+	  background-color: white;
+	  color: #4c6ef5;
+	  border: 1px solid #4c6ef5;
+	  border-radius: 6px;
+	  font-size: 14px;
+	  font-weight: 500;
+	  cursor: pointer;
+	  transition: all 0.2s;
+	}
+	
+	.btn-outline:hover {
+	  background-color: #4c6ef5;
+	  color: white;
+	}
 		
-		/* 표 스타일 */
-		.table-bordered th,
-		.table-bordered td {
-		  border-right: 1px solid #dee2e6;
-		}
+	.close {
+	  float: right;
+	  font-size: 24px;
+	  cursor: pointer;
+	  color: #888;
+	}
+	
+	.close:hover {
+	  color: #000;
+	  cursor: pointer;
+	}
 		
-		.table-bordered th:last-child,
-		.table-bordered td:last-child {
-		  border-right: none;
-		}

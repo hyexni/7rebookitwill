@@ -21,6 +21,7 @@ public class ReviewVO {
 
 	private String book_title;
 	private String member_id;
+	private String reason;
 
 
 	

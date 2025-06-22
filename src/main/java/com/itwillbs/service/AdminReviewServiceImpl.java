@@ -13,15 +13,42 @@ import com.itwillbs.persistence.AdminReviewDAO;
 public class AdminReviewServiceImpl implements AdminReviewService {
 
     @Inject
-    private AdminReviewDAO reviewDAO;
+    private AdminReviewDAO arDAO;
 
     @Override
     public List<ReviewVO> getReviewList(int startRow, int pageSize, String keyword) {
-        return reviewDAO.getReviewList(startRow, pageSize, keyword);
+        return arDAO.getReviewList(startRow, pageSize, keyword);
     }
 
     @Override
     public int getReviewCount(String keyword) {
-        return reviewDAO.getReviewCount(keyword);
+        return arDAO.getReviewCount(keyword);
     }
+    
+    @Override
+    public boolean hideReview(int review_id, String reason) {
+        try {
+            arDAO.hideReview(review_id, reason);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteReview(int review_id, String reason) {
+        try {
+            arDAO.deleteReview(review_id, reason);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    
 }
+
+
