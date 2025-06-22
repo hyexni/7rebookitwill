@@ -29,4 +29,6 @@ public abstract class ReceiptDAOImpl implements ReceiptDAO {
     public List<ReceiptVO> selectAllReceipts() {
         return sqlSession.selectList(NAMESPACE + "selectAllReceipts");
     }
+    
+    
 }

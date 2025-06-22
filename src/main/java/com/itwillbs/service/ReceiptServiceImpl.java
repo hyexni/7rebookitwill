@@ -16,6 +16,7 @@ import com.itwillbs.domain.PointVO;
 import com.itwillbs.domain.ReceiptVO;
 import com.itwillbs.dto.ReceiptDTO;
 import com.itwillbs.dto.ReceiptItemDTO;
+import com.itwillbs.persistence.MemberDAO;
 import com.itwillbs.persistence.PointHistoryDAO;
 import com.itwillbs.persistence.ReceiptDAO;
 import lombok.RequiredArgsConstructor;
@@ -83,31 +84,38 @@ public class ReceiptServiceImpl implements ReceiptService {
         // 5. DB에 영수증 정보 저장
         receiptDAO.insertReceipt(finalVO);
         
-     // ==========================================================
-        // [수정] 포인트 적립 로직 추가
+        
         // ==========================================================
+        // [수정] 포인트 적립 로직 전체 수정
         // 6. 저장된 영수증 금액을 기준으로 포인트 계산 및 적립
+        // ==========================================================
         int ocrAmount = finalVO.getOcr_amount();
         if (ocrAmount > 0) {
             // 5% 포인트 계산 (소수점 버림)
             int pointsToCredit = (int) (ocrAmount * 0.05);
 
             if (pointsToCredit > 0) {
-                // PointVO 객체 생성
+                // 1. 회원의 현재 포인트를 DB에서 조회합니다.
+                int currentPoints = PointHistoryDAO.selectMemberPoints(member_idx);
+
+                // 2. 현재 포인트와 신규 포인트를 더해 최종 누적 포인트를 계산합니다.
+                int newTotalPoints = currentPoints + pointsToCredit;
+
+                // 3. PointVO 객체를 생성하고 올바른 값들을 설정합니다.
                 PointVO pointVO = new PointVO();
                 pointVO.setMember_idx(member_idx);
-                pointVO.setChange_amount(pointsToCredit);
-                pointVO.setPoint_amount(pointsToCredit); // 예시: 변동량과 동일하게 설정
+                pointVO.setChange_amount(pointsToCredit);   // 이번에 '변동된' 포인트
+                pointVO.setPoint_amount(newTotalPoints);      // [수정] '누적된 최종' 포인트
                 pointVO.setChange_reason("영수증 인증 적립");
 
-                // 포인트 내역(history) DB에 저장
+                // 4. 포인트 내역(history)을 DB에 저장합니다.
                 PointHistoryDAO.insertReceiptPoint(pointVO);
                 
-             // [추가] 컨트롤러로 반환할 finalVO 객체에 적립된 포인트 값을 설정
-                finalVO.setEarnedPoints(pointsToCredit); 
+                // 5. 컨트롤러로 반환할 finalVO 객체에 적립된 포인트 값을 설정합니다.
+                finalVO.setEarnedPoints(pointsToCredit);
                 
-                // ✅ 중요: 실제 회원 테이블의 총 포인트도 업데이트해야 합니다.
-                // memberDAO.updateMemberTotalPoints(member_idx, pointsToCredit);
+                // 6. 실제 회원 테이블의 총 포인트를 안전하게 업데이트합니다.
+                 PointHistoryDAO.updateMemberTotalPoints(member_idx, pointsToCredit);
             }
         }
         
@@ -146,6 +154,8 @@ public class ReceiptServiceImpl implements ReceiptService {
         finalVO.setApprovalnumber(ocrDto.getApprovalNumber());
 
         finalVO.setOcr_amount(ocrDto.getTotalPrice());
+        
+               
        
 
         // 날짜 정보 처리 안정성 강화
@@ -201,7 +211,8 @@ public class ReceiptServiceImpl implements ReceiptService {
         String location = "us-central1";              // 미국
         String modelName = "gemini-2.0-flash-001";         // 사용할 모델
 
-        String promptText = "당신은 영수증 분석 전문가입니다. 주어진 영수증 이미지에서 다음 정보를 JSON 형식으로 정확히 추출해주세요 : "
+        String promptText = "당신은 도서구매 영수증 분석 전문가입니다. 주어진 영수증 이미지에서 다음 정보를 JSON 형식으로 정확히 추출해주세요 : "
+        										+" - 교보문고, 영풍문고, YES24, 알라딘, 인터파크, 반디앤루니스 단어가 판매처 이름으로 들어가 있거나 서점이라는 단어가 들어가 있는 영수증이라면 아래와 같은 명령을 실행하라." 
         										+ "1. 'seller': 서점 또는 상점 이름 "
         										+ "2. 'purchaseDate': 구매 날짜 (반드시<y_bin_46>-MM-DD 형식) "
         										+ "3. 'approvalNumber': 카드 승인 번호 "
@@ -210,7 +221,7 @@ public class ReceiptServiceImpl implements ReceiptService {
                                                  + "- 'bookTitle': 개별 책 제목 " 
         		 								 + "- 'quantity': 수량 (숫자만) "
         		 								 + "- 'price': 해당 상품의 금액 (숫자만) "
-        		                                 + "만약 특정 최상위 항목(seller, purchaseDate 등)을 찾을 수 없다면, 그 값은 null로 설정해주세요. " 
+        		                                 + "만약 특정 최상위 항목(seller, purchaseDate 등)을 찾을 수 없다면, 오류발생처리로 설정해주세요. " 
         		                                 + "절대로 설명이나 추가적인 텍스트 없이 순수한 JSON 객체만 응답해야 합니다.";  
        
         
