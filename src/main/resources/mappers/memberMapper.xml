@@ -97,5 +97,14 @@
 	<select id="selectMemberByPhone" parameterType="String" resultType="com.itwillbs.domain.MemberVO">
 	  SELECT * FROM member WHERE member_phone = #{phone}
 	</select>
+	
+	<!-- ✅ 이름 + 휴대폰번호로 아이디 조회 -->
+	<select id="findIdByNamePhone" resultType="string" parameterType="map">
+	  SELECT member_id
+	  FROM member
+	  WHERE member_name = #{member_name}
+	    AND member_phone = #{member_phone}
+	    AND member_status = 'Y'
+	</select>
 
 </mapper>

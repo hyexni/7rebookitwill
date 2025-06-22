@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -244,6 +245,30 @@ public class MemberController {
 		mService.updateMemberWithCategories(uvo, categoryIds);
 
 		return "redirect:/member/main";
+	}
+
+	// 📲 휴대폰 번호로 아이디 찾기
+	@GetMapping("/findIdByPhone")
+	public String findIdByPhone(@RequestParam("member_name") String member_name,
+			@RequestParam("member_phone") String member_phone, Model model) {
+
+		// 아이디 조회 서비스 호출
+		String member_id = mService.findIdByNamePhone(member_name, member_phone);
+
+		if (member_id != null) {
+			model.addAttribute("resultId", member_id);
+		} else {
+			model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
+		}
+
+		// 결과를 보여줄 JSP로 이동
+		return "/member/findIdResult";
+	}
+
+	// 아이디 찾기 페이지 보여주기 (폼)
+	@GetMapping("/findId")
+	public String goFindIdPage() {
+		return "/member/findId"; // 실제 JSP 위치: /WEB-INF/views/member/find_id.jsp
 	}
 
 }// controller

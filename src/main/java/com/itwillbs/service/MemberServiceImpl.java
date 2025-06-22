@@ -123,4 +123,10 @@ public class MemberServiceImpl implements MemberService {
 			mcdao.insertMemberCategory(mcvo);
 		}
 	}
+
+	// 이름 + 휴대폰 번호 아이디 찾기
+	@Override
+	public String findIdByNamePhone(String member_name, String member_phone) {
+		return mdao.findIdByNamePhone(member_name, member_phone);
+	}
 }
