@@ -351,3 +351,5 @@
         </div> <%-- /.card --%>
     </div> <%-- /.point-history-container --%>
 </main>
+ <%-- 5. 하단 푸터 --%>
+<%@include file="../include/footer.jsp" %>
