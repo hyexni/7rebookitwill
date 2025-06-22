@@ -1,6 +1,7 @@
 package com.itwillbs.service;
 
 import com.itwillbs.domain.PointVO;
+import com.itwillbs.domain.ReceiptVO;
 import com.itwillbs.domain.SearchCriteria;
 import com.itwillbs.dto.PointHistoryDTO;
 
@@ -20,6 +21,16 @@ public interface PointHistoryService {
 
     // 포인트 사용 처리 메서드 (추가)
     public void usePoint(PointVO pointVO) throws Exception;
+    
+    
+    /**
+     * [기능 추가] 처리된 영수증 정보를 바탕으로 포인트를 계산하고 적립합니다.
+     * 포인트 적립과 관련된 모든 비즈니스 로직(계산, 내역 저장, 총액 업데이트)은 이 메서드 안에서 트랜잭션으로 처리됩니다.
+     * * @param receipt 포인트 적립의 근거가 되는, 처리가 완료된 영수증 객체
+     * @return 실제로 적립된 포인트. 적립이 없으면 0을 반환.
+     * @throws Exception
+     */
+    int earnPointsFromReceipt(ReceiptVO receipt) throws Exception;
     
     //--관리자 모드--//
  // [수정] 파라미터를 SearchCriteria 객체로 변경
