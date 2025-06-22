@@ -53,37 +53,70 @@ public class ReceiptController {
         return "receipt/upload";
     }
 
-    // POST 요청: 파일 업로드 처리
+    // POST 요청: 파일 업로드 처리 [최종 수정 버전]
     @PostMapping("/upload")
     public String receiptUploadPost(MultipartFile file, RedirectAttributes redirectAttributes, HttpSession session) {
         logger.info("POST - /receipt/upload - 파일명: {}", file.getOriginalFilename());
 
         Integer memberIdx = (Integer) session.getAttribute("member_idx");
         if (memberIdx == null) {
-            redirectAttributes.addFlashAttribute("message", "오류: 로그인이 필요합니다.");
-            // POST 요청에서는 이전 목적지를 저장할 필요가 없으므로 바로 리다이렉트
+            redirectAttributes.addFlashAttribute("message", "오류: 세션이 만료되었거나 로그인이 필요합니다.");
             return "redirect:/member/login";
         }
 
+        // ================== 파일 유효성 검사 시작 ==================
+        // 1. 파일이 비어있는지 확인
+        if (file.isEmpty()) {
+            redirectAttributes.addFlashAttribute("message", "업로드할 파일을 선택해주세요.");
+            return "redirect:/receipt/upload";
+        }
+
+        // 2. 파일 용량 확인 (10MB 제한)
+        final long MAX_SIZE = 10 * 1024 * 1024; // 10MB
+        if (file.getSize() > MAX_SIZE) {
+            redirectAttributes.addFlashAttribute("message", "최대 10MB 이하의 파일만 업로드 가능합니다.");
+            return "redirect:/receipt/upload";
+        }
+
+        // 3. 파일 확장자 확인 (JPG, PNG, PDF)
+        String contentType = file.getContentType();
+        if (contentType == null || (!contentType.equals("image/jpeg") && !contentType.equals("image/png") && !contentType.equals("application/pdf"))) {
+            redirectAttributes.addFlashAttribute("message", "허용되지 않는 파일 형식입니다. (JPG, PNG, PDF만 가능)");
+            return "redirect:/receipt/upload";
+        }
+        // ================== 파일 유효성 검사 끝 ==================
+
         try {
-            // 영수증 처리 로직
+            // 서비스 로직 호출
             ReceiptVO resultVO = receiptService.processAndSaveReceipt(file, memberIdx);
             
-            // 처리가 성공하면 결과 객체를 다음 페이지로 전달
+            // 성공 시 결과 페이지로 이동
             redirectAttributes.addFlashAttribute("uploadResult", resultVO);
+            redirectAttributes.addFlashAttribute("message", "영수증 인증이 성공적으로 완료되었습니다!");
             return "redirect:/receipt/upload-result";
-          
-
-        } catch (Exception e) {
-            // 서비스 처리 중 예외 발생 시, 에러 메시지를 업로드 페이지로 전달
-            logger.error("영수증 처리 중 오류 발생", e);
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
-            return "redirect:/receipt/upload";
         
+        // ================== [수정] 상세한 예외 처리 시작 ==================
+        } catch (IllegalStateException e) { 
+            // [중복 업로드] 예외를 처리 (Service에서 IllegalStateException을 발생시켰으므로)
+            logger.warn("중복 영수증 업로드 시도: {}", e.getMessage());
+            redirectAttributes.addFlashAttribute("message", e.getMessage()); // "이미 등록된 영수증입니다..." 메시지 전달
+            return "redirect:/receipt/upload";
+        } catch (RuntimeException e) { 
+            // [OCR 실패] 등 기타 런타임 예외를 처리 (Service에서 RuntimeException을 발생시켰으므로)
+            // IllegalStateException도 RuntimeException의 자식이므로, 반드시 뒤에 위치해야 합니다.
+            logger.warn("영수증 처리 중 런타임 오류 발생: {}", e.getMessage());
+            redirectAttributes.addFlashAttribute("message", e.getMessage()); // "영수증 내용을 인식하지 못했습니다." 메시지 전달
+            return "redirect:/receipt/upload";
+        } catch (Exception e) {
+            // 그 외 예측하지 못한 모든 서버 내부 오류
+            logger.error("영수증 처리 중 심각한 오류 발생", e);
+            redirectAttributes.addFlashAttribute("message", "처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+            return "redirect:/receipt/upload";
         }
+        // ================== 상세한 예외 처리 끝 ==================
     }
 
-    // GET 요청: 업로드 결과 페이지를 보여줌
+    // GET 요청: 업로드 결과 페이지 (수정 없음)
     @GetMapping("/upload-result")
     public String uploadResultPage() {
         logger.info("GET - /receipt/upload-result");

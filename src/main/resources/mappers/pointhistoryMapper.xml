@@ -23,6 +23,17 @@
 <!--         VALUES (#{member_idx}, #{change_amount},  #{change_amount}, #{change_reason}, NOW()) -->
 <!--     </insert> -->
 
+
+<select id="selectMemberPoints" resultType="int" parameterType="int">
+    SELECT point_amount FROM point WHERE member_idx = #{member_idx}
+</select>
+
+
+<update id="updateMemberTotalPoints">
+        UPDATE point
+        SET    point_amount = point_amount + #{change_amount}
+        WHERE  member_idx = #{member_idx}
+    </update>
     
 <!-- 사용자 모드 끝 -->
     

@@ -57,11 +57,6 @@ public class PointHistoryController {
         }
         
 
-        // [추가] 개발 및 테스트를 위해 member_idx를 1로 고정합니다.
-       // Integer member_idx = 1;
-        //logger.info("테스트용 회원 ID 고정: member_idx = {}", member_idx);
-
-
         try {
         	
         	logger.info(member_idx+"");

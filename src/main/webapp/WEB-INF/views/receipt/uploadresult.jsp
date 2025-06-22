@@ -2,12 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html>
-<head>
+<%-- 1. 페이지 기본 골격과 CSS/폰트 링크 --%>
+<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+
     <title>OCR 결과 보기</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; margin: 2em; background-color: #f8f9fa; color: #212529; }
-        .container { max-width: 800px; margin: auto; background-color: #fff; padding: 2em; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+    
+        .container { max-width: 800px; margin: 20px; background-color: #fff; padding: 2em; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
         h1, h2 { color: #0056b3; }
         .summary-box { border: 1px solid #dee2e6; padding: 1.5em; border-radius: 8px; margin-bottom: 2em; }
         .summary-box h2 { margin-top: 0; }
@@ -22,13 +23,18 @@
         .btn-link { text-decoration: none; background-color: #007bff; color: white; padding: 10px 15px; border-radius: 5px; display: inline-block; margin-top: 2em; }
         /* [개선] 정보가 없을 때 표시할 텍스트 스타일 추가 */
         .text-muted { color: #6c757d; font-style: italic; }
+        
         .highlight { background-color: #e8f6ff; padding: 15px; border-radius: 5px; margin-top: 20px; }
         .highlight strong { font-size: 20px; color: #007bff; }
         
     </style>
-</head>
-<body>
-${uploadResult.ocr_amount*0.05}
+
+<%-- 2. 상단 헤더 --%>
+<%@ include file="/WEB-INF/views/include/header.jsp" %> 
+
+<%-- 3. 왼쪽 사이드바 --%>
+<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+
 
     <div class="container">
         <h1>🧾 영수증 인식 결과</h1>
@@ -94,7 +100,7 @@ ${uploadResult.ocr_amount*0.05}
             <p>적립된 포인트: <strong><fmt:formatNumber value="${uploadResult.earnedPoints}" pattern="#,##0" /> 점</strong></p>
         </div>
         
-
+        
         <h2>구매 품목 목록</h2>
         <%-- [개선] items 리스트가 비어있지 않을 때만 테이블을 표시 --%>
         <c:choose>
@@ -129,5 +135,7 @@ ${uploadResult.ocr_amount*0.05}
         
         <a href="${pageContext.request.contextPath}/receipt/upload" class="btn-link">🔄 다시 업로드하기</a>
     </div>
-</body>
-</html>
+    
+    <%-- 5. 하단 푸터 --%>
+<%@include file="../include/footer.jsp" %>
+
