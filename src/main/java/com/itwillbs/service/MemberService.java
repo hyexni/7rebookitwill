@@ -46,4 +46,10 @@ public interface MemberService {
 	// 휴대폰으로 회원 조회
 	MemberVO memberInfoByPhone(String phone);
 
+	// ✅ 이름 + 휴대폰으로 아이디 찾기
+	String findIdByNamePhone(String member_name, String member_phone);
+
+	// 비밀번호 찾기
+	String findPwByInfo(MemberVO vo);
+
 }

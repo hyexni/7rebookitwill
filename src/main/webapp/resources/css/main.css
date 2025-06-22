@@ -160,3 +160,87 @@ span#emailResult {
   margin: 0;
   font-weight: normal;
 }
+
+/* =============================== */
+/* ✅ 로그인 전용 컨테이너 설정 */
+/* =============================== */
+/* ✅ 로그인 전체 컨테이너 */
+.login-container {
+  max-width: 500px;
+  margin: 60px auto;
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ✅ 제목 */
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #333;
+}
+
+/* ✅ 라벨 및 입력 요소 */
+.login-container label {
+  display: block;
+  margin-top: 18px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #222;
+}
+
+.login-container input[type="text"],
+.login-container input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+/* ✅ 에러 메시지 */
+.login-error {
+  font-size: 13px;
+  color: red;
+  margin-top: 8px;
+}
+
+/* ✅ 로그인 버튼 */
+.login-container button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 30px;
+  font-size: 16px;
+  background-color: #ffcc00;
+  color: #222;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.login-container button[type="submit"]:hover {
+  background-color: #e6b800;
+}
+
+/* ✅ 링크들 */
+.login-links {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.login-links a {
+  color: #333;
+  text-decoration: none;
+  margin: 0 6px;
+}
+
+.login-links a:hover {
+  text-decoration: underline;
+}

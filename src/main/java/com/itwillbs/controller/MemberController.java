@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -244,6 +245,60 @@ public class MemberController {
 		mService.updateMemberWithCategories(uvo, categoryIds);
 
 		return "redirect:/member/main";
+	}
+
+	// 📲 휴대폰 번호로 아이디 찾기
+	@GetMapping("/findIdByPhone")
+	public String findIdByPhone(@RequestParam("member_name") String member_name,
+			@RequestParam("member_phone") String member_phone, Model model) {
+
+		// 아이디 조회 서비스 호출
+		String member_id = mService.findIdByNamePhone(member_name, member_phone);
+
+		if (member_id != null) {
+			model.addAttribute("resultId", member_id);
+		} else {
+			model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
+		}
+
+		// 결과를 보여줄 JSP로 이동
+		return "/member/findIdResult";
+	}
+
+	// 아이디 찾기 페이지 보여주기 (폼)
+	@GetMapping("/findId")
+	public String goFindIdPage() {
+		return "/member/findId"; // 실제 JSP 위치: /WEB-INF/views/member/find_id.jsp
+	}
+
+	// 비밀번호 찾기 폼 페이지로 이동
+	@GetMapping("/findPw")
+	public String goFindPwPage() {
+		return "/member/findPw"; // JSP 경로
+	}
+
+	@PostMapping("/findPw")
+	public String findPwByInfo(@RequestParam("member_id") String member_id,
+			@RequestParam("member_name") String member_name, @RequestParam("member_phone") String member_phone,
+			Model model) {
+
+		// 📦 VO에 담아서 전달
+		MemberVO vo = new MemberVO();
+		vo.setMember_id(member_id);
+		vo.setMember_name(member_name);
+		vo.setMember_phone(member_phone);
+
+		// 💡 mService로 서비스 호출
+		String pw = mService.findPwByInfo(vo);
+
+		// 결과 모델에 담기
+		if (pw != null) {
+			model.addAttribute("resultPw", pw);
+		} else {
+			model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
+		}
+
+		return "member/findPwResult";
 	}
 
 }// controller
