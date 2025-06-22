@@ -13,31 +13,39 @@
 
 <%-- 4. 여기서부터 '1:1 문의 목록' 페이지만의 고유한 컨텐츠가 시작됩니다. --%>
 
-<h2>📋 나의 1:1 문의 내역</h2>
+<section class="mypage-inquiry-list">
+  <div class="inquiry-header">
+    <h2><i class="fa fa-clipboard-list"></i>📋 나의 1:1 문의 내역</h2>
+    <a href="/cs/write" class="btn-write">새글 등록</a>
+  </div>
 
-	<table class="table table-striped">
-	  <thead>
-	    <tr>
-	      <th>번호</th>
-	      <th>분류</th>
-	      <th>제목</th>
-	      <th>작성일</th>
-	      <th>상태</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <!-- 반복문으로 문의 리스트 출력 -->
-	    <c:forEach var="vo" items="${inquiryList}">
-	      <tr>
-	        <td>${vo.inquiry_id}</td>
-	        <td>${vo.category}</td>
-	        <td><a href="/cs/read?inquiry_id=${vo.inquiry_id}">${vo.title}</a></td>
-	        <td><fmt:formatDate value="${vo.created_at}" pattern="yyyy-MM-dd"/></td>
-	        <td>${vo.status}</td>
-	      </tr>
-	    </c:forEach>
-	  </tbody>
-	</table>
+  <div class="table-wrapper">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>번호</th>
+          <th>분류</th>
+          <th>제목</th>
+          <th>작성일</th>
+          <th>상태</th>
+        </tr>
+      </thead>
+      <tbody>
+        <c:forEach var="vo" items="${inquiryList}">
+          <tr>
+            <td>${vo.inquiry_id}</td>
+            <td>${vo.category}</td>
+            <td><a href="/cs/read?inquiry_id=${vo.inquiry_id}" class="inquiry-link">${vo.title}</a></td>
+            <td><fmt:formatDate value="${vo.created_at}" pattern="yyyy-MM-dd" /></td>
+            <td><span class="status received">${vo.status}</span></td>
+          </tr>
+        </c:forEach>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
 
 
 

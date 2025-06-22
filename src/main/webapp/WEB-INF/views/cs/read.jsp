@@ -13,21 +13,71 @@
 
 <%-- 4. 여기서부터 '문의 상세조회' 페이지만의 고유한 컨텐츠가 시작됩니다. --%>
 
+<section class="inquiry-detail">
+  <h2><i class="fa fa-comment-dots"></i> 문의 상세</h2>
 
-	<div class="content">
-		<h1> /cs/read.jsp </h1>
-		
-			<h2>문의 상세</h2>
-			
-			<p><strong>번호:</strong> ${vo.inquiry_id}</p>
-			<p><strong>분류:</strong> ${vo.category}</p>
-			<p><strong>제목:</strong> ${vo.title}</p>
-			<p><strong>내용:</strong> ${vo.content}</p>
-			<p><strong>작성일:</strong> ${vo.created_at}</p>
-			<p><strong>상태:</strong> ${vo.status}</p>
-			
-			<a href="/cs/list">← 목록으로</a>
-	</div>
+  <div class="inquiry-box">
+  <div class="inquiry-meta">
+    <div><strong>번호:</strong> ${vo.inquiry_id}</div>
+    <div><strong>작성일:</strong> <fmt:formatDate value="${vo.created_at}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
+    <div><strong>분류:</strong> ${vo.category}</div>
+    <div><strong>상태:</strong> ${vo.status}</div>
+  </div>
+
+  <div class="inquiry-title-content">
+    <h3 class="inquiry-title">제목: ${vo.title}</h3>
+    <p class="inquiry-content">${vo.content}</p>
+  </div>
+
+  <div class="inquiry-back">
+    <a href="/cs/list" class="btn-back"><i class="fa fa-arrow-left"></i> 목록으로</a>
+  </div>
+</div>
+
+  
+	  <c:if test="${not empty responseVO}">
+	  <div class="inquiry-response">
+	    <div class="response-header">
+	      <i class="fa fa-reply"></i> <strong>관리자 답변</strong>
+	    </div>
+	    <div class="response-meta">
+	      <span class="response-writer">${responseVO.response_content}</span>
+	      <span class="response-date">
+	        <fmt:formatDate value="${responseVO.created_at}" pattern="yyyy-MM-dd HH:mm:ss"/>
+	      </span>
+	    </div>
+	  </div>
+	</c:if>
+	
+	<!-- 기존 read.jsp 내용 아래에 삽입 -->
+	<c:if test="${vo.status eq '접수'}">
+	  <button class="btn btn-outline-warning" onclick="document.getElementById('editForm').style.display='block'">✏ 수정하기</button>
+	
+	  <div id="editForm" style="display:none; margin-top:20px;">
+	    <form action="${pageContext.request.contextPath}/cs/update" method="post">
+	      <input type="hidden" name="inquiry_id" value="${vo.inquiry_id}" />
+	
+	      <label>제목</label>
+	      <input type="text" name="title" class="form-control" value="${vo.title}" />
+	
+	      <label class="mt-3">내용</label>
+	      <textarea name="content" class="form-control" rows="5">${vo.content}</textarea>
+	
+	      <button type="submit" class="btn btn-primary mt-3">수정 완료</button>
+	    </form>
+	  </div>
+	</c:if>
+	
+	<c:if test="${vo.status eq '접수'}">
+    <a href="${pageContext.request.contextPath}/cs/delete?inquiry_id=${vo.inquiry_id}" 
+       class="btn btn-outline-danger"
+       onclick="return confirm('정말 삭제하시겠습니까?');">🗑 삭제</a>
+	</c:if>
+	
+	
+  
+</section>
+
 
 
 <%-- '문의 상세조회' 페이지 컨텐츠 끝 --%>

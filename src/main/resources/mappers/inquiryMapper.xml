@@ -9,7 +9,7 @@
 	<!-- 새 문의 등록 -->
 	<insert id="insertInquiry" parameterType="com.itwillbs.domain.InquiryVO">
 		  INSERT INTO inquiry (member_idx, category, title, content, status, created_at)
-		  VALUES (#{member_idx}, #{category}, #{title}, #{content}, '대기중', NOW());
+		  VALUES (#{member_idx}, #{category}, #{title}, #{content}, '접수', NOW());
 	</insert>
 
 	
@@ -28,6 +28,28 @@
    	 SELECT * FROM inquiry
    	 WHERE inquiry_id = #{inquiry_id}
 	</select>
+	
+	
+	
+	<!-- 답변 -->
+	<select id="getResponse" resultType="com.itwillbs.domain.ResponseVO">
+	  SELECT * FROM response WHERE inquiry_id = #{inquiry_id}
+	</select>
+	
+	
+	
+	<!-- 수정 -->
+	<update id="updateInquiry">
+	  UPDATE inquiry
+	  SET title = #{title}, content = #{content}
+	  WHERE inquiry_id = #{inquiry_id}
+	</update>
+
+	<!-- 삭제 -->
+	<delete id="deleteInquiry">
+	  DELETE FROM inquiry WHERE inquiry_id = #{inquiry_id}
+	</delete>
+	
 	
 
 
