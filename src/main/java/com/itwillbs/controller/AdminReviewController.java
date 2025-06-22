@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.service.AdminReviewService;
@@ -46,33 +47,22 @@ public class AdminReviewController {
         return "admin/review_list";
     }
     
-    @PostMapping("review_hide")
-    @ResponseBody
-    public String hideReview(@RequestBody Map<String, Object> data) {
-        try {
-            int reviewId = (int) data.get("review_id");
-            String reason = (String) data.get("reason");
-            boolean result = arService.hideReview(reviewId, reason);
-            return result ? "success" : "fail";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "fail";
-        }
+    @PostMapping("/review_hide")
+    public String hideReview(@RequestParam int review_id, @RequestParam String reason, RedirectAttributes rttr) {
+        arService.hideReview(review_id, reason);
+        rttr.addFlashAttribute("msg", "리뷰 숨김 처리 완료!");
+        return "redirect:/admin/review_list";
     }
 
 
-    @PostMapping("review_delete")
-    @ResponseBody
-    public String deleteReview(@RequestBody Map<String, Object> data) {
-        try {
-            int reviewId = (int) data.get("review_id");
-            String reason = (String) data.get("reason");
-            boolean result = arService.deleteReview(reviewId, reason);
-            return result ? "success" : "fail";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "fail";
-        }
+    @PostMapping("/review_delete")
+    public String deleteReview(@RequestParam("review_id") int reviewId,
+                               @RequestParam("reason") String reason,
+                               RedirectAttributes rttr) {
+        arService.deleteReview(reviewId, reason);
+        rttr.addFlashAttribute("msg", "리뷰 삭제 완료!");
+        return "redirect:/admin/review_list";
     }
+
 
 }

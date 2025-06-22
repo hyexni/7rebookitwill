@@ -75,6 +75,15 @@
 	  </div>
 	</div>
 	
+	<form id="reviewActionForm" method="post">
+ 		 <input type="hidden" name="review_id" id="modalReviewId">
+ 		 <input type="hidden" name="reason" id="modalReasonHidden">
+	</form>
+	<c:if test="${not empty msg}">
+  <script>alert('${msg}');</script>
+</c:if>
+	
+	
 	<!-- ✅ 상세보기 모달 -->
 	<div id="reviewModal" class="modal" style="display:none;">
 	  <div class="modal-content">
