@@ -3,17 +3,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-
-<%-- 1. 페이지 기본 골격과 공통 CSS/폰트 링크를 불러옵니다. --%>
 <%@ include file="include/layout_head.jsp" %>
-
-<%-- 2. 상단 헤더를 불러옵니다. --%>
 <%@ include file="include/header.jsp" %> 
+<%@ include file="include/sidebar.jsp" %>
 
-<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
-<%@ include file="include/sidebar.jsp" %>  
-
-<!-- ✅ 공통 CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/custom.css">
 
 <div class="container">
@@ -51,13 +44,20 @@
           <td>${review.review_score}</td>
           <td>${review.review_status}</td>
           <td>${fn:substring(review.review_text, 0, 20)}...</td>
-          <td><a href="${pageContext.request.contextPath}/admin/review_view?review_id=${review.review_id}">보기</a></td>
+          <td>
+            <button class="openModalBtn"
+                    data-book="${review.book_title}"
+                    data-writer="${review.member_name}"
+                    data-date="<fmt:formatDate value='${review.review_date}' pattern='yyyy-MM-dd'/>"
+                    data-score="${review.review_score}"
+                    data-text="${review.review_text}">
+              상세보기
+            </button>
+          </td>
         </tr>
       </c:forEach>
       <c:if test="${empty reviewList}">
-        <tr>
-          <td colspan="9">조회된 리뷰가 없습니다.</td>
-        </tr>
+        <tr><td colspan="9">조회된 리뷰가 없습니다.</td></tr>
       </c:if>
     </tbody>
   </table>
@@ -68,12 +68,51 @@
       <a href="?page=${currentPage - 1}&keyword=${param.keyword}">&laquo; 이전</a>
     </c:if>
     <span>${currentPage}</span>
-    <c:if test="${reviewList.size() == 10}">
+    <c:if test="${reviewList.size() == pageSize}">
       <a href="?page=${currentPage + 1}&keyword=${param.keyword}">다음 &raquo;</a>
     </c:if>
   </div>
 </div>
 
+<!-- ✅ 상세보기 모달 -->
+<div id="reviewModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>리뷰 상세 내용</h3>
+    <p><strong>도서명:</strong> <span id="modalBookTitle"></span></p>
+    <p><strong>작성자:</strong> <span id="modalWriter"></span></p>
+    <p><strong>작성일:</strong> <span id="modalDate"></span></p>
+    <p><strong>평점:</strong> <span id="modalScore"></span></p>
+    <p><strong>내용:</strong> <span id="modalText"></span></p>
+  </div>
+</div>
 
-<%-- 4. 하단 푸터를 불러옵니다. --%>
-<%@ include file="include/footer.jsp" %> 
+<style>
+  .modal { position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); }
+  .modal-content { background-color: #fff; margin: 10% auto; padding: 20px; width: 500px; border-radius: 8px; }
+  .close { float: right; font-size: 24px; cursor: pointer; }
+</style>
+
+<script>
+  document.querySelectorAll('.openModalBtn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.getElementById('modalBookTitle').textContent = this.dataset.book;
+      document.getElementById('modalWriter').textContent = this.dataset.writer;
+      document.getElementById('modalDate').textContent = this.dataset.date;
+      document.getElementById('modalScore').textContent = this.dataset.score;
+      document.getElementById('modalText').textContent = this.dataset.text;
+      document.getElementById('reviewModal').style.display = 'block';
+    });
+  });
+
+  document.querySelector('.modal .close').addEventListener('click', () => {
+    document.getElementById('reviewModal').style.display = 'none';
+  });
+
+  window.addEventListener('click', e => {
+    const modal = document.getElementById('reviewModal');
+    if (e.target === modal) modal.style.display = 'none';
+  });
+</script>
+
+<%@ include file="include/footer.jsp" %>
