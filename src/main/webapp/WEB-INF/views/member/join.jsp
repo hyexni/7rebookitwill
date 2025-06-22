@@ -41,7 +41,9 @@
     <label for="member_name">이름:</label>
     <input type="text" id="member_name" name="member_name" required>
 
-    <label>통신사:</label>
+   <div class="inline-field">
+  <div class="field-box">
+    <label for="tel_carrier">통신사:</label><br>
     <select id="tel_carrier" name="tel_carrier">
       <option value="">선택</option>
       <option value="SKT">SKT</option>
@@ -49,10 +51,14 @@
       <option value="LGU+">LG U+</option>
       <option value="알뜰폰">알뜰폰</option>
     </select>
+  </div>
 
-    <label for="member_phone">휴대폰번호:</label>
+  <div class="field-box">
+    <label for="member_phone">휴대폰번호:</label><br>
     <input type="text" id="member_phone" name="member_phone" required>
     <span id="phoneResult"></span>
+  </div>
+</div>
 
    <!-- 이메일 입력 (선택사항) -->
 <label for="email_front">이메일 (선택사항):</label>
@@ -85,15 +91,18 @@
     <label for="member_address_detail">상세주소:</label>
     <input type="text" id="member_address_detail" name="member_address_detail" required>
 
-    <!-- 관심 카테고리 (2개 이상 선택 필수) -->
-    <div class="form-group">
-      <label>관심 카테고리 (2개 이상 필수 선택)</label><br>
-      <c:forEach var="cate" items="${categoryList}">
-        <label class="checkbox-inline">
-          <input type="checkbox" name="category_ids" value="${cate.category_id}"> ${cate.category_name_ko}
-        </label><br>
-      </c:forEach>
-    </div>
+   <!-- 관심 카테고리 (2개 이상 선택 필수) -->
+<div class="form-group">
+  <label>관심 카테고리 (2개 이상 필수 선택)</label>
+  <div class="category-group">
+    <c:forEach var="cate" items="${categoryList}">
+      <label class="checkbox-inline">
+        <input type="checkbox" name="category_ids" value="${cate.category_id}">
+        ${cate.category_name_ko}
+      </label>
+    </c:forEach>
+  </div>
+</div>
 
     <button type="submit">가입하기</button>
   </form>

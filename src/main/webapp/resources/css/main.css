@@ -115,3 +115,48 @@ span#emailResult {
   display: block;
   margin: 5px 0;
 }
+
+/* ✅ 통신사 + 휴대폰 한 줄 정렬 */
+.inline-field {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.inline-field .field-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.inline-field .field-box:first-child {
+  flex: 0.8; /* 통신사 작게 */
+}
+
+.inline-field .field-box:last-child {
+  flex: 2; /* 휴대폰번호 넓게 */
+}
+
+.inline-field select,
+.inline-field input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+/* ✅ 관심 카테고리 - 한 줄에 3개 정렬 */
+.category-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.category-group .checkbox-inline {
+  flex: 0 0 calc(33.33% - 10px);  /* 한 줄에 3개 */
+  margin: 0;
+  font-weight: normal;
+}
