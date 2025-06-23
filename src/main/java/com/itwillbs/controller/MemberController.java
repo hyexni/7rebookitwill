@@ -105,10 +105,11 @@ public class MemberController {
 			rttr.addFlashAttribute("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
 			return "redirect:/member/login";
 		}
-
-		session.setAttribute("loginUser", resultVO);
-		session.setAttribute("id", resultVO.getMember_id());
-		session.setAttribute("member_idx", resultVO.getMember_idx());
+    
+		// 로그인 성공시 세션영역에 아이디 및 회원 고유 번호 저장
+		session.setAttribute("id", resultVO.getMember_id()); // 로그인 ID
+		session.setAttribute("member_idx", resultVO.getMember_idx()); // 회원 고유 번호 (포인트 내역 조회에 필요)
+		session.setAttribute("loginUser", resultVO); // ✅ VO 통째로 저장
 
 		String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
 		if (redirectUrl != null) {

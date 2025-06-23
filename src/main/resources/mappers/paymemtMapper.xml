@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.persistence.PaymentDAO">
+
+	<!-- 책 정보 가져오기 -->
+	<select id="selectBook" resultType="BookVO">
+	  SELECT * FROM book WHERE book_id = #{book_id}
+	</select>
+	
+	<!-- 포인트 정보 가져오기 -->
+	<select id="getMemberPoint" resultType="int">
+	  SELECT point_total FROM member WHERE member_idx = #{member_idx}
+	</select>
+	
+	
+	<!-- 결제 처리 -->
+	<!-- 1. 포인트 차감 -->
+	<update id="usePoints" parameterType="com.itwillbs.dto.PaymentDTO">
+	  UPDATE member
+	  SET point_total = point_total - #{used_points}
+	  WHERE member_idx = #{member_idx}
+	</update>
+	
+	<!-- 2. 주문 저장 -->
+	<insert id="insertOrder" parameterType="com.itwillbs.dto.PaymentDTO">
+	  INSERT INTO orders (member_idx, total_price, status, order_date, delivery_address)
+	  VALUES (#{member_idx}, #{pay_amount}, '결제완료', NOW(), '기본배송지')
+	</insert>
+	
+	<select id="getLastOrderId" resultType="int">
+	  SELECT LAST_INSERT_ID()
+	</select>
+	
+	<!-- 3. 주문 상세 저장 -->
+	<insert id="insertOrderItem" parameterType="com.itwillbs.dto.PaymentDTO">
+	  INSERT INTO orderitem (order_id, book_id, quantity, unit_price, book_quantity)
+	  VALUES (#{order_id}, #{book_id}, #{quantity}, #{unit_price}, 1)
+	</insert>
+	
+	<!-- 4. 결제 저장 -->
+	<insert id="insertPayment" parameterType="com.itwillbs.dto.PaymentDTO">
+	  INSERT INTO payment (order_id, member_idx, pay_amount, pay_method, used_points, saved_points, paid_at)
+	  VALUES (#{order_id}, #{member_idx}, #{pay_amount}, #{pay_method}, #{used_points}, #{saved_points}, NOW())
+	</insert>
+	
+	<!-- 5. 포인트 적립 -->
+	<update id="givePoints" parameterType="com.itwillbs.dto.PaymentDTO">
+	  UPDATE member
+	  SET point_total = point_total + #{saved_points}
+	  WHERE member_idx = #{member_idx}
+	</update>
+	
+	
+	
+	
+	<!-- 결제 완료 -->
+	<select id="getLatestSummary" resultType="com.itwillbs.dto.PaymentDTO">
+	  SELECT p.pay_amount, p.pay_method, p.used_points, o.order_id
+	  FROM payment p
+	  JOIN orders o ON p.order_id = o.order_id
+	  WHERE p.member_idx = #{member_idx}
+	  ORDER BY p.paid_at DESC
+	  LIMIT 1
+	</select>
+	<!-- 주문 정보 -->
+	<select id="getLatestOrder" parameterType="int" resultType="com.itwillbs.domain.OrdersVO">
+	    SELECT * FROM orders
+	    WHERE member_idx = #{member_idx}
+	    ORDER BY order_date DESC
+	    LIMIT 1
+	</select>
+	
+	<!-- 결제 정보 -->
+	<select id="getLatestPayment" parameterType="int" resultType="com.itwillbs.domain.PaymentVO">
+	    SELECT * FROM payment
+	    WHERE member_idx = #{member_idx}
+	    ORDER BY paid_at DESC
+	    LIMIT 1
+	</select>
+	
+	<!-- 배송 정보 -->
+	<select id="getLatestDelivery" parameterType="int" resultType="com.itwillbs.domain.DeliveryVO">
+        SELECT d.*
+        FROM delivery d
+        JOIN orders o ON d.order_id = o.order_id
+        WHERE o.member_idx = #{member_idx}
+        ORDER BY d.delivery_date DESC
+        LIMIT 1
+    </select>
+	
+	
+	
+	
+	<!-- 배송 정보 -->
+	<select id="getMemberInfo" resultType="com.itwillbs.domain.MemberVO">
+	  SELECT * FROM member WHERE member_idx = #{member_idx}
+	</select>
+	
+	
+	
+	
+	
+
+</mapper>
