@@ -469,6 +469,7 @@ img {
     @media #{$breakpoint-xs} {
         margin-top: 70px;
         z-index: 100;
+        height: auto;
     }
     .header-area {
         @include trans-duration(500ms);
@@ -477,6 +478,7 @@ img {
         @include flex(0 0 320px);
         width: 320px;
         max-width: 320px;
+        height : 2000px;
         background-color: #fff;
         padding: 0px 75px;
         @media #{$breakpoint-md} {

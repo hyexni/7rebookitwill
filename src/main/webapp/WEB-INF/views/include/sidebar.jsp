@@ -29,8 +29,8 @@
             <!-- Amado Nav -->
             <nav class="amado-nav">
                 <ul>
-                    <li><a href="<c:url value='/book/BookList'/>">도서 목록</a></li>
-                    <li><a href="<c:url value='/recommend/list'/>">추천 도서</a></li>
+                    <li><a href="<c:url value='/book/list'/>">도서 목록</a></li>
+                    <li><a href="<c:url value='/recommend/all'/>">추천 도서</a></li>
                     <li><a href="<c:url value='/mypage'/>">독후감</a></li>
                     <li><a href="<c:url value='/notice/list'/>">공지사항</a></li>
                     <li><a href="<c:url value='/cs/list'/>">1:1 문의</a></li>

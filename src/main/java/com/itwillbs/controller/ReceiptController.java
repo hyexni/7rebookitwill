@@ -1,9 +1,11 @@
 package com.itwillbs.controller;
 
 import com.itwillbs.domain.ReceiptVO;
+import com.itwillbs.service.PointHistoryService;
 import com.itwillbs.service.ReceiptService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +24,8 @@ public class ReceiptController {
 
     private static final Logger logger = LoggerFactory.getLogger(ReceiptController.class);
 
-    @Inject
-    private ReceiptService receiptService;
+   // @Inject
+  //  private ReceiptService receiptService;
 
     // GET 요청: 업로드 폼 페이지를 보여줌
     @GetMapping("/upload")
@@ -53,6 +55,13 @@ public class ReceiptController {
         return "receipt/upload";
     }
 
+    
+    @Autowired
+    private ReceiptService receiptService; // 영수증 처리 서비스
+
+    @Autowired
+    private PointHistoryService pointService; // 포인트 처리 서비스
+    
     // POST 요청: 파일 업로드 처리 [최종 수정 버전]
     @PostMapping("/upload")
     public String receiptUploadPost(MultipartFile file, RedirectAttributes redirectAttributes, HttpSession session) {

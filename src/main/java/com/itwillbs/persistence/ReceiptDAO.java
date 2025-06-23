@@ -29,6 +29,7 @@ public interface ReceiptDAO {
     public List<ReceiptVO> selectAllReceipts() throws Exception;
     
     int countByFilename(String filename);
+    
 	public void insertReceipt(ReceiptVO vo);
 	
 	// 파일 해시값(String)을 받아 중복된 개수(int)를 반환하는 메서드입니다.

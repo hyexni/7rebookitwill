@@ -36,7 +36,7 @@
 					  <li><a href="/admin/book">도서 관리</a></li>
 					  <li><a href="/admin/sales">판매 관리</a></li>
 					  <li><a href="/admin/pointHistory">포인트 관리</a></li>
-					  <li><a href="/admin/review">리뷰 관리</a></li>
+					  <li><a href="/admin/review_list">리뷰 관리</a></li>
 					  <li><a href="/admin/receiptList">영수증 관리</a></li>
 					
 					  <!-- ✅ 아코디언 메뉴 -->

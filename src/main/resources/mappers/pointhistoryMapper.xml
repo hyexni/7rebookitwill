@@ -5,17 +5,43 @@
 
 <mapper namespace="com.itwillbs.persistence.PointHistoryDAO">
 
- <!-- 사용자 모드 -->
-    <select id="getPointHistory" resultType="com.itwillbs.dto.PointHistoryDTO">
-        SELECT * FROM point
-        WHERE member_idx = #{member_idx}
-        ORDER BY change_date DESC, point_id DESC
-    </select>
+<!-- 사용자 모드 -->
+
+<resultMap id="pointHistoryJoinResultMap" type="com.itwillbs.dto.PointHistoryDTO">
+    <id property="point_id" column="point_id"/> <result property="member_idx" column="member_idx"/>
+    <result property="change_amount" column="change_amount"/>
+    <result property="change_reason" column="change_reason"/>
+    <result property="point_amount" column="point_amount"/>
+    <result property="change_date" column="change_date"/>
+    
+    <result property="member_id" column="member_id"/> <result property="member_name" column="member_name"/> </resultMap>
+
+
+<select id="getPointHistory" resultMap="pointHistoryJoinResultMap">
+    SELECT
+        p.point_id,
+        p.member_idx,
+        p.change_amount,
+        p.change_reason,
+        p.point_amount,
+        p.change_date,
+        m.member_id,   -- member 테이블에서 가져온 회원 로그인 ID
+        m.member_name  -- member 테이블에서 가져온 회원 이름 (필요시)
+    FROM
+        point p
+    JOIN
+        member m ON p.member_idx = m.member_idx
+    WHERE
+        p.member_idx = #{member_idx}
+    ORDER BY
+        p.change_date DESC, p.point_id DESC
+</select>
 
     <select id="getTotalPoints" resultType="java.lang.Integer">
-        SELECT COALESCE(SUM(change_amount), 0)
-        FROM point
-        WHERE member_idx = #{memberIdx}
+        SELECT
+            COALESCE(
+                (SELECT point_amount FROM point WHERE member_idx = #{member_idx} ORDER BY point_id DESC LIMIT 1),
+            0)
     </select>
      
 <!-- <insert id="insertPointHistory" parameterType="com.itwillbs.domain.PointVO"> -->
@@ -25,15 +51,41 @@
 
 
 <select id="selectMemberPoints" resultType="int" parameterType="int">
-    SELECT point_amount FROM point WHERE member_idx = #{member_idx}
+    SELECT point_amount
+	FROM point
+	WHERE member_idx = #{member_idx}
+	ORDER BY change_date DESC, point_id DESC -- 1순위: 최신 날짜, 2순위: 가장 나중에 생긴 데이터(PK)
+	LIMIT 1;
 </select>
 
 
-<update id="updateMemberTotalPoints">
+<update id="updateMemberTotalPoints2">
         UPDATE point
         SET    point_amount = point_amount + #{change_amount}
-        WHERE  member_idx = #{member_idx}
+        WHERE  member_idx = #{member_idx} 
+        ORDER BY change_date DESC, point_id DESC -- 1순위: 최신 날짜, 2순위: 가장 나중에 생긴 데이터(PK)
+	    LIMIT 1;
+        
     </update>
+    
+      
+<insert id = "insertReceiptPoint" >
+	INSERT INTO point (  
+    member_idx, 
+    point_amount, 
+    change_amount, 
+    change_reason   
+    
+) VALUES (   
+    #{member_idx},      
+    #{point_amount},    
+    #{change_amount},  
+    #{change_reason}              
+        
+);
+
+</insert> 
+    
     
 <!-- 사용자 모드 끝 -->
     

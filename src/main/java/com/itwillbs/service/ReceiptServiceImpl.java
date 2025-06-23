@@ -42,6 +42,8 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 @Service
 @RequiredArgsConstructor // final 필드에 대한 생성자를 자동으로 생성합니다.
 public class ReceiptServiceImpl implements ReceiptService {
@@ -56,6 +58,9 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Value("${gcp.project-id}")
     private String gcpProjectId;
+    
+    @Inject
+    private PointHistoryDAO pointhistoryDAO; 
 
     
     @Override
@@ -63,12 +68,14 @@ public class ReceiptServiceImpl implements ReceiptService {
     public ReceiptVO processAndSaveReceipt(MultipartFile file, int member_idx) throws Exception {
 
         // 1. 파일 해시 생성 및 중복 확인
+    	System.out.println("11111111111111111111111");
         String fileHash = generateFileHash(file);
         if (receiptDAO.countByFileHash(fileHash) > 0) {
             throw new IllegalStateException("동일한 내용의 파일이 이미 등록되어 있습니다.");
         }
 
         // 2. 물리적 파일 저장
+        System.out.println("222222222222222221");
         String savedFilename = saveFileToServer(file);
 
         // 3. Gemini API 호출하여 영수증 정보 추출
@@ -81,26 +88,27 @@ public class ReceiptServiceImpl implements ReceiptService {
        System.out.println(ocrDto);
 
         // 4. 최종 VO 객체 생성 및 모든 정보 설정
+       System.out.println("333333333333333");
         ReceiptVO finalVO = createReceiptVO(file, ocrDto, member_idx, savedFilename, fileHash);
 
-                
-        // 5. DB에 영수증 정보 저장
-        receiptDAO.insertReceipt(finalVO);
-        
-        
+         
         // ==========================================================
         // [수정] 포인트 적립 로직 전체 수정
         // 6. 저장된 영수증 금액을 기준으로 포인트 계산 및 적립
         // ==========================================================
+        System.out.println("44444444444444444444");
         int ocrAmount = finalVO.getOcr_amount();
         if (ocrAmount > 0) {
+        	System.out.println("77777777777777777777777");
             // 5% 포인트 계산 (소수점 버림)
             int pointsToCredit = (int) (ocrAmount * 0.05);
 
             if (pointsToCredit > 0) {
+            	System.out.println("88888888888888888");
                 // 1. 회원의 현재 포인트를 DB에서 조회합니다.
-                int currentPoints = PointHistoryDAO.selectMemberPoints(member_idx);
-
+                int currentPoints = pointhistoryDAO.selectMemberPoints(member_idx);
+                
+                System.out.println("9999999999999999");
                 // 2. 현재 포인트와 신규 포인트를 더해 최종 누적 포인트를 계산합니다.
                 int newTotalPoints = currentPoints + pointsToCredit;
 
@@ -111,17 +119,24 @@ public class ReceiptServiceImpl implements ReceiptService {
                 pointVO.setPoint_amount(newTotalPoints);      // [수정] '누적된 최종' 포인트
                 pointVO.setChange_reason("영수증 인증 적립");
 
+                System.out.println("//////////////////////////////");
                 // 4. 포인트 내역(history)을 DB에 저장합니다.
-                PointHistoryDAO.insertReceiptPoint(pointVO);
-                
+                pointhistoryDAO.insertReceiptPoint(pointVO);
+                System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&");
                 // 5. 컨트롤러로 반환할 finalVO 객체에 적립된 포인트 값을 설정합니다.
                 finalVO.setEarnedPoints(pointsToCredit);
-                
+                System.out.println("*****************************");
                 // 6. 실제 회원 테이블의 총 포인트를 안전하게 업데이트합니다.
-                 PointHistoryDAO.updateMemberTotalPoints(member_idx, pointsToCredit);
+//                pointhistoryDAO.updateMemberTotalPoints2(member_idx, pointsToCredit);
+                pointhistoryDAO.updateMemberTotalPoints2(pointVO);
             }
         }
+        System.out.println("55555555555555555");
         
+     // 5. DB에 영수증 정보 저장
+        receiptDAO.insertReceipt(finalVO); 
+        
+        System.out.println("66666666666666666");
        return finalVO;
     }
 
@@ -298,6 +313,15 @@ public class ReceiptServiceImpl implements ReceiptService {
         }
     }
 
+    @Override
+	public ReceiptVO getReceiptDetails(int upload_id) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+    
+    
+    
+    //관리자페이지 //
 
     @Override
     public List<AdminReceiptDTO> getReceiptListAdmin(Criteria cri) throws Exception {
@@ -308,8 +332,10 @@ public class ReceiptServiceImpl implements ReceiptService {
     public int getReceiptTotalCount(Criteria cri) throws Exception {
         return receiptDAO.getReceiptTotalCount(cri);
     }
-    
-    //관리자페이지 //
+
+
+	
+
     
     
 }

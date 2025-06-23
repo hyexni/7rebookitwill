@@ -1,6 +1,8 @@
 package com.itwillbs.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -42,7 +44,30 @@ public class PointHistoryDAOImpl implements PointHistoryDAO {
         sqlSession.insert(NAMESPACE + ".insertPointHistory", pointVO);
     }
     
+   @Override
+	public void insertReceiptPoint(PointVO pointVO) throws Exception {
+		sqlSession.insert(NAMESPACE + ".insertReceiptPoint", pointVO);
+		
+	}
 
+	@Override
+	public void updateMemberTotalPoints2(PointVO pointVO) throws Exception {
+//		Map<String, Integer> pointmap = new HashMap<String, Integer>();
+//		pointmap.put("member_idx", member_idx);
+//		pointmap.put("pointsToCredit", pointsToCredit);
+		logger.info("++++++++++++++++++++++++++++++++++++");
+//		logger.info("pointmap"+pointmap);
+//		sqlSession.update(NAMESPACE + ".updateMemberTotalPoints",pointmap);
+		
+	}
+		
+		
+	@Override
+	public int selectMemberPoints(int member_idx) throws Exception {
+		return sqlSession.selectOne(NAMESPACE + ".selectMemberPoints", member_idx);
+	}
+	
+	
 
 	//관리자모드
     /**
@@ -56,7 +81,9 @@ public class PointHistoryDAOImpl implements PointHistoryDAO {
         return sqlSession.selectList(NAMESPACE + ".getPointHistory", cri);
     }
 
-    /**
+
+
+	/**
      * 포인트 내역의 총 개수를 조회합니다.
      */
     @Override

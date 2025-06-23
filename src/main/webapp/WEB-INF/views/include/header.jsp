@@ -55,8 +55,10 @@
         </div>
          </div>
         <div class="auth-buttons">
-            <a href="#" class="btn-login">로그인</a>
-            <a href="#" class="btn-signup">회원가입</a>
+            <a href="/member/login" class="btn-login">로그인</a>
+            <a href="/member/join" class="btn-signup">회원가입</a>
+            <a href="/member/mypage" class="btn-signup">마이페이지</a>
+            
         </div>
    
 
