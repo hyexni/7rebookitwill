@@ -1,44 +1,73 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%-- 1. 공통 레이아웃 구성 요소 불러오기 --%>
-<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>  <%-- CSS/폰트 등 --%>
-<%@ include file="/WEB-INF/views/include/header.jsp" %>       <%-- 상단 헤더 --%>
-<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>      <%-- 왼쪽 사이드 메뉴 --%>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 
-	<%-- 2. 메인 페이지 컨텐츠 시작 --%>
-	<h1>/member/main.jsp</h1>
-	
-	<%-- 로그인 안 한 사용자는 로그인 페이지로 리다이렉트 시킴 --%>
-	<c:if test="${empty sessionScope.id}">
-	  <c:redirect url="/member/login" />
-	</c:if>
-	
-	<%--  로그인 성공 메시지 출력 (FlashAttribute) --%>
-	<c:if test="${not empty message}">
-	  <div style="padding: 10px; background-color: #e0ffe0; border: 1px solid #00c853; color: #2e7d32; font-weight: bold; margin-bottom: 15px;">
-	    ✅ ${message}
-	  </div>
-	</c:if>
-	
-	<%--  로그인한 사용자 정보 출력 --%>
-	<h2>${sessionScope.id}님, 환영합니다!</h2>
-	
-	<%--  로그아웃 버튼 --%>
-	<input type="button" value="로그아웃"
-	       onclick="location.href='/member/logout';"
-	       style="margin: 10px 0;" />
-	
-	<hr>
-	
-	<%-- 회원정보 조회 페이지 이동 --%>
-	<a href="/member/info">🔎 회원정보 조회 (마이페이지)</a>
-	
-	<hr>
-	
-	<%-- 회원정보 수정 페이지 이동 --%>
-	<a href="/member/update">✏️ 회원정보 수정</a>
-	
-	<%-- 3. 공통 푸터 불러오기 --%>
-	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+
+<!-- ✅ 전체 flex wrapper 시작 -->
+<div class="main-wrapper">
+
+  <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+
+  <!-- ✅ 오른쪽 마이페이지 콘텐츠 -->
+  <div class="mypage-container">
+
+    <div class="mypage-header">
+      <!-- 👤 이름 환영 박스 -->
+  <div class="welcome-box">
+    <div class="welcome-name">${loginUser.member_nick}님</div>
+    <div class="welcome-msg">환영합니다 😊</div>
+  </div>
+
+  <!-- 💰 포인트 박스 -->
+  <div class="point-box">
+    <img src="${pageContext.request.contextPath}/resources/img/icon/coin.png" alt="포인트" class="point-icon">
+    <span class="point-label">보유 포인트</span>
+    <a href="/point/history" class="point-value" style="text-decoration: none; color: inherit;">
+      <c:choose>
+        <c:when test="${empty totalPoint}">0P</c:when>
+        <c:otherwise>${totalPoint}P</c:otherwise>
+      </c:choose>
+    </a>
+  </div>
+</div>
+
+    <!-- ✅ 마이페이지 항목 리스트 -->
+    <div class="mypage-boxes">
+      <div class="mypage-box">
+        <h4 class="box-title">1. 회원 기본정보</h4>
+        <p class="box-desc">이름, 아이디, 이메일, 관심 카테고리를 확인할 수 있어요.</p>
+        <a href="/member/info" class="mypage-btn">조회하기</a>
+      </div>
+
+      <div class="mypage-box">
+        <h4 class="box-title">2. 회원 정보 수정</h4>
+        <p class="box-desc">비밀번호나 연락처를 변경하고 프로필을 수정할 수 있어요.</p>
+        <a href="/member/update" class="mypage-btn">수정하기</a>
+      </div>
+
+      <div class="mypage-box">
+        <h4 class="box-title">3. 주문/배송 조회</h4>
+        <p class="box-desc">내 주문 내역과 배송 상태를 확인해요.</p>
+        <a href="/order/list" class="mypage-btn">주문 확인</a>
+      </div>
+
+      <div class="mypage-box">
+        <h4 class="box-title">4. 찜 목록</h4>
+        <p class="box-desc">찜한 도서 목록을 한눈에 볼 수 있어요.</p>
+        <a href="/wishlist/list" class="mypage-btn">바로가기</a>
+      </div>
+
+      <div class="mypage-box">
+        <h4 class="box-title">5. 작성한 리뷰</h4>
+        <p class="box-desc">작성한 리뷰를 확인하고 수정·삭제할 수 있어요.</p>
+        <a href="/review/my" class="mypage-btn">리뷰 보기</a>
+      </div>
+    </div>
+  </div> <%-- ✅ mypage-container 닫기 --%>
+
+</div> <%-- ✅ main-wrapper 닫기 --%>
+
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>

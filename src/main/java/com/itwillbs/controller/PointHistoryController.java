@@ -46,7 +46,7 @@ public class PointHistoryController {
             session.setAttribute("redirectAfterLogin", fullRequestUrl);
             logger.info("로그인 후 리다이렉트될 URL 저장: {}", fullRequestUrl);
             
-            // [수정됨] Model 대신 RedirectAttributes 사용
+            // RedirectAttributes 사용
             redirectAttributes.addFlashAttribute("message", "포인트 내역을 보려면 로그인이 필요합니다.");
             return "redirect:/member/login";
         }
@@ -72,43 +72,43 @@ public class PointHistoryController {
         }
     }
 
-    /**
-     * [기능 추가] 포인트 적립을 처리하는 메서드 (예: 영수증 인증 후)
-     * URL: POST /point/earn
-     */
-    @PostMapping("/earn")
-    public String earnPoint(HttpSession session, @RequestParam("amount") int amount, @RequestParam("reason") String reason, RedirectAttributes redirectAttributes) {
-        logger.info("POST - /point/earn 요청: 포인트 적립 처리");
-        
-        Integer member_idx = (Integer) session.getAttribute("member_idx");
-        if (member_idx == null) {
-            redirectAttributes.addFlashAttribute("message", "로그인이 필요합니다.");
-            return "redirect:/member/login";
-        }
-
-        if (amount <= 0) {
-            redirectAttributes.addFlashAttribute("errorMessage", "적립할 포인트는 0보다 커야 합니다.");
-            return "redirect:/point/history"; // 혹은 이전 페이지
-        }
-
-        PointVO pointVO = new PointVO();
-        pointVO.setMember_idx(member_idx);
-        pointVO.setChange_amount(amount); // 적립 포인트 (양수)
-        pointVO.setChange_reason(reason);
-
-        try {
-            pointHistoryService.earnPoint(pointVO);
-            redirectAttributes.addFlashAttribute("successMessage", amount + "포인트가 성공적으로 적립되었습니다.");
-
-           
-            logger.info("회원 ID 에게 포인트 적립 성공사유:", amount, reason);
-        } catch (Exception e) {
-            logger.info("회원 ID 의 포인트 적립 중 오류 발생: ",  e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("errorMessage", "포인트 적립 중 오류가 발생했습니다.");
-        }
-        
-        return "redirect:/point/history";
-    }
+//    /**
+//     * [기능 추가] 포인트 적립을 처리하는 메서드 (예: 영수증 인증 후)
+//     * URL: POST /point/earn
+//     */
+//    @PostMapping("/earn")
+//    public String earnPoint(HttpSession session, @RequestParam("amount") int amount, @RequestParam("reason") String reason, RedirectAttributes redirectAttributes) {
+//        logger.info("POST - /point/earn 요청: 포인트 적립 처리");
+//        
+//        Integer member_idx = (Integer) session.getAttribute("member_idx");
+//        if (member_idx == null) {
+//            redirectAttributes.addFlashAttribute("message", "로그인이 필요합니다.");
+//            return "redirect:/member/login";
+//        }
+//
+//        if (amount <= 0) {
+//            redirectAttributes.addFlashAttribute("errorMessage", "적립할 포인트는 0보다 커야 합니다.");
+//            return "redirect:/point/history"; // 혹은 이전 페이지
+//        }
+//
+//        PointVO pointVO = new PointVO();
+//        pointVO.setMember_idx(member_idx);
+//        pointVO.setChange_amount(amount); // 적립 포인트 (양수)
+//        pointVO.setChange_reason(reason);
+//
+//        try {
+//            pointHistoryService.earnPoint(pointVO);
+//            redirectAttributes.addFlashAttribute("successMessage", amount + "포인트가 성공적으로 적립되었습니다.");
+//
+//           
+//            logger.info("회원 ID 에게 포인트 적립 성공사유:", amount, reason);
+//        } catch (Exception e) {
+//            logger.info("회원 ID 의 포인트 적립 중 오류 발생: ",  e.getMessage(), e);
+//            redirectAttributes.addFlashAttribute("errorMessage", "포인트 적립 중 오류가 발생했습니다.");
+//        }
+//        
+//        return "redirect:/point/history";
+//    }
 
     /**
      * [기능 추가] 포인트 사용을 처리하는 메서드 (예: 상품 구매 시)

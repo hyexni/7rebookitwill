@@ -1,115 +1,127 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
-<%@ include file="/WEB-INF/views/include/header.jsp" %>
-<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
-
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 
-<div class="join-container">
-  <h2>회원가입</h2>
-  <form action="/member/join" method="post" onsubmit="return validateForm()">
+<div class="wrapper">
+  <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+  <%@ include file="/WEB-INF/views/include/header.jsp" %>
+  <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
 
-    <label for="member_id">아이디:</label>
-	<input type="text" id="member_id" name="member_id" required>
-	<button type="button" id="checkIdBtn">중복확인</button>
-	<span id="idResult" style="margin-left: 10px;"></span>
-	<input type="hidden" id="idChecked" value="false">
-	
-	<script>
-	  // ✅ 아이디 입력하면 상태 초기화
-	  document.getElementById("member_id").addEventListener("input", function () {
-	    document.getElementById("idChecked").value = "false";
-	    document.getElementById("idResult").innerText = ""; // 메시지도 초기화
-	  });
-	</script>
+  <div class="content">
+    <div class="join-container">
+      <h2>회원가입</h2>
+      <form action="/member/join" method="post" onsubmit="return validateForm()">
+
+        <!-- ✅ 아이디 + 중복확인 버튼 + 결과 메시지 전부 한 줄에 정렬 -->
+		<label for="member_id">아이디:</label>
+		<div class="inline-field" style="display: flex; align-items: center; gap: 10px;">
+		  <input type="text" id="member_id" name="member_id" required style="flex: 1;">
+		  <button type="button" id="checkIdBtn">중복확인</button>
+		  <span id="idResult" style="white-space: nowrap;"></span> <!-- ✅ 옆에 붙이기 -->
+		</div>
+		<input type="hidden" id="idChecked" value="false">
+
+        <!-- 비밀번호 -->
+        <label for="member_pw">비밀번호:</label>
+		<input type="password" id="member_pw" name="member_pw" required>
+		<div id="pwFormatResult" class="msg"></div>
 		
+		<label for="member_pwConfirm">비밀번호 확인:</label>
+		<input type="password" id="member_pwConfirm" required>
+		<div id="pwMatchResult" class="msg"></div>
 
-    <label for="member_pw">비밀번호:</label>
-    <input type="password" id="member_pw" name="member_pw" required>
-    <span id="pwFormatResult"></span>
+        <!-- 닉네임 -->
+		<label for="member_nick">닉네임:</label>
+		<input type="text" id="member_nick" name="member_nick" required>
+		<div id="nicknameResult" class="msg"></div>
+		
+        <!-- 이름 -->
+        <label for="member_name">이름:</label>
+        <input type="text" id="member_name" name="member_name" required>
 
-    <label for="member_pwConfirm">비밀번호 확인:</label>
-    <input type="password" id="member_pwConfirm" required>
-    <span id="pwMatchResult"></span>
+        <!-- ✅ 통신사 + 휴대폰 한 줄에 -->
+		<label for="member_phone">통신사 / 휴대폰번호</label>
+		<div class="inline-field">
+		  <div class="field-box">
+		    <select id="tel_carrier" name="tel_carrier" required>
+		      <option value="">선택</option>
+		      <option value="SKT">SKT</option>
+		      <option value="KT">KT</option>
+		      <option value="LGU+">LG U+</option>
+		      <option value="알뜰폰">알뜰폰</option>
+		    </select>
+		  </div>
+		  <div class="field-box">
+		    <input type="text" id="member_phone" name="member_phone" required>
+		    <span id="phoneResult"></span>
+		  </div>
+		</div>
 
-    <label for="member_nick">닉네임:</label>
-	<input type="text" id="member_nick" name="member_nick" required>
-	<span id="nicknameResult"></span>
-    
-    <label for="member_name">이름:</label>
-    <input type="text" id="member_name" name="member_name" required>
+        <!-- 이메일 -->
+        <label for="email_front">이메일 (선택사항):</label>
+        <input type="text" id="email_front" placeholder="example"> @
+        <input type="text" id="email_select_input" value="naver.com">
+        <select id="email_select" onchange="changeDomain()">
+          <option value="">선택</option>
+          <option value="naver.com">naver.com</option>
+          <option value="daum.net">daum.net</option>
+          <option value="gmail.com">gmail.com</option>
+          <option value="nate.com">nate.com</option>
+          <option value="direct">직접입력</option>
+        </select>
+        <input type="hidden" id="member_email" name="member_email">
+        <span id="emailResult"></span>
 
-   <div class="inline-field">
-  <div class="field-box">
-    <label for="tel_carrier">통신사:</label><br>
-    <select id="tel_carrier" name="tel_carrier">
-      <option value="">선택</option>
-      <option value="SKT">SKT</option>
-      <option value="KT">KT</option>
-      <option value="LGU+">LG U+</option>
-      <option value="알뜰폰">알뜰폰</option>
-    </select>
-  </div>
+        <!-- 성별 -->
+		<label>성별:</label>
+		<div class="inline-radio">
+		  <label><input type="radio" name="gender" value="남자"> 남자</label>
+		  <label><input type="radio" name="gender" value="여자"> 여자</label>
+		</div>
+		
+		<!-- 내/외국인 -->
+		<label>내/외국인:</label>
+		<div class="inline-radio">
+		  <label><input type="radio" name="nationality" value="내국인"> 내국인</label>
+		  <label><input type="radio" name="nationality" value="외국인"> 외국인</label>
+		</div>
 
-  <div class="field-box">
-    <label for="member_phone">휴대폰번호:</label><br>
-    <input type="text" id="member_phone" name="member_phone" required>
-    <span id="phoneResult"></span>
+      <!-- ✅ 주소 + 상세주소 + 버튼 한 줄 정리 -->
+		<label for="member_address">주소:</label>
+		<div class="address-field">
+		  <input type="text" id="member_address" name="member_address" required readonly>
+		  <button type="button" onclick="execDaumPostcode()">주소 검색</button>
+		</div>
+		
+		<label for="member_address_detail">상세주소:</label>
+		<input type="text" id="member_address_detail" name="member_address_detail" required>
+      
+        <!-- 관심 카테고리 -->
+        <label>관심 카테고리 (2개 이상 필수 선택)</label>
+        <div class="category-group">
+          <c:forEach var="cate" items="${categoryList}">
+            <label class="checkbox-inline">
+              <input type="checkbox" name="category_ids" value="${cate.category_id}">
+              ${cate.category_name_ko}
+            </label>
+          </c:forEach>
+        </div>
+
+        <!-- 제출 -->
+        <button type="submit">가입하기</button>
+      </form>
+    </div>
   </div>
 </div>
+<%--  include file="/WEB-INF/views/include/footer.jsp" --%>
 
-   <!-- 이메일 입력 (선택사항) -->
-<label for="email_front">이메일 (선택사항):</label>
-<input type="text" id="email_front" placeholder="example" /> @
-<input type="text" id="email_select_input" value="naver.com" />
-<select id="email_select" onchange="changeDomain()">
-  <option value="">선택</option>
-  <option value="naver.com">naver.com</option>
-  <option value="daum.net">daum.net</option>
-  <option value="gmail.com">gmail.com</option>
-  <option value="nate.com">nate.com</option>
-  <option value="direct">직접입력</option>
-</select>
-<span id="emailResult" style="margin-left: 10px; font-weight: bold;"></span>
+<script src="${pageContext.request.contextPath}/resources/js/joinValidation.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-    <label>성별:</label>
-    <input type="radio" name="gender" value="남자"> 남자
-    <input type="radio" name="gender" value="여자"> 여자
-    <span id="genderResult" class="error"></span>
 
-    <label>내/외국인:</label>
-    <input type="radio" name="nationality" value="내국인"> 내국인
-    <input type="radio" name="nationality" value="외국인"> 외국인
-    <span id="nationalityResult" class="error"></span>
 
-    <label for="member_address">주소:</label>
-    <input type="text" id="member_address" name="member_address" required readonly>
-    <button type="button" onclick="execDaumPostcode()">주소 검색</button>
-
-    <label for="member_address_detail">상세주소:</label>
-    <input type="text" id="member_address_detail" name="member_address_detail" required>
-
-   <!-- 관심 카테고리 (2개 이상 선택 필수) -->
-<div class="form-group">
-  <label>관심 카테고리 (2개 이상 필수 선택)</label>
-  <div class="category-group">
-    <c:forEach var="cate" items="${categoryList}">
-      <label class="checkbox-inline">
-        <input type="checkbox" name="category_ids" value="${cate.category_id}">
-        ${cate.category_name_ko}
-      </label>
-    </c:forEach>
-  </div>
-</div>
-
-    <button type="submit">가입하기</button>
-  </form>
-</div>
 
 <!-- ✅ 자바스크립트 -->
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
   
   // ✅ 아이디 중복확인 버튼 눌렀을 때만 검사
@@ -284,13 +296,40 @@
 
   // ✅ 다음 주소 API
   function execDaumPostcode() {
-    new daum.Postcode({
-      oncomplete: function (data) {
-        document.getElementById("member_address").value = data.address;
-        document.getElementById("member_address_detail").focus();
+  new daum.Postcode({
+    oncomplete: function (data) {
+      let addr = '';      // 최종 주소
+      let extraAddr = ''; // 참고항목 (건물명, 동명 등)
+
+      // 1. 주소 타입에 따라 주소 저장
+      if (data.userSelectedType === 'R') {
+        // 도로명 주소
+        addr = data.roadAddress;
+      } else {
+        // 지번 주소
+        addr = data.jibunAddress;
       }
-    }).open();
-  }
+
+      // 2. 참고항목 (예: 빌라, 아파트 이름)
+      if (data.userSelectedType === 'R') {
+        if (data.bname !== '') {
+          extraAddr += data.bname;
+        }
+        if (data.buildingName !== '') {
+          extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+        }
+        if (extraAddr !== '') {
+          addr += ' (' + extraAddr + ')';
+        }
+      }
+
+      // 3. 주소 input에 넣기 + 상세주소 초기화 + 포커스 이동
+      document.getElementById("member_address").value = addr;
+      document.getElementById("member_address_detail").value = ''; // ← 이전 값 있으면 지워줘야 해!
+      document.getElementById("member_address_detail").focus();
+    }
+  }).open();
+}
 
   	// 전체 유효성 검사 
  	 function validateForm() {
@@ -323,3 +362,4 @@
 	  return true; // 모든 조건 통과!
 	}
 </script>
+

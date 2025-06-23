@@ -1,6 +1,7 @@
 package com.itwillbs.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -12,294 +13,269 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam; // @RequestParam 추가
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes; // RedirectAttributes 추가
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.service.CategoryService;
 import com.itwillbs.service.MemberService;
+import com.itwillbs.service.PointHistoryService;
 
 @Controller
-@RequestMapping(value = "/member/*")
+@RequestMapping("/member")
 public class MemberController {
 
-	// 회원 처리 로직
 	@Inject
 	private MemberService mService;
 
-	// 카테고리 목록 조회용
 	@Inject
 	private CategoryService categoryService;
 
-	// mylog 단축어
+	@Inject
+	private PointHistoryService pointHistoryService; // 이걸로 써야 돼!
+
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
-	@RequestMapping(value = "/join", method = RequestMethod.GET)
+	// 회원가입 GET
+	@GetMapping("/join")
 	public String memberJoinGET(Model model) {
-		logger.info("memberJoinGET() 실행 ");
-
-		// 카테고리 목록 가져오기
+		logger.info("memberJoinGET() 실행");
 		model.addAttribute("categoryList", categoryService.getCategoryList());
-
-		return "/member/join"; // 뷰페이지 경로 반환
+		return "/member/join";
 	}
 
-	@RequestMapping(value = "/join", method = RequestMethod.POST)
+	// 회원가입 POST
+	@PostMapping("/join")
 	public String memberJoinPOST(MemberVO vo, @RequestParam("category_ids") List<Integer> categoryIds,
 			RedirectAttributes rttr) {
-		logger.info("memberJoinPOST() 실행 ");
-		logger.info("vo : " + vo);
-		logger.info("선택한 카테고리 : " + categoryIds);
-
-		// 1. 회원가입 처리 + 카테고리 저장
+		logger.info("memberJoinPOST() 실행 : {}", vo);
+		// ✅ 백엔드 유효성 검사 추가: 카테고리 최소 2개 선택
+		if (categoryIds == null || categoryIds.size() < 2) {
+			rttr.addFlashAttribute("msg", "관심 카테고리는 최소 2개 이상 선택해야 합니다.");
+			return "redirect:/member/join";
+		}
 		mService.joinMemberWithCategory(vo, categoryIds);
-
-		// 2. 완료 메시지
 		rttr.addFlashAttribute("message", "회원가입 완료!");
-
 		return "redirect:/member/login";
 	}
 
-	// 아이디 중복확인 (AJAX용)
-	@RequestMapping(value = "/checkId", method = RequestMethod.POST)
+	// 중복확인 (아이디, 닉네임, 이메일, 휴대폰)
+	@PostMapping("/checkId")
 	@ResponseBody
 	public String checkId(@RequestParam("member_id") String member_id) {
-		logger.info("checkId() 호출 - " + member_id);
-		MemberVO vo = mService.memberInfo(member_id);
-		return (vo == null) ? "OK" : "DUPLICATE";
+		return (mService.memberInfo(member_id) == null) ? "OK" : "DUPLICATE";
 	}
 
-	// 닉네임 중복확인 (AJAX용)
-	@RequestMapping(value = "/checkNickname", method = RequestMethod.POST)
+	@PostMapping("/checkNickname")
 	@ResponseBody
 	public String checkNickname(@RequestParam("nickname") String nickname) {
-		logger.info("checkNickname() 호출 - " + nickname);
-		boolean isExist = mService.checkNickname(nickname);
-		return isExist ? "DUPLICATE" : "OK";
+		return mService.checkNickname(nickname) ? "DUPLICATE" : "OK";
 	}
 
-	// 이메일 중복 확인 (선택 입력이므로, 입력값 없으면 OK)
 	@PostMapping("/checkEmail")
 	@ResponseBody
-	public String checkEmail(@RequestParam("member_email") String member_email) {
-		logger.info("📧 checkEmail() 호출 - " + member_email);
-
-		if (member_email == null || member_email.trim().isEmpty()) {
-			return "OK"; // 입력 안 했으면 그냥 OK
-		}
-
-		MemberVO dbMember = mService.memberInfoByEmail(member_email);
-		return (dbMember == null) ? "OK" : "DUPLICATE";
+	public String checkEmail(@RequestParam("member_email") String email) {
+		if (email == null || email.trim().isEmpty())
+			return "OK";
+		return (mService.memberInfoByEmail(email) == null) ? "OK" : "DUPLICATE";
 	}
 
-	// 휴대폰 중복확인
-	@RequestMapping(value = "/checkPhone", method = RequestMethod.POST)
+	@PostMapping("/checkPhone")
 	@ResponseBody
 	public String checkPhone(@RequestParam("phone") String phone) {
-		logger.info("checkPhone() 호출 - " + phone);
-		MemberVO vo = mService.memberInfoByPhone(phone);
-		return (vo == null) ? "OK" : "DUPLICATE";
+		return (mService.memberInfoByPhone(phone) == null) ? "OK" : "DUPLICATE";
 	}
 
-	// 로그인 페이지 GET
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	// 로그인
+	@GetMapping("/login")
 	public String memberLoginGET() {
-		logger.info("memberLoginGET() 실행");
-		return "member/login"; // login.jsp
+		return "member/login";
 	}
 
-	// 로그인 페이지 POST
-	// http://localhost:8088/member/login POST방식 호출
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String memberLoginPOST(@RequestParam("member_id") String id, // MemberVO로 받지 않고 id, pw를 직접 파라미터로 받음
-			@RequestParam("member_pw") String pw, HttpSession session, RedirectAttributes rttr // RedirectAttributes 추가
-																								// (메시지 전달용)
-	) {
-		logger.info(" memberLoginPOST() 실행 ");
-
-		// 폼태그로 전달된 데이터(member_id,member_pw)를 저장
-		// MemberVO vo 객체 생성 및 데이터 설정
+	@PostMapping("/login")
+	public String memberLoginPOST(@RequestParam("member_id") String id, @RequestParam("member_pw") String pw,
+			HttpSession session, RedirectAttributes rttr) {
 		MemberVO vo = new MemberVO();
-		vo.setMember_id(id); // MemberVO의 필드명에 맞게 설정 (member_id -> member_id)
-		vo.setMember_pw(pw); // MemberVO의 필드명에 맞게 설정 (member_pw -> member_pw)
+		vo.setMember_id(id);
+		vo.setMember_pw(pw);
 
-		logger.info(" 로그인 시도 vo : " + vo);
-
-		// 로그인 여부를 체크
-		// 서비스 -> DAO 로그인 체크하는 메서드
-		// MemberVO의 필드명이 Member_id, Member_pw라면 서비스/DAO도 그렇게 동작해야 합니다.
 		MemberVO resultVO = mService.memberLoginCheck(vo);
-
-		// 결과에 따른 페이지 이동
-		// 성공 - 메인페이지로 이동
-		// 실패 - 다시 로그인페이지로 이동
 		if (resultVO == null) {
-			rttr.addFlashAttribute("message", "아이디 또는 비밀번호가 일치하지 않습니다."); // 메시지 추가
-			return "redirect:/member/login"; // 로그인 실패 시 로그인 폼으로 리다이렉트
+			rttr.addFlashAttribute("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			return "redirect:/member/login";
 		}
-
+    
 		// 로그인 성공시 세션영역에 아이디 및 회원 고유 번호 저장
 		session.setAttribute("id", resultVO.getMember_id()); // 로그인 ID
 		session.setAttribute("member_idx", resultVO.getMember_idx()); // 회원 고유 번호 (포인트 내역 조회에 필요)
 		session.setAttribute("loginUser", resultVO); // ✅ VO 통째로 저장
 
-		logger.info("로그인 성공! 회원 ID: {}, 회원 고유 번호: {}", resultVO.getMember_id(), resultVO.getMember_idx());
-
-		// ==== 추가된 부분 시작 ====
-		// 세션에 저장된 리다이렉트 대상 URL 확인
 		String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
-		if (redirectUrl != null && !redirectUrl.isEmpty()) {
-			session.removeAttribute("redirectAfterLogin"); // 사용했으니 세션에서 제거
-			logger.info("저장된 URL로 리다이렉트: {}", redirectUrl);
-			return "redirect:" + redirectUrl; // 저장된 URL로 리다이렉트
+		if (redirectUrl != null) {
+			session.removeAttribute("redirectAfterLogin");
+			return "redirect:" + redirectUrl;
 		}
-		// ==== 추가된 부분 끝 ====
 
-		// 저장된 URL이 없거나 로그인 후 원래 가려고 했던 페이지가 없는 경우, 기본 성공 페이지로 이동
-		rttr.addFlashAttribute("message", resultVO.getMember_id() + "님, 환영합니다!"); // 환영 메시지
-		return "redirect:/member/main"; // 기본 메인 페이지로 이동
+		rttr.addFlashAttribute("message", resultVO.getMember_id() + "님, 환영합니다!");
+		return "redirect:/";
 	}
 
-	// http://localhost:8088/member/main
-	// 메인 페이지 /member/main GET
-	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public void memberMainGET() {
-		logger.info(" memberMainGET() 실행 ");
-		logger.info(" /member/main.jsp 뷰페이지 ");
-	}
-
-	// 로그아웃 /member/logout GET/POST
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String memberLogoutGET(HttpSession session, RedirectAttributes rttr) { // RedirectAttributes 추가
-		logger.info(" memberLogoutGET() 실행 ");
-
-		// 사용자의 세션정보(id) 초기화
+	// 로그아웃
+	@GetMapping("/logout")
+	public String memberLogoutGET(HttpSession session, RedirectAttributes rttr) {
 		session.invalidate();
-
-		rttr.addFlashAttribute("message", "로그아웃 되었습니다."); // 로그아웃 메시지 추가
-		// 다시 메인페이지로 이동
-
+		rttr.addFlashAttribute("message", "로그아웃 되었습니다.");
 		return "redirect:/member/main";
 	}
 
-	// 회원정보 조회(마이페이지) /member/info GET
-	@RequestMapping(value = "/info", method = RequestMethod.GET)
-	public String memberInfoGET(HttpSession session, Model model) {
-		logger.info(" memberInfoGET() 실행 ");
+	@GetMapping("/main")
+	public String mypageMain(HttpSession session, Model model, RedirectAttributes rttr) {
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
-		// 사용자의 로그인 정보를 체크(세션)
-		String id = (String) session.getAttribute("id");
-		if (id == null) {
-			// 로그인 정보가 없을경우 다시 로그인페이지로 이동
+		if (loginUser == null) {
+			rttr.addFlashAttribute("msg", "로그인 후 이용해주세요!");
 			return "redirect:/member/login";
 		}
 
-		// 사용자 로그인 정보가 있음
-		// 서비스 -> DAO호출 (회원정보를 조회기능)
-		MemberVO resultVO = mService.memberInfo(id);
+		int member_idx = loginUser.getMember_idx();
 
-		// DB에서 가져온 정보를 뷰페이지로 전달
-		// model.addAttribute("resultVO",resultVO);
-		model.addAttribute(resultVO);
+		try {
+			int totalPoint = pointHistoryService.getTotalPoints(member_idx); // ✅ 요거!
+			model.addAttribute("totalPoint", totalPoint);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("totalPoint", 0); // 혹시 예외 발생 시 대비
+		}
 
-		logger.info(" /views/member/info.jsp 페이지 출력");
+		return "/member/main";
+	}
+
+	// 마이페이지 (회원정보 조회)
+	@GetMapping("/info")
+	public String memberInfoGET(HttpSession session, Model model) {
+		Integer member_idx = (Integer) session.getAttribute("member_idx");
+		if (member_idx == null)
+			return "redirect:/member/login";
+
+		MemberVO resultVO = mService.getMemberByIdx(member_idx);
+		model.addAttribute("memberVO", resultVO);
 		return "/member/info";
 	}
 
-	// 회원정보 수정 /member/update GET
-	// (기존의 정보를 보여주기)
-	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	// 회원정보 수정 폼
+	@GetMapping("/update")
 	public String memberUpdateGET(HttpSession session, Model model) {
-		logger.info(" memberUpdateGET() 실행 ");
-
-		// 사용자가 로그인 여부 체크 (세션)
-		String id = (String) session.getAttribute("id");
-		if (id == null) {
+		Integer member_idx = (Integer) session.getAttribute("member_idx");
+		if (member_idx == null)
 			return "redirect:/member/login";
-		}
-		// 세션정보(아이디)를 기존의 정보를 불러와서 출력
-		// MemberVO resultVO = mService.memberInfo(id);
-		// model.addAttribute(resultVO);
 
-		model.addAttribute(mService.memberInfo(id));
+		MemberVO memberVO = mService.getMemberByIdx(member_idx);
+		model.addAttribute("memberVO", memberVO);
 		model.addAttribute("categoryList", categoryService.getCategoryList());
 
-		logger.info(" /member/update.jsp 페이지 연결 ");
+		// 관심 카테고리 ID 리스트 -> 문자열로 변환해서 넘김
+		List<Integer> selectedCategoryIds = mService.getSelectedCategoryIds(member_idx);
+		List<String> selectedCategoryStrIds = selectedCategoryIds.stream().map(String::valueOf)
+				.collect(Collectors.toList());
+
+		model.addAttribute("selectedCategoryIds", selectedCategoryStrIds);
+
 		return "/member/update";
 	}
 
-	// 회원정보 수정 /member/update POST
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String memberUpdatePOST(MemberVO uvo, @RequestParam("category_ids") List<Integer> categoryIds,
-			HttpSession session) {
-		logger.info(" memberUpdatePOST() 실행 ");
-		logger.info(" uvo : {}", uvo);
-		logger.info(" 선택한 카테고리 : {}", categoryIds);
+	// 회원정보 수정 처리
+	@PostMapping("/update")
+	public String memberUpdatePOST(@RequestParam("current_pw") String current_pw,
+			@RequestParam(value = "new_pw", required = false) String new_pw, MemberVO uvo,
+			@RequestParam("category_ids") List<Integer> categoryIds, HttpSession session, Model model,
+			RedirectAttributes rttr) {
 
-		// 로그인한 회원 고유 번호 세션에서 꺼내기
 		Integer member_idx = (Integer) session.getAttribute("member_idx");
+		if (member_idx == null) {
+			return "redirect:/member/login";
+		}
+
 		uvo.setMember_idx(member_idx);
 
-		// 서비스 호출 - 회원 정보 + 카테고리 함께 수정
+		// 🔸 관심 카테고리 2개 이상 유효성 검사
+		if (categoryIds == null || categoryIds.size() < 2) {
+			model.addAttribute("msg", "관심 카테고리는 최소 2개 이상 선택해야 합니다.");
+			model.addAttribute("memberVO", uvo); // 입력값 유지
+			model.addAttribute("selectedCategoryIds", categoryIds);
+			model.addAttribute("categoryList", categoryService.getCategoryList());
+			return "/member/update";
+		}
+
+		// 🔸 현재 비밀번호 확인
+		MemberVO dbVO = mService.getMemberByIdx(member_idx);
+		if (!dbVO.getMember_pw().equals(current_pw)) {
+			// ❗ 입력값 유지하지 않고 새로고침 효과 주기
+			rttr.addFlashAttribute("msg", "현재 비밀번호가 일치하지 않습니다.");
+			return "redirect:/member/update";
+		}
+
+		// 🔸 새 비밀번호 처리
+		boolean pwChanged = (new_pw != null && !new_pw.trim().isEmpty());
+		uvo.setMember_pw(pwChanged ? new_pw : current_pw);
+
+		// 🔸 정보 수정
 		mService.updateMemberWithCategories(uvo, categoryIds);
 
+		// 🔸 닉네임 세션 갱신
+		session.setAttribute("nick", uvo.getMember_nick());
+
+		// 🔸 성공 메시지
+		if (pwChanged) {
+			rttr.addFlashAttribute("msg", "비밀번호를 포함한 정보가 수정되었습니다.");
+		} else {
+			rttr.addFlashAttribute("msg", "회원 정보가 수정되었습니다.");
+		}
+
+		// 🔸 마이페이지로 이동
 		return "redirect:/member/main";
 	}
 
-	// 📲 휴대폰 번호로 아이디 찾기
+	// 아이디 찾기 페이지
+	@GetMapping("/findId")
+	public String goFindIdPage() {
+		return "/member/findId";
+	}
+
+	// 아이디 찾기 처리
 	@GetMapping("/findIdByPhone")
-	public String findIdByPhone(@RequestParam("member_name") String member_name,
-			@RequestParam("member_phone") String member_phone, Model model) {
-
-		// 아이디 조회 서비스 호출
-		String member_id = mService.findIdByNamePhone(member_name, member_phone);
-
-		if (member_id != null) {
+	public String findIdByPhone(@RequestParam("member_name") String name, @RequestParam("member_phone") String phone,
+			Model model) {
+		String member_id = mService.findIdByNamePhone(name, phone);
+		if (member_id != null)
 			model.addAttribute("resultId", member_id);
-		} else {
+		else
 			model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
-		}
 
-		// 결과를 보여줄 JSP로 이동
 		return "/member/findIdResult";
 	}
 
-	// 아이디 찾기 페이지 보여주기 (폼)
-	@GetMapping("/findId")
-	public String goFindIdPage() {
-		return "/member/findId"; // 실제 JSP 위치: /WEB-INF/views/member/find_id.jsp
-	}
-
-	// 비밀번호 찾기 폼 페이지로 이동
+	// 비밀번호 찾기 페이지
 	@GetMapping("/findPw")
 	public String goFindPwPage() {
-		return "/member/findPw"; // JSP 경로
+		return "/member/findPw";
 	}
 
+	// 비밀번호 찾기 처리
 	@PostMapping("/findPw")
-	public String findPwByInfo(@RequestParam("member_id") String member_id,
-			@RequestParam("member_name") String member_name, @RequestParam("member_phone") String member_phone,
-			Model model) {
-
-		// 📦 VO에 담아서 전달
+	public String findPwByInfo(@RequestParam("member_id") String id, @RequestParam("member_name") String name,
+			@RequestParam("member_phone") String phone, Model model) {
 		MemberVO vo = new MemberVO();
-		vo.setMember_id(member_id);
-		vo.setMember_name(member_name);
-		vo.setMember_phone(member_phone);
+		vo.setMember_id(id);
+		vo.setMember_name(name);
+		vo.setMember_phone(phone);
 
-		// 💡 mService로 서비스 호출
 		String pw = mService.findPwByInfo(vo);
-
-		// 결과 모델에 담기
-		if (pw != null) {
+		if (pw != null)
 			model.addAttribute("resultPw", pw);
-		} else {
+		else
 			model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
-		}
 
 		return "member/findPwResult";
 	}
-
-}// controller
+}

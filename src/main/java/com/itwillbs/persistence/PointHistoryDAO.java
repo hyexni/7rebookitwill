@@ -2,6 +2,8 @@ package com.itwillbs.persistence;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.itwillbs.domain.PointVO;
 import com.itwillbs.domain.SearchCriteria;
 import com.itwillbs.dto.PointHistoryDTO;
@@ -20,19 +22,15 @@ public interface PointHistoryDAO {
     public void insertPointHistory(PointVO pointVO) throws Exception;
    
     //영수증에서 적립된 포인트를 포인트로 전환
-   	public static void insertReceiptPoint(PointVO pointVO) {
-   		// TODO Auto-generated method stub
-   	}
+   	public void insertReceiptPoint(PointVO pointVO) throws Exception;
+   	
    	//포인트 테이블의 총 포인트도 업데이트
-   	public static void updateMemberTotalPoints(int member_idx, int pointsToCredit) {
-		// TODO Auto-generated method stub
-		
-	}
-   		
-   	public static int selectMemberPoints(int member_idx) {
-		// 
-		return 0;
-	}
+   	
+    //public void updateMemberTotalPoints2(int member_idx, int change_amount) throws Exception;
+    public void updateMemberTotalPoints2(PointVO pointVO) throws Exception;
+   	
+   	
+   	public int selectMemberPoints(int member_idx) throws Exception;
 
     
     //-관리자 모드-//

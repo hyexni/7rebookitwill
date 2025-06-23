@@ -5,12 +5,7 @@
 
 <mapper namespace="com.itwillbs.persistence.MemberDAO">
 
-  <!-- ✅ 1. 서버 시간 조회 (테스트용) -->
-  <select id="getServerTime" resultType="string">
-    SELECT NOW()
-  </select>
-
-  <!-- ✅ 2. 로그인 체크 (status = 'Y' 조건 추가 → 탈퇴회원 로그인 불가) -->
+  <!-- ✅ 1. 로그인 체크 -->
   <select id="memberLoginCheck"
           parameterType="com.itwillbs.domain.MemberVO"
           resultType="com.itwillbs.domain.MemberVO">
@@ -20,32 +15,54 @@
       AND member_status = 'Y'
   </select>
 
-  <!-- 오버로딩용: 아이디+비밀번호를 개별 파라미터로 받을 때 (선택사항) -->
-  <select id="memberLoginCheck2" resultType="com.itwillbs.domain.MemberVO">
+  <!-- ✅ 2. 회원가입 -->
+ 	<insert id="insertMember"
+        parameterType="com.itwillbs.domain.MemberVO"
+        useGeneratedKeys="true"
+        keyProperty="member_idx">
+  INSERT INTO member (
+    member_id, member_pw, member_name, member_email,
+    member_phone, member_nick, member_address, member_address_detail,
+    member_status, member_regdate
+  )
+  VALUES (
+    #{member_id}, #{member_pw}, #{member_name}, #{member_email},
+    #{member_phone}, #{member_nick}, #{member_address}, #{member_address_detail},
+    'Y', NOW()
+  )
+	</insert>
+
+ <update id="updateMember" parameterType="com.itwillbs.domain.MemberVO">
+  UPDATE member
+  SET
+    member_name             = #{member_name},
+    member_email            = #{member_email},
+    member_phone            = #{member_phone},
+    member_nick             = #{member_nick},
+    member_address          = #{member_address},
+    member_address_detail   = #{member_address_detail},  <!-- ✅ 이거 추가!! -->
+    member_update_date      = NOW()
+  WHERE
+    member_id = #{member_id}
+    AND member_pw = #{member_pw}
+</update>
+
+  <!-- ✅ 4. 마이페이지 정보 조회 (ID로) -->
+  <select id="getMember"
+          resultType="com.itwillbs.domain.MemberVO">
     SELECT * FROM member
-    WHERE member_id = #{param1}
-      AND member_pw = #{param2}
-      AND member_status = 'Y'
+    WHERE member_id = #{member_id}
   </select>
 
-  <!-- ✅ 3. 회원가입 (PK 반환 설정 + 등록일 추가) -->
-  <insert id="insertMember"
-          parameterType="com.itwillbs.domain.MemberVO"
-          useGeneratedKeys="true"
-          keyProperty="member_idx">
-    INSERT INTO member (
-      member_id, member_pw, member_name, member_email,
-      member_phone, member_nick, member_address,
-      member_status, member_regdate
-    )
-    VALUES (
-      #{member_id}, #{member_pw}, #{member_name}, #{member_email},
-      #{member_phone}, #{member_nick}, #{member_address},
-      'Y', NOW()
-    )
-  </insert>
-  
-  <!-- ✅ 닉네임 조회 -->
+  <!-- ✅ 5. 회원 고유번호(member_idx)로 조회 -->
+  <select id="getMemberByIdx"
+          parameterType="int"
+          resultType="com.itwillbs.domain.MemberVO">
+    SELECT * FROM member
+    WHERE member_idx = #{member_idx}
+  </select>
+
+  <!-- ✅ 6. 닉네임 중복 확인 -->
   <select id="getMemberByNick"
           parameterType="string"
           resultType="com.itwillbs.domain.MemberVO">
@@ -53,68 +70,47 @@
     WHERE member_nick = #{member_nick}
   </select>
 
-  <!-- ✅ 4. 회원정보 조회 (마이페이지용) -->
-  <select id="getMember"
+  <!-- ✅ 7. 이메일 중복 확인 -->
+  <select id="checkEmail"
+          parameterType="string"
+          resultType="string">
+    SELECT member_email
+    FROM member
+    WHERE member_email = #{member_email}
+  </select>
+
+  <!-- ✅ 8. 휴대폰으로 회원 조회 -->
+  <select id="selectMemberByPhone"
+          parameterType="string"
           resultType="com.itwillbs.domain.MemberVO">
-    SELECT * FROM member
+    SELECT *
+    FROM member
+    WHERE member_phone = #{phone}
+  </select>
+
+  <!-- ✅ 9. 이름 + 휴대폰번호로 아이디 찾기 -->
+ 
+  <select id="findIdByNamePhone"
+          parameterType="map"
+          resultType="string">
+    SELECT member_id
+    FROM member
+    WHERE member_name = #{member_name}
+      AND member_phone = #{member_phone}
+      AND member_status = 'Y'
+  </select>
+
+  <!-- ✅ 10. 비밀번호 찾기 -->
+  <select id="findPwByInfo"
+          parameterType="com.itwillbs.domain.MemberVO"
+          resultType="string">
+    SELECT member_pw
+    FROM member
     WHERE member_id = #{member_id}
+      AND member_name = #{member_name}
+      AND member_phone = #{member_phone}
   </select>
-
-  <!-- ✅ 5. 회원정보 수정 (비밀번호 일치 필요) -->
-  <update id="updateMember"
-          parameterType="com.itwillbs.domain.MemberVO">
-    UPDATE member
-    SET
-      member_name         = #{member_name},
-      member_email        = #{member_email},
-      member_phone        = #{member_phone},
-      member_nick         = #{member_nick},
-      member_address      = #{member_address},
-      member_update_date  = NOW()
-    WHERE
-      member_id = #{member_id}
-      AND member_pw = #{member_pw}
-  </update>
-
-  <!-- ✅ 6. 회원 탈퇴 (상태만 'N'으로 변경) -->
-  <update id="deleteMember"
-          parameterType="com.itwillbs.domain.MemberVO">
-    UPDATE member
-    SET
-      member_status = 'N',
-      member_update_date = NOW()
-    WHERE
-      member_id = #{member_id}
-      AND member_pw = #{member_pw}
-  </update>
   
-	<!-- 이메일 중복 확인   -->
-	  <select id="checkEmail" parameterType="String" resultType="String">
-    SELECT member_email FROM member WHERE member_email = #{member_email}
-  </select>
-	
-	<!-- 휴대폰으로 회원 조회 -->
-	<select id="selectMemberByPhone" parameterType="String" resultType="com.itwillbs.domain.MemberVO">
-	  SELECT * FROM member WHERE member_phone = #{phone}
-	</select>
-	
-	<!-- ✅ 이름 + 휴대폰번호로 아이디 조회 -->
-	<select id="findIdByNamePhone" resultType="string" parameterType="map">
-	  SELECT member_id
-	  FROM member
-	  WHERE member_name = #{member_name}
-	    AND member_phone = #{member_phone}
-	    AND member_status = 'Y'
-	</select>
 
-	<!--  비밀번호 찾기  -->
-		<select id="findPwByInfo" parameterType="com.itwillbs.domain.MemberVO" resultType="string">
-	  SELECT member_pw
-	  FROM member
-	  WHERE member_id = #{member_id}
-	    AND member_name = #{member_name}
-	    AND member_phone = #{member_phone}
-	</select>
-	
 
 </mapper>

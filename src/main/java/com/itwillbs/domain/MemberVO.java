@@ -1,11 +1,12 @@
 package com.itwillbs.domain;
 
 import java.sql.Timestamp;
+
 import lombok.Data;
 
 @Data
 public class MemberVO {
-	
+
 	private int member_idx;
 	private String member_id;
 	private String member_name;
@@ -18,6 +19,7 @@ public class MemberVO {
 	private Timestamp member_regdate;
 	private String member_status;
 	private Timestamp member_update_date;
+
 	private int point_total;
 	private String zipcode;
 

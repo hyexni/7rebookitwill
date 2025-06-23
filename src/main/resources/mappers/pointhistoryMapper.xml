@@ -51,15 +51,41 @@
 
 
 <select id="selectMemberPoints" resultType="int" parameterType="int">
-    SELECT point_amount FROM point WHERE member_idx = #{member_idx}
+    SELECT point_amount
+	FROM point
+	WHERE member_idx = #{member_idx}
+	ORDER BY change_date DESC, point_id DESC -- 1순위: 최신 날짜, 2순위: 가장 나중에 생긴 데이터(PK)
+	LIMIT 1;
 </select>
 
 
-<update id="updateMemberTotalPoints">
+<update id="updateMemberTotalPoints2">
         UPDATE point
         SET    point_amount = point_amount + #{change_amount}
-        WHERE  member_idx = #{member_idx}
+        WHERE  member_idx = #{member_idx} 
+        ORDER BY change_date DESC, point_id DESC -- 1순위: 최신 날짜, 2순위: 가장 나중에 생긴 데이터(PK)
+	    LIMIT 1;
+        
     </update>
+    
+      
+<insert id = "insertReceiptPoint" >
+	INSERT INTO point (  
+    member_idx, 
+    point_amount, 
+    change_amount, 
+    change_reason   
+    
+) VALUES (   
+    #{member_idx},      
+    #{point_amount},    
+    #{change_amount},  
+    #{change_reason}              
+        
+);
+
+</insert> 
+    
     
 <!-- 사용자 모드 끝 -->
     
