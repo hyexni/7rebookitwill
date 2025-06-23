@@ -108,6 +108,12 @@ public class MemberDAOImpl implements MemberDAO {
 		return result;
 	}
 
+	// 회원 고유번호(member_idx)로 회원 정보 조회 구현
+	@Override
+	public MemberVO getMemberByIdx(int member_idx) {
+		return sqlSession.selectOne(NAMESPACE + ".getMemberByIdx", member_idx);
+	}
+
 	// 닉네임 조회
 	@Override
 	public MemberVO getMemberByNick(String member_nick) {

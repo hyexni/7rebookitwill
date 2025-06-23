@@ -401,6 +401,22 @@ small.text-danger {
   background-color: #fff;
 }
 
+/* ✅ 푸터가 덮이지 않게 레이아웃 보정 */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
+
 
 /* 회원 상태 - 활성, 탈퇴 */
 .status-active {

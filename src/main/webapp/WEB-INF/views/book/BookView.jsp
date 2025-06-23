@@ -296,10 +296,11 @@
           </c:choose>
 
           <!-- 작성자 + 날짜 출력 -->
-          <div class="review-meta">
-            ${review.member_name} |
-            <fmt:formatDate value="${review.review_date}" pattern="yyyy.MM.dd"/>
-          </div>
+         	<!-- 작성자 닉네임 + 날짜 출력 -->
+			<div class="review-meta">
+			  ${review.member_nick} |
+			  <fmt:formatDate value="${review.review_date}" pattern="yyyy.MM.dd"/>
+			</div>
           
           <!-- ✅ 수정/삭제 버튼: 로그인한 본인일 때만 보이도록 -->
 		<c:if test="${sessionScope.loginUser.member_idx == review.member_idx}">
