@@ -14,6 +14,8 @@ public class PaymentDTO {
 	private int pay_amount;
 	private String pay_method;
 	private int order_id;
+	private int saved_points;
+
 	
 	// 배송
 	private String member_name;

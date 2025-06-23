@@ -1,7 +1,10 @@
 package com.itwillbs.persistence;
 
 import com.itwillbs.domain.BookVO;
+import com.itwillbs.domain.DeliveryVO;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.OrdersVO;
+import com.itwillbs.domain.PaymentVO;
 import com.itwillbs.dto.PaymentDTO;
 
 public interface PaymentDAO {
@@ -30,6 +33,9 @@ public interface PaymentDAO {
 	
 	// 결제 완료
 	PaymentDTO getLatestSummary(int member_idx);
+	OrdersVO getLatestOrder(int member_idx);
+	PaymentVO getLatestPayment(int member_idx);
+	DeliveryVO getLatestDelivery(int member_idx);
 	
 	// 배송 정보
 	public MemberVO getMemberInfo(int member_idx);

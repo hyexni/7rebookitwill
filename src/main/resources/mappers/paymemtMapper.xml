@@ -42,14 +42,14 @@
 	
 	<!-- 4. 결제 저장 -->
 	<insert id="insertPayment" parameterType="com.itwillbs.dto.PaymentDTO">
-	  INSERT INTO payment (order_id, member_idx, pay_amount, pay_method, used_points, paid_at)
-	  VALUES (#{order_id}, #{member_idx}, #{pay_amount}, #{pay_method}, #{used_points}, NOW())
+	  INSERT INTO payment (order_id, member_idx, pay_amount, pay_method, used_points, saved_points, paid_at)
+	  VALUES (#{order_id}, #{member_idx}, #{pay_amount}, #{pay_method}, #{used_points}, #{saved_points}, NOW())
 	</insert>
 	
 	<!-- 5. 포인트 적립 -->
 	<update id="givePoints" parameterType="com.itwillbs.dto.PaymentDTO">
 	  UPDATE member
-	  SET point_total = point_total + (#{pay_amount} * 0.1)
+	  SET point_total = point_total + #{saved_points}
 	  WHERE member_idx = #{member_idx}
 	</update>
 	
@@ -65,6 +65,31 @@
 	  ORDER BY p.paid_at DESC
 	  LIMIT 1
 	</select>
+	<!-- 주문 정보 -->
+	<select id="getLatestOrder" parameterType="int" resultType="com.itwillbs.domain.OrdersVO">
+	    SELECT * FROM orders
+	    WHERE member_idx = #{member_idx}
+	    ORDER BY order_date DESC
+	    LIMIT 1
+	</select>
+	
+	<!-- 결제 정보 -->
+	<select id="getLatestPayment" parameterType="int" resultType="com.itwillbs.domain.PaymentVO">
+	    SELECT * FROM payment
+	    WHERE member_idx = #{member_idx}
+	    ORDER BY paid_at DESC
+	    LIMIT 1
+	</select>
+	
+	<!-- 배송 정보 -->
+	<select id="getLatestDelivery" parameterType="int" resultType="com.itwillbs.domain.DeliveryVO">
+        SELECT d.*
+        FROM delivery d
+        JOIN orders o ON d.order_id = o.order_id
+        WHERE o.member_idx = #{member_idx}
+        ORDER BY d.delivery_date DESC
+        LIMIT 1
+    </select>
 	
 	
 	

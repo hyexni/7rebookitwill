@@ -5,7 +5,10 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.BookVO;
+import com.itwillbs.domain.DeliveryVO;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.OrdersVO;
+import com.itwillbs.domain.PaymentVO;
 import com.itwillbs.dto.PaymentDTO;
 import com.itwillbs.persistence.PaymentDAO;
 
@@ -64,6 +67,21 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public PaymentDTO getLatestPaymentSummary(int member_idx) {
 	    return pDAO.getLatestSummary(member_idx);
+	}
+	
+	@Override
+	public OrdersVO getLatestOrder(int member_idx) {
+	    return pDAO.getLatestOrder(member_idx);
+	}
+
+	@Override
+	public PaymentVO getLatestPayment(int member_idx) {
+	    return pDAO.getLatestPayment(member_idx);
+	}
+
+	@Override
+	public DeliveryVO getLatestDelivery(int member_idx) {
+	    return pDAO.getLatestDelivery(member_idx);
 	}
 	
 	

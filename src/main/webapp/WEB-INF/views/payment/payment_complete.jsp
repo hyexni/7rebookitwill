@@ -13,39 +13,70 @@
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
 
 
-	<h2>주문이 완료되었습니다 🎉</h2>
-	<p>주문해 주셔서 감사합니다!</p>
-	
-	<table border="1" cellpadding="10">
-	  <tr>
-	    <th>주문 번호</th>
-	    <td>${summary.order_id}</td>
-	  </tr>
-	  <tr>
-	    <th>결제 금액</th>
-	    <td>${summary.pay_amount}원</td>
-	  </tr>
-	  <tr>
-	    <th>결제 수단</th>
-	    <td>${summary.pay_method}</td>
-	  </tr>
-	  <tr>
-	    <th>사용 포인트</th>
-	    <td>${summary.used_points}P</td>
-	  </tr>
-	  <tr>
-	    <th>적립 포인트</th>
-	    <td><c:out value="${summary.pay_amount * 0.1}" />P</td>
-	  </tr>
-	</table>
-	
-	<br>
-	<p>적립된 포인트는 다음 구매 시 사용하실 수 있습니다.</p>
-	<a href="${pageContext.request.contextPath}/">홈으로 가기</a>
 
+<div class="container" style="text-align:center; padding: 50px; font-family: 'Noto Sans KR', sans-serif;">
+    
+    <h1 style="font-size: 32px;">주문이 완료되었습니다 🎉</h1>
+    <p style="margin-bottom: 30px;">소중한 주문 감사합니다!</p>
 
+    <table style="margin: 0 auto; border-collapse: collapse; font-size: 16px;">
+        <tr>
+        	<td style="border: 1px solid #ddd; padding: 8px;">주문 번호</td>
+   		    <td style="border: 1px solid #ddd; padding: 8px;">${orders.order_id}</td>
+   		</tr>
+        <tr>
+        	<td style="border: 1px solid #ddd; padding: 8px;">결제 금액</td>
+        	<td style="border: 1px solid #ddd; padding: 8px;"><fmt:formatNumber value="${orders.total_price}" type="currency" currencySymbol="₩"/></td>
+       	</tr>
+        <tr>
+        	<td style="border: 1px solid #ddd; padding: 8px;">결제 수단</td>
+        	<td style="border: 1px solid #ddd; padding: 8px;">${payment.pay_method}</td>
+       	</tr>
+        <tr>
+        	<td style="border: 1px solid #ddd; padding: 8px;">사용 포인트</td>
+        	<td style="border: 1px solid #ddd; padding: 8px;">${payment.used_points}P</td>
+       	</tr>
+        <tr>
+       		<td style="border: 1px solid #ddd; padding: 8px;">적립 포인트</td>
+       		<td style="border: 1px solid #ddd; padding: 8px;">${payment.saved_points}P</td>
+     	</tr>
+        <tr>
+        	<td style="border: 1px solid #ddd; padding: 8px;">결제 일시</td>
+        	<td style="border: 1px solid #ddd; padding: 8px;"><fmt:formatDate value="${payment.paid_at}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+       	</tr>
+    </table>
 
+    <br>
 
+    <c:if test="${not empty delivery}">
+        <h3 style="margin-top:40px;">📦 배송 정보</h3>
+        <table style="margin: 0 auto; border-collapse: collapse; font-size: 16px;">
+            <tr>
+            	<td style="border: 1px solid #ddd; padding: 8px;">받는 분</td>
+            	<td style="border: 1px solid #ddd; padding: 8px;">${member.member_name}</td>
+           	</tr>
+            <tr>
+            	<td style="border: 1px solid #ddd; padding: 8px;">연락처</td>
+            	<td style="border: 1px solid #ddd; padding: 8px;">${member.member_phone}</td>
+           	</tr>
+            <tr>
+            	<td style="border: 1px solid #ddd; padding: 8px;">주소</td>
+            	<td style="border: 1px solid #ddd; padding: 8px;">(${member.zipcode}) ${member.member_address} ${member.member_address_detail}</td>
+           	</tr>
+            <tr>
+            	<td style="border: 1px solid #ddd; padding: 8px;">배송 메모</td>
+            	<td style="border: 1px solid #ddd; padding: 8px;">${delivery.memo}</td>
+           	</tr>
+        </table>
+    </c:if>
+
+    <p style="margin-top: 30px;">※ 적립된 포인트는 다음 구매 시 사용하실 수 있습니다.</p>
+
+    <div style="margin-top: 40px;">
+        <a href="/" style="margin-right: 20px; text-decoration: none; color: #333;">🏠 홈으로 가기</a>
+        <a href="/mypage/orders" style="text-decoration: none; color: #0066cc;">📦 주문 상세 보기</a>
+    </div>
+</div>
 
 
 

@@ -13,5 +13,6 @@ public class DeliveryVO {
 	private Date delivery_date;
 	private String tracking_number;
 	private String delivery_address;
+	private String memo;
 
 }

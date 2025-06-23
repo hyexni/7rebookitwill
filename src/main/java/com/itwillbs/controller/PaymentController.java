@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.BookVO;
+import com.itwillbs.domain.DeliveryVO;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.OrdersVO;
+import com.itwillbs.domain.PaymentVO;
 import com.itwillbs.dto.DeliveryDTO;
 import com.itwillbs.dto.PaymentDTO;
-import com.itwillbs.service.AdminInquiryService;
 import com.itwillbs.service.PaymentService;
 
 /**
@@ -111,6 +113,17 @@ public class PaymentController {
 
         PaymentDTO summary = pService.getLatestPaymentSummary(member_idx);
         model.addAttribute("summary", summary);
+        
+        // ✅ 주문, 결제, 배송, 회원 정보 VO 가져오기 (서비스에서)
+        OrdersVO orders = pService.getLatestOrder(member_idx);
+        PaymentVO payment = pService.getLatestPayment(member_idx);
+        DeliveryVO delivery = pService.getLatestDelivery(member_idx);
+        MemberVO member = pService.getMemberInfo(member_idx);
+        
+        model.addAttribute("orders", orders);           // 주문 정보
+        model.addAttribute("payment", payment);         // 결제 정보
+        model.addAttribute("member", member);     	  // 배송 정보 (optional)
+        model.addAttribute("delivery", delivery);     	  // 배송 정보 (optional)
 
         return "payment/payment_complete"; // view_21
     }

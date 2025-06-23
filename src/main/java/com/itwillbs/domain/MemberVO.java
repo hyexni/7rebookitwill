@@ -19,5 +19,6 @@ public class MemberVO {
 	private String member_status;
 	private Timestamp member_update_date;
 	private int point_total;
+	private String zipcode;
 
 }

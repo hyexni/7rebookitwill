@@ -14,5 +14,6 @@ public class PaymentVO {
 	private int used_points;
 	private Timestamp paid_at;
 	private String status;
+	private int saved_points;
 
 }
