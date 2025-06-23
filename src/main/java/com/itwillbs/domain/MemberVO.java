@@ -17,5 +17,6 @@ public class MemberVO {
 	private Timestamp member_regdate;
 	private String member_status;
 	private Timestamp member_update_date;
+	private int point_total;
 
 }
