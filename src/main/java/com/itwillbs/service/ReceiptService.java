@@ -17,7 +17,7 @@ public interface ReceiptService {
      * @throws Exception 모든 종류의 예외
      */
     ReceiptVO processAndSaveReceipt(MultipartFile file, int member_idx) throws Exception;
-
+    
     
     /**
      * [추가] 특정 영수증의 상세 정보를 조회합니다.
