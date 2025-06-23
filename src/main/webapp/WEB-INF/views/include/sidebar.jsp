@@ -34,6 +34,7 @@
                     <li><a href="<c:url value='/mypage'/>">독후감</a></li>
                     <li><a href="<c:url value='/notice/list'/>">공지사항</a></li>
                     <li><a href="<c:url value='/cs/list'/>">1:1 문의</a></li>
+                    <li><a href="<c:url value='/member/main'/>">마이페이지</a></li>
                     <li><a href="<c:url value='/point/history'/>">포인트확인</a></li>
                 </ul>
             </nav>

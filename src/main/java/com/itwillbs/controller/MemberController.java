@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.service.CategoryService;
 import com.itwillbs.service.MemberService;
+import com.itwillbs.service.PointHistoryService;
 
 @Controller
 @RequestMapping("/member")
@@ -30,6 +31,9 @@ public class MemberController {
 
 	@Inject
 	private CategoryService categoryService;
+
+	@Inject
+	private PointHistoryService pointHistoryService; // 이걸로 써야 돼!
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
@@ -102,6 +106,7 @@ public class MemberController {
 			return "redirect:/member/login";
 		}
 
+		session.setAttribute("loginUser", resultVO);
 		session.setAttribute("id", resultVO.getMember_id());
 		session.setAttribute("member_idx", resultVO.getMember_idx());
 
@@ -123,10 +128,26 @@ public class MemberController {
 		return "redirect:/member/main";
 	}
 
-	// 메인
 	@GetMapping("/main")
-	public void memberMainGET() {
-		logger.info("/member/main.jsp 뷰페이지");
+	public String mypageMain(HttpSession session, Model model, RedirectAttributes rttr) {
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+		if (loginUser == null) {
+			rttr.addFlashAttribute("msg", "로그인 후 이용해주세요!");
+			return "redirect:/member/login";
+		}
+
+		int member_idx = loginUser.getMember_idx();
+
+		try {
+			int totalPoint = pointHistoryService.getTotalPoints(member_idx); // ✅ 요거!
+			model.addAttribute("totalPoint", totalPoint);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("totalPoint", 0); // 혹시 예외 발생 시 대비
+		}
+
+		return "/member/main";
 	}
 
 	// 마이페이지 (회원정보 조회)

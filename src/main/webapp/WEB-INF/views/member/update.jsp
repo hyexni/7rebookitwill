@@ -3,56 +3,79 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
-<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 
+<div class="wrapper">
+<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
 
-<!-- ✅ 사이드바 오른쪽 영역 정렬 -->
-  <div class="join-container">
-    <h2>📝 회원 정보 수정</h2>
+  <div class="content" > 
+    <div class="join-container">
+      <h2>📝 회원 정보 수정</h2>
 
-    <form action="/member/update" method="post" onsubmit="return validateUpdateForm();">
+      <form action="/member/update" method="post" onsubmit="return validateUpdateForm();">
+      
+      
 
-	  <label for="member_id">아이디</label>
-      <input type="text" id="member_id" name="member_id" value="${memberVO.member_id}" readonly>
+        <label for="member_id">아이디</label>
+        <input type="text" id="member_id" name="member_id" value="${memberVO.member_id}" readonly>
+
+        <label for="current_pw">현재 비밀번호 <span style="color:red;">*</span></label>
+        <input type="password" id="current_pw" name="current_pw" required>
+
+        <label for="new_pw">새 비밀번호</label>
+        <input type="password" id="new_pw" name="new_pw">
+
+        <label for="member_nick">닉네임</label>
+        <input type="text" id="member_nick" name="member_nick" value="${memberVO.member_nick}" required>
+        <span id="nickResult"></span>
+
+        <label for="member_name">이름</label>
+        <input type="text" id="member_name" name="member_name" value="${memberVO.member_name}" readonly>
+
+        <label for="member_email">이메일</label>
+        <input type="email" id="member_email" name="member_email" value="${memberVO.member_email}">
+        <span id="emailResult"></span>
+
+        <label for="member_phone">휴대폰 번호</label>
+        <input type="text" id="member_phone" name="member_phone" value="${memberVO.member_phone}" required>
+        <span id="phoneResult"></span>
+
+       <!-- ✅ 주소 + 버튼 한 줄 -->
+		<label for="member_address">주소</label>
+		<div class="address-field">
+		  <input type="text" id="member_address" name="member_address" 
+		         value="${memberVO.member_address}" readonly required>
+		  <button type="button" onclick="execDaumPostcode()">주소 검색</button>
+		</div>
 		
-      <label for="current_pw">현재 비밀번호 <span style="color:red;">*</span></label>
-      <input type="password" id="current_pw" name="current_pw" required>
+		<!-- ✅ 상세주소 (아래 따로) -->
+		<label for="member_address_detail">상세주소</label>
+		<input type="text" id="member_address_detail" name="member_address_detail"
+		       value="${memberVO.member_address_detail}" placeholder="상세주소 입력" required>
+       
+       
 
-      <label for="new_pw">새 비밀번호</label>
-      <input type="password" id="new_pw" name="new_pw">
+        <label>관심 카테고리 <span style="color:red;">*</span></label>
+        <div class="category-group">
+          <c:forEach var="category" items="${categoryList}">
+            <label class="checkbox-inline">
+              <input type="checkbox" name="category_ids" value="${category.category_id}"
+                <c:if test="${fn:contains(selectedCategoryIds, category.category_id)}">checked="checked"</c:if> />
+              ${category.category_name_ko}
+            </label>
+          </c:forEach>
+        </div>
 
-      <label for="member_nick">닉네임</label>
-      <input type="text" id="member_nick" name="member_nick" value="${memberVO.member_nick}" required>
-      <span id="nickResult"></span>
+        <button type="submit">정보 수정</button>
+      </form>
+    </div> <!-- join-container -->
+  </div> <!-- content  -->
 
-	  <label for="member_name">이름</label>
-	  <input type="text" id="member_name" name="member_name" value="${memberVO.member_name}" readonly>
+  <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
-      <label for="member_email">이메일</label>
-      <input type="email" id="member_email" name="member_email" value="${memberVO.member_email}">
-      <span id="emailResult"></span>
-
-      <label for="member_phone">휴대폰 번호</label>
-      <input type="text" id="member_phone" name="member_phone" value="${memberVO.member_phone}" required>
-      <span id="phoneResult"></span>
-
-      <label>관심 카테고리 <span style="color:red;">*</span></label>
-      <div class="category-group">
-        <c:forEach var="category" items="${categoryList}">
-          <label class="checkbox-inline">
-            <input type="checkbox" name="category_ids" value="${category.category_id}"
-              <c:if test="${fn:contains(selectedCategoryIds, category.category_id)}">checked="checked"</c:if> />
-            ${category.category_name_ko}
-          </label>
-        </c:forEach>
-      </div>
-
-      <button type="submit">정보 수정</button>
-    </form>
-  </div>
+</div> <!-- wrapper 닫기 -->
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -140,6 +163,33 @@
 
     return true;
   }
+  
+  nction execDaumPostcode() {
+	  new daum.Postcode({
+	    oncomplete: function (data) {
+	      let addr = '';
+	      let extraAddr = '';
+
+	      if (data.userSelectedType === 'R') {
+	        addr = data.roadAddress;
+	      } else {
+	        addr = data.jibunAddress;
+	      }
+
+	      if (data.userSelectedType === 'R') {
+	        if (data.bname !== '') extraAddr += data.bname;
+	        if (data.buildingName !== '') extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	        if (extraAddr !== '') addr += ' (' + extraAddr + ')';
+	      }
+
+	      document.getElementById("member_address").value = addr;
+	      document.getElementById("member_address_detail").value = ''; // ✅ ID 수정 완료
+	      document.getElementById("member_address_detail").focus();     // ✅ 포커스도 ID 수정
+	    }
+	  }).open();
+	}
 </script>
 
-<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+

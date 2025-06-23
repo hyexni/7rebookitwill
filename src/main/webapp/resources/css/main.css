@@ -1,3 +1,4 @@
+
 /* ✅ 기본 설정 */
 body {
   font-family: 'Noto Sans KR', sans-serif;
@@ -5,264 +6,251 @@ body {
   margin: 0;
   padding: 0;
 }
-
-/* ✅ 회원가입 전체 컨테이너 */
-.join-container {
-  max-width: 600px;
-  margin: 50px auto;
-  background-color: #fff;
-  padding: 40px 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+html, body {
+  height: 100%;
 }
 
-/* ✅ 제목 */
-.join-container h2 {
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 28px;
-  color: #333;
+/* ✅ wrapper 및 레이아웃 */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.main-content {
+  flex: 1;
+  padding: 40px;
+  background-color: #f8f8f8;
+  padding-bottom: 60px;
+}
+.footer {
+  background-color: black;
+  color: antiquewhite;
+  height: 100px;
+  width: 100%;
 }
 
-/* ✅ 라벨 및 입력 요소 */
-.join-container label {
-  display: block;
-  margin-top: 18px;
-  font-weight: bold;
-  font-size: 14px;
-  color: #222;
-}
-
-.join-container input[type="text"],
-.join-container input[type="password"],
-.join-container select {
+/* ✅ 공통 input */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+select {
   width: 100%;
   padding: 10px;
-  margin-top: 5px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 6px;
   box-sizing: border-box;
 }
 
-/* ✅ 직접입력 이메일 */
-#email_direct {
-  width: 100%;
-  margin-top: 8px;
-}
-
-/* ✅ 실시간 결과 메시지 */
-span#idResult,
-span#pwFormatResult,
-span#pwMatchResult,
-span#nickResult,
-span#phoneResult,
-span#emailResult {
-  font-size: 13px;
-  margin-top: 4px;
-  display: block;
-}
-
-/* ✅ 성별/내외국인 선택 */
-.join-container input[type="radio"] {
-  margin-right: 5px;
-}
-
-/* ✅ 에러 메시지 (성별, 내외국인 선택 안 했을 경우) */
-.error {
-  font-size: 13px;
-  color: red;
-  margin-left: 10px;
-}
-
-/* ✅ 주소 검색 버튼 */
-.join-container button[type="button"] {
-  margin-top: 10px;
-  padding: 8px 16px;
+/* ✅ 버튼 스타일 */
+button[type="button"],
+button[type="submit"] {
+  padding: 10px 16px;
   font-size: 14px;
-  background-color: #555;
-  color: #fff;
   border: none;
   border-radius: 6px;
   cursor: pointer;
 }
-
-.join-container button[type="button"]:hover {
-  background-color: #333;
-}
-
-/* ✅ 가입 버튼 */
-.join-container button[type="submit"] {
+button[type="submit"] {
   width: 100%;
-  padding: 12px;
   margin-top: 30px;
-  font-size: 16px;
   background-color: #ffcc00;
   color: #222;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.2s ease;
 }
-
-.join-container button[type="submit"]:hover {
+button[type="submit"]:hover {
   background-color: #e6b800;
 }
 
-/* ✅ 체크박스 라벨 */
-.checkbox-inline {
-  display: block;
-  margin: 5px 0;
+/* ✅ 로그인 / 회원가입 container */
+.join-container, .login-container {
+  max-width: 600px;
+  margin: 60px auto;
+  background-color: white;
+  padding: 40px 30px 100px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+}
+.join-container h2, .login-container h2 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
 }
 
-/* ✅ 통신사 + 휴대폰 한 줄 정렬 */
+/* ✅ 라벨 */
+label {
+  display: block;
+  margin-top: 18px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #222;
+}
+
+/* ✅ inline-field: 통신사 + 휴대폰 */
 .inline-field {
   display: flex;
   gap: 20px;
-  align-items: center;
   margin-top: 18px;
 }
-
 .inline-field .field-box {
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
+.inline-field .field-box:first-child { flex: 0.8; }
+.inline-field .field-box:last-child { flex: 2; }
 
-.inline-field .field-box:first-child {
-  flex: 0.8; /* 통신사 작게 */
+/* ✅ 주소 + 상세주소 한 줄 */
+.address-field {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  margin-top: 10px;
+}
+.address-field input[type="text"] {
+  flex: 1;
+}
+.address-field button {
+  flex-shrink: 0;
 }
 
-.inline-field .field-box:last-child {
-  flex: 2; /* 휴대폰번호 넓게 */
-}
-
-.inline-field select,
-.inline-field input {
-  width: 100%;
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-sizing: border-box;
-}
-
-/* ✅ 관심 카테고리 - 한 줄에 3개 정렬 */
+/* ✅ 관심 카테고리 */
 .category-group {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
 }
-
 .category-group .checkbox-inline {
-  flex: 0 0 calc(33.33% - 10px);  /* 한 줄에 3개 */
-  margin: 0;
+  flex: 0 0 calc(33.33% - 10px);
   font-weight: normal;
 }
 
-/* =============================== */
-/* ✅ 로그인 전용 컨테이너 설정 */
-/* =============================== */
-/* ✅ 로그인 전체 컨테이너 */
-.login-container {
-  max-width: 500px;
-  margin: 60px auto;
-  background-color: #fff;
-  padding: 40px 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+/* ✅ 마이페이지 */
+.mypage-container {
+  max-width: 960px;
+  margin: 0 auto;
 }
-
-/* ✅ 제목 */
-.login-container h2 {
-  text-align: center;
+.mypage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
   margin-bottom: 30px;
-  font-size: 28px;
-  color: #333;
+}
+.welcome-box {
+  display: flex;
+  flex-direction: column;
+}
+.welcome-name {
+  font-size: 24px;
+  font-weight: 800;
+}
+.welcome-msg {
+  font-size: 17px;
 }
 
-/* ✅ 라벨 및 입력 요소 */
-.login-container label {
-  display: block;
-  margin-top: 18px;
+/* 💰 포인트 박스 */
+.point-box {
+  display: flex;
+  align-items: center;
+  background-color: #fff7d6;
+  padding: 20px 24px;
+  border-radius: 14px;
+  border: 2px solid #f5c842;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  font-size: 18px;
+  height: 70px;
+  min-width: 320px;
+  gap: 12px;
+}
+.point-icon {
+  width: 32px;
+  height: 32px;
+  margin-right: 6px;
+}
+.point-label {
+  font-size: 18px;
+  font-weight: 700;
+  margin-right: 8px;
+}
+.point-value {
+  font-size: 32px;
+  font-weight: 900;
+  color: #e88c00;
+  letter-spacing: -0.5px;
+}
+
+/* ✅ 마이페이지 항목 박스 */
+.mypage-boxes {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.mypage-box {
+  position: relative;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px 24px;
+}
+.box-title {
+  font-size: 18px;
   font-weight: bold;
-  font-size: 14px;
-  color: #222;
+  margin-bottom: 5px;
 }
-
-.login-container input[type="text"],
-.login-container input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
+.box-desc {
   font-size: 14px;
-  border: 1px solid #ccc;
+  color: #666;
+}
+.mypage-btn {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px 12px;
+  background: #ffc107;
+  color: black;
   border-radius: 6px;
-  box-sizing: border-box;
-}
-
-/* ✅ 에러 메시지 */
-.login-error {
+  text-decoration: none;
+  font-weight: bold;
   font-size: 13px;
-  color: red;
-  margin-top: 8px;
 }
 
-/* ✅ 로그인 버튼 */
-.login-container button[type="submit"] {
-  width: 100%;
-  padding: 12px;
-  margin-top: 30px;
-  font-size: 16px;
-  background-color: #ffcc00;
-  color: #222;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s ease;
+.inline-radio {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 10px;
 }
 
-.login-container button[type="submit"]:hover {
-  background-color: #e6b800;
+.msg {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #666;
+  display: block;
 }
 
-/* ✅ 링크들 */
 .login-links {
-  margin-top: 20px;
+  margin-top: 15px;
   text-align: center;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .login-links a {
-  color: #333;
+  margin: 0 8px;
   text-decoration: none;
-  margin: 0 6px;
+  color: #444;
+  transition: color 0.2s ease;
 }
 
 .login-links a:hover {
+  color: #ff9900;
   text-decoration: underline;
 }
 
-/* ✅ 폼 레이블 & 인풋 정렬 */
-.join-container label {
-  display: block;
-  margin-top: 18px;
-  font-weight: bold;
+.login-error {
+  color: red;
   font-size: 14px;
-  color: #222;
-}
-
-.join-container input[type="text"],
-.join-container input[type="email"],
-.join-container input[type="password"] {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-sizing: border-box;
+  margin-top: 10px;
 }

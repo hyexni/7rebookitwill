@@ -41,6 +41,10 @@ public class MemberServiceImpl implements MemberService {
 	// 관심 카테고리 포함 회원가입
 	@Override
 	public void joinMemberWithCategory(MemberVO vo, List<Integer> categoryIds) {
+		// ✅ 이메일 공백일 경우 null 처리
+		if (vo.getMember_email() != null && vo.getMember_email().trim().isEmpty()) {
+			vo.setMember_email(null);
+		}
 		// 1. 회원정보 등록
 		mdao.insertMember(vo); // PK가 vo.getMember_idx()에 들어감
 
@@ -111,6 +115,11 @@ public class MemberServiceImpl implements MemberService {
 	// 회원정보 + 관심 카테고리 수정
 	@Override
 	public void updateMemberWithCategories(MemberVO vo, List<Integer> categoryIds) {
+		// ✅ 이메일이 공백이면 null로 바꿔서 DB 중복 오류 방지
+		if (vo.getMember_email() != null && vo.getMember_email().trim().isEmpty()) {
+			vo.setMember_email(null);
+		}
+
 		// 1. 회원 기본 정보 수정
 		mdao.updateMember(vo);
 
