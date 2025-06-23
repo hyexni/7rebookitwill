@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.persistence.PaymentDAO">
+
+	<!-- 책 정보 가져오기 -->
+	<select id="selectBook" resultType="BookVO">
+	  SELECT * FROM book WHERE book_id = #{book_id}
+	</select>
+	
+	<!-- 포인트 정보 가져오기 -->
+	<select id="getMemberPoint" resultType="int">
+	  SELECT point_total FROM member WHERE member_idx = #{member_idx}
+	</select>
+
+</mapper>
