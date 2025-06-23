@@ -29,7 +29,7 @@
 	  <input type="hidden" name="unit_price" value="${book.book_price}">
 	  <input type="hidden" name="quantity" value="1">
 	  
-	  보유 포인트: ${point_total} <br>
+	  보유 포인트: ${member.point_total} <br>
 	  포인트 사용: <input type="number" name="used_points" id="usedPoints" value="0">
 	  <br>
 	

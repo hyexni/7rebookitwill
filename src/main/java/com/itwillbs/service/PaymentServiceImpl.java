@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.BookVO;
+import com.itwillbs.dto.PaymentDTO;
 import com.itwillbs.persistence.PaymentDAO;
 
 @Service
@@ -26,6 +27,45 @@ public class PaymentServiceImpl implements PaymentService {
 
 		return pDAO.getMemberPoint(member_idx);
 	}
+	
+	
+	// 결제 처리
+	@Override
+	public boolean processPayment(PaymentDTO dto) {
+	    try {
+	        // 1. 포인트 차감
+	        pDAO.usePoints(dto);
+
+	        // 2. 주문 저장
+	        pDAO.insertOrder(dto);
+	        int order_id = pDAO.getLastOrderId();
+	        dto.setOrder_id(order_id);
+
+	        // 3. 주문 상세 저장
+	        pDAO.insertOrderItem(dto);
+
+	        // 4. 결제 저장
+	        pDAO.insertPayment(dto);
+
+	        // 5. 포인트 적립
+	        pDAO.givePoints(dto);
+
+	        return true;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+	
+	
+	
+	// 결제 완료
+	@Override
+	public PaymentDTO getLatestPaymentSummary(int member_idx) {
+	    return pDAO.getLatestSummary(member_idx);
+	}
+
+
 	
 	
 
