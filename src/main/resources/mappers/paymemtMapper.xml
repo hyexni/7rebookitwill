@@ -27,7 +27,7 @@
 	<!-- 2. 주문 저장 -->
 	<insert id="insertOrder" parameterType="com.itwillbs.dto.PaymentDTO">
 	  INSERT INTO orders (member_idx, total_price, status, order_date, delivery_address)
-	  VALUES (#{member_idx}, #{pay_amount}, '결제완료', NOW(), '기본배송지')
+	  VALUES (#{member_idx}, #{total_price}, '결제완료', NOW(), '기본배송지')
 	</insert>
 	
 	<select id="getLastOrderId" resultType="int">

@@ -88,12 +88,21 @@ public class PaymentController {
         // ✅ 로그인 상태면 결제 처리 진행
         paymentDTO.setMember_idx(member_idx);
 
+        int totalPrice = paymentDTO.getUnit_price() * paymentDTO.getQuantity();
+        int payAmount = totalPrice - paymentDTO.getUsed_points();
+        int savedPoints = (int)(payAmount * 0.1);
+        
+        paymentDTO.setTotal_price(totalPrice);
+        paymentDTO.setPay_amount(payAmount);
+        paymentDTO.setSaved_points(savedPoints);
+        
         boolean result = pService.processPayment(paymentDTO);
+        
 
         if (result) {
             return "redirect:/payment/complete";
         } else {
-            rttr.addFlashAttribute("msg", "결제 실패 ㅠㅠ");
+            rttr.addFlashAttribute("errorMsg", "결제에 실패했습니다. 다시 시도해주세요.");
             return "redirect:/payment?book_id=" + paymentDTO.getBook_id();
         }
     }

@@ -37,6 +37,11 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public boolean processPayment(PaymentDTO dto) {
 	    try {
+	    	// 🔐 포인트 음수 입력 방지
+	        if (dto.getUsed_points() < 0) {
+	            throw new IllegalArgumentException("포인트는 0 이상이어야 합니다.");
+	        }
+	    	
 	        // 1. 포인트 차감
 	        pDAO.usePoints(dto);
 

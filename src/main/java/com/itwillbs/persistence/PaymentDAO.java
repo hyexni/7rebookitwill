@@ -39,6 +39,8 @@ public interface PaymentDAO {
 	
 	// 배송 정보
 	public MemberVO getMemberInfo(int member_idx);
+	
+	 boolean processPayment(PaymentDTO dto);
 
 
 
