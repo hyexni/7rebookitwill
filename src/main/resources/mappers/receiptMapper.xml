@@ -9,11 +9,11 @@
         INSERT INTO c7d2503t1p1.receipts (
             member_idx, originalfilename, savedfilename, filepath, file_size, file_type, 
             ocr_text, ocr_booktitle, ocr_date, ocr_amount, ocr_store, approvalnumber, 
-            upload_status, fileHash, verification_status
+            upload_status, fileHash, verification_status , earnedPoints
         ) VALUES (
             #{member_idx}, #{originalfilename}, #{savedfilename}, #{filepath}, #{file_size}, #{file_type},
             #{ocr_text}, #{ocr_booktitle}, #{ocr_date}, #{ocr_amount}, #{ocr_store}, #{approvalnumber}, 
-            #{upload_status}, #{fileHash}, #{verification_status}
+            #{upload_status}, #{fileHash}, #{verification_status},#{earnedPoints}
         )
     </insert>
     

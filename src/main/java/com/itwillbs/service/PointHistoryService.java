@@ -17,7 +17,7 @@ public interface PointHistoryService {
     public Integer getTotalPoints(int memberIdx) throws Exception;
 
     // 포인트 적립 처리 메서드 (추가)
-    public void earnPoint(PointVO pointVO) throws Exception;
+   // public void earnPoint(PointVO pointVO) throws Exception;
 
     // 포인트 사용 처리 메서드 (추가)
     public void usePoint(PointVO pointVO) throws Exception;
