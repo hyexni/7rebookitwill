@@ -143,6 +143,7 @@ public class MemberController {
 		// 로그인 성공시 세션영역에 아이디 및 회원 고유 번호 저장
 		session.setAttribute("id", resultVO.getMember_id()); // 로그인 ID
 		session.setAttribute("member_idx", resultVO.getMember_idx()); // 회원 고유 번호 (포인트 내역 조회에 필요)
+		session.setAttribute("loginUser", resultVO); // ✅ VO 통째로 저장
 
 		logger.info("로그인 성공! 회원 ID: {}, 회원 고유 번호: {}", resultVO.getMember_id(), resultVO.getMember_idx());
 
