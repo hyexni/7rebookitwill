@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+         
+<mapper namespace="com.itwillbs.persistence.BookReportDAO">
+
+	<!-- 새 문의 등록 -->
+	<insert id="insertBookReport" parameterType="com.itwillbs.domain.BookReportVO">
+		  INSERT INTO BookReport (member_idx, author_name, publisher, read_date, report_text)
+		  VALUES (#{member_idx}, #{author_name}, #{publisher}, #{read_date}, #{report_text});
+	</insert>
+
+	
+	
+	<!-- 문의 내역 리스트 가져오기 -->
+	  <select id="getBookReportList" parameterType="int" resultType="com.itwillbs.domain.BookReportVO">
+	    SELECT * FROM BookReport
+	    WHERE member_idx = #{member_idx}
+	    ORDER BY read_date DESC
+	  </select>
+	
+	
+	<!-- 도서명 가져오기 -->
+	<select id ="getBookTitle" parameterType="int" resultType="com.itwillbs.domain.BookReportVO">
+	SELECT
+    br.*, b.book_title 
+	FROM BookReport br
+	INNER JOIN
+    Book b ON br.book_id = b.book_id;
+	</select>
+	
+	
+	<!-- SELECT ONE : 상세 조회 -->
+	<select id="getBookReport" parameterType="int" resultType="com.itwillbs.domain.BookReportVO">
+   	 SELECT * FROM BookReport
+   	 WHERE report_id = #{report_id}
+	</select>
+	
+	
+	
+	<!-- 답변 -->
+	<select id="getResponse" resultType="com.itwillbs.domain.ResponseVO">
+	  SELECT * FROM response WHERE report_id = #{report_id}
+	</select>
+	
+	
+	
+	<!-- 수정 -->
+	<update id="updateBookReport">
+	  UPDATE BookReport
+	  SET title = #{title}, content = #{content}
+	  WHERE report_id = #{report_id}
+	</update>
+
+	<!-- 삭제 -->
+	<delete id="deleteBookReport">
+	  DELETE FROM BookReport WHERE report_id = #{report_id}
+	</delete>
+	
+	
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
