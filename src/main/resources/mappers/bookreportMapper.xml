@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+          
+<mapper namespace="com.itwillbs.persistence.BookReportDAO">
+
+    <insert id="writeBookReport" parameterType="com.itwillbs.domain.BookReportVO">
+        INSERT INTO book_report (
+            member_idx, 
+            book_id,
+            book_title,
+            author_name, 
+            publisher, 
+            read_date, 
+            report_text,
+            report_image1,
+            report_image2,
+            report_image3,
+            is_public
+        )
+        VALUES (
+            #{member_idx}, 
+            <if test="book_id != null">
+                #{book_id},
+            </if>
+            <if test="book_id == null">
+                NULL,
+            </if>
+            #{book_title},
+            #{author_name}, 
+            #{publisher}, 
+            #{read_date}, 
+            #{report_text},
+            #{report_image1},
+            #{report_image2}, 
+            #{report_image3},
+            #{is_public}
+        )
+    </insert>
+
+    <select id="getBookReport" parameterType="int" resultType="com.itwillbs.domain.BookReportVO">
+        SELECT 
+            br.*, b.book_title AS original_book_title
+        FROM 
+            book_report br 
+        LEFT JOIN 
+            book b ON br.book_id = b.book_id
+        WHERE 
+            br.report_id = #{report_id}
+    </select>
+    
+    <select id="getBookReportList" resultType="com.itwillbs.domain.BookReportVO">
+        SELECT 
+            br.report_id, 
+            br.book_title, 
+            br.author_name,
+            br.member_idx,
+            br.write_date,
+            br.is_public,
+            b.book_title AS original_book_title 
+        FROM 
+            book_report br 
+        LEFT JOIN 
+            book b ON br.book_id = b.book_id
+        ORDER BY 
+            br.report_id DESC
+    </select>
+    
+    <select id="getResponse" resultType="com.itwillbs.domain.ResponseVO">
+        SELECT * FROM response WHERE report_id = #{report_id}
+    </select>
+    
+    <update id="updateBookReport" parameterType="com.itwillbs.domain.BookReportVO">
+        UPDATE book_report 
+        <set>
+            <if test="book_title != null">book_title = #{book_title},</if>
+            <if test="author_name != null">author_name = #{author_name},</if>
+            <if test="publisher != null">publisher = #{publisher},</if>
+            <if test="read_date != null">read_date = #{read_date},</if>
+            <if test="report_text != null">report_text = #{report_text},</if>
+            <if test="report_image1 != null">report_image1 = #{report_image1},</if>
+            <if test="report_image2 != null">report_image2 = #{report_image2},</if>
+            <if test="report_image3 != null">report_image3 = #{report_image3},</if>
+            is_public = #{is_public}
+        </set>
+        WHERE report_id = #{report_id}
+    </update>
+
+    <delete id="deleteBookReport" parameterType="int">
+        DELETE FROM book_report WHERE report_id = #{report_id}
+    </delete>
+
+</mapper>
