@@ -15,7 +15,10 @@ public interface BookReportService {
 	public void writeBookReport(BookReportVO vo) throws Exception;
 	
 	// 독후감 목록
-	List<BookReportVO> getBookReportList(int member_idx);
+	public List<BookReportVO> getBookReportList();
+
+	
+	//List<BookReportVO> getBookReportList(int member_idx);
 	
 	// 상세 조회
 	BookReportVO getBookReport(int report_id);
@@ -29,6 +32,9 @@ public interface BookReportService {
     // 삭제
     void deleteBookReport(int report_id) throws Exception;
 
+	
+
+ 
 	
 
 

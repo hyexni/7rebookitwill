@@ -28,21 +28,23 @@ public class BookReportServiceImpl implements BookReportService {
 		iDAO.insertBookReport(vo);
 	}
 
-	
-	// 독후감 목록
+		
+	//독후감 목록
 	@Override
-	public List<BookReportVO> getBookReportList(int member_idx) {
-		// DAO 통해 DB에서 해당 회원의 문의 리스트 가져오기
-		return iDAO.getBookReportList(member_idx);
+	public List<BookReportVO> getBookReportList() {
+		return null;
 	}
+
 	
-	
+
 	// 상세 조회
 	@Override
 	public BookReportVO getBookReport(int report_id) {
 	    return iDAO.getBookReport(report_id);
 	}
 	
+	
+
 	// 답변
 	@Override
 	public ResponseVO getResponse(int report_id) {
