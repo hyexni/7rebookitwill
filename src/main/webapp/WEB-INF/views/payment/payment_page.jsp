@@ -24,14 +24,22 @@
 	<p>총 금액: <span id="totalPrice">${book.book_price}</span>원</p>
 	
 	<!-- 3. 포인트 입력 -->
-	<form action="${pageContext.request.contextPath}/payment/process" method="post">
+	<form action="${pageContext.request.contextPath}/payment/process" method="post" onsubmit="return validateForm()">
 	  <input type="hidden" name="book_id" value="${book.book_id}">
 	  <input type="hidden" name="unit_price" value="${book.book_price}">
 	  <input type="hidden" name="quantity" value="1">
 	  
-	  보유 포인트: ${member.point_total} <br>
-	  포인트 사용: <input type="number" name="used_points" id="usedPoints" value="0">
-	  <br>
+	 <tr>
+	   <th>보유 포인트</th>
+	   <td><strong>${point_total}P</strong></td>
+	 </tr>
+	 <tr>
+	   <th>사용할 포인트</th>
+	   <td>
+	    <input type="number" name="used_points" id="usedPoints" min="0" max="${point_total}" value="0" />
+	    <button type="button" onclick="useAllPoints()">전액 사용</button>
+	   </td>
+	 </tr>
 	
 	  <!-- 4. 결제 금액 -->
 	  실 결제 금액: <span id="payAmount">${book.book_price}</span>원
@@ -65,7 +73,36 @@
 	  });
 	</script>
 
+	<script> // 포인트 전액 사용
+	  function useAllPoints() {
+	    const total = ${point_total};
+	    document.getElementById("usedPoints").value = total;
+	    
+	 	// 👉 실 결제 금액도 즉시 반영되도록 추가
+	    const result = bookPrice - total;
+	    document.getElementById("payAmount").innerText = result;
+	    document.getElementById("payAmountInput").value = result;
+	  }
+	</script>
+	
+	<script> // 사용자가 결제 금액보다 많은 포인트 입력했을 때 차단
+	function validateForm() {
+		  const used = parseInt(document.getElementById("usedPoints").value);
+		  const total = ${point_total};
+		  const price = ${book.book_price}; // 책 가격
 
+		  if (used > total) {
+		    alert("보유 포인트를 초과해서 사용할 수 없습니다.");
+		    return false;
+		  }
+		  if (used > price) {
+		    alert("결제 금액을 초과해서 포인트를 사용할 수 없습니다.");
+		    return false;
+		  }
+		  return true;
+		}
+	</script>
+		
 
 
 
