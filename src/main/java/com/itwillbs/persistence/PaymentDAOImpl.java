@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.BookVO;
+import com.itwillbs.domain.MemberVO;
 import com.itwillbs.dto.PaymentDTO;
 
 @Repository
@@ -75,6 +76,13 @@ public class PaymentDAOImpl implements PaymentDAO {
 	public PaymentDTO getLatestSummary(int member_idx) {
 	    return sqlSession.selectOne(NAMESPACE + "getLatestSummary", member_idx);
 	}
+	
+	// 배송 정보
+	@Override
+	public MemberVO getMemberInfo(int member_idx) {
+	    return sqlSession.selectOne("payment.getMemberInfo", member_idx);
+	}
+
 
 
 	

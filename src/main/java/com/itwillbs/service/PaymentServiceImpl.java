@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.BookVO;
+import com.itwillbs.domain.MemberVO;
 import com.itwillbs.dto.PaymentDTO;
 import com.itwillbs.persistence.PaymentDAO;
 
@@ -64,6 +65,15 @@ public class PaymentServiceImpl implements PaymentService {
 	public PaymentDTO getLatestPaymentSummary(int member_idx) {
 	    return pDAO.getLatestSummary(member_idx);
 	}
+	
+	
+	
+	// 배송 정보
+	@Override
+	public MemberVO getMemberInfo(int member_idx) {
+	    return pDAO.getMemberInfo(member_idx);
+	}
+
 
 
 	

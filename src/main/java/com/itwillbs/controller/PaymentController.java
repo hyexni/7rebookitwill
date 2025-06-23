@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.BookVO;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.dto.DeliveryDTO;
 import com.itwillbs.dto.PaymentDTO;
 import com.itwillbs.service.AdminInquiryService;
 import com.itwillbs.service.PaymentService;
@@ -45,15 +47,20 @@ public class PaymentController {
             return "redirect:/member/login";
         }
         
-        // 책 정보, 포인트 정보 가져오기
+        // 1. 도서 정보
         BookVO book = pService.getBookInfo(book_id);
         if (book == null) {
             throw new IllegalArgumentException("해당 도서가 존재하지 않습니다.");
         }
         model.addAttribute("book", book);
         
+        // 2. 포인트 정보
         int point_total = pService.getPointTotal(member_idx);
         model.addAttribute("point_total", point_total);
+        
+        // ✅ 3. 회원 정보 가져오기 (배송 기본값용)
+        MemberVO member = pService.getMemberInfo(member_idx); 
+        model.addAttribute("member", member);
         
         return "payment/payment_page"; // view_20
     }
@@ -64,6 +71,7 @@ public class PaymentController {
     // 포인트 차감, 주문 정보 저장, 주문 상세 저장, 결제 정보 저장, 포인트 적립, 완료 페이지로 이동
     @PostMapping("/process")
     public String processPayment(PaymentDTO paymentDTO, 
+    							@ModelAttribute DeliveryDTO deliveryDTO,
     							HttpSession session, 
     							RedirectAttributes rttr) {
     	
@@ -107,7 +115,7 @@ public class PaymentController {
         return "payment/payment_complete"; // view_21
     }
 
-    
+
     
     
     

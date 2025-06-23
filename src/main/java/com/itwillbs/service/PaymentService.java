@@ -1,6 +1,7 @@
 package com.itwillbs.service;
 
 import com.itwillbs.domain.BookVO;
+import com.itwillbs.domain.MemberVO;
 import com.itwillbs.dto.PaymentDTO;
 
 public interface PaymentService {
@@ -14,6 +15,9 @@ public interface PaymentService {
 	
 	// 결제 완료
 	PaymentDTO getLatestPaymentSummary(int member_idx);
+	
+	// 배송 정보
+	public MemberVO getMemberInfo(int member_idx);
 
 
 }

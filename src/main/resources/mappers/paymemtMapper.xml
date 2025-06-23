@@ -69,6 +69,13 @@
 	
 	
 	
+	<!-- 배송 정보 -->
+	<select id="getMemberInfo" resultType="com.itwillbs.domain.MemberVO">
+	  SELECT * FROM member WHERE member_idx = #{member_idx}
+	</select>
+	
+	
+	
 	
 	
 
