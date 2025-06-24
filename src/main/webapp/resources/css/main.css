@@ -296,9 +296,53 @@ label {
 }
 
 .btn-box {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
   margin-top: 30px;
 }
+
+.btn-action {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  display: inline-block;
+}
+
+.btn-action.update {
+  background-color: #ffe400;
+  color: #222;
+}
+.btn-action.update:hover {
+  background-color: #ffcc00;
+}
+
+.btn-action.delete {
+  background-color: #ff4d4d;
+  color: #fff;
+}
+.btn-action.delete:hover {
+  background-color: #e60000;
+}
+
+.btn-gray {
+  background-color: #aaa;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+  transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-gray:hover {
+  background-color: #888;
+}
+
 
 .btn-yellow {
   background-color: #ffe400;
@@ -312,4 +356,19 @@ label {
 
 .btn-yellow:hover {
   background-color: #ffcc00;
+}
+
+/* ✅ 버튼 공통 기본 스타일 */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  line-height: 20px;
+  height: 44px;
 }

@@ -54,10 +54,12 @@ public class MemberController {
 		// ✅ 백엔드 유효성 검사 추가: 카테고리 최소 2개 선택
 		if (categoryIds == null || categoryIds.size() < 2) {
 			rttr.addFlashAttribute("msg", "관심 카테고리는 최소 2개 이상 선택해야 합니다.");
+			rttr.addFlashAttribute("icon", "warning");
 			return "redirect:/member/join";
 		}
 		mService.joinMemberWithCategory(vo, categoryIds);
-		rttr.addFlashAttribute("message", "회원가입 완료!");
+		rttr.addFlashAttribute("msg", "회원가입 완료!");
+		rttr.addFlashAttribute("icon", "success");
 		return "redirect:/member/login";
 	}
 
@@ -70,22 +72,59 @@ public class MemberController {
 
 	@PostMapping("/checkNickname")
 	@ResponseBody
-	public String checkNickname(@RequestParam("nickname") String nickname) {
-		return mService.checkNickname(nickname) ? "DUPLICATE" : "OK";
+	public String checkNickname(@RequestParam("nickname") String nickname, HttpSession session) {
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+		MemberVO vo = mService.getMemberByNick(nickname); // 📌 해당 닉네임을 가진 회원 조회
+
+		if (vo == null)
+			return "OK";
+
+		// 내 닉네임이면 OK
+		if (loginUser != null && vo.getMember_id().equals(loginUser.getMember_id()))
+			return "OK";
+
+		return "DUPLICATE";
 	}
 
 	@PostMapping("/checkEmail")
 	@ResponseBody
-	public String checkEmail(@RequestParam("member_email") String email) {
+	public String checkEmail(@RequestParam("member_email") String email, HttpSession session) {
 		if (email == null || email.trim().isEmpty())
 			return "OK";
-		return (mService.memberInfoByEmail(email) == null) ? "OK" : "DUPLICATE";
+
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+		MemberVO vo = mService.memberInfoByEmail(email); // 📌 해당 이메일을 가진 회원 조회
+
+		if (vo == null)
+			return "OK";
+
+		// 내 이메일이면 OK
+		if (loginUser != null && vo.getMember_id().equals(loginUser.getMember_id()))
+			return "OK";
+
+		return "DUPLICATE";
 	}
 
 	@PostMapping("/checkPhone")
 	@ResponseBody
-	public String checkPhone(@RequestParam("phone") String phone) {
-		return (mService.memberInfoByPhone(phone) == null) ? "OK" : "DUPLICATE";
+	public String checkPhone(@RequestParam("phone") String phone, HttpSession session) {
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+		// DB에서 해당 번호 가진 사람 찾기
+		MemberVO vo = mService.memberInfoByPhone(phone);
+
+		// 1. 아무도 이 번호 안 쓰고 있으면 OK
+		if (vo == null)
+			return "OK";
+
+		// 2. 나 자신이면 OK
+		if (loginUser != null && vo.getMember_id().equals(loginUser.getMember_id()))
+			return "OK";
+
+		// 3. 다른 사람이 쓰는 번호면 DUPLICATE
+		return "DUPLICATE";
 	}
 
 	// 로그인
@@ -117,7 +156,7 @@ public class MemberController {
 			return "redirect:" + redirectUrl;
 		}
 
-		rttr.addFlashAttribute("message", resultVO.getMember_id() + "님, 환영합니다!");
+		rttr.addFlashAttribute("msg", resultVO.getMember_id() + "님, 환영합니다!");
 		return "redirect:/";
 	}
 
@@ -135,6 +174,7 @@ public class MemberController {
 
 		if (loginUser == null) {
 			rttr.addFlashAttribute("msg", "로그인 후 이용해주세요!");
+			rttr.addFlashAttribute("icon", "warning");
 			return "redirect:/member/login";
 		}
 
@@ -220,6 +260,7 @@ public class MemberController {
 		if (!dbVO.getMember_pw().equals(current_pw)) {
 			// ❗ 입력값 유지하지 않고 새로고침 효과 주기
 			rttr.addFlashAttribute("msg", "현재 비밀번호가 일치하지 않습니다.");
+			rttr.addFlashAttribute("icon", "error");
 			return "redirect:/member/update";
 		}
 
@@ -236,8 +277,10 @@ public class MemberController {
 		// 🔸 성공 메시지
 		if (pwChanged) {
 			rttr.addFlashAttribute("msg", "비밀번호를 포함한 정보가 수정되었습니다.");
+			rttr.addFlashAttribute("icon", "success");
 		} else {
 			rttr.addFlashAttribute("msg", "회원 정보가 수정되었습니다.");
+			rttr.addFlashAttribute("icon", "success");
 		}
 
 		// 🔸 마이페이지로 이동
@@ -286,4 +329,50 @@ public class MemberController {
 
 		return "member/findPwResult";
 	}
+
+	// 탈퇴 폼 페이지 (GET)
+	@GetMapping("/delete")
+	public String deleteForm() {
+		return "/member/delete"; // -> delete.jsp
+	}
+
+	// 🔐 회원 탈퇴 처리 (비밀번호 확인 후)
+	@PostMapping("/delete")
+	public String deleteMember(@RequestParam("member_pw") String member_pw, HttpSession session,
+			RedirectAttributes rttr) {
+		logger.info("MemberController: POST /member/delete 호출");
+
+		// 1. 로그인 상태 확인
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+		if (loginUser == null) {
+			rttr.addFlashAttribute("msg", "로그인이 필요합니다.");
+			rttr.addFlashAttribute("icon", "warning");
+			return "redirect:/member/login";
+		}
+
+		// 2. 입력한 비밀번호로 로그인 검증
+		MemberVO checkVO = new MemberVO();
+		checkVO.setMember_id(loginUser.getMember_id());
+		checkVO.setMember_pw(member_pw);
+
+		MemberVO resultVO = mService.memberLoginCheck(checkVO);
+		if (resultVO == null) {
+			rttr.addFlashAttribute("msg", "비밀번호가 일치하지 않습니다.");
+			rttr.addFlashAttribute("icon", "error");
+			return "redirect:/member/delete";
+		}
+
+		// ✅ 3. 회원 상태만 변경 (Soft Delete)
+		mService.deleteMember(loginUser.getMember_id());
+
+		// ✅ 4. 세션 종료
+		session.invalidate();
+
+		// ✅ 5. 메시지 출력
+		rttr.addFlashAttribute("msg", "회원 탈퇴가 완료되었습니다.\n그동안 이용해 주셔서 감사합니다!");
+		rttr.addFlashAttribute("icon", "success");
+
+		return "redirect:/";
+	}
+
 }

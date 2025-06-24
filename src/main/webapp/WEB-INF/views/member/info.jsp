@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 
@@ -9,6 +10,9 @@
 
 <div class="main-wrapper">
   <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+  
+  <%-- 알림창  --%>
+<%@ include file="/WEB-INF/views/include/alert.jsp" %> 
 
   <!-- 🧾 회원 기본정보 박스 -->
   <div class="mypage-container">
@@ -33,9 +37,10 @@
       <div class="info-row"><span class="info-label">최근 수정일</span><span class="info-value"><fmt:formatDate value="${memberVO.member_update_date}" pattern="yyyy-MM-dd HH:mm" /></span></div>
     </div>
 
-    <div class="btn-box">
-      <a href="/member/update" class="btn btn-yellow">회원정보 수정하기</a>
-    </div>
+   <div class="btn-box">
+	  <a href="/member/update" class="btn-action update">회원정보 수정하기</a>
+	  <a href="/member/delete" class="btn-action delete">회원 탈퇴하기</a>
+	</div>
   </div>
 </div>
 

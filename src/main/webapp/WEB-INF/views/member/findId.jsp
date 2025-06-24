@@ -11,6 +11,8 @@
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
 
+<%@ include file="/WEB-INF/views/include/alert.jsp" %> 
+
 <div class="container" style="max-width: 500px; margin: 50px auto;">
   <h2>🔍 아이디 찾기</h2>
 

@@ -66,4 +66,7 @@ public interface MemberService {
 
 	// ✅ member_idx 기준 선택한 카테고리 목록 (이름까지)
 	List<CategoryVO> getSelectedCategories(int member_idx);
+
+	// 회원 탈퇴 처리 메서드
+	void deleteMember(String member_id);
 }

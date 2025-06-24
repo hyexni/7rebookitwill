@@ -1,21 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <%@ include file="/WEB-INF/views/include/header.jsp" %> 
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+<%@ include file="/WEB-INF/views/include/alert.jsp" %> 
 
 <div class="login-container">
   <h2>로그인</h2>
-
-  <!-- ✅ 회원가입 완료 메시지 표시 -->
-  <c:if test="${not empty msg}">
-    <div style="margin-bottom: 15px; padding: 12px; background-color: #e6ffe6; color: #228B22; font-weight: bold; border-radius: 6px; text-align: center;">
-      ${msg}
-    </div>
-  </c:if>
 
   <form action="${pageContext.request.contextPath}/member/login" method="post">
     <label for="member_id">아이디:</label>

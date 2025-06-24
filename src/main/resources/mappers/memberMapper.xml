@@ -32,19 +32,19 @@
   )
 	</insert>
 
- <update id="updateMember" parameterType="com.itwillbs.domain.MemberVO">
+<!--  회원 수정  -->
+<update id="updateMember" parameterType="com.itwillbs.domain.MemberVO">
   UPDATE member
   SET
-    member_name             = #{member_name},
-    member_email            = #{member_email},
-    member_phone            = #{member_phone},
-    member_nick             = #{member_nick},
-    member_address          = #{member_address},
-    member_address_detail   = #{member_address_detail},  <!-- ✅ 이거 추가!! -->
-    member_update_date      = NOW()
-  WHERE
-    member_id = #{member_id}
-    AND member_pw = #{member_pw}
+    member_pw              = #{member_pw},
+    member_name            = #{member_name},
+    member_email           = #{member_email},
+    member_phone           = #{member_phone},
+    member_nick            = #{member_nick},
+    member_address         = #{member_address},
+    member_address_detail  = #{member_address_detail},
+    member_update_date     = NOW()
+  WHERE member_idx = #{member_idx}
 </update>
 
   <!-- ✅ 4. 마이페이지 정보 조회 (ID로) -->
@@ -111,6 +111,13 @@
       AND member_phone = #{member_phone}
   </select>
   
+  <!-- 회원 탈퇴 처리 -->
+	<update id="deleteMember" parameterType="String">
+   	 UPDATE member
+	    SET member_status = 'N'
+	    WHERE member_id = #{member_id}
+	</update>
+	
 
 
 </mapper>

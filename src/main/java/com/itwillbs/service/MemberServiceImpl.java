@@ -176,4 +176,9 @@ public class MemberServiceImpl implements MemberService {
 		return cdao.getSelectedCategories(member_idx);
 	}
 
+	// 회원 탈퇴 처리 메서드 구현
+	@Override
+	public void deleteMember(String member_id) {
+		mdao.deleteMember(member_id);
+	}
 }

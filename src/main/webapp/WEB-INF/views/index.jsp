@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%-- 1. 페이지 기본 골격과 CSS/폰트 링크를 불러옵니다. --%>
 <%@include file="/WEB-INF/views/include/layout_head.jsp" %>   
@@ -9,6 +10,9 @@
 
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@include file="/WEB-INF/views/include/sidebar.jsp" %>
+
+<!--  알림창 -->
+<%@ include file="/WEB-INF/views/include/alert.jsp" %> 
 
 <style>
  /* 각 도서 섹션 스타일 */
@@ -226,6 +230,7 @@
     </main>
  </div>
 </div> <%-- .products-catagories-area 닫는 태그 --%>
+
 
 <%-- 5. 페이지의 끝을 마무리하는 footer 파일을 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
