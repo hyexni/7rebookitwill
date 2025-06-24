@@ -103,6 +103,24 @@ public class PaymentDAOImpl implements PaymentDAO {
 	}
 
 
+	@Override
+    public boolean processPayment(PaymentDTO dto) {
+        try {
+            sqlSession.update(NAMESPACE + "usePoints", dto);
+            sqlSession.insert(NAMESPACE + "insertOrder", dto);
+            int order_id = sqlSession.selectOne(NAMESPACE + "getLastOrderId");
+            dto.setOrder_id(order_id);
+            sqlSession.insert(NAMESPACE + "insertOrderItem", dto);
+            sqlSession.insert(NAMESPACE + "insertPayment", dto);
+            sqlSession.update(NAMESPACE + "givePoints", dto);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+}
+
 
 	
 	

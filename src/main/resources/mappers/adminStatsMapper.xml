@@ -61,7 +61,7 @@
 	</select>
 	
 	<!-- 도서별 판매량 TOP5 -->
-	<select id="getTopSellingBooks" resultType="com.itwillbs.domain.BookStatsDTO">
+	<select id="getTopSellingBooks" resultType="com.itwillbs.dto.BookStatsDTO">
 	    SELECT 
 	        b.book_id,
 	        b.book_title AS bookTitle,
@@ -77,7 +77,7 @@
 	</select>
 	
 	<!-- 별점 높은 도서 TOP5 (리뷰 수 2개 이상 필터링 포함) -->
-	<select id="getTopRatedBooks" resultType="com.itwillbs.domain.BookStatsDTO">
+	<select id="getTopRatedBooks" resultType="com.itwillbs.dto.BookStatsDTO">
 	    SELECT 
 	        b.book_id,
 	        b.book_title AS bookTitle,

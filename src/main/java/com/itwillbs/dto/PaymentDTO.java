@@ -6,15 +6,16 @@ import lombok.Data;
 public class PaymentDTO {
 	
 	// 결제
-	private int member_idx;
 	private int book_id;
-	private int quantity;
+	private int member_idx;
 	private int unit_price;
+	private int quantity;
+	private int total_price;
 	private int used_points;
-	private int pay_amount;
-	private String pay_method;
-	private int order_id;
 	private int saved_points;
+	private int pay_amount;
+	private int order_id;
+	private String pay_method;
 
 	
 	// 배송

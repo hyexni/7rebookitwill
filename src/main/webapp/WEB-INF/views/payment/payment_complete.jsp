@@ -48,44 +48,15 @@
 
     <br>
 
-    <c:if test="${not empty delivery}">
-        <h3 style="margin-top:40px;">📦 배송 정보</h3>
-        <table style="margin: 0 auto; border-collapse: collapse; font-size: 16px;">
-            <tr>
-            	<td style="border: 1px solid #ddd; padding: 8px;">받는 분</td>
-            	<td style="border: 1px solid #ddd; padding: 8px;">${member.member_name}</td>
-           	</tr>
-            <tr>
-            	<td style="border: 1px solid #ddd; padding: 8px;">연락처</td>
-            	<td style="border: 1px solid #ddd; padding: 8px;">${member.member_phone}</td>
-           	</tr>
-            <tr>
-            	<td style="border: 1px solid #ddd; padding: 8px;">주소</td>
-            	<td style="border: 1px solid #ddd; padding: 8px;">(${member.zipcode}) ${member.member_address} ${member.member_address_detail}</td>
-           	</tr>
-            <tr>
-            	<td style="border: 1px solid #ddd; padding: 8px;">배송 메모</td>
-            	<td style="border: 1px solid #ddd; padding: 8px;">${delivery.memo}</td>
-           	</tr>
-        </table>
-    </c:if>
 
-    <p style="margin-top: 30px;">※ 적립된 포인트는 다음 구매 시 사용하실 수 있습니다.</p>
+    <p style="margin-top: 30px;">※ 결제 금액의 10%를 포인트로 적립해 드렸습니다.<br>
+    적립된 포인트는 다음 구매 시 사용 가능합니다.</p>
 
     <div style="margin-top: 40px;">
         <a href="/" style="margin-right: 20px; text-decoration: none; color: #333;">🏠 홈으로 가기</a>
         <a href="/mypage/orders" style="text-decoration: none; color: #0066cc;">📦 주문 상세 보기</a>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
 
 
 

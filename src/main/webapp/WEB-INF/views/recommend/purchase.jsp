@@ -6,86 +6,66 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>    
 
-	<div class="box box-primary">
-		<div class="box-header with-border">
-			
-<%-- 			<c:choose>
-				<c:when test="${empty recommendList}">
-					<p>😢 추천 도서가 없습니다.</p>
-				</c:when>
-				<c:otherwise>
-					<div style="display: flex; flex-wrap: wrap; gap: 20px;">
-					  <c:forEach var="book" items="${recommendList}">
-					    <div style="border: 1px solid #ccc; padding: 10px; width: 250px;">
-					      <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}"
-					      			 alt="${book.book_title}" style="width: 100%; height: auto;" /> <br>
-         				  <strong>${book.book_title}</strong><br>
-         				  저자: ${book.author_name}<br>
-         				  출판사: ${book.publisher}<br>
-           				  가격: <fmt:formatNumber value="${book.book_price}" type="currency" currencySymbol="₩"/><br>
-         				  <p style="font-size: 13px; color: #555;">
-           				    요약: ${book.book_summary}
-        				  </p>
-      				    </div>
-     				  </c:forEach>
-					</div>
-				</c:otherwise>
-			</c:choose> --%>
-			
+<c:if test="${empty sessionScope.member_idx}">
+  <div style="padding: 30px; text-align: center;">
+    <h3>⚠ 로그인한 사용자만 이용할 수 있는 기능입니다.</h3>
+    <a href="${pageContext.request.contextPath}/member/login">[ 로그인 하러가기 ]</a>
+  </div>
+</c:if>
 
-<!-- 새로 추가.. 테스트  -->			
-<!-- 확인해야 할 것 : when에서 empty부분!!!
-	recommendList 일 때는 도서 리스트가 안 뜨고
-	purchaseList 일 때는 뜸-->
+<c:if test="${not empty sessionScope.member_idx}">
+  <div class="box box-primary">
+    <div class="box-header with-border">
 
-<c:choose>
-  <c:when test="${empty purchaseList}">
-    <p>😢 구매 도서 없음</p>
-  </c:when>
-  <c:otherwise>
-    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-      <c:forEach var="book" items="${purchaseList}">
-        <div style="border: 1px solid #ccc; padding: 10px; width: 250px;">
-          
-          <!-- 이미지 (조금 낮은 높이로 조정) -->
-          <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.coverImage}" 
-               alt="${book.bookTitle}" 
-               style="width: 100%; height: 300px; object-fit: cover; border-radius: 5px;" />
+      <c:choose>
+        <c:when test="${empty purchaseList}">
+          <p>😢 구매 도서 없음</p>
+        </c:when>
+        <c:otherwise>
+          <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            <c:forEach var="book" items="${purchaseList}">
+              <a href="${pageContext.request.contextPath}/book/view?book_id=${book.bookId}"
+                 style="text-decoration: none; color: inherit;">
+                <div style="border: 1px solid #ccc; padding: 10px; width: 250px; cursor: pointer;">
+                  
+                  <!-- 이미지 -->
+                  <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.coverImage}" 
+                       alt="${book.bookTitle}" 
+                       style="width: 100%; height: 250px; object-fit: fill; border-radius: 5px;" />
 
-          <!-- 제목 -->
-          <div style="font-weight: bold; margin-top: 10px;">${book.bookTitle}</div>
+                  <!-- 제목 -->
+                  <div style="font-weight: bold; margin-top: 10px;">${book.bookTitle}</div>
 
-          <!-- 저자 -->
-          <div style="color: #555;">${book.authorName}</div>
+                  <!-- 저자 -->
+                  <div style="color: #555;">${book.authorName}</div>
 
-          <!-- 가격 -->
-          <div style="font-size: 16px; font-weight: bold; margin: 8px 0;">
-            <fmt:formatNumber value="${book.bookPrice}" type="number"/>원
-          </div>
-          
-          <!-- **추가하기 별점 평균  -->
-          
+                  <!-- 가격 -->
+                  <div style="font-size: 16px; font-weight: bold; margin: 8px 0;">
+                    <fmt:formatNumber value="${book.bookPrice}" type="number"/>원
+                  </div>
 
-  			<!-- 별점 평균 -->
-          <div style="font-size: 14px;">
-            <c:forEach var="i" begin="1" end="5">
-              <c:choose>
-                <c:when test="${i <= book.avgRating}">
-                  ⭐
-                </c:when>
-                <c:otherwise>
-                  ☆
-                </c:otherwise>
-              </c:choose>
+                  <!-- 별점 평균 -->
+                  <div style="font-size: 14px;">
+                    <c:forEach var="i" begin="1" end="5">
+                      <c:choose>
+                        <c:when test="${i <= book.avgRating}">
+                          ⭐
+                        </c:when>
+                        <c:otherwise>
+                          ☆
+                        </c:otherwise>
+                      </c:choose>
+                    </c:forEach>
+                  </div>
+
+                </div>
+              </a>
             </c:forEach>
           </div>
+        </c:otherwise>
+      </c:choose>
 
-        </div>
-      </c:forEach>
     </div>
-  </c:otherwise>
-</c:choose>
-			
-	 
-		</div>
-	</div>	
+  </div>
+</c:if>
+

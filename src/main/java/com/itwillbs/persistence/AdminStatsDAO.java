@@ -3,8 +3,8 @@ package com.itwillbs.persistence;
 import java.util.List;
 import java.util.Map;
 
-import com.itwillbs.domain.BookStatsDTO;
 import com.itwillbs.domain.GenreStatsDTO;
+import com.itwillbs.dto.BookStatsDTO;
 
 public interface AdminStatsDAO {
 	

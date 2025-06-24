@@ -10,7 +10,7 @@
 	<title>추천 도서 정렬 기능</title>
 	
 <!-- 드롭다운을 감싸는 박스 (오른쪽 정렬 포함) -->
-<div style="text-align: right; margin-bottom: 20px;">
+<div style="text-align: right; margin-bottom: 20px; margin-right: 150px;">
   <form method="get" action="/recommend/all" style="display: inline-block;">
     <select name="sort" id="sort" onchange="this.form.submit()"
             style="padding:6px 12px; font-size:14px; border-radius:6px; border:1px solid #ccc;">

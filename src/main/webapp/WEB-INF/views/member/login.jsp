@@ -16,6 +16,11 @@
       ${msg}
     </div>
   </c:if>
+  
+  <!-- 페이지 이동 시, 로그인이 안 되어 있을 때 -->
+  <c:if test="${param.needLogin == 'true'}">
+  	<script>alert("로그인이 필요한 서비스입니다.");</script>
+  </c:if>
 
   <form action="${pageContext.request.contextPath}/member/login" method="post">
     <label for="member_id">아이디:</label>
