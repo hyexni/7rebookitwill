@@ -15,8 +15,6 @@
 
 <%-- 페이지 제목 설정 --%>
 <c:set var="pageTitle" value="도서 상세 페이지" />
-<jsp:include page="/WEB-INF/views/include/header.jsp" />
-
 
 <!-- 1. SweetAlert2 CDN 추가 (header.jsp에 넣어도 OK) -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
