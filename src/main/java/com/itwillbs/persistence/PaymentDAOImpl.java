@@ -83,24 +83,24 @@ public class PaymentDAOImpl implements PaymentDAO {
 	
 	@Override
 	public OrdersVO getLatestOrder(int member_idx) {
-		return sqlSession.selectOne("payment.getLatestOrder", member_idx);
+		return sqlSession.selectOne(NAMESPACE + "getLatestOrder", member_idx);
 	}
 
 	@Override
 	public PaymentVO getLatestPayment(int member_idx) {
-		return sqlSession.selectOne("payment.getLatestPayment", member_idx);
+		return sqlSession.selectOne(NAMESPACE + "getLatestPayment", member_idx);
 	}
 
 	@Override
 	public DeliveryVO getLatestDelivery(int member_idx) {
-		return sqlSession.selectOne("payment.getLatestDelivery", member_idx);
+		return sqlSession.selectOne(NAMESPACE + "getLatestDelivery", member_idx);
 	}
 
 
 	// 배송 정보
 	@Override
 	public MemberVO getMemberInfo(int member_idx) {
-	    return sqlSession.selectOne("payment.getMemberInfo", member_idx);
+	    return sqlSession.selectOne(NAMESPACE + "getMemberInfo", member_idx);
 	}
 
 

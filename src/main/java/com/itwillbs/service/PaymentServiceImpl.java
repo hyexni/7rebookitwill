@@ -37,13 +37,39 @@ public class PaymentServiceImpl implements PaymentService {
 	// 결제 처리
 	@Override
 	public boolean processPayment(PaymentDTO dto, DeliveryDTO deliveryDTO) {
-		// 포인트 유효성 검사만 여기서 하고
+		// 포인트 유효성 검사
 	    if (dto.getUsed_points() < 0) {
 	        throw new IllegalArgumentException("포인트는 0 이상이어야 합니다.");
 	    }
 
-	    // 나머지 DB 처리 전부 DAO에 위임
-	    return pDAO.processPayment(dto, deliveryDTO);
+	    // 1. 포인트 차감
+	    if (dto.getUsed_points() > 0) {
+	        pDAO.usePoints(dto);
+	    }
+
+	    // 2. 주문 정보 저장
+	    pDAO.insertOrder(dto);
+
+	    // 3. 방금 insert한 order_id 가져오기
+	    int orderId = pDAO.getLastOrderId();
+	    dto.setOrder_id(orderId);
+	    deliveryDTO.setOrder_id(orderId); // delivery에도 order_id 필요
+
+	    // 4. 주문 상세 저장
+	    pDAO.insertOrderItem(dto);
+
+	    // 5. 결제 정보 저장
+	    pDAO.insertPayment(dto);
+
+	    // 6. 포인트 적립
+	    if (dto.getSaved_points() > 0) {
+	        pDAO.givePoints(dto);
+	    }
+
+	    // 7. 배송 정보 저장
+	    pDAO.insertDelivery(deliveryDTO);
+
+	    return true;
 	}
 	
 	

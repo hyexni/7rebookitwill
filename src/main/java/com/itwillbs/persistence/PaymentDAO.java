@@ -31,6 +31,8 @@ public interface PaymentDAO {
 	// 5. 포인트 적립
 	void givePoints(PaymentDTO dto);
 	
+	void insertDelivery(DeliveryDTO deliveryDTO);
+	
 	
 	// 결제 완료
 	PaymentDTO getLatestSummary(int member_idx);

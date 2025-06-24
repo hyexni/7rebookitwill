@@ -80,6 +80,9 @@ public class PaymentController {
     							RedirectAttributes rttr) {
     	
     	Integer member_idx = (Integer) session.getAttribute("member_idx");
+    	
+    	// 🚨 배송 메모 확인 로그 추가
+        System.out.println("🚚 입력된 배송 메모 = " + deliveryDTO.getMemo());
 
         // ✅ 로그인 안 했으면 로그인 페이지로 리다이렉트
         if (member_idx == null) {
@@ -97,6 +100,9 @@ public class PaymentController {
         paymentDTO.setTotal_price(totalPrice);
         paymentDTO.setPay_amount(payAmount);
         paymentDTO.setSaved_points(savedPoints);
+        
+        deliveryDTO.setMember_idx(member_idx); // ✅ 필수
+
         
         boolean result = pService.processPayment(paymentDTO, deliveryDTO);
         
@@ -143,6 +149,10 @@ public class PaymentController {
     @GetMapping("/success")
     public String kakaoPaySuccess(@RequestParam Map<String, String> params,
                                   HttpSession session, RedirectAttributes rttr) {
+    	
+    	System.out.println("💬 전달된 address = " + params.get("address"));
+    	System.out.println("💬 전달된 전체 params = " + params);
+
 
         Integer member_idx = (Integer) session.getAttribute("member_idx");
         if (member_idx == null) {
@@ -169,12 +179,13 @@ public class PaymentController {
 
         // 2. DeliveryDTO 매핑
         DeliveryDTO deliveryDTO = new DeliveryDTO();
-        deliveryDTO.setMember_name(params.get("receiver_name"));
-        deliveryDTO.setMember_phone(params.get("receiver_phone"));
-        deliveryDTO.setMember_zipcode(params.get("zipcode"));
-        deliveryDTO.setMember_address(params.get("address"));
-        deliveryDTO.setMember_address_detail(params.get("address_detail"));
-        deliveryDTO.setDelivery_memo(params.get("memo"));
+        deliveryDTO.setReceiver_name(params.get("receiver_name"));
+        deliveryDTO.setReceiver_phone(params.get("receiver_phone"));
+        deliveryDTO.setZipcode(params.get("zipcode"));
+        deliveryDTO.setDelivery_address(params.get("address"));
+        deliveryDTO.setAddress_detail(params.get("address_detail"));
+        deliveryDTO.setMemo(params.get("memo"));
+        deliveryDTO.setMember_idx(member_idx); // ✅ 필수
 
         // 3. 결제 처리
         boolean result = pService.processPayment(paymentDTO, deliveryDTO); // DeliveryDTO는 별도로 넘김

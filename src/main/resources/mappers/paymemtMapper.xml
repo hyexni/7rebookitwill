@@ -82,21 +82,31 @@
 	</select>
 	
 	<!-- 배송 정보 -->
-	<select id="getLatestDelivery" parameterType="int" resultType="com.itwillbs.domain.DeliveryVO">
-        SELECT d.*
-        FROM delivery d
-        JOIN orders o ON d.order_id = o.order_id
-        WHERE o.member_idx = #{member_idx}
-        ORDER BY d.delivery_date DESC
-        LIMIT 1
-    </select>
+	<select id="getLatestDelivery" resultType="com.itwillbs.domain.DeliveryVO">
+	  SELECT delivery_id, order_id, member_idx,
+	         receiver_name, receiver_phone,
+	         zipcode, delivery_address, address_detail,
+	         memo, status_code, shipper_name, delivery_date, tracking_number
+	  FROM delivery
+	  WHERE member_idx = #{member_idx}
+	  ORDER BY delivery_date DESC
+	  LIMIT 1
+	</select>
+
+
+
 	
 	<insert id="insertDelivery" parameterType="com.itwillbs.dto.DeliveryDTO">
-	  INSERT INTO delivery (order_id, receiver_name, receiver_phone, zipcode, address, address_detail, delivery_memo, delivery_date)
-	  VALUES (#{order_id}, #{receiver_name}, #{receiver_phone}, #{zipcode}, #{address}, #{address_detail}, #{delivery_memo}, NOW())
+		  INSERT INTO delivery (
+		    order_id, receiver_name, receiver_phone,
+		    zipcode, delivery_address, address_detail,
+		    memo, delivery_date, member_idx, status_code
+		  ) VALUES (
+		    #{order_id}, #{receiver_name}, #{receiver_phone},
+		    #{zipcode}, #{delivery_address}, #{address_detail},
+		    #{memo}, NOW(), #{member_idx}, '배송준비중'
+		  )
 	</insert>
-	
-	
 	
 	
 	<!-- 배송 정보 -->
