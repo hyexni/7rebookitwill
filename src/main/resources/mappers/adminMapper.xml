@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.persistence.AdminDAO">
+
+	<!-- 관리자 로그인 체크 -->
+	<select id="adminLoginCheck"
+          parameterType="map"
+          resultType="com.itwillbs.domain.AdminVO">
+    SELECT *
+    FROM admin
+    WHERE ad_id = #{ad_id}
+      AND ad_pw = #{ad_pw}
+  </select>
+
+</mapper>  

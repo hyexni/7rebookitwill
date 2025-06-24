@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.domain.AdminVO;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.service.AdminService;
 import com.itwillbs.service.CategoryService;
 import com.itwillbs.service.MemberService;
 import com.itwillbs.service.PointHistoryService;
@@ -34,7 +36,10 @@ public class MemberController {
 
 	@Inject
 	private PointHistoryService pointHistoryService; // 이걸로 써야 돼!
-
+	
+	@Inject
+	private AdminService adminService; // 관리자 로그인
+	
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
 	// 회원가입 GET
@@ -99,7 +104,15 @@ public class MemberController {
 		MemberVO vo = new MemberVO();
 		vo.setMember_id(id);
 		vo.setMember_pw(pw);
-
+		
+		// 1. 관리자 로그인 시도
+		AdminVO admin = adminService.login(id, pw);
+		if (admin != null) {
+			session.setAttribute("adminLogin", admin);
+			return "redirect:/admin/stats"; // 관리자 홈 페이지
+		}
+		
+		// 2. 회원 로그인 시도
 		MemberVO resultVO = mService.memberLoginCheck(vo);
 		if (resultVO == null) {
 			rttr.addFlashAttribute("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
