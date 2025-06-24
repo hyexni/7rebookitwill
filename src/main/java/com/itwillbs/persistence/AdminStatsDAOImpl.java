@@ -8,8 +8,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.itwillbs.domain.BookStatsDTO;
 import com.itwillbs.domain.GenreStatsDTO;
+import com.itwillbs.dto.BookStatsDTO;
 
 @Repository
 public class AdminStatsDAOImpl implements AdminStatsDAO {

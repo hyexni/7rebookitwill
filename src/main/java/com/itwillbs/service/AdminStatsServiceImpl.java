@@ -7,9 +7,9 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.itwillbs.domain.BookStatsDTO;
 import com.itwillbs.domain.GenreStatsDTO;
 import com.itwillbs.domain.MemberStatsDTO;
+import com.itwillbs.dto.BookStatsDTO;
 import com.itwillbs.persistence.AdminStatsDAO;
 
 @Service // 서비스 객체라고 스프링에 알려주는 애노테이션!
