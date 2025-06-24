@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import com.itwillbs.domain.BookVO;
 import com.itwillbs.dto.BookStatsDTO;
 import com.itwillbs.persistence.RecommendDAO;
 import org.slf4j.Logger;

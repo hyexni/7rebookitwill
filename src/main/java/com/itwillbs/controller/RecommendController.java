@@ -103,7 +103,6 @@ public class RecommendController {
 	
 	// ========================================================================
 	// http://localhost:8088/recommend/all
-	// 추가함!!! 6/16 (로그인 기능이 현재 없어 강제로 세팅)
 	@GetMapping("/all")
 	public String recommendAll(HttpSession session,
 	                           @RequestParam(value = "sort", required = false, defaultValue="") String sort,

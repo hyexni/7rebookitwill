@@ -44,7 +44,7 @@
     <hr style="margin: 30px 0;">
 
     <!-- 💖 찜 기반 추천 include -->
-    <h3>💖 찜 도서 기반 추천</h3>
+    <h3>💖 찜한 도서 기반 추천</h3>
     <%@ include file="wishlist.jsp" %>
 
 	</div>

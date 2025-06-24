@@ -31,7 +31,7 @@
                   <!-- 이미지 -->
                   <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.coverImage}" 
                        alt="${book.bookTitle}" 
-                       style="width: 100%; height: 300px; object-fit: cover; border-radius: 5px;" />
+                       style="width: 100%; height: 250px; object-fit: fill; border-radius: 5px;" />
 
                   <!-- 제목 -->
                   <div style="font-weight: bold; margin-top: 10px;">${book.bookTitle}</div>
