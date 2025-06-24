@@ -1,11 +1,18 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/review.css" />
+
+<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+<%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
 <%-- 팝업 메시지 강제 삭제(팝업이 안 뜨게!) --%>
 <% session.removeAttribute("msg"); %>
 <% session.setAttribute("msg", ""); %>
 
-<jsp:include page="/WEB-INF/views/include/header.jsp" />
 
 <div class="review-form">
   <h2>✏ 리뷰 수정</h2>

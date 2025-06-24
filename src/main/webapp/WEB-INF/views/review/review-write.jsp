@@ -1,9 +1,17 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/review.css" />
+
+<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+<%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
 <% session.removeAttribute("msg"); %>
 
-<jsp:include page="/WEB-INF/views/include/header.jsp" />
+
 
 <div class="review-form">
   <h2>✏ 리뷰 작성</h2>
@@ -17,15 +25,25 @@
     <p><strong>도서명:</strong> ${book.book_title}</p>
 
     <!-- 별점 -->
-    <label>평점:</label>
-    <div class="star-rating">
-      <label><input type="radio" name="review_score" value="1">★</label>
-      <label><input type="radio" name="review_score" value="2">★</label>
-      <label><input type="radio" name="review_score" value="3">★</label>
-      <label><input type="radio" name="review_score" value="4">★</label>
-      <label><input type="radio" name="review_score" value="5">★</label>
-      <span id="scoreDisplay">(0/5점)</span>
-    </div>
+	<div class="star-rating">
+  <input type="radio" name="review_score" value="1" id="star1">
+  <label for="star1">★</label>
+
+  <input type="radio" name="review_score" value="2" id="star2">
+  <label for="star2">★</label>
+
+  <input type="radio" name="review_score" value="3" id="star3">
+  <label for="star3">★</label>
+
+  <input type="radio" name="review_score" value="4" id="star4">
+  <label for="star4">★</label>
+
+  <input type="radio" name="review_score" value="5" id="star5">
+  <label for="star5">★</label>
+</div>
+
+<span id="scoreDisplay">(0/5점)</span>
+
 
     <!-- 리뷰 내용 -->
     <div>
@@ -69,14 +87,27 @@
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 	
 	<script>
-	  // 별점 점수 표시
-	  var stars = document.querySelectorAll('input[name="review_score"]');
-	  var scoreDisplay = document.getElementById("scoreDisplay");
-	  stars.forEach(function(star) {
-	    star.addEventListener("change", function () {
-	      scoreDisplay.textContent = "(" + this.value + "/5점)";
-	    });
-	  });
+	// 별점 
+	  document.addEventListener('DOMContentLoaded', function () {
+    const radios = document.querySelectorAll('input[name="review_score"]');
+    const labels = document.querySelectorAll('.star-rating label');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+
+    radios.forEach((radio, index) => {
+      radio.addEventListener('change', () => {
+        const score = parseInt(radio.value);
+        scoreDisplay.textContent = `(${score}/5점)`;
+
+        labels.forEach((label, idx) => {
+          if (idx < score) {
+            label.classList.add('selected');
+          } else {
+            label.classList.remove('selected');
+          }
+        });
+      });
+    });
+  });
 	
 	  // 이미지 미리보기
 	  function previewImage(input, idx) {
