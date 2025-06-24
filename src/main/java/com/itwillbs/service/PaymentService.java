@@ -21,7 +21,7 @@ public interface PaymentService {
 	PaymentDTO getLatestPaymentSummary(int member_idx);
 	OrdersVO getLatestOrder(int member_idx);
 	PaymentVO getLatestPayment(int member_idx);
-	DeliveryVO getLatestDelivery(int member_idx);
+	DeliveryVO getLatestDelivery(int order_id);
 	
 	// 배송 정보
 	public MemberVO getMemberInfo(int member_idx);

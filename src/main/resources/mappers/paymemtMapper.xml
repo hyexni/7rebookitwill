@@ -88,9 +88,7 @@
 	         zipcode, delivery_address, address_detail,
 	         memo, status_code, shipper_name, delivery_date, tracking_number
 	  FROM delivery
-	  WHERE member_idx = #{member_idx}
-	  ORDER BY delivery_date DESC
-	  LIMIT 1
+	  WHERE order_id = #{order_id}
 	</select>
 
 

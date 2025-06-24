@@ -92,8 +92,8 @@ public class PaymentDAOImpl implements PaymentDAO {
 	}
 
 	@Override
-	public DeliveryVO getLatestDelivery(int member_idx) {
-		return sqlSession.selectOne(NAMESPACE + "getLatestDelivery", member_idx);
+	public DeliveryVO getLatestDelivery(int order_id) {
+		return sqlSession.selectOne(NAMESPACE + "getLatestDelivery", order_id);
 	}
 
 

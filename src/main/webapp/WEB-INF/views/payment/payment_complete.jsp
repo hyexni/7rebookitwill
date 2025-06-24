@@ -96,8 +96,6 @@
 		</tr>
 	</table>
 	
-	<p>memo raw: [${delivery.memo}]</p>
-		
     <div style="margin-top: 40px;">
         <a href="/" style="margin-right: 20px; text-decoration: none; color: #333;">🏠 홈으로 가기</a>
         <a href="/mypage/orders" style="text-decoration: none; color: #0066cc;">📦 주문 상세 보기</a>

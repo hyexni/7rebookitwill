@@ -91,8 +91,8 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public DeliveryVO getLatestDelivery(int member_idx) {
-	    return pDAO.getLatestDelivery(member_idx);
+	public DeliveryVO getLatestDelivery(int order_id) {
+	    return pDAO.getLatestDelivery(order_id);
 	}
 	
 	

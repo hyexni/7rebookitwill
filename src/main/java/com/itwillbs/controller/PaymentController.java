@@ -81,9 +81,6 @@ public class PaymentController {
     	
     	Integer member_idx = (Integer) session.getAttribute("member_idx");
     	
-    	// 🚨 배송 메모 확인 로그 추가
-        System.out.println("🚚 입력된 배송 메모 = " + deliveryDTO.getMemo());
-
         // ✅ 로그인 안 했으면 로그인 페이지로 리다이렉트
         if (member_idx == null) {
             session.setAttribute("redirectAfterLogin", "/payment?book_id=" + paymentDTO.getBook_id());
@@ -131,15 +128,15 @@ public class PaymentController {
         PaymentDTO summary = pService.getLatestPaymentSummary(member_idx);
         model.addAttribute("summary", summary);
         
+        int orderId = summary.getOrder_id();
+
         // ✅ 주문, 결제, 배송, 회원 정보 VO 가져오기 (서비스에서)
         OrdersVO orders = pService.getLatestOrder(member_idx);
         PaymentVO payment = pService.getLatestPayment(member_idx);
-        DeliveryVO delivery = pService.getLatestDelivery(member_idx);
-        MemberVO member = pService.getMemberInfo(member_idx);
+        DeliveryVO delivery = pService.getLatestDelivery(orderId);  // 기존엔 member_idx 넘겼을 수도 있음
         
         model.addAttribute("orders", orders);           // 주문 정보
         model.addAttribute("payment", payment);         // 결제 정보
-        model.addAttribute("member", member);     	  // 배송 정보 (optional)
         model.addAttribute("delivery", delivery);     	  // 배송 정보 (optional)
 
         return "payment/payment_complete"; // view_21
@@ -150,10 +147,6 @@ public class PaymentController {
     public String kakaoPaySuccess(@RequestParam Map<String, String> params,
                                   HttpSession session, RedirectAttributes rttr) {
     	
-    	System.out.println("💬 전달된 address = " + params.get("address"));
-    	System.out.println("💬 전달된 전체 params = " + params);
-
-
         Integer member_idx = (Integer) session.getAttribute("member_idx");
         if (member_idx == null) {
             rttr.addFlashAttribute("errorMsg", "로그인이 필요합니다.");
