@@ -2,6 +2,7 @@ package com.itwillbs.service;
 
 import java.util.List;
 
+import com.itwillbs.domain.CategoryVO;
 import com.itwillbs.domain.MemberVO;
 
 public interface MemberService {
@@ -59,4 +60,10 @@ public interface MemberService {
 
 	// 회원 고유번호로 회원정보 조회 (member_idx 기준)
 	MemberVO getMemberByIdx(int member_idx);
+
+	// 카테고리 전체 목록
+	List<CategoryVO> getCategoryList();
+
+	// ✅ member_idx 기준 선택한 카테고리 목록 (이름까지)
+	List<CategoryVO> getSelectedCategories(int member_idx);
 }

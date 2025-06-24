@@ -70,4 +70,21 @@
 
 </div> <%-- ✅ main-wrapper 닫기 --%>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- ✅ 알림 메시지 출력 -->
+<c:if test="${not empty msg}">
+  <script>
+    window.onload = function() {
+      Swal.fire({
+        icon: 'success',
+        title: '완료!',
+        text: '${msg}',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: '확인'
+      });
+    };
+  </script>
+</c:if>
+
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

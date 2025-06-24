@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.domain.CategoryVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.service.CategoryService;
 import com.itwillbs.service.MemberService;
@@ -157,8 +158,16 @@ public class MemberController {
 		if (member_idx == null)
 			return "redirect:/member/login";
 
+		// 회원 정보 조회
 		MemberVO resultVO = mService.getMemberByIdx(member_idx);
+
+		// ✅ 관심 카테고리 조회
+		List<CategoryVO> categoryList = categoryService.getSelectedCategories(member_idx);
+
+		// 모델에 담기
 		model.addAttribute("memberVO", resultVO);
+		model.addAttribute("categoryList", categoryList); // ✅ 추가!
+
 		return "/member/info";
 	}
 

@@ -6,8 +6,10 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.domain.CategoryVO;
 import com.itwillbs.domain.MemberCategoryVO;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.persistence.CategoryDAO;
 import com.itwillbs.persistence.MemberCategoryDAO;
 import com.itwillbs.persistence.MemberDAO;
 
@@ -19,6 +21,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Inject
 	private MemberCategoryDAO mcdao;
+
+	@Inject
+	private CategoryDAO cdao;
 
 	// 서버 시간 조회
 	@Override
@@ -158,4 +163,17 @@ public class MemberServiceImpl implements MemberService {
 	public MemberVO getMemberByIdx(int member_idx) {
 		return mdao.getMemberByIdx(member_idx);
 	}
+
+	// 전체 카테고리 목록 조회 (회원가입 등에서 사용)
+	@Override
+	public List<CategoryVO> getCategoryList() {
+		return cdao.getCategoryList();
+	}
+
+	// 🔸 회원의 관심 카테고리 이름 목록 조회 (member_idx 기준)
+	@Override
+	public List<CategoryVO> getSelectedCategories(int member_idx) {
+		return cdao.getSelectedCategories(member_idx);
+	}
+
 }
