@@ -9,6 +9,7 @@ import com.itwillbs.domain.DeliveryVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.OrdersVO;
 import com.itwillbs.domain.PaymentVO;
+import com.itwillbs.dto.DeliveryDTO;
 import com.itwillbs.dto.PaymentDTO;
 import com.itwillbs.persistence.PaymentDAO;
 
@@ -35,35 +36,14 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	// 결제 처리
 	@Override
-	public boolean processPayment(PaymentDTO dto) {
-	    try {
-	    	// 🔐 포인트 음수 입력 방지
-	        if (dto.getUsed_points() < 0) {
-	            throw new IllegalArgumentException("포인트는 0 이상이어야 합니다.");
-	        }
-	    	
-	        // 1. 포인트 차감
-	        pDAO.usePoints(dto);
-
-	        // 2. 주문 저장
-	        pDAO.insertOrder(dto);
-	        int order_id = pDAO.getLastOrderId();
-	        dto.setOrder_id(order_id);
-
-	        // 3. 주문 상세 저장
-	        pDAO.insertOrderItem(dto);
-
-	        // 4. 결제 저장
-	        pDAO.insertPayment(dto);
-
-	        // 5. 포인트 적립
-	        pDAO.givePoints(dto);
-
-	        return true;
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return false;
+	public boolean processPayment(PaymentDTO dto, DeliveryDTO deliveryDTO) {
+		// 포인트 유효성 검사만 여기서 하고
+	    if (dto.getUsed_points() < 0) {
+	        throw new IllegalArgumentException("포인트는 0 이상이어야 합니다.");
 	    }
+
+	    // 나머지 DB 처리 전부 DAO에 위임
+	    return pDAO.processPayment(dto, deliveryDTO);
 	}
 	
 	

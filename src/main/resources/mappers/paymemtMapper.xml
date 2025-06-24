@@ -91,6 +91,11 @@
         LIMIT 1
     </select>
 	
+	<insert id="insertDelivery" parameterType="com.itwillbs.dto.DeliveryDTO">
+	  INSERT INTO delivery (order_id, receiver_name, receiver_phone, zipcode, address, address_detail, delivery_memo, delivery_date)
+	  VALUES (#{order_id}, #{receiver_name}, #{receiver_phone}, #{zipcode}, #{address}, #{address_detail}, #{delivery_memo}, NOW())
+	</insert>
+	
 	
 	
 	

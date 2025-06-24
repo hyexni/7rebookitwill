@@ -92,8 +92,8 @@
 	  <div class="btn-wrap">
 		  <button type="submit" class="btn btn-primary">결제하기</button>
 		  <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
-	</form>
-</div>
+	  </div>
+</form>
 
 <script>
   const unitPrice = ${book.book_price};
@@ -185,4 +185,37 @@
     }).open();
   }
 </script>
+
+
+<script src="https://js.tosspayments.com/v1/payment"></script>
+<script>
+  document.querySelector(".btn-primary").addEventListener("click", function (e) {
+    e.preventDefault(); // 폼 전송 막기
+
+    const payMethod = document.querySelector("input[name='pay_method']:checked").value;
+
+    if (payMethod === "카카오페이") {
+      const tossPayments = TossPayments("test_ck_QbgMGZzorzbnn21e2EpNrl5E1em4");
+      
+      const orderId = 'order-' + new Date().getTime();
+      const amount = parseInt(document.getElementById("payAmountInput").value);
+      const orderName = document.querySelector("input[name='receiver_name']").value + " 님의 도서 결제";
+
+      tossPayments.requestPayment('카카오페이', {
+        amount: amount,
+        orderId: orderId,
+        orderName: orderName,
+        customerName: document.querySelector("input[name='receiver_name']").value,
+        successUrl: 'http://localhost:8088/payment/success',
+        failUrl: 'http://localhost:8088/payment/fail',
+      });
+
+    } else {
+      // 일반 카드 결제는 폼 전송
+      document.querySelector("form").submit();
+    }
+  });
+</script>
+
+
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

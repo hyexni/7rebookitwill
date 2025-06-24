@@ -10,6 +10,7 @@ import com.itwillbs.domain.DeliveryVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.OrdersVO;
 import com.itwillbs.domain.PaymentVO;
+import com.itwillbs.dto.DeliveryDTO;
 import com.itwillbs.dto.PaymentDTO;
 
 @Repository
@@ -104,7 +105,7 @@ public class PaymentDAOImpl implements PaymentDAO {
 
 
 	@Override
-    public boolean processPayment(PaymentDTO dto) {
+    public boolean processPayment(PaymentDTO dto, DeliveryDTO deliveryDTO) {
         try {
             sqlSession.update(NAMESPACE + "usePoints", dto);
             sqlSession.insert(NAMESPACE + "insertOrder", dto);
@@ -113,17 +114,13 @@ public class PaymentDAOImpl implements PaymentDAO {
             sqlSession.insert(NAMESPACE + "insertOrderItem", dto);
             sqlSession.insert(NAMESPACE + "insertPayment", dto);
             sqlSession.update(NAMESPACE + "givePoints", dto);
+            sqlSession.insert(NAMESPACE + "insertDelivery", deliveryDTO);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
-}
-
-
-	
-	
 }
 
 

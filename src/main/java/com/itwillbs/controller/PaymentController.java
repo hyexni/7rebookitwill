@@ -1,5 +1,7 @@
 package com.itwillbs.controller;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -96,7 +98,7 @@ public class PaymentController {
         paymentDTO.setPay_amount(payAmount);
         paymentDTO.setSaved_points(savedPoints);
         
-        boolean result = pService.processPayment(paymentDTO);
+        boolean result = pService.processPayment(paymentDTO, deliveryDTO);
         
 
         if (result) {
@@ -137,66 +139,62 @@ public class PaymentController {
         return "payment/payment_complete"; // view_21
     }
 
+    
+    @GetMapping("/success")
+    public String kakaoPaySuccess(@RequestParam Map<String, String> params,
+                                  HttpSession session, RedirectAttributes rttr) {
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        Integer member_idx = (Integer) session.getAttribute("member_idx");
+        if (member_idx == null) {
+            rttr.addFlashAttribute("errorMsg", "로그인이 필요합니다.");
+            return "redirect:/member/login";
+        }
+
+        // 1. PaymentDTO 매핑
+        PaymentDTO paymentDTO = new PaymentDTO();
+        paymentDTO.setMember_idx(member_idx);
+        paymentDTO.setBook_id(Integer.parseInt(params.get("book_id")));
+        paymentDTO.setUnit_price(Integer.parseInt(params.get("unit_price")));
+        paymentDTO.setQuantity(Integer.parseInt(params.get("quantity")));
+        paymentDTO.setUsed_points(Integer.parseInt(params.get("used_points")));
+
+        int totalPrice = paymentDTO.getUnit_price() * paymentDTO.getQuantity();
+        int payAmount = totalPrice - paymentDTO.getUsed_points();
+        int savedPoints = (int)(payAmount * 0.1);
+
+        paymentDTO.setTotal_price(totalPrice);
+        paymentDTO.setPay_amount(payAmount);
+        paymentDTO.setSaved_points(savedPoints);
+        paymentDTO.setPay_method("카카오페이");
+
+        // 2. DeliveryDTO 매핑
+        DeliveryDTO deliveryDTO = new DeliveryDTO();
+        deliveryDTO.setMember_name(params.get("receiver_name"));
+        deliveryDTO.setMember_phone(params.get("receiver_phone"));
+        deliveryDTO.setMember_zipcode(params.get("zipcode"));
+        deliveryDTO.setMember_address(params.get("address"));
+        deliveryDTO.setMember_address_detail(params.get("address_detail"));
+        deliveryDTO.setDelivery_memo(params.get("memo"));
+
+        // 3. 결제 처리
+        boolean result = pService.processPayment(paymentDTO, deliveryDTO); // DeliveryDTO는 별도로 넘김
+
+        if (result) {
+            return "redirect:/payment/complete";
+        } else {
+            rttr.addFlashAttribute("errorMsg", "결제 처리에 실패했습니다.");
+            return "redirect:/payment?book_id=" + paymentDTO.getBook_id();
+        }
+    }
+
+
+
     
     
     
     
 
 } // PaymentController 끝
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
