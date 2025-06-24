@@ -60,19 +60,34 @@
       <c:if test="${empty bookList}">
         <p class="no-books">🔍 해당 조건에 맞는 도서가 없습니다.</p>
       </c:if>
-      <c:forEach var="book" items="${bookList}">
-        <div class="book-card">
-          <img src="${book.cover_image}" alt="${book.book_title}" />
-          <p class="book-title">${book.book_title}</p>
-          <p class="book-author">${book.author_name}</p>
-          <p class="book-price">${book.book_price}원</p>
-          
-           <!-- 상세보기 링크로 수정 -->
-   		  <a href="${pageContext.request.contextPath}/book/view?book_id=${book.book_id}" class="btn-detail">
- 		 상세보기
-		  </a>
-        </div>
-      </c:forEach>
+     <c:forEach var="book" items="${bookList}">
+  <div class="book-card">
+
+    <!-- ✅ 도서 이미지: 기본 이미지 분기 처리 -->
+    <c:choose>
+      <c:when test="${empty book.cover_image or book.cover_image == ''}">
+        <img src="${pageContext.request.contextPath}/resources/img/product-img/placeholder.png"
+             alt="기본 이미지" />
+      </c:when>
+      <c:otherwise>
+        <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}"
+             alt="${book.book_title}" />
+      </c:otherwise>
+    </c:choose>
+
+    <!-- 도서 정보 -->
+    <p class="book-title">${book.book_title}</p>
+    <p class="book-author">${book.author_name}</p>
+    <p class="book-price">${book.book_price}원</p>
+
+    <!-- 상세보기 버튼 -->
+    <a href="${pageContext.request.contextPath}/book/view?book_id=${book.book_id}" class="btn-detail">
+      상세보기
+    </a>
+
+  </div>
+</c:forEach>
+     
     </div>
 
     <!-- ⏩ 페이징 -->
