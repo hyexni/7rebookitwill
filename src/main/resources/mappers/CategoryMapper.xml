@@ -13,5 +13,13 @@
             category_name_en
         FROM category
     </select>
+    
+    <!-- 🔸 회원의 관심 카테고리 이름 목록 -->
+	<select id="getSelectedCategories" resultType="com.itwillbs.domain.CategoryVO">
+  SELECT c.*
+  FROM category c
+  JOIN member_category mc ON c.category_id = mc.category_id
+  WHERE mc.member_idx = #{member_idx}
+</select>
 
 </mapper>

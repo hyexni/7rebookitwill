@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%-- 1. 페이지 기본 골격과 CSS/폰트 링크를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
@@ -10,6 +11,9 @@
 
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+
+<%-- 알림창  --%>
+<%@ include file="/WEB-INF/views/include/alert.jsp" %> 
 
 <div class="container" style="max-width: 500px; margin: 50px auto; text-align: center;">
   <h2>🔐 아이디 찾기 결과</h2>

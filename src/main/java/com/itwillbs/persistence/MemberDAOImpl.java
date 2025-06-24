@@ -147,4 +147,10 @@ public class MemberDAOImpl implements MemberDAO {
 	public String findPwByInfo(MemberVO vo) {
 		return sqlSession.selectOne(NAMESPACE + ".findPwByInfo", vo);
 	}
+
+	// 회원 탈퇴
+	@Override
+	public void deleteMember(String member_id) {
+		sqlSession.delete(NAMESPACE + ".deleteMember", member_id);
+	}
 }

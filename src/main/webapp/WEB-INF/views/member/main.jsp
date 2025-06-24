@@ -1,15 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
+  <%-- 알림창  --%>
+<%@ include file="/WEB-INF/views/include/alert.jsp" %> 
 
 <!-- ✅ 전체 flex wrapper 시작 -->
 <div class="main-wrapper">
 
   <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+  
 
   <!-- ✅ 오른쪽 마이페이지 콘텐츠 -->
   <div class="mypage-container">

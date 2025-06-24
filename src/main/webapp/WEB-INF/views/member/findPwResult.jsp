@@ -1,9 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+
+<%-- 알림창  --%>
+<%@ include file="/WEB-INF/views/include/alert.jsp" %> 
 
 <div class="container" style="max-width: 500px; margin: 50px auto; text-align: center;">
   <h2>🔐 비밀번호 찾기 결과</h2>
@@ -23,5 +27,6 @@
     </c:otherwise>
   </c:choose>
 </div>
+
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

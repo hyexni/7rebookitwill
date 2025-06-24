@@ -254,3 +254,121 @@ label {
   font-size: 14px;
   margin-top: 10px;
 }
+
+/* 회원 정보 보기 */
+.info-card {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 700px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.03);
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-label {
+  font-weight: bold;
+  color: #333;
+  min-width: 150px;
+}
+
+.info-value {
+  color: #555;
+  text-align: right;
+  flex-grow: 1;
+}
+
+.category-badge {
+  display: inline-block;
+  background-color: #ffe400;
+  padding: 5px 12px;
+  margin: 2px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #333;
+}
+
+.btn-box {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.btn-action {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  display: inline-block;
+}
+
+.btn-action.update {
+  background-color: #ffe400;
+  color: #222;
+}
+.btn-action.update:hover {
+  background-color: #ffcc00;
+}
+
+.btn-action.delete {
+  background-color: #ff4d4d;
+  color: #fff;
+}
+.btn-action.delete:hover {
+  background-color: #e60000;
+}
+
+.btn-gray {
+  background-color: #aaa;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+  transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-gray:hover {
+  background-color: #888;
+}
+
+
+.btn-yellow {
+  background-color: #ffe400;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #222;
+  transition: background-color 0.3s;
+}
+
+.btn-yellow:hover {
+  background-color: #ffcc00;
+}
+
+/* ✅ 버튼 공통 기본 스타일 */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  line-height: 20px;
+  height: 44px;
+}

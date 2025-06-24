@@ -17,11 +17,15 @@ public class CategoryDAOImpl implements CategoryDAO {
 
 	private static final String NAMESPACE = "com.itwillbs.mapper.CategoryMapper";
 
-	/**
-	 * [카테고리 목록 조회]
-	 */
+	// [카테고리 목록 조회]
 	@Override
 	public List<CategoryVO> getCategoryList() {
 		return sqlSession.selectList(NAMESPACE + ".getCategoryList");
+	}
+
+	// 🔸 회원의 관심 카테고리 이름 목록 조회 (JOIN 사용)
+	@Override
+	public List<CategoryVO> getSelectedCategories(int member_idx) {
+		return sqlSession.selectList(NAMESPACE + ".getSelectedCategories", member_idx);
 	}
 }

@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <%@ include file="/WEB-INF/views/include/header.jsp" %> 
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+<%@ include file="/WEB-INF/views/include/alert.jsp" %> 
 
 <div class="login-container">
   <h2>로그인</h2>
@@ -16,8 +18,8 @@
       ${msg}
     </div>
   </c:if>
-  
-  <!-- 페이지 이동 시, 로그인이 안 되어 있을 때 -->
+
+  <!-- ✅ 로그인 안 된 상태에서 접근 시 알림 -->
   <c:if test="${param.needLogin == 'true'}">
   	<script>alert("로그인이 필요한 서비스입니다.");</script>
   </c:if>
