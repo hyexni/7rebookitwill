@@ -41,26 +41,11 @@ public class RecommendController {
 			Model model) throws Exception {
 		logger.info(" recommendByPurchase() 호출 ");
 
-		// 1. 세션에서 member_idx 가져오기
+		// member_idx가 없으면 로그인 페이지로 이동
 		Integer member_idx = (Integer) session.getAttribute("member_idx");
-		logger.info(" 세션에서 가져온 member_idx " + member_idx);
-
-		// 2. null 체크
-		if (member_idx == null) {
-			logger.info(" member_idx가 null입니다. 로그인 필요! ");
-			member_idx = 1; // 테스트 계정용
-			// return "redirect:/member/login"; // 로그인 페이지로 리다이렉트
-		}
-
-		/*
-		 * // 3. 추천 도서 목록 호출 List<BookVO> recommendList =
-		 * recommendService.getRecommendBooks(member_idx); logger.info(" 추천 도서 개수 : " +
-		 * recommendList.size());
-		 * 
-		 * // 4. JSP에 전달 model.addAttribute("recommendList", recommendList);
-		 * 
-		 * return "recommend/purchase";
-		 */
+		    if (member_idx == null) {
+		        return "redirect:/member/login";
+	    }
 		
 		// 새로 추가: sort 옵션에 따라 다른 DAO 호출
 		List<BookVO> recommendList = ("default".equals(sort))
@@ -76,9 +61,13 @@ public class RecommendController {
 	// http://localhost:8088/recommend/byWishlist?member_idx=1
 	// 찜한 도서 기반 추천 (GET)
 	@RequestMapping(value = "/byWishlist", method = RequestMethod.GET)
-	public String recommendByWishlist(@RequestParam("member_idx") int member_idx, 
-			Model model) throws Exception {
+	public String recommendByWishlist(HttpSession session, Model model) throws Exception {
 		logger.info(" recommendByWishlist() 호출 ");
+		
+		Integer member_idx = (Integer) session.getAttribute("member_idx");
+	    if (member_idx == null) {
+	        return "redirect:/member/login";
+	    }
 		
 		List<BookVO> recommendList = recommendService.getRecommendWishList(member_idx);
 		
@@ -97,15 +86,26 @@ public class RecommendController {
 	// http://localhost:8088/recommend/sort
 	// 추천 리스트 정렬 기능 (GET)
 	@RequestMapping(value = "/sort", method = RequestMethod.GET)
-	public String sortPage() {
+	public String sortPage(HttpSession session) {
+		Integer member_idx = (Integer) session.getAttribute("member_idx");
+	    if (member_idx == null) {
+	        return "redirect:/member/login";
+	    }
+		
 	    return "recommend/sort"; 
 	}
 	
 	// http://localhost:8088/recommend/recommend?sort=price_asc
 	@RequestMapping(value = "/recommend", method = RequestMethod.GET)
 	public String recommendList(@RequestParam(value = "sort", required = false, 
-			defaultValue = "recent") String sort, Model model) throws Exception {
+								defaultValue = "recent") String sort, Model model,
+								HttpSession session) throws Exception {
 		logger.info(" recommendList() 호출됨 ");
+		
+		Integer member_idx = (Integer) session.getAttribute("member_idx");
+	    if (member_idx == null) {
+	        return "redirect:/member/login";
+	    }
 		
 		List<BookVO> recommendList = recommendService.getRecommendBooks(sort);
 		
@@ -122,7 +122,14 @@ public class RecommendController {
 	// 추천 결과 출력 (GET)
 	
 	@RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
-	public String sortResultList(@RequestParam(value = "sort", required = false) String sort, Model model) {
+	public String sortResultList(@RequestParam(value = "sort", required = false) String sort,
+								Model model, HttpSession session) {
+		
+		Integer member_idx = (Integer) session.getAttribute("member_idx");
+	    if (member_idx == null) {
+	        return "redirect:/member/login";
+	    }
+		
 		
 		if (sort == null || sort.isEmpty()) {
 			sort = "default";
@@ -142,19 +149,15 @@ public class RecommendController {
 	                           @RequestParam(value = "sort", required = false, defaultValue="") String sort,
 	                           Model model) throws Exception {
 
-		// ─── 임시 강제 로그인 ───
-	    // 세션에 없으면 ID 1로 세팅 (테스트용 유저)
-	    if (session.getAttribute("member_idx") == null) {
-	        session.setAttribute("member_idx", 1);
+		Integer memberIdx = (Integer) session.getAttribute("member_idx");
+	    if (memberIdx == null) {
+	        return "redirect:/member/login";
 	    }
-
-	    Integer memberIdx = (Integer) session.getAttribute("member_idx");
-	    // ───────────────────────
 
 	    // null-safe sort
 	    String safeSort = sort == null ? "" : sort;
 	    
-	 // (2) 파라미터 맵 구성
+	    // (2) 파라미터 맵 구성
 	    Map<String,Object> param = new HashMap<>();
 	    param.put("member_idx", memberIdx);
 	    param.put("sort",      sort);
