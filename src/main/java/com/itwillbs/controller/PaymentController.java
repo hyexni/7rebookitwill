@@ -89,6 +89,7 @@ public class PaymentController {
 
         // ✅ 로그인 상태면 결제 처리 진행
         paymentDTO.setMember_idx(member_idx);
+        deliveryDTO.setMember_idx(member_idx); // ✅ 필수
 
         int totalPrice = paymentDTO.getUnit_price() * paymentDTO.getQuantity();
         int payAmount = totalPrice - paymentDTO.getUsed_points();
@@ -98,13 +99,22 @@ public class PaymentController {
         paymentDTO.setPay_amount(payAmount);
         paymentDTO.setSaved_points(savedPoints);
         
-        deliveryDTO.setMember_idx(member_idx); // ✅ 필수
+        boolean result = pService.processPayment(paymentDTO, deliveryDTO);
 
         
-        boolean result = pService.processPayment(paymentDTO, deliveryDTO);
         
 
         if (result) {
+        	// 포인트 사용 이력 기록 (사용한 경우만)
+            if (paymentDTO.getUsed_points() > 0) {
+                pService.insertPointUsage(paymentDTO);
+            }
+
+            // 포인트 적립 이력 기록 (saved_points > 0 인 경우)
+            if (paymentDTO.getSaved_points() > 0) {
+                pService.insertPointHistory(paymentDTO);
+            }
+            
             return "redirect:/payment/complete";
         } else {
             rttr.addFlashAttribute("errorMsg", "결제에 실패했습니다. 다시 시도해주세요.");
@@ -184,6 +194,16 @@ public class PaymentController {
         boolean result = pService.processPayment(paymentDTO, deliveryDTO); // DeliveryDTO는 별도로 넘김
 
         if (result) {
+            // 포인트 사용 이력 기록 (사용한 경우만)
+            if (paymentDTO.getUsed_points() > 0) {
+                pService.insertPointUsage(paymentDTO);
+            }
+
+            // 포인트 적립 이력 기록 (saved_points > 0 인 경우)
+            if (paymentDTO.getSaved_points() > 0) {
+                pService.insertPointHistory(paymentDTO);
+            }
+            
             return "redirect:/payment/complete";
         } else {
             rttr.addFlashAttribute("errorMsg", "결제 처리에 실패했습니다.");

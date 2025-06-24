@@ -46,6 +46,11 @@ public interface PaymentDAO {
 	// 간편결제
 	boolean processPayment(PaymentDTO dto, DeliveryDTO deliveryDTO);
 
+	
+	
+	// 결제 시 포인트 차감/적립 이력
+	void insertPointUsage(PaymentDTO dto);
+	void insertPointHistory(PaymentDTO dto);
 
 
 }

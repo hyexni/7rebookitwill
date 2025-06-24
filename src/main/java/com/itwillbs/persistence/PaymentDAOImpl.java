@@ -121,6 +121,29 @@ public class PaymentDAOImpl implements PaymentDAO {
             return false;
         }
     }
+	
+	
+	
+	// 결제 시 포인트 차감/적립 이력
+	@Override
+	public void insertPointUsage(PaymentDTO dto) {
+	    sqlSession.insert(NAMESPACE + "insertPointUsage", dto);
+	}
+
+	@Override
+	public void insertPointHistory(PaymentDTO dto) {
+	    sqlSession.insert(NAMESPACE + "insertPointHistory", dto);
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 
