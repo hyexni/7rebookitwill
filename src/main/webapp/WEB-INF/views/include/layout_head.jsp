@@ -13,9 +13,11 @@
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/core-style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/styles.css">
-    
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/custom.css">
     
+    <!-- CSS 페이지버튼 참조 -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pagination.css">
+	
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
