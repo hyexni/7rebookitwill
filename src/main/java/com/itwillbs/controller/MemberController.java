@@ -141,6 +141,13 @@ public class MemberController {
 		rttr.addFlashAttribute("message", "로그아웃 되었습니다.");
 		return "redirect:/member/main";
 	}
+	
+	// 관리자 로그아웃
+	@GetMapping("/admin/logout")
+	public String adminLogout(HttpSession session) {
+	    session.invalidate(); // 세션 전체 초기화 (adminLogin 포함)
+	    return "redirect:/member/login"; // 로그인 페이지로 리다이렉트
+	}
 
 	@GetMapping("/main")
 	public String mypageMain(HttpSession session, Model model, RedirectAttributes rttr) {
