@@ -38,36 +38,50 @@
   cursor: pointer;
 }
 
-.notice-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: auto;
-  max-width: 1000px;
-  background-color: white;
+
+/* 공지사항 상세 */
+.notice-detail-wrapper {
+  max-width: 900px;
+  margin: 80px auto;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  border-radius: 8px;
-  overflow: hidden;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
-.notice-table th, .notice-table td {
-  padding: 14px 16px;
-  text-align: center;
-  border-bottom: 1px solid #f1f1f1;
+.notice-detail-header {
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
 }
 
-.notice-table thead {
-  background-color: #f8f9fa;
-  font-weight: 600;
+.notice-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.notice-table tr:hover {
-  background-color: #f1f3f5;
+.notice-badge {
+  font-size: 20px;
+  color: #ff5e57;
 }
 
-.notice-table a {
-  text-decoration: none;
-  color: #212529;
-  font-weight: 500;
+.notice-date {
+  font-size: 14px;
+  color: #888;
+  text-align: right;
+  margin-top: 5px;
+}
+
+.notice-content {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #444;
+  white-space: pre-wrap; /* 줄바꿈 유지 */
 }
 
 
