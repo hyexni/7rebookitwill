@@ -20,8 +20,9 @@
   </div>
 </c:if>
 
-<!-- 로그인 된 경우 -->
-<c:if test="${!needLogin}">
+
+<!-- ✅ 로그인 된 경우 -->
+<c:if test="${not empty sessionScope.member_idx}">
   <div style="padding: 40px;">
 
 	

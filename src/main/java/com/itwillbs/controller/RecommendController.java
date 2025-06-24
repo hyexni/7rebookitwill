@@ -7,14 +7,11 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 
-import com.itwillbs.domain.BookVO;
-import com.itwillbs.domain.MemberVO;
 import com.itwillbs.dto.BookStatsDTO;
 
 import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +41,7 @@ public class RecommendController {
 		// member_idx가 없으면 로그인 페이지로 이동
 		Integer memberIdx = (Integer) session.getAttribute("member_idx");
 		    if (memberIdx == null) {
-		        return "redirect:/member/login";
+		        return "redirect:/member/login?needLogin=true";
 	    }
 		
 	    // 파라미터 구성
@@ -74,7 +71,7 @@ public class RecommendController {
 		// member_idx가 없으면 로그인 페이지로 이동
 		Integer memberIdx = (Integer) session.getAttribute("member_idx");
 		    if (memberIdx == null) {
-		        return "redirect:/member/login";
+		        return "redirect:/member/login?needLogin=true";
 	    }
 		
 	    Map<String, Object> param = new HashMap<>();
@@ -97,7 +94,7 @@ public class RecommendController {
 	public String sortPage(HttpSession session) {
 		Integer member_idx = (Integer) session.getAttribute("member_idx");
 	    if (member_idx == null) {
-	        return "redirect:/member/login";
+	        return "redirect:/member/login?needLogin=true";
 	    }
 		
 	    return "recommend/sort"; 
@@ -114,7 +111,7 @@ public class RecommendController {
 
 		Integer memberIdx = (Integer) session.getAttribute("member_idx");
 	    if (memberIdx == null) {
-	        return "redirect:/member/login";
+	        return "redirect:/member/login?needLogin=true";
 	    }
 
 	    // null-safe sort
