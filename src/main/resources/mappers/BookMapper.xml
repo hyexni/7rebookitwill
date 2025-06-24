@@ -72,6 +72,15 @@
 	    SELECT * FROM book
 	    WHERE book_id = #{bookId}
 	</select>
+	
+
+<!--  영수증에 추출된 책 목록 가져오기 -->
+
+    <select id="findByTitleContaining" parameterType="java.lang.String" resultType="com.itwillbs.domain.BookVO">
+        SELECT * FROM book  
+        WHERE book_title LIKE CONCAT('%', #{bookTitle}, '%')
+    </select>
+
 
 
 </mapper>

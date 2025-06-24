@@ -2,8 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<%-- 1. 페이지 기본 골격과 CSS/폰트 링크 --%>
+
+<%-- 1. 페이지 기본 골격과 공통 CSS/폰트 링크를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+
 
     <title>OCR 결과 보기</title>
     <style>
