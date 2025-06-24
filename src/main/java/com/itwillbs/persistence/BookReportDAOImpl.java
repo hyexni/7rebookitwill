@@ -26,36 +26,30 @@ public class BookReportDAOImpl implements BookReportDAO {
 
 	@Override
 	public void insertBookReport(BookReportVO vo) throws Exception {
-		// 1:1 문의 글 입력하는 SQL 구문을 실행
+		// 독후감 글 입력하는 SQL 구문을 실행
 		// 디비연결
 		// SQL 구문 & pstmt 객체
 		// SQL 실행
 		sqlSession.insert(NAMESPACE + "insertBookReport", vo);
 		logger.info(" SQL 실행 완료! ");
-		logger.info(" 1:1 문의 글쓰기 완료! ");
+		logger.info(" 독후감 글쓰기 완료! ");
 		
 	}
 
 	
-	// 1:1 문의 목록
+	//  목록
 	@Override
 	public List<BookReportVO> getBookReportList(int member_idx) {
         // BookReportMapper.xml의 getBookReportList 쿼리 호출
         return sqlSession.selectList(NAMESPACE + "getBookReportList", member_idx);
     }
 
-
+	//상세조회
 	@Override
     public BookReportVO getBookReport(int BookReport_id) {
         return sqlSession.selectOne(NAMESPACE + ".getBookReport", BookReport_id);
     }
-	
-	
-	// 답변
-	@Override
-	public ResponseVO getResponse(int BookReport_id) {
-	    return sqlSession.selectOne(NAMESPACE + "getResponse", BookReport_id);
-	}
+		
 	
 	// 수정
 	@Override

@@ -12,7 +12,7 @@ import com.itwillbs.domain.ReviewVO;
 public interface BookReportService {
 	
 	// 독후감 글쓰기
-	public void writeBookReport(BookReportVO vo) throws Exception;
+	public void insertBookReport(BookReportVO vo) throws Exception;
 	
 	// 독후감 목록
 	public List<BookReportVO> getBookReportList();
@@ -20,17 +20,19 @@ public interface BookReportService {
 	
 	//List<BookReportVO> getBookReportList(int member_idx);
 	
-	// 상세 조회
-	BookReportVO getBookReport(int report_id);
+	//독후감 상세페이지
+		public BookReportVO getBookReport(int report_id);
 	
-	// ✅ 답변 조회
-    ResponseVO getResponse(int report_id);
-    
+	    
     // 수정
     void updateBookReport(BookReportVO vo) throws Exception;
 
     // 삭제
     void deleteBookReport(int report_id) throws Exception;
+
+	
+
+    
 
 	
 
