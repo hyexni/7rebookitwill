@@ -84,4 +84,12 @@
 	  WHERE review_id = #{review_id}
 	    AND member_idx = #{member_idx}
 	</delete>
+	
+	<!-- 평균 별점 조회 -->
+<select id="getAverageRating" parameterType="int" resultType="double">
+  SELECT IFNULL(AVG(review_score), 0)
+  FROM review
+  WHERE book_id = #{book_id}
+</select>
+
 </mapper>
