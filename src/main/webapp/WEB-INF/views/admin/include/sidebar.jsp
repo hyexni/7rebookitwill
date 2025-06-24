@@ -73,6 +73,20 @@
                 <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i>k</a>
                 <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
             </div>
+            
+            <script>
+			  function toggleSubMenu(element) {
+			    const submenu = element.nextElementSibling;
+			    if (submenu && submenu.classList.contains('submenu')) {
+			      if (submenu.style.display === 'none' || submenu.style.display === '') {
+			        submenu.style.display = 'block';
+			      } else {
+			        submenu.style.display = 'none';
+			      }
+			    }
+			  }
+			</script>
+            
         </header>
    
         
@@ -80,5 +94,4 @@
         <div class="products-catagories-area clearfix">
             <div class="amado-pro-catagory clearfix" style="position: relative; height: 1692.03px;">
 
-  
         
