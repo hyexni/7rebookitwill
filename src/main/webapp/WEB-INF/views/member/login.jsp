@@ -12,6 +12,18 @@
 <div class="login-container">
   <h2>로그인</h2>
 
+  <!-- ✅ 회원가입 완료 메시지 표시 -->
+  <c:if test="${not empty msg}">
+    <div style="margin-bottom: 15px; padding: 12px; background-color: #e6ffe6; color: #228B22; font-weight: bold; border-radius: 6px; text-align: center;">
+      ${msg}
+    </div>
+  </c:if>
+
+  <!-- ✅ 로그인 안 된 상태에서 접근 시 알림 -->
+  <c:if test="${param.needLogin == 'true'}">
+  	<script>alert("로그인이 필요한 서비스입니다.");</script>
+  </c:if>
+
   <form action="${pageContext.request.contextPath}/member/login" method="post">
     <label for="member_id">아이디:</label>
     <input type="text" id="member_id" name="member_id" required />

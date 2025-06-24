@@ -985,6 +985,40 @@ a {
 	  background-color: #dc3545;
 	  color: #fff;
 	}
+	
+	/* 리뷰 상태 */
+	.badge {
+	  display: inline-block;
+	  padding: 4px 10px;
+	  border-radius: 20px;
+	  font-size: 0.75rem;
+	  font-weight: bold;
+	  color: #fff;
+	  min-width: 50px;
+	  text-align: center;
+	}
+	
+	.badge-blue {
+	  background-color: #2196F3;
+	}
+	
+	.badge-gray {
+	  background-color: #BDBDBD;
+	}
+	
+	.badge-green {
+	  background-color: #4CAF50;
+	}
+	
+	.badge-yellow {
+	  background-color: #FFC107;
+	  color: #000;
+	}
+	
+	.badge-red {
+	  background-color: #F44336;
+	}
+	
 
 	
 

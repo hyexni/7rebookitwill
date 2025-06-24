@@ -8,7 +8,7 @@
   <!-- 1) 구매 기반 추천 + 정렬 -->
   <select id="findRecommendedBooksByPurchaseSorted"
           parameterType="map"
-          resultType="com.itwillbs.domain.BookStatsDTO">
+          resultType="com.itwillbs.dto.BookStatsDTO">
     SELECT
       b.book_id      AS bookId,
       b.book_title   AS bookTitle,
@@ -55,16 +55,8 @@
       <when test="sort=='rating'">
         ORDER BY r.avgRating DESC
       </when>
-      <!-- 가격 오름차순 -->
-      <when test="sort=='price_asc'">
-        ORDER BY b.book_price ASC
-      </when>
-      <!-- 가격 내림차순 -->
-      <when test="sort=='price_desc'">
-        ORDER BY b.book_price DESC
-      </when>
       <otherwise>
-        ORDER BY RAND()
+        ORDER BY b.created_at DESC
       </otherwise>
     </choose>
 
@@ -74,7 +66,7 @@
   <!-- 2) 찜 기반 추천 + 정렬 -->
   <select id="findRecommendedBooksByWishSorted"
           parameterType="map"
-          resultType="com.itwillbs.domain.BookStatsDTO">
+          resultType="com.itwillbs.dto.BookStatsDTO">
     SELECT
       b.book_id      AS bookId,
       b.book_title   AS bookTitle,
@@ -117,14 +109,8 @@
       <when test="sort=='rating'">
         ORDER BY r.avgRating DESC
       </when>
-      <when test="sort=='price_asc'">
-        ORDER BY b.book_price ASC
-      </when>
-      <when test="sort=='price_desc'">
-        ORDER BY b.book_price DESC
-      </when>
       <otherwise>
-        ORDER BY RAND()
+        ORDER BY b.created_at DESC
       </otherwise>
     </choose>
 

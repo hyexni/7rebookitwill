@@ -42,7 +42,19 @@
 	          <td>${review.member_name}</td>
 	          <td><fmt:formatDate value="${review.review_date}" pattern="yyyy-MM-dd" /></td>
 	          <td>${review.review_score}</td>
-	          <td>${review.review_status}</td>
+	          <td>
+				  <c:choose>
+				    <c:when test="${review.review_status eq 'Y'}">
+				      <span class="badge badge-green">정상</span>
+				    </c:when>
+				    <c:when test="${review.review_status eq 'N'}">
+				      <span class="badge badge-yellow">숨김</span>
+				    </c:when>
+				    <c:otherwise>
+				      <span class="badge">-</span>
+				    </c:otherwise>
+				  </c:choose>
+			  </td>
 	          <td>${fn:substring(review.review_text, 0, 20)}...</td>
 	          <td>
 			   <button class="btn-modern openModalBtn"
@@ -64,16 +76,21 @@
 	  </table>
 	
 	  <!-- 📌 페이징 -->
-	  <div class="pagination">
-	    <c:if test="${currentPage > 1}">
-	      <a href="?page=${currentPage - 1}&keyword=${param.keyword}">&laquo; 이전</a>
-	    </c:if>
-	    <span>${currentPage}</span>
-	    <c:if test="${reviewList.size() == pageSize}">
-	      <a href="?page=${currentPage + 1}&keyword=${param.keyword}">다음 &raquo;</a>
-	    </c:if>
-	  </div>
-	</div>
+		<!-- 페이지네이션 버튼 -->
+		<div class="pagination">
+		  <a href="${pageContext.request.contextPath}/admin/review_list?page=${currentPage - 1}"
+		     class="${currentPage == 1 ? 'disabled' : ''}">&laquo;</a>
+		
+		  <c:forEach var="i" begin="1" end="${totalPages}">
+		    <a href="${pageContext.request.contextPath}/admin/review_list?page=${i}"
+		       class="${i == currentPage ? 'active' : ''}">
+		      ${i}
+		    </a>
+		  </c:forEach>
+		
+		  <a href="${pageContext.request.contextPath}/admin/review_list?page=${currentPage + 1}"
+		     class="${currentPage == totalPages ? 'disabled' : ''}">&raquo;</a>
+		</div>
 	
 	<form id="reviewActionForm" method="post">
  		 <input type="hidden" name="review_id" id="modalReviewId">

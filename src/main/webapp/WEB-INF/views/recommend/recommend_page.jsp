@@ -20,8 +20,9 @@
   </div>
 </c:if>
 
-<!-- 로그인 된 경우 -->
-<c:if test="${!needLogin}">
+
+<!-- ✅ 로그인 된 경우 -->
+<c:if test="${not empty sessionScope.member_idx}">
   <div style="padding: 40px;">
 
 	
@@ -43,7 +44,7 @@
     <hr style="margin: 30px 0;">
 
     <!-- 💖 찜 기반 추천 include -->
-    <h3>💖 찜 도서 기반 추천</h3>
+    <h3>💖 찜한 도서 기반 추천</h3>
     <%@ include file="wishlist.jsp" %>
 
 	</div>
@@ -51,4 +52,4 @@
 
 
 <%-- 4. 하단 푸터를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/header.jsp" %>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>

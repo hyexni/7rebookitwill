@@ -3,9 +3,9 @@ package com.itwillbs.service;
 import java.util.List;
 import java.util.Map;
 
-import com.itwillbs.domain.BookStatsDTO;
 import com.itwillbs.domain.GenreStatsDTO;
 import com.itwillbs.domain.MemberStatsDTO;
+import com.itwillbs.dto.BookStatsDTO;
 
 public interface AdminStatsService {
 	

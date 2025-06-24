@@ -14,10 +14,12 @@ import com.google.cloud.vertexai.generativeai.ResponseHandler;
 import com.google.protobuf.ByteString;
 import com.itwillbs.domain.PointVO;
 import com.itwillbs.domain.ReceiptVO;
+import com.itwillbs.domain.BookVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.dto.AdminReceiptDTO;
 import com.itwillbs.dto.ReceiptDTO;
 import com.itwillbs.dto.ReceiptItemDTO;
+import com.itwillbs.persistence.BookDAO;
 import com.itwillbs.persistence.MemberDAO;
 import com.itwillbs.persistence.PointHistoryDAO;
 import com.itwillbs.persistence.ReceiptDAO;
@@ -51,6 +53,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     // Bean으로 주입받는 의존성은 final로 선언하여 불변성을 보장합니다.
     private final ReceiptDAO receiptDAO;
     private final ObjectMapper objectMapper;
+    private final BookDAO bookDAO;
 
     // @Value로 주입받는 값은 필드 주입 방식을 사용합니다.
     @Value("${upload.path}")
@@ -66,16 +69,28 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     @Transactional(rollbackFor = Exception.class) // 모든 예외 발생 시 롤백
     public ReceiptVO processAndSaveReceipt(MultipartFile file, int member_idx) throws Exception {
+    	
+    	
+        // ======================================================================
+        // 최대 파일 크기를 10MB로 설정합니다. (10 * 1024 * 1024 bytes)
+        long maxFileSize = 10 * 1024 * 1024; 
+
+        if (file.getSize() > maxFileSize) {
+            // 파일 크기가 10MB를 초과하는 경우, 예외를 발생시킵니다.
+            throw new IllegalStateException("업로드 가능한 파일 최대 크기는 10MB입니다.");
+        }
+        // ======================================================================
+
 
         // 1. 파일 해시 생성 및 중복 확인
-    	System.out.println("11111111111111111111111");
+    	
         String fileHash = generateFileHash(file);
         if (receiptDAO.countByFileHash(fileHash) > 0) {
             throw new IllegalStateException("동일한 내용의 파일이 이미 등록되어 있습니다.");
         }
 
         // 2. 물리적 파일 저장
-        System.out.println("222222222222222221");
+       
         String savedFilename = saveFileToServer(file);
 
         // 3. Gemini API 호출하여 영수증 정보 추출
@@ -230,7 +245,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         String modelName = "gemini-2.0-flash-001";         // 사용할 모델
 
         String promptText = "당신은 도서구매 영수증 분석 전문가입니다. 주어진 영수증 이미지에서 다음 정보를 JSON 형식으로 정확히 추출해주세요 : "
-        										+" - 교보문고, 영풍문고, YES24, 알라딘, 인터파크, 반디앤루니스 단어가 판매처 이름으로 들어가 있거나 서점이라는 단어가 들어가 있는 영수증이라면 아래와 같은 명령을 실행하라." 
+        										+" - 교보문고, 영풍문고, YES24, 알라딘, 인터파크, 반디앤루니스, 쿠팡 단어가 판매처 이름으로 들어가 있거나 서점이라는 단어가 들어가 있는 영수증이라면 아래와 같은 명령을 실행하라." 
         										+ "1. 'seller': 서점 또는 상점 이름 "
         										+ "2. 'purchaseDate': 구매 날짜 (반드시<y_bin_46>-MM-DD 형식) "
         										+ "3. 'approvalNumber': 카드 승인 번호 "
@@ -309,7 +324,7 @@ public class ReceiptServiceImpl implements ReceiptService {
             // 예외 발생 시 로그를 남기고, 필요한 경우 상위로 예외를 다시 던집니다.
             System.err.println("Gemini 응답 처리 중 심각한 오류 발생: " + e.getMessage());
             e.printStackTrace();
-            throw new RuntimeException("Gemini 응답 처리 중 오류가 발생했습니다.", e); // 원인 예외(e)를 포함하여 throw
+            throw new RuntimeException("유효한 도서구매영수증이 아닙니다.", e); // 원인 예외(e)를 포함하여 throw
         }
     }
 
@@ -318,6 +333,50 @@ public class ReceiptServiceImpl implements ReceiptService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+    
+//    
+//    /**
+//     * [신규] OCR 처리된 ReceiptDTO를 받아 각 품목을 DB의 도서와 매칭하고,
+//     * 매칭된 결과를 DTO에 직접 업데이트하는 헬퍼 메서드.
+//     */
+//    private void matchBooksAndUpdateDto(ReceiptDTO dto) {
+//        if (dto == null || dto.getItems() == null) {
+//            return; // 처리할 아이템이 없으면 종료
+//        }
+//
+//        for (ReceiptItemDTO item : dto.getItems()) {
+//            String titleToSearch = item.getBookTitle(); 
+//
+//            if (titleToSearch == null || titleToSearch.trim().isEmpty()) {
+//                continue; 
+//            }
+//
+//          
+//            List<BookVO> matchedBooks = BookDAO.findByTitleContaining(titleToSearch);
+//
+//            if (matchedBooks != null && !matchedBooks.isEmpty()) {
+//                // 매칭에 성공한 경우
+//                BookVO foundBook = matchedBooks.get(0); 
+//                item.setMatchedBook(foundBook);
+//                System.out.println("매칭 성공: '" + titleToSearch + "' -> '" + foundBook.getBook_title() + "'");
+//            } else {
+//                // 매칭에 실패한 경우
+//                System.out.println("매칭 실패: '" + titleToSearch + "'");
+//            }
+//        }
+//    }
+//    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     

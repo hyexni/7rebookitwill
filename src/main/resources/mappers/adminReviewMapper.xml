@@ -6,21 +6,34 @@
 <mapper namespace="com.itwillbs.persistence.AdminReviewDAO">
 
   <select id="getReviewList" resultType="com.itwillbs.domain.ReviewVO">
-    SELECT r.*, b.book_title, m.member_id, m.member_name
-    FROM review r
-    JOIN book b ON r.book_id = b.book_id
-    JOIN member m ON r.member_idx = m.member_idx
-    <where>
-      <if test="keyword != null and keyword != ''">
-        AND (b.book_title LIKE CONCAT('%', #{keyword}, '%')
-          OR r.review_text LIKE CONCAT('%', #{keyword}, '%')
-          OR m.member_id LIKE CONCAT('%', #{keyword}, '%')
-          OR m.member_name LIKE CONCAT('%', #{keyword}, '%'))
-      </if>
-    </where>
-    ORDER BY r.review_date DESC
-    LIMIT #{startRow}, #{pageSize}
-  </select>
+	  SELECT r.*, b.book_title, m.member_id, m.member_name
+	  FROM review r
+	  JOIN book b ON r.book_id = b.book_id
+	  JOIN member m ON r.member_idx = m.member_idx
+	  <where>
+	    <if test="keyword != null and keyword != ''">
+	      AND (b.book_title LIKE CONCAT('%', #{keyword}, '%')
+	        OR r.review_text LIKE CONCAT('%', #{keyword}, '%')
+	        OR m.member_id LIKE CONCAT('%', #{keyword}, '%')
+	        OR m.member_name LIKE CONCAT('%', #{keyword}, '%'))
+	    </if>
+	  </where>
+	  ORDER BY 
+	    CASE r.review_checked
+	      WHEN 'N' THEN 0
+	      WHEN 'Y' THEN 1
+	      ELSE 2
+	    END,
+	    CASE r.review_status
+	      WHEN 'Y' THEN 1
+	      WHEN 'N' THEN 2
+	      WHEN 'D' THEN 3
+	      ELSE 4
+	    END,
+	    r.review_date DESC
+	  LIMIT #{startRow}, #{pageSize}
+	</select>
+
 
   <select id="getReviewCount" resultType="int">
     SELECT COUNT(*)

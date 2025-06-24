@@ -25,6 +25,7 @@
     <select name="sort" onchange="this.form.submit()">
       <option value="regdate" ${sort == 'regdate' ? 'selected' : ''}>가입일순</option>
       <option value="name" ${sort == 'name' ? 'selected' : ''}>이름순</option>
+      <option value="point" ${sort == 'point' ? 'selected' : ''}>포인트순</option>
     </select>
     <button type="submit">검색</button>
   </form>
@@ -40,6 +41,7 @@
         <th>이름</th>
         <th>전화번호</th>
         <th>이메일</th>
+        <th>포인트</th>
       </tr>
     </thead>
     <tbody>
@@ -55,6 +57,7 @@
           <td>${member.member_name}</td>
           <td>${member.member_phone}</td>
           <td>${member.member_email}</td>
+          <td>${member.point_total }</td>
         </tr>
       </c:forEach>
     </tbody>

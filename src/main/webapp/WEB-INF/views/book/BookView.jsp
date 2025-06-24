@@ -3,11 +3,18 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<%-- 1. 페이지 기본 골격과 공통 CSS/폰트 링크를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 
-<!-- 페이지 제목 설정 -->
+<%-- 2. 상단 헤더를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+
+<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+
+
+<%-- 페이지 제목 설정 --%>
 <c:set var="pageTitle" value="도서 상세 페이지" />
-<jsp:include page="/WEB-INF/views/include/header.jsp" />
-
 
 <!-- 1. SweetAlert2 CDN 추가 (header.jsp에 넣어도 OK) -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -122,7 +129,7 @@
 	  function goBuy(bookId) {
 	    const isLoggedIn = '${not empty sessionScope.loginUser}';
 	    if (isLoggedIn === 'true') {
-	      location.href = '/order/buy?book_id=' + bookId;
+	      location.href = '${pageContext.request.contextPath}/payment?book_id=' + bookId;		// payment 연결
 	    } else {
 	      if (confirm('로그인이 필요합니다. 로그인 하시겠습니까?')) {
 	        location.href = '/member/login';
@@ -416,4 +423,5 @@
 	  }
 	</script>
 
-<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+<%-- 4. 하단 푸터를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>

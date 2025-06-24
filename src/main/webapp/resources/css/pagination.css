@@ -2,58 +2,41 @@
 
 /* pagination.css */
 
-/* 1) 페이징 박스 감싸기 */
-.pagination-custom {
-  display: inline-block;
-  padding-left: 0;
-  margin: 0;
-  border-radius: 4px;
-  font-size: 14px;
+/* Pagination */
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
 }
-
-/* 2) li 나열 */
-.pagination-custom li {
-  display: inline;
+.pagination a {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    margin: 0;
+    text-align: center;
+    text-decoration: none;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    transition: all 0.2s;
 }
-
-/* 3) 앵커 버튼 스타일 */
-.pagination-custom li a {
-  color: #444;
-  float: left;
-  padding: 6px 12px;
-  text-decoration: none;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  margin-left: -1px;           /* 붙어 보이도록 겹침 */
-  border-radius: 0;            /* 기본은 0, 맨 앞/끝만 둥글리기 */
+.pagination a:hover {
+    background-color: #f1f3f5;
+    border-color: #4c6ef5;
+    color: #4c6ef5;
 }
-
-/* 4) 첫/끝 버튼의 둥근 모서리 */
-.pagination-custom li:first-child a {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-  margin-left: 0;              /* 첫 버튼은 -1px 제거 */
+.pagination a.active {
+    background-color: #4c6ef5;
+    border-color: #4c6ef5;
+    color: #fff;
+    font-weight: 500;
+    cursor: default;
 }
-.pagination-custom li:last-child a {
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
-/* 5) 호버 효과 */
-.pagination-custom li a:hover {
-  background-color: #f4f4f4;
-  border-color: #ccc;
-}
-
-/* 6) 활성(active), 비활성(disabled) 상태 */
-.pagination-custom li.active a {
-  background-color: #367fa9;   /* AdminLTE primary 색상 */
-  color: #fff;
-  border-color: #367fa9;
-  pointer-events: none;
-}
-.pagination-custom li.disabled a {
-  color: #bbb;
-  pointer-events: none;
-  background-color: #fff;
+.pagination a.disabled {
+    pointer-events: none;
+    color: #ccc;
+    border-color: #eee;
 }
