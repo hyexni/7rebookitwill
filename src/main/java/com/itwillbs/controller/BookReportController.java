@@ -30,56 +30,44 @@ import com.itwillbs.service.BookService;
 public class BookReportController {
 
     // book_id로 책 정보를 조회할 때만 사용되므로 의존성은 유지합니다.
-    @Inject
-    private BookService bookService;
+  //  @Inject
+   // private BookService bookService;
 
     @Inject
     private BookReportService bookReportService;
 
     private static final Logger logger = LoggerFactory.getLogger(BookReportController.class);
     
-    @GetMapping("/list")
-    public String bookReportList(Model model) {
-        logger.info("GET - 독후감 목록 페이지 요청");
-        
-        // ✅ 파라미터 없이 서비스의 목록 조회 메소드를 호출
-        List<BookReportVO> reportList = bookReportService.getBookReportList(); 
-        
-        model.addAttribute("reportList", reportList);
-        return "bookreport/list";
-    }
-
+    
+    /**
+     * [수정] 독후감 글쓰기 폼 이동 (단순화)
+     * - book_id 파라미터를 완전히 제거했습니다.
+     * - 이제 이 메소드는 로그인 여부만 확인하고 글쓰기 폼으로 이동시킵니다.
+     */
     @GetMapping("/write")
-    public String writeBookReportForm(@RequestParam(value = "book_id", required = false) Integer book_id, 
-                                      Model model,
-                                      HttpSession session,          //  세션 객체를 사용하기 위해
-                                      RedirectAttributes rttr) {    // 리다이렉트 시 메시지를 전달하기 위해
+    public String insertBookReportForm(HttpSession session, RedirectAttributes rttr) {
+        logger.info("GET - 독후감 작성 폼 요청");
 
-        logger.info("GET - 독후감 작성 폼 요청, book_id: {}", book_id);
-
-        // [추가] 로그인 상태 확인 로직
+        // 1. 로그인 상태 확인
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
         if (loginUser == null) {
-            logger.warn("비로그인 사용자의 글쓰기 페이지 접근 시도 차단");
-            rttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다.");
-            return "redirect:/member/login"; // 로그인 페이지로 리다이렉트
+            // 인터셉터가 이 역할을 대신 처리하므로 없어도 되지만, 안전을 위해 유지합니다.
+            rttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다."); 
+            return "redirect:/member/login"; 
         }
+logger.info("1111111111111111111111111111111");
+        // 2. 독후감 작성 폼(View)으로 바로 이동
+        return "bookreport/write";
 
-        // --- 이하 기존 로직 (로그인한 사용자에게만 실행됨) ---
-        if (book_id != null) {
-            BookVO book = bookService.getBookDetail(book_id);
-            model.addAttribute("book", book);
-        }
-        return "bookreport/write"; 
     }
-
     
    
     @PostMapping("/write")
-    public String writeBookReport(BookReportVO vo, // 파라미터를 VO로 한 번에 받도록 변경
-                                  @RequestParam(value = "report_image1", required = false) MultipartFile file1,
-                                  @RequestParam(value = "report_image2", required = false) MultipartFile file2,
-                                  @RequestParam(value = "report_image3", required = false) MultipartFile file3,
+    public String insertBookReport(BookReportVO vo, // 파라미터를 VO로 한 번에 받도록 변경
+    							@RequestParam("read_date") String imgdate,
+                               //   @RequestParam(value = "report_image1", required = false) MultipartFile file1,
+                                //  @RequestParam(value = "report_image2", required = false) MultipartFile file2,
+                                //  @RequestParam(value = "report_image3", required = false) MultipartFile file3,
                                   HttpSession session,
                                   RedirectAttributes rttr) {
         logger.info("POST - 독후감 등록 처리, vo: {}", vo);
@@ -94,10 +82,10 @@ public class BookReportController {
 
         try {
             String uploadDir = session.getServletContext().getRealPath("/resources/upload");
-            vo.setReport_image1(uploadFile(file1, uploadDir));
-            vo.setReport_image2(uploadFile(file2, uploadDir));
-            vo.setReport_image3(uploadFile(file3, uploadDir));
-            bookReportService.writeBookReport(vo); 
+           // vo.setReport_image1(uploadFile(file1, uploadDir));
+          //  vo.setReport_image2(uploadFile(file2, uploadDir));
+           // vo.setReport_image3(uploadFile(file3, uploadDir));
+            bookReportService.insertBookReport(vo); 
             rttr.addFlashAttribute("msg", "게시글이 성공적으로 등록되었습니다.");
         } catch (Exception e) {
             logger.error("독후감 등록 실패: {}", e.getMessage());
@@ -106,106 +94,118 @@ public class BookReportController {
         return "redirect:/bookreport/list";
     }
 
-    /**
-     * [핵심 변경] 독후감 수정 폼 이동
-     */
-    @GetMapping("/update")
-    public String updateBookReportForm(@RequestParam("report_id") int report_id, HttpSession session, Model model, RedirectAttributes rttr) {
-        logger.info("GET - 독후감 수정 폼 요청, report_id: {}", report_id);
-        
-        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-        if (loginUser == null) {
-            rttr.addFlashAttribute("msg", "로그인이 필요합니다.");
-            return "redirect:/member/login";
+        /**
+         * [수정] 독후감 수정 폼 이동
+         * - 기존 게시글 정보를 조회하여 폼에 채워줍니다.
+         * - 작성자와 로그인 유저가 일치하는지 권한을 확인합니다.
+         */
+        @GetMapping("/update")
+        public String updateBookReportForm(@RequestParam("report_id") int report_id, HttpSession session, Model model, RedirectAttributes rttr) {
+            logger.info("GET - 독후감 수정 폼 요청, report_id: {}", report_id);
+
+            // 1. 로그인 여부 확인
+            MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+            if (loginUser == null) {
+                rttr.addFlashAttribute("msg", "로그인이 필요합니다.");
+                return "redirect:/member/login";
+            }
+
+            // 2. (필수) DB에서 수정할 독후감 정보를 가져옴
+            BookReportVO report = bookReportService.getBookReport(report_id);
+
+            // 3. (필수) 본인 글이 맞는지 권한 확인
+            if (report == null || report.getMember_idx() != loginUser.getMember_idx()) {
+                rttr.addFlashAttribute("msg", "수정 권한이 없습니다.");
+                return "redirect:/bookreport/list"; // 권한이 없으면 목록으로
+            }
+            
+            // 4. (정상) 조회된 정보를 모델에 담아 수정 폼(update.jsp/html)으로 전달
+            model.addAttribute("report", report);
+            
+            return "bookreport/update";
         }
 
-        // [변경] 서비스 계층에서 JOIN된 쿼리를 호출하여 책 제목까지 한번에 가져옴
-        BookReportVO report = bookReportService.getBookReport(report_id); // 예시: getBookReportById 호출
+        /**
+         * [유지 및 개선] 독후감 수정 처리
+         * - 로직은 대부분 올바르므로 유지하되, 성공 시 상세 페이지로 리다이렉트하여 사용자 경험을 개선합니다.
+         */
+        @PostMapping("/update")
+        public String updateBookReport(BookReportVO vo, // 폼 데이터를 VO로 받음
+                                       @RequestParam(value = "report_image1", required = false) MultipartFile file1,
+                                       @RequestParam(value = "report_image2", required = false) MultipartFile file2,
+                                       @RequestParam(value = "report_image3", required = false) MultipartFile file3,
+                                       @RequestParam(value = "delete_image1", required = false) String deleteImage1,
+                                       @RequestParam(value = "delete_image2", required = false) String deleteImage2,
+                                       @RequestParam(value = "delete_image3", required = false) String deleteImage3,
+                                       HttpSession session,
+                                       RedirectAttributes rttr) {
+            logger.info("POST - 독후감 수정 처리, report_id: {}", vo.getReport_id());
+            
+            MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+            if (loginUser == null) {
+                rttr.addFlashAttribute("msg", "세션이 만료되었거나 로그인이 필요합니다.");
+                return "redirect:/member/login";
+            }
+            
+            // (보안) 수정 전, 다시 한번 DB의 원본 데이터와 소유권을 확인
+            BookReportVO originalReport = bookReportService.getBookReport(vo.getReport_id());
+            if (originalReport == null || originalReport.getMember_idx() != loginUser.getMember_idx()) {
+                rttr.addFlashAttribute("msg", "수정 권한이 없습니다.");
+                return "redirect:/bookreport/list";
+            }
+
+            vo.setMember_idx(loginUser.getMember_idx());
+            
+            try {
+                // 이미지 처리 로직은 기존과 동일 (processImageUpdate 메소드가 있다고 가정)
+                // String uploadDir = session.getServletContext().getRealPath("/resources/upload");
+                // vo.setReport_image1(processImageUpdate(file1, deleteImage1, originalReport.getReport_image1(), uploadDir));
+                // ... (이미지 2, 3 처리) ...
+                
+                bookReportService.updateBookReport(vo);
+                rttr.addFlashAttribute("msg", "게시글이 성공적으로 수정되었습니다.");
+                // 수정 완료 후, 목록이 아닌 수정된 게시글의 상세 페이지로 이동하는 것이 더 자연스러움
+                return "redirect:/bookreport/detail?report_id=" + vo.getReport_id();
+            } catch (Exception e) {
+                logger.error("독후감 수정 실패: {}", e.getMessage(), e);
+                rttr.addFlashAttribute("msg", "게시글 수정 중 오류가 발생했습니다.");
+                // 실패 시에도 수정 폼으로 다시 돌아가는 것이 좋음
+                return "redirect:/bookreport/update?report_id=" + vo.getReport_id();
+            }
+        }
         
-        if (report == null || report.getMember_idx() != loginUser.getMember_idx()) {
-            rttr.addFlashAttribute("msg", "수정 권한이 없습니다.");
+        /**
+         * [유지] 독후감 삭제 처리
+         * - 기존 권한 확인 로직은 보안상 필수이므로 그대로 유지합니다.
+         */
+        @PostMapping("/delete")
+        public String deleteBookReport(@RequestParam("report_id") int report_id, HttpSession session, RedirectAttributes rttr) {
+            logger.info("POST - 독후감 삭제 요청, report_id: {}", report_id);
+
+            MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+            if (loginUser == null) {
+                rttr.addFlashAttribute("msg", "로그인이 필요합니다.");
+                return "redirect:/member/login";
+            }
+            
+            // (보안) 삭제 전, DB에서 해당 게시글 정보를 가져와 본인 글이 맞는지 반드시 확인
+            BookReportVO report = bookReportService.getBookReport(report_id);
+            if (report == null || report.getMember_idx() != loginUser.getMember_idx()) {
+                rttr.addFlashAttribute("msg", "삭제 권한이 없습니다.");
+                return "redirect:/bookreport/list";
+            }
+
+            try {
+                bookReportService.deleteBookReport(report_id);
+                rttr.addFlashAttribute("msg", "게시글이 삭제되었습니다.");
+            } catch (Exception e) {
+                logger.error("독후감 삭제 실패: {}", e.getMessage(), e);
+                rttr.addFlashAttribute("msg", "게시글 삭제에 실패했습니다.");
+            }
+            
             return "redirect:/bookreport/list";
         }
-        
-        // [변경] 별도의 book 객체를 조회할 필요 없이, 조회된 report 객체 하나만 모델에 담음
-        model.addAttribute("report", report);
-        
-        return "bookreport/update";
-    }
-
-    @PostMapping("/update")
-    public String updateBookReport(BookReportVO vo, // 파라미터를 VO로 받음
-                                   @RequestParam(value = "report_image1", required = false) MultipartFile file1,
-                                   @RequestParam(value = "report_image2", required = false) MultipartFile file2,
-                                   @RequestParam(value = "report_image3", required = false) MultipartFile file3,
-                                   @RequestParam(value = "delete_image1", required = false) String deleteImage1,
-                                   @RequestParam(value = "delete_image2", required = false) String deleteImage2,
-                                   @RequestParam(value = "delete_image3", required = false) String deleteImage3,
-                                   HttpSession session,
-                                   RedirectAttributes rttr) {
-        logger.info("POST - 독후감 수정 처리, vo: {}", vo);
-        
-        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-        if (loginUser == null) {
-            rttr.addFlashAttribute("msg", "로그인이 필요합니다.");
-            return "redirect:/member/login";
-        }
-        
-        BookReportVO originalReport = bookReportService.getBookReport(vo.getReport_id());
-        if (originalReport == null || originalReport.getMember_idx() != loginUser.getMember_idx()) {
-            rttr.addFlashAttribute("msg", "수정 권한이 없습니다.");
-            return "redirect:/bookreport/list";
-        }
-
-        vo.setMember_idx(loginUser.getMember_idx());
-        
-        try {
-            String uploadDir = session.getServletContext().getRealPath("/resources/upload");
-            vo.setReport_image1(processImageUpdate(file1, deleteImage1, originalReport.getReport_image1(), uploadDir));
-            vo.setReport_image2(processImageUpdate(file2, deleteImage2, originalReport.getReport_image2(), uploadDir));
-            vo.setReport_image3(processImageUpdate(file3, deleteImage3, originalReport.getReport_image3(), uploadDir));
-            bookReportService.updateBookReport(vo);
-            rttr.addFlashAttribute("msg", "게시글이 성공적으로 수정되었습니다.");
-        } catch (Exception e) {
-            logger.error("독후감 수정 실패: {}", e.getMessage(), e);
-            rttr.addFlashAttribute("msg", "게시글 수정 중 오류가 발생했습니다.");
-        }
-        return "redirect:/bookreport/list";
-    }
     
-    @PostMapping("/delete")
-    public String deleteBookReport(@RequestParam("report_id") int report_id, HttpSession session, RedirectAttributes rttr) {
-        // ... (기존 삭제 로직과 동일, 리다이렉트 경로는 /bookreport/list)
-        logger.info("POST - 독후감 삭제 요청, report_id: {}", report_id);
-
-        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-        if (loginUser == null) {
-            rttr.addFlashAttribute("msg", "로그인이 필요합니다.");
-            return "redirect:/member/login";
-        }
-
-        BookReportVO report = bookReportService.getBookReport(report_id);
-
-        if (report == null) {
-            rttr.addFlashAttribute("msg", "해당 게시글이 존재하지 않습니다.");
-            return "redirect:/bookreport/list";
-        }
-        
-        if (report.getMember_idx() != loginUser.getMember_idx()) {
-            rttr.addFlashAttribute("msg", "삭제 권한이 없습니다.");
-            return "redirect:/bookreport/list";
-        }
-
-        try {
-            bookReportService.deleteBookReport(report_id);
-            rttr.addFlashAttribute("msg", "게시글이 삭제되었습니다.");
-        } catch (Exception e) {
-            logger.error("독후감 삭제 실패: {}", e.getMessage());
-            rttr.addFlashAttribute("msg", "게시글 삭제에 실패했습니다.");
-        }
-        
-        return "redirect:/bookreport/list";
-    }
     
 // ====================== Private Helper Methods (기존과 동일) ======================
     

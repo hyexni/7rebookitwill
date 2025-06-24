@@ -16,9 +16,6 @@ public interface BookReportDAO {
 	// 상세 조회
 	 BookReportVO getBookReport(int report_id);
 	 
-	 // 답변
-	 ResponseVO getResponse(int Report_id);
-	 
 	 // 수정
 	 void updateBookReport(BookReportVO vo) throws Exception;
 	 

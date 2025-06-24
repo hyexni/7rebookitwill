@@ -5,37 +5,45 @@
           
 <mapper namespace="com.itwillbs.persistence.BookReportDAO">
 
-    <insert id="writeBookReport" parameterType="com.itwillbs.domain.BookReportVO">
-        INSERT INTO book_report (
+<!-- 글쓰기 -->
+
+    <insert id="insertBookReport" parameterType="com.itwillbs.domain.BookReportVO">
+       INSERT INTO book_report (   
+       		report_id,        
             member_idx, 
-            book_id,
-            book_title,
             author_name, 
             publisher, 
             read_date, 
-            report_text,
-            report_image1,
-            report_image2,
-            report_image3,
-            is_public
-        )
+            report_text, 
+            report_image1, 
+            report_image2, 
+            report_image3, 
+            is_public, 
+            report_title
+                   ) 
         VALUES (
-            #{member_idx}, 
-            <if test="book_id != null">
-                #{book_id},
-            </if>
-            <if test="book_id == null">
-                NULL,
-            </if>
-            #{book_title},
-            #{author_name}, 
-            #{publisher}, 
-            #{read_date}, 
+            #{report_id},
+            #{member_idx},
+            #{author_name},
+            #{publisher},
+            #{read_date},
             #{report_text},
             #{report_image1},
-            #{report_image2}, 
+            #{report_image2},
             #{report_image3},
-            #{is_public}
+            
+           
+            <choose>
+                <when test="status == 'public'">
+                    1
+                </when>
+                <otherwise>
+                    0
+                </otherwise>
+            </choose>,
+            
+            #{report_title}
+          
         )
     </insert>
 
@@ -52,17 +60,15 @@
     
     <select id="getBookReportList" resultType="com.itwillbs.domain.BookReportVO">
         SELECT 
-            br.report_id, 
-            br.book_title, 
-            br.author_name,
-            br.member_idx,
-            br.write_date,
-            br.is_public,
-            b.book_title AS original_book_title 
+           report_id,
+           report_title,
+           author_name,
+           member_idx,
+           write_date,
+           is_public,
+        
         FROM 
-            book_report br 
-        LEFT JOIN 
-            book b ON br.book_id = b.book_id
+            book_report
         ORDER BY 
             br.report_id DESC
     </select>
@@ -74,7 +80,7 @@
     <update id="updateBookReport" parameterType="com.itwillbs.domain.BookReportVO">
         UPDATE book_report 
         <set>
-            <if test="book_title != null">book_title = #{book_title},</if>
+            <if test="report_title != null">report_title = #{report_title},</if>
             <if test="author_name != null">author_name = #{author_name},</if>
             <if test="publisher != null">publisher = #{publisher},</if>
             <if test="read_date != null">read_date = #{read_date},</if>

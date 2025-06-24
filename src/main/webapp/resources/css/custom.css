@@ -505,7 +505,7 @@ html, body {
   gap: 10px;
 }
 .btn {
-  padding: 10px 20px;
+  padding: 0px 10px;
   font-weight: bold;
   border-radius: 6px;
   border: none;

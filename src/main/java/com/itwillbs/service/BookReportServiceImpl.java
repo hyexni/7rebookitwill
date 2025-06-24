@@ -24,7 +24,7 @@ public class BookReportServiceImpl implements BookReportService {
 
 	// 독후감 글쓰기
 	@Override
-	public void writeBookReport(BookReportVO vo) throws Exception {
+	public void insertBookReport(BookReportVO vo) throws Exception {
 		iDAO.insertBookReport(vo);
 	}
 
@@ -36,21 +36,13 @@ public class BookReportServiceImpl implements BookReportService {
 	}
 
 	
-
 	// 상세 조회
 	@Override
 	public BookReportVO getBookReport(int report_id) {
 	    return iDAO.getBookReport(report_id);
 	}
-	
-	
-
-	// 답변
-	@Override
-	public ResponseVO getResponse(int report_id) {
-	    return iDAO.getResponse(report_id); // DAO로 위임
-	}
-	
+		
+		
 	// 수정
 	@Override
 	public void updateBookReport(BookReportVO vo) throws Exception {

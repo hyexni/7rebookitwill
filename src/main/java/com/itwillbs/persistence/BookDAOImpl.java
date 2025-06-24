@@ -58,4 +58,20 @@ public class BookDAOImpl implements BookDAO {
 		logger.info("getBookDetail() 호출됨 - bookId: {}", bookId);
 		return sqlSession.selectOne(NAMESPACE + ".selectBookDetail", bookId);
 	}
+	
+	
+	/**
+     * [신규] 책 제목 LIKE 검색 구현
+     */
+    @Override
+    public List<BookVO> findByTitleContaining(String booktitle) {
+        // sqlSession의 selectList를 호출하여 여러 개의 결과를 받아옵니다.
+        // 첫 번째 파라미터: mapper의 namespace + 쿼리 id
+        // 두 번째 파라미터: 쿼리에 전달할 값
+        return sqlSession.selectList(NAMESPACE + ".findByTitleContaining", booktitle);
+    }
+	
+    
+ 
+	
 }
