@@ -76,7 +76,7 @@
             </nav>
             <!-- Button Group -->
             <div class="amado-btn-group mt-30 mb-100">
-                <a href="<c:url value='/recommend/wishlist'/>" class="btn amado-btn mb-15">WISHLIST</a>
+                <a href="<c:url value='/wishlist/list'/>" class="btn amado-btn mb-15">WISHLIST</a>
                 <a href="<c:url value='/receipt/upload'/>" class="btn amado-btn active">영수증업로드</a>
             </div>
             <!-- Cart Menu -->
