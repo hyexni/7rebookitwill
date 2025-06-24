@@ -48,7 +48,7 @@ public class RecommendController {
 	    Map<String, Object> param = new HashMap<>();
 	    param.put("member_idx", memberIdx);
 	    param.put("sort", sort);
-	    param.put("limit", 10);
+	    param.put("limit", 5);
 
 	    // 구매 기반 추천만 사용
 	    List<BookStatsDTO> purchaseList = recommendService.findRecommendedBooksByPurchaseSorted(param);
@@ -77,7 +77,7 @@ public class RecommendController {
 	    Map<String, Object> param = new HashMap<>();
 	    param.put("member_idx", memberIdx);
 	    param.put("sort", sort);
-	    param.put("limit", 10);
+	    param.put("limit", 5);
 
 	    List<BookStatsDTO> wishList = recommendService.findRecommendedBooksByWishSorted(param);
 
@@ -121,7 +121,7 @@ public class RecommendController {
 	    Map<String,Object> param = new HashMap<>();
 	    param.put("member_idx", memberIdx);
 	    param.put("sort",      sort);
-	    param.put("limit",     10);   // 원하는 개수
+	    param.put("limit",     5);   // 원하는 개수
 
 	    // 1) 구매 기반 추천 + 정렬
 	    List<BookStatsDTO> purchaseList
