@@ -2,6 +2,8 @@ package com.itwillbs.domain;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 
@@ -15,6 +17,8 @@ public class BookReportVO {
 	private String publisher;
 	private String report_title; //
 	
+	//날짜
+	@DateTimeFormat(pattern="yyyy/MM/dd")
 	private Date read_date;
 	
 	

@@ -64,9 +64,10 @@ logger.info("1111111111111111111111111111111");
    
     @PostMapping("/write")
     public String insertBookReport(BookReportVO vo, // 파라미터를 VO로 한 번에 받도록 변경
-                                  @RequestParam(value = "report_image1", required = false) MultipartFile file1,
-                                  @RequestParam(value = "report_image2", required = false) MultipartFile file2,
-                                  @RequestParam(value = "report_image3", required = false) MultipartFile file3,
+    							@RequestParam("read_date") String imgdate,
+                               //   @RequestParam(value = "report_image1", required = false) MultipartFile file1,
+                                //  @RequestParam(value = "report_image2", required = false) MultipartFile file2,
+                                //  @RequestParam(value = "report_image3", required = false) MultipartFile file3,
                                   HttpSession session,
                                   RedirectAttributes rttr) {
         logger.info("POST - 독후감 등록 처리, vo: {}", vo);
@@ -81,9 +82,9 @@ logger.info("1111111111111111111111111111111");
 
         try {
             String uploadDir = session.getServletContext().getRealPath("/resources/upload");
-            vo.setReport_image1(uploadFile(file1, uploadDir));
-            vo.setReport_image2(uploadFile(file2, uploadDir));
-            vo.setReport_image3(uploadFile(file3, uploadDir));
+           // vo.setReport_image1(uploadFile(file1, uploadDir));
+          //  vo.setReport_image2(uploadFile(file2, uploadDir));
+           // vo.setReport_image3(uploadFile(file3, uploadDir));
             bookReportService.insertBookReport(vo); 
             rttr.addFlashAttribute("msg", "게시글이 성공적으로 등록되었습니다.");
         } catch (Exception e) {
