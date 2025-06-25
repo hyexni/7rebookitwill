@@ -54,24 +54,31 @@
              </nav>
             
             
-            
-            <!-- Button Group -->
-            <div class="amado-btn-group mt-30 mb-100">
-                <a href="<c:url value='/recommend/wishlist'/>" class="btn amado-btn mb-15">WISHLIST</a>
-                <a href="<c:url value='/receipt/upload'/>" class="btn amado-btn active">영수증업로드</a>
-            </div>
-            <!-- Cart Menu -->
+            <!-- 푸터 여백 주기 -->
             <div class="cart-fav-search mb-100">
-                <a href="cart.html" class="cart-nav"><img src="${pageContext.request.contextPath }/resources/img/core-img/cart.png" alt=""> Cart <span>(0)</span></a>
-                <a href="#" class="fav-nav"><img src="${pageContext.request.contextPath }/resources/img/core-img/favorites.png" alt=""> Favourite</a>
-                <a href="#" class="search-nav"><img src="${pageContext.request.contextPath }/resources/img/core-img/search.png" alt=""> Search</a>
-            </div>
-            <!-- Social Button -->
-            <div class="social-info d-flex justify-content-between">
-                <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i>k</a>
-                <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
+                <a href="#" class="fav-nav"></a>
             </div>
             
             <script>

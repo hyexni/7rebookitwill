@@ -4,7 +4,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
 /* Main Container */
-.container {
+.my-container {
     max-width: 1200px;
     margin: 0 auto;
     background-color: #ffffff;
@@ -12,6 +12,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
+
 
 h1 {
     font-size: 26px;
@@ -218,6 +219,7 @@ a {
 .main-content {
     flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
     padding: 40px;
+    margin-right: 50px;
     box-sizing: border-box;
 }
 
@@ -570,94 +572,111 @@ a {
         .scroll-btn.next { right: -20px; }
 
 
-/* point_history.jsp 전용 스타일 */
-.point-history-container {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    color: #333;
-    background-color: #fff;
-    padding: 20px 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
+	/* 관리자는 모두 이거이거이거이거 */
+	.admin-container h1 {
+        font-size: 26px;
+        font-weight: 700;
+        color: #212529;
+        margin-top: 0;
+        margin-bottom: 30px;
+        text-align: center;
+    }
 
-.point-history-container h1, .point-history-container h3 {
-    color: #1a1a1a;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
-}
+    /* 검색 폼 */
+    .admin-container .search-form {
+        margin-bottom: 30px;
+        padding: 20px;
+        background-color: #f1f3f5;
+        border-radius: 6px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+    .admin-container .search-form select,
+    .admin-container .search-form input[type="text"] {
+        padding: 9px 12px;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        font-size: 15px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .admin-container .search-form select:focus,
+    .admin-container .search-form input[type="text"]:focus {
+        outline: none;
+        border-color: #4c6ef5;
+        box-shadow: 0 0 0 2px rgba(76, 110, 245, 0.2);
+    }
+    .admin-container .search-form input[type="submit"] {
+        padding: 9px 25px;
+        font-size: 15px;
+        font-weight: 500;
+        color: #fff;
+        background-color: #4c6ef5;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    .admin-container .search-form input[type="submit"]:hover {
+        background-color: #364fc7;
+    }
 
-.point-history-container .summary-box {
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 30px;
-}
+    /* 테이블 */
+    .admin-container table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px;
+    }
+    .admin-container thead {
+        background-color: #f8f9fa;
+    }
+    .admin-container th, 
+    .admin-container td {
+        padding: 14px 10px;
+        text-align: center;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .admin-container th {
+        color: #495057;
+        font-weight: 500;
+        vertical-align: middle;
+    }
+    .admin-container tbody tr:hover {
+        background-color: #f1f3f5;
+    }
 
-.point-history-container .summary-box p {
-    margin: 0 0 10px 0;
-    font-size: 14px;
-    color: #6c757d;
-}
+    /* 정렬 기능 시각적 표현 (화살표) */
+    .admin-container th a {
+        text-decoration: none;
+        color: inherit;
+        display: inline-block;
+        position: relative;
+        padding-right: 15px;
+    }
+    .admin-container th.asc a::after,
+    .admin-container th.desc a::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 10px;
+        color: #4c6ef5;
+    }
+    .admin-container th.asc a::after {
+        content: '▲';
+    }
+    .admin-container th.desc a::after {
+        content: '▼';
+    }
 
-.point-history-container .summary-box h2 {
-    margin: 0 0 15px 0;
-    font-size: 24px;
-    text-align: right;
-}
-
-.point-history-container .summary-box ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 15px;
-}
-
-.point-history-container .summary-box ul li {
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.point-history-container .details-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.point-history-container .details-table th, .point-history-container .details-table td {
-    border-bottom: 1px solid #ddd;
-    padding: 12px 8px;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.point-history-container .details-table th {
-    background-color: #f7f7f7;
-    font-weight: 600;
-}
-
-.point-history-container .details-table .reason {
-    text-align: left;
-}
-
-.point-history-container .point-plus {
-    color: #007bff; /* 적립: 파란색 */
-    font-weight: bold;
-}
-
-.point-history-container .point-minus {
-    color: #dc3545; /* 사용: 빨간색 */
-    font-weight: bold;
-}
-
-.point-history-container .no-data {
-    text-align: center;
-    padding: 50px;
-    color: #777;
-    font-size: 16px;
-}
- 
+    /* 내역 없을 때 메시지 */
+    .admin-container .no-records {
+        text-align: center;
+        padding: 60px 20px;
+        color: #868e96;
+    }
 
 /* 사이드 메뉴 */
 .menu-title {
@@ -690,45 +709,6 @@ a {
   transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease;
 }
 
-
-
-/* 통계 카드 */
-.stats-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-    margin-top: 20px;
-}
-.stats-card {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-@media (max-width: 1024px) {
-    .stats-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media (max-width: 600px) {
-    .stats-container {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* 슬라이드 카드 */
-.swiper-slide {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    background: #fff;
-    box-sizing: border-box;
-    width: 100%;
-    min-height: 350px;
-    display: flex;
-    flex-direction: column;
-}
 
 /* ✅ 하위 메뉴 항목 줄 초기화 + 개별 hover 적용 */
 .submenu li {
@@ -1085,4 +1065,5 @@ a {
 	  font-size: 16px;
 	  margin-top: 4px;
 	}
+		
 		

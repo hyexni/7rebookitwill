@@ -7,10 +7,10 @@
 <%@ include file="include/header.jsp" %> 
 <%@ include file="include/sidebar.jsp" %>
 
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/custom.css">
-	
-	<div class="container">
-	  <h2 class="admin-title">리뷰 관리</h2>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/custom.css">
+<main class="main-content">
+	<div class="admin-container">
+	  <h1>💭 리뷰 관리</h1>
 	
 	  <!-- 🔍 검색창 -->
 	  <form method="get" action="${pageContext.request.contextPath}/admin/review_list" class="search-form">
@@ -19,7 +19,7 @@
 	  </form>
 	
 	  <!-- 📋 테이블 -->
-	  <table class="admin-table">
+	  <table>
 	    <thead>
 	      <tr>
 	        <th>리뷰ID</th>
@@ -91,6 +91,8 @@
 		  <a href="${pageContext.request.contextPath}/admin/review_list?page=${currentPage + 1}"
 		     class="${currentPage == totalPages ? 'disabled' : ''}">&raquo;</a>
 		</div>
+	</div>
+</main>
 	
 	<form id="reviewActionForm" method="post">
  		 <input type="hidden" name="review_id" id="modalReviewId">
@@ -189,5 +191,5 @@
 
 	
 	
-
-<%@ include file="include/footer.jsp" %>
+<%-- 4. 하단 푸터를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>

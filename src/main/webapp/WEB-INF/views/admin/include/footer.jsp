@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
      
-                    
-                         
-
-               
             </div>
         </div>
         <!-- Product Catagories Area End -->
@@ -66,7 +62,7 @@ Copyright ©<script>document.write(new Date().getFullYear());</script>2025 All r
     <!-- ##### Footer Area End ##### -->
 
     <!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
-    <script src="${pageContext.request.contextPath}/resources/js/jquery/jquery-2.2.4.min.js"></script>
+    <script src="${pageContext.request.contextPath }/resources/js/jquery/jquery-2.2.4.min.js"></script>
     <!-- Popper js -->
     <script src="${pageContext.request.contextPath }/resources/js/popper.min.js"></script>
     <!-- Bootstrap js -->
@@ -75,26 +71,7 @@ Copyright ©<script>document.write(new Date().getFullYear());</script>2025 All r
     <script src="${pageContext.request.contextPath }/resources/js/plugins.js"></script>
     <!-- Active js -->
     <script src="${pageContext.request.contextPath }/resources/js/active.js"></script><a id="scrollUp" href="#top" style="position: fixed; z-index: 2147483647; display: none;"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
-	<!-- admin.js -->
-	<script src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
-	
-	<script>
-	  document.addEventListener("DOMContentLoaded", function () {
-	    const icon = document.querySelector(".user-icon");
-	    const menu = document.querySelector(".dropdown-menu");
-	
-	    if (icon && menu) {
-	      icon.addEventListener("click", () => {
-	        menu.style.display = menu.style.display === "block" ? "none" : "block";
-	      });
-	
-	      document.addEventListener("click", (e) => {
-	        if (!icon.contains(e.target) && !menu.contains(e.target)) {
-	          menu.style.display = "none";
-	        }
-	      });
-	    }
-	  });
-	</script>
+
+
 
 </body></html>

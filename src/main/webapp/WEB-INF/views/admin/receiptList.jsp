@@ -99,7 +99,7 @@
 <div class="content-wrapper" style="background-color: #fff;">
 <main class="main-content" style="padding:20px;">
     <div class="admin-receipt-container">
-        <h1>전체 영수증 인증 목록</h1>
+        <h1>🗂️ 전체 영수증 인증 목록</h1>
 
         <%-- [수정] 영수증 목록에 맞는 검색 기능 --%>
         <div class="search-form">
@@ -183,5 +183,5 @@
 </main>
 </div>
 
-<%-- 레이아웃 하단(footer)을 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/admin/include/footer.jsp" %>
+<%-- 4. 하단 푸터를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
