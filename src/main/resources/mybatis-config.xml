@@ -4,7 +4,12 @@
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
+
 	<!-- mybatis 설정정보를 저장하는 파일 -->
+	
+	<typeAliases>
+		<package name="com.itwillbs.domain"/>
+	</typeAliases>
 
 </configuration>
 

@@ -143,7 +143,7 @@ public class ReceiptServiceImpl implements ReceiptService {
                 System.out.println("*****************************");
                 // 6. 실제 회원 테이블의 총 포인트를 안전하게 업데이트합니다.
 //                pointhistoryDAO.updateMemberTotalPoints2(member_idx, pointsToCredit);
-                pointhistoryDAO.updateMemberTotalPoints2(pointVO);
+               // pointhistoryDAO.updateMemberTotalPoints2(pointVO);
             }
         }
         System.out.println("55555555555555555");

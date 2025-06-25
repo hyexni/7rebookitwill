@@ -1068,3 +1068,21 @@ a {
 	  cursor: pointer;
 	}
 		
+		
+	/* 로그인 시 환영 */	
+	.welcome-box {
+	  background-color: #f0f8ff;
+	  padding: 16px;
+	  border-radius: 8px;
+	  margin-bottom: 20px;
+	  font-family: 'Noto Sans KR', sans-serif;
+	}
+	.welcome-name {
+	  font-size: 20px;
+	  font-weight: bold;
+	}
+	.welcome-msg {
+	  font-size: 16px;
+	  margin-top: 4px;
+	}
+		

@@ -9,7 +9,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    
+    <style>
+    /* 환영 메시지와 버튼들을 가로로 나란히 정렬하기 위한 부모 컨테이너 스타일 */
+    .auth-buttons {
+        display: flex; /* Flexbox 레이아웃 사용 */
+        align-items: center; /* 세로 중앙 정렬 */
+        justify-content: flex-end; /* 오른쪽 끝으로 정렬 */
+    }
+
+    /* 환영 메시지 스타일 */
+    .welcome-message {
+        color: #CCCCCC; /* 글자색 */
+        font-size: 16px; /* 글자 크기 */
+        margin: 0 15px 0 0; /* 오른쪽 여백을 줘서 버튼과 간격 만들기 */
+        white-space: nowrap; /* 문장이 길어져도 줄바꿈 방지 */
+    }
+
+    /* 환영 메시지 안의 이름(strong 태그) 강조 스타일 */
+    .welcome-message strong {
+        color: #fca94a; /* 테마 색상으로 강조 */
+        font-weight: bold;
+    }
+
+    /* 기존 버튼 스타일 (참고) */
+    .btn-login, .btn-signup {
+        /* 기존 스타일 유지 */
+    }
+</style>
 </head>
+
+
 
 <body>
     <!-- Search Wrapper Area Start -->
@@ -65,6 +95,10 @@
 
                 <%-- 로그인 되어 있는 경우 --%>
                 <c:if test="${not empty loginUser}">
+                <%-- ✨ [추가] 환영 메시지 --%>
+        <p class="welcome-message">
+            <strong>${loginUser.member_nick}</strong>님, 안녕하세요!
+        </p>
                     <a href="/member/logout" class="btn-login">로그아웃</a>
                     <a href="/member/main" class="btn-signup">마이페이지</a>
                 </c:if>

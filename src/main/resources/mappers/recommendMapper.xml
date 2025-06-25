@@ -116,5 +116,59 @@
 
     LIMIT #{limit}
   </select>
+  
+  <!-- 영수증 기반으로한 데이터 가져오기 -->
+  <select id="findRecommendedBooksByOcrCategorized" parameterType="java.util.Map" resultType="com.itwillbs.dto.BookStatsDTO">
+        SELECT
+      b.book_id      AS bookId,
+      b.book_title   AS bookTitle,
+      b.cover_image  AS coverImage,
+      b.author_name  AS authorName,
+      b.book_price   AS bookPrice,
+      COALESCE(s.totalSales, 0) AS totalSales,
+      COALESCE(r.avgRating,  0) AS avgRating
+   	 FROM book b
+   	 
+   	 <!-- 판매량 집계 -->
+    LEFT JOIN (
+      SELECT book_id, SUM(quantity) AS totalSales
+      FROM orderitem
+      GROUP BY book_id
+    ) s ON b.book_id = s.book_id
+
+    <!-- 평점 집계 -->
+    LEFT JOIN (
+      SELECT book_id, AVG(review_score) AS avgRating
+      FROM review
+      GROUP BY book_id
+    ) r ON b.book_id = r.book_id
+    
+    <!-- 영수증 카테고리 목록 -->
+        WHERE
+            b.category_id IN
+            <foreach item="categoryId" collection="categoryIds" open="(" separator="," close=")">
+                #{categoryId}
+            </foreach>
+                        
+        <choose>
+      <when test="sort=='latest'">
+        ORDER BY b.created_at DESC
+      </when>
+      <when test="sort=='popular'">
+        ORDER BY s.totalSales DESC
+      </when>
+      <when test="sort=='rating'">
+        ORDER BY r.avgRating DESC
+      </when>
+      <otherwise>
+        ORDER BY b.created_at DESC
+      </otherwise>
+    </choose>
+
+        LIMIT #{limit}
+    </select>
+  
+  
+  
 
 </mapper>

@@ -144,6 +144,8 @@
             <div class="book-list-scroll-wrapper">
                 <div class="book-list horizontal">
                     <div class="book-card">
+                    
+                    
                         <a href="<c:url value='/book/detail/1'/>">
                             <img src="${pageContext.request.contextPath }/resources/img/product-img/웅크리는것들은다귀여워.jpg" alt="웅크리는 것들은 다 귀여워">
                             <h3>웅크리는 것들은 다 귀여워</h3>

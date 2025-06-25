@@ -164,7 +164,7 @@
     </div>
 
     <%-- 폼 시작: id를 부여하고, 파일 업로드를 위해 enctype 설정 --%>
-    <form action="<c:url value='/bookreport/write'/>" method="post" enctype="multipart/form-data" id="reportForm">
+    <form action="<c:url value='/bookreport/list'/>" method="post" enctype="multipart/form-data" id="reportForm">
 
         <%-- book_id가 없으므로 사용자가 직접 책 정보를 입력하는 부분만 남깁니다. --%>
         <div class="form-group">
@@ -203,38 +203,39 @@
 <!--             <div class="radio-group"> -->
 <!--                 <label><input type="radio" name="status" value="public" checked> 공개</label> -->
 <!--                 <label><input type="radio" name="status" value="private"> 비공개</label> -->
+                   
 <!--             </div> -->
 <!--         </div> -->
 
         <hr>
 
-<%--         이미지 첨부 --%>
-<!--         <div class="form-group"> -->
-<!--             <label>파일 첨부</label> -->
-<!--             <p class="help-text">책 사진, 메모 등을 이미지 파일(JPG, PNG 등)로 첨부할 수 있습니다.</p> -->
-<!--             <div class="file-input-wrapper" style="margin-top: 1rem;"> -->
-<!--                 <button type="button" class="btn-upload">파일 선택</button> -->
-<!--                 <input type="file" name="report_image1" class="file-input" data-preview-id="preview1" accept="image/*"> -->
-<!--                 <span class="file-name" data-default-text="파일 1">파일 1</span> -->
-<!--             </div> -->
-<!--             <img id="preview1" class="image-preview" src="#" alt="이미지 미리보기"/> -->
-<!--         </div> -->
-<!--          <div class="form-group"> -->
-<!--             <div class="file-input-wrapper"> -->
-<!--                 <button type="button" class="btn-upload">파일 선택</button> -->
-<!--                 <input type="file" name="report_image2" class="file-input" data-preview-id="preview2" accept="image/*"> -->
-<!--                 <span class="file-name" data-default-text="파일 2">파일 2</span> -->
-<!--             </div> -->
-<!--             <img id="preview2" class="image-preview" src="#" alt="이미지 미리보기"/> -->
-<!--         </div> -->
-<!--          <div class="form-group"> -->
-<!--             <div class="file-input-wrapper"> -->
-<!--                 <button type="button" class="btn-upload">파일 선택</button> -->
-<!--                 <input type="file" name="report_image3" class="file-input" data-preview-id="preview3" accept="image/*"> -->
-<!--                 <span class="file-name" data-default-text="파일 3">파일 3</span> -->
-<!--             </div> -->
-<!--             <img id="preview3" class="image-preview" src="#" alt="이미지 미리보기"/> -->
-<!--         </div> -->
+        이미지 첨부
+        <div class="form-group">
+            <label>파일 첨부</label>
+            <p class="help-text">책 사진, 메모 등을 이미지 파일(JPG, PNG 등)로 첨부할 수 있습니다.</p>
+            <div class="file-input-wrapper" style="margin-top: 1rem;">
+                <button type="button" class="btn-upload">파일 선택</button>
+                <input type="file" name="report_image1" class="file-input" data-preview-id="preview1" accept="image/*">
+                <span class="file-name" data-default-text="파일 1">파일 1</span>
+            </div>
+            <img id="preview1" class="image-preview" src="#" alt="이미지 미리보기"/>
+        </div>
+         <div class="form-group">
+            <div class="file-input-wrapper">
+                <button type="button" class="btn-upload">파일 선택</button>
+                <input type="file" name="report_image2" class="file-input" data-preview-id="preview2" accept="image/*">
+                <span class="file-name" data-default-text="파일 2">파일 2</span>
+            </div>
+            <img id="preview2" class="image-preview" src="#" alt="이미지 미리보기"/>
+        </div>
+         <div class="form-group">
+            <div class="file-input-wrapper">
+                <button type="button" class="btn-upload">파일 선택</button>
+                <input type="file" name="report_image3" class="file-input" data-preview-id="preview3" accept="image/*">
+                <span class="file-name" data-default-text="파일 3">파일 3</span>
+            </div>
+            <img id="preview3" class="image-preview" src="#" alt="이미지 미리보기"/>
+        </div>
 
         <div class="btn-container">
             <button type="submit" class="btn btn-primary">등록하기</button>
@@ -273,9 +274,6 @@ document.addEventListener("DOMContentLoaded", function () {
     reportForm.addEventListener("submit", function (e) {
         let isValid = true;
 
-        // 에러 메시지 초기화
-        document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
-        document.querySelectorAll('input, textarea').forEach(el => el.style.border = "1px solid #ced4da");
         
         // 필드 유효성 검사 함수
         function validateField(field, errorId) {

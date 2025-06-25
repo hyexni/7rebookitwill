@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.persistence.ReceiptRecommendationDAO">
+
+    <select id="findOcrBookTitlesByMemberIdx" resultType="java.lang.String">
+  	    SELECT DISTINCT ocr_booktitle 
+    	 FROM receipts 
+     	 WHERE member_idx = #{member_idx} 
+         AND ocr_booktitle IS NOT NULL 
+    </select>
+
+
+    <select id="findCategoryIdsBySimilarTitle" resultType="java.lang.Integer">
+<!--         SELECT category_id -->
+<!--         FROM book -->
+<!--         WHERE  -->
+<!--             MATCH(book_title) AGAINST(#{ocr_booktitle} IN NATURAL LANGUAGE MODE) -->
+            
+SELECT category_id
+ FROM book
+ WHERE MATCH(book_title) AGAINST(#{ocr_booktitle} WITH QUERY EXPANSION);
+    </select>
+    
+    
+</mapper>

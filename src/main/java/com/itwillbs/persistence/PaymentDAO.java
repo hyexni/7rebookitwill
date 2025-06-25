@@ -5,6 +5,7 @@ import com.itwillbs.domain.DeliveryVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.OrdersVO;
 import com.itwillbs.domain.PaymentVO;
+import com.itwillbs.dto.DeliveryDTO;
 import com.itwillbs.dto.PaymentDTO;
 
 public interface PaymentDAO {
@@ -30,6 +31,9 @@ public interface PaymentDAO {
 	// 5. 포인트 적립
 	void givePoints(PaymentDTO dto);
 	
+	void insertDelivery(DeliveryDTO dto);
+	
+	
 	
 	// 결제 완료
 	PaymentDTO getLatestSummary(int member_idx);
@@ -40,8 +44,12 @@ public interface PaymentDAO {
 	// 배송 정보
 	public MemberVO getMemberInfo(int member_idx);
 	
-	 boolean processPayment(PaymentDTO dto);
-
+	// 간편결제
+	boolean processPayment(PaymentDTO dto, DeliveryDTO deliveryDTO);
+	
+	// 결제 시 포인트 차감/적립 이력
+	void insertPointUsage(PaymentDTO dto);
+	void insertPointHistory(PaymentDTO dto);
 
 
 }

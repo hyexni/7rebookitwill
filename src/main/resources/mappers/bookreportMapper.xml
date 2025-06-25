@@ -1,84 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-          
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
 <mapper namespace="com.itwillbs.persistence.BookReportDAO">
 
-<!-- 글쓰기 -->
-
+    <!-- ✅ [수정] 독후감 등록 - 'public'/'private' 문자열을 1/0 숫자로 변환하여 저장 -->
     <insert id="insertBookReport" parameterType="com.itwillbs.domain.BookReportVO">
-       INSERT INTO book_report (   
-       		report_id,        
-            member_idx, 
+        INSERT INTO book_report (
+        	report_id,
+            member_idx,         
+            report_title,
             author_name, 
             publisher, 
             read_date, 
             report_text, 
             report_image1, 
             report_image2, 
-            report_image3, 
-            is_public, 
-            report_title
-                   ) 
-        VALUES (
+            report_image3
+<!--            // is_publc -->
+        ) VALUES (
             #{report_id},
-            #{member_idx},
+            #{member_idx},            
+            #{report_title},
             #{author_name},
             #{publisher},
             #{read_date},
             #{report_text},
             #{report_image1},
             #{report_image2},
-            #{report_image3},
-            
-           
-            <choose>
-                <when test="status == 'public'">
-                    1
-                </when>
-                <otherwise>
-                    0
-                </otherwise>
-            </choose>,
-            
-            #{report_title}
-          
+            #{report_image3}
+<!--             #{is_public}=<choose> -->
+<!--                 <when test="status == 'public'">1</when> -->
+<!--                 <otherwise>0</otherwise> -->
+<!--             </choose> -->
         )
     </insert>
 
-    <select id="getBookReport" parameterType="int" resultType="com.itwillbs.domain.BookReportVO">
+    <!-- ✅ [수정] 독후감 상세 조회 - DB의 1/0 값을 'public'/'private' 문자열로 변환 -->
+    <select id="getBookReportDetail" resultType="com.itwillbs.domain.BookReportVO" parameterType="int">
         SELECT 
-            br.*, b.book_title AS original_book_title
+            br.report_id,
+            br.member_idx,         
+            br.report_title,
+            br.author_name,
+            br.publisher,
+            br.read_date,
+            br.report_text,
+            br.report_image1,
+            br.report_image2,
+            br.report_image3,           
+            br.report_regdate
+             
         FROM 
-            book_report br 
-        LEFT JOIN 
-            book b ON br.book_id = b.book_id
-        WHERE 
-            br.report_id = #{report_id}
+            book_report br
+      
+        WHERE
+            br.member_idx = #{member_idx};
     </select>
-    
-    <select id="getBookReportList" resultType="com.itwillbs.domain.BookReportVO">
+
+    <!-- ✅ [수정] 특정 회원의 독후감 목록 조회 - DB의 1/0 값을 'public'/'private' 문자열로 변환 -->
+    <select id="getReportListByMember" resultType="com.itwillbs.domain.BookReportVO" parameterType="int">
         SELECT 
-           report_id,
-           report_title,
-           author_name,
-           member_idx,
-           write_date,
-           is_public,
+            b.report_id,
+            b.report_title,
+            b.author_name,
+            b.read_date,
+<!--             b.is_public, -->
+            b.report_regdate            
+        FROM 
+            book_report b
+         WHERE
+            b.member_idx = #{member_idx}
+        ORDER BY
+            b.report_id DESC
+    </select>
+
         
-        FROM 
-            book_report
-        ORDER BY 
-            br.report_id DESC
-    </select>
-    
-    <select id="getResponse" resultType="com.itwillbs.domain.ResponseVO">
-        SELECT * FROM response WHERE report_id = #{report_id}
-    </select>
-    
+    <!-- ✅ [수정] 독후감 수정 - 'public'/'private' 문자열을 1/0 숫자로 변환하여 업데이트 -->
     <update id="updateBookReport" parameterType="com.itwillbs.domain.BookReportVO">
-        UPDATE book_report 
+        UPDATE book_report
         <set>
             <if test="report_title != null">report_title = #{report_title},</if>
             <if test="author_name != null">author_name = #{author_name},</if>
@@ -88,13 +89,17 @@
             <if test="report_image1 != null">report_image1 = #{report_image1},</if>
             <if test="report_image2 != null">report_image2 = #{report_image2},</if>
             <if test="report_image3 != null">report_image3 = #{report_image3},</if>
-            is_public = #{is_public}
+            <if test="status != null">
+                is_public = <choose><when test="status == 'public'">1</when><otherwise>0</otherwise></choose>
+            </if>
         </set>
-        WHERE report_id = #{report_id}
+        WHERE report_id = #{report_id} AND member_idx = #{member_idx}
     </update>
 
-    <delete id="deleteBookReport" parameterType="int">
-        DELETE FROM book_report WHERE report_id = #{report_id}
+    <!-- [D] 독후감 삭제 -->
+    <delete id="deleteBookReport" parameterType="com.itwillbs.domain.BookReportVO">
+        DELETE FROM book_report 
+        WHERE report_id = #{report_id} AND member_idx = #{member_idx}
     </delete>
 
 </mapper>

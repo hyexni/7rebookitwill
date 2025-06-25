@@ -9,6 +9,7 @@ import com.itwillbs.domain.DeliveryVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.OrdersVO;
 import com.itwillbs.domain.PaymentVO;
+import com.itwillbs.dto.DeliveryDTO;
 import com.itwillbs.dto.PaymentDTO;
 import com.itwillbs.persistence.PaymentDAO;
 
@@ -35,35 +36,40 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	// 결제 처리
 	@Override
-	public boolean processPayment(PaymentDTO dto) {
-	    try {
-	    	// 🔐 포인트 음수 입력 방지
-	        if (dto.getUsed_points() < 0) {
-	            throw new IllegalArgumentException("포인트는 0 이상이어야 합니다.");
-	        }
-	    	
-	        // 1. 포인트 차감
+	public boolean processPayment(PaymentDTO dto,  DeliveryDTO deliveryDTO) {
+
+		if (dto.getUsed_points() < 0) {
+		        throw new IllegalArgumentException("포인트는 0 이상이어야 합니다.");
+		    }
+
+		// 1. 포인트 차감
+	    if (dto.getUsed_points() > 0) {
 	        pDAO.usePoints(dto);
-
-	        // 2. 주문 저장
-	        pDAO.insertOrder(dto);
-	        int order_id = pDAO.getLastOrderId();
-	        dto.setOrder_id(order_id);
-
-	        // 3. 주문 상세 저장
-	        pDAO.insertOrderItem(dto);
-
-	        // 4. 결제 저장
-	        pDAO.insertPayment(dto);
-
-	        // 5. 포인트 적립
-	        pDAO.givePoints(dto);
-
-	        return true;
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return false;
 	    }
+
+	    // 2. 주문 정보 저장
+	    pDAO.insertOrder(dto);
+
+	    // 3. 방금 insert한 order_id 가져오기
+	    int orderId = pDAO.getLastOrderId();
+	    dto.setOrder_id(orderId);
+	    deliveryDTO.setOrder_id(orderId); // delivery에도 order_id 필요
+
+	    // 4. 주문 상세 저장
+	    pDAO.insertOrderItem(dto);
+
+	    // 5. 결제 정보 저장
+	    pDAO.insertPayment(dto);
+
+	    // 6. 포인트 적립
+	    if (dto.getSaved_points() > 0) {
+	        pDAO.givePoints(dto);
+	    }
+
+	    // 7. 배송 정보 저장
+	    pDAO.insertDelivery(deliveryDTO);
+
+	    return true;
 	}
 	
 	
@@ -85,8 +91,8 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public DeliveryVO getLatestDelivery(int member_idx) {
-	    return pDAO.getLatestDelivery(member_idx);
+	public DeliveryVO getLatestDelivery(int order_id) {
+	    return pDAO.getLatestDelivery(order_id);
 	}
 	
 	
@@ -96,6 +102,22 @@ public class PaymentServiceImpl implements PaymentService {
 	public MemberVO getMemberInfo(int member_idx) {
 	    return pDAO.getMemberInfo(member_idx);
 	}
+	
+	
+	// 결제시 포인트 차감/적립 이력
+	@Override
+	public void insertPointUsage(PaymentDTO dto) {
+	    pDAO.insertPointUsage(dto);
+	}
+
+	@Override
+	public void insertPointHistory(PaymentDTO dto) {
+	    pDAO.insertPointHistory(dto);
+	}
+	
+	
+	
+	
 
 
 
