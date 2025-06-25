@@ -31,6 +31,8 @@ public class AdminStatsController {
 	public String showAllrStats(
 			@RequestParam(value = "startDate", required = false) String startDate,
 			@RequestParam(value = "endDate", required = false) String endDate,
+			@org.springframework.web.bind.annotation.ModelAttribute("msg") String msg,
+	        @org.springframework.web.bind.annotation.ModelAttribute("icon") String icon,
 			Model model) {
 		
 		// 날짜 기본값 설정

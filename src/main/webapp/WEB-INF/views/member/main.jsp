@@ -20,10 +20,21 @@
 
     <div class="mypage-header">
       <!-- 👤 이름 환영 박스 -->
-  <div class="welcome-box">
-    <div class="welcome-name">${loginUser.member_nick}님</div>
-    <div class="welcome-msg">환영합니다 😊</div>
-  </div>
+      
+    <c:choose>
+     <c:when test="${not empty adminLogin}">
+       <div class="welcome-box">
+         <div class="welcome-name">${adminLogin.ad_nick} 관리자님</div>
+         <div class="welcome-msg">환영합니다 👑</div>
+       </div>
+     </c:when>
+     <c:when test="${not empty loginUser}">
+       <div class="welcome-box">
+         <div class="welcome-name">${loginUser.member_nick}님</div>
+         <div class="welcome-msg">환영합니다 😊</div>
+       </div>
+     </c:when>
+   </c:choose>
 
   <!-- 💰 포인트 박스 -->
   <div class="point-box">

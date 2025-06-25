@@ -1,5 +1,7 @@
 package com.itwillbs.controller;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -87,7 +89,8 @@ public class PaymentController {
 
         // ✅ 로그인 상태면 결제 처리 진행
         paymentDTO.setMember_idx(member_idx);
-
+        deliveryDTO.setMember_idx(member_idx); // ✅ 필수
+        
         int totalPrice = paymentDTO.getUnit_price() * paymentDTO.getQuantity();
         int payAmount = totalPrice - paymentDTO.getUsed_points();
         int savedPoints = (int)(payAmount * 0.1);
@@ -96,10 +99,20 @@ public class PaymentController {
         paymentDTO.setPay_amount(payAmount);
         paymentDTO.setSaved_points(savedPoints);
         
-        boolean result = pService.processPayment(paymentDTO);
+        boolean result = pService.processPayment(paymentDTO, deliveryDTO);
         
 
         if (result) {
+        	// 포인트 사용 이력 기록 (사용한 경우만)
+            if (paymentDTO.getUsed_points() > 0) {
+                pService.insertPointUsage(paymentDTO);
+            }
+
+            // 포인트 적립 이력 기록 (saved_points > 0 인 경우)
+            if (paymentDTO.getSaved_points() > 0) {
+                pService.insertPointHistory(paymentDTO);
+            }
+            
             return "redirect:/payment/complete";
         } else {
             rttr.addFlashAttribute("errorMsg", "결제에 실패했습니다. 다시 시도해주세요.");
@@ -123,23 +136,78 @@ public class PaymentController {
         PaymentDTO summary = pService.getLatestPaymentSummary(member_idx);
         model.addAttribute("summary", summary);
         
+        int orderId = summary.getOrder_id();
+        
         // ✅ 주문, 결제, 배송, 회원 정보 VO 가져오기 (서비스에서)
         OrdersVO orders = pService.getLatestOrder(member_idx);
         PaymentVO payment = pService.getLatestPayment(member_idx);
-        DeliveryVO delivery = pService.getLatestDelivery(member_idx);
-        MemberVO member = pService.getMemberInfo(member_idx);
+        DeliveryVO delivery = pService.getLatestDelivery(orderId);  // 기존엔 member_idx 넘겼을 수도 있음
         
         model.addAttribute("orders", orders);           // 주문 정보
         model.addAttribute("payment", payment);         // 결제 정보
-        model.addAttribute("member", member);     	  // 배송 정보 (optional)
         model.addAttribute("delivery", delivery);     	  // 배송 정보 (optional)
 
         return "payment/payment_complete"; // view_21
     }
 
 
-    
-    
+    @GetMapping("/success")
+    public String kakaoPaySuccess(@RequestParam Map<String, String> params,
+                                  HttpSession session, RedirectAttributes rttr) {
+
+        Integer member_idx = (Integer) session.getAttribute("member_idx");
+        if (member_idx == null) {
+            rttr.addFlashAttribute("errorMsg", "로그인이 필요합니다.");
+            return "redirect:/member/login";
+        }
+
+        // 1. PaymentDTO 매핑
+        PaymentDTO paymentDTO = new PaymentDTO();
+        paymentDTO.setMember_idx(member_idx);
+        paymentDTO.setBook_id(Integer.parseInt(params.get("book_id")));
+        paymentDTO.setUnit_price(Integer.parseInt(params.get("unit_price")));
+        paymentDTO.setQuantity(Integer.parseInt(params.get("quantity")));
+        paymentDTO.setUsed_points(Integer.parseInt(params.get("used_points")));
+
+        int totalPrice = paymentDTO.getUnit_price() * paymentDTO.getQuantity();
+        int payAmount = totalPrice - paymentDTO.getUsed_points();
+        int savedPoints = (int)(payAmount * 0.1);
+
+        paymentDTO.setTotal_price(totalPrice);
+        paymentDTO.setPay_amount(payAmount);
+        paymentDTO.setSaved_points(savedPoints);
+        paymentDTO.setPay_method("카카오페이");
+
+        // 2. DeliveryDTO 매핑
+        DeliveryDTO deliveryDTO = new DeliveryDTO();
+        deliveryDTO.setReceiver_name(params.get("receiver_name"));
+        deliveryDTO.setReceiver_phone(params.get("receiver_phone"));
+        deliveryDTO.setZipcode(params.get("zipcode"));
+        deliveryDTO.setDelivery_address(params.get("address"));
+        deliveryDTO.setAddress_detail(params.get("address_detail"));
+        deliveryDTO.setMemo(params.get("memo"));
+        deliveryDTO.setMember_idx(member_idx); // ✅ 필수
+
+        // 3. 결제 처리
+        boolean result = pService.processPayment(paymentDTO, deliveryDTO); // DeliveryDTO는 별도로 넘김
+
+        if (result) {
+            // 포인트 사용 이력 기록 (사용한 경우만)
+            if (paymentDTO.getUsed_points() > 0) {
+                pService.insertPointUsage(paymentDTO);
+            }
+
+            // 포인트 적립 이력 기록 (saved_points > 0 인 경우)
+            if (paymentDTO.getSaved_points() > 0) {
+                pService.insertPointHistory(paymentDTO);
+            }
+            
+            return "redirect:/payment/complete";
+        } else {
+            rttr.addFlashAttribute("errorMsg", "결제 처리에 실패했습니다.");
+            return "redirect:/payment?book_id=" + paymentDTO.getBook_id();
+        }
+    }
     
     
     
