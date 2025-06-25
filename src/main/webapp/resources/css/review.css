@@ -34,6 +34,13 @@
   cursor: pointer;
 }
 
+.star-rating-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
 
 .star-rating label.selected {
   color: #ffc107;

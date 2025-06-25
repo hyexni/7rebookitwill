@@ -25,6 +25,7 @@
     <p><strong>도서명:</strong> ${book.book_title}</p>
 
     <!-- 별점 -->
+    <div class="star-rating-wrap">
 	<div class="star-rating">
   <input type="radio" name="review_score" value="1" id="star1">
   <label for="star1">★</label>
@@ -40,9 +41,10 @@
 
   <input type="radio" name="review_score" value="5" id="star5">
   <label for="star5">★</label>
-</div>
+	</div>
 
 <span id="scoreDisplay">(0/5점)</span>
+</div>
 
 
     <!-- 리뷰 내용 -->
@@ -86,29 +88,30 @@
 
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 	
-	<script>
-	// 별점 
-	  document.addEventListener('DOMContentLoaded', function () {
-    const radios = document.querySelectorAll('input[name="review_score"]');
-    const labels = document.querySelectorAll('.star-rating label');
-    const scoreDisplay = document.getElementById('scoreDisplay');
+	<script> 
+	  // 별점 점수 표시 + 별 색상 적용
+  var stars = document.querySelectorAll('input[name="review_score"]');
+  var scoreDisplay = document.getElementById("scoreDisplay");
 
-    radios.forEach((radio, index) => {
-      radio.addEventListener('change', () => {
-        const score = parseInt(radio.value);
-        scoreDisplay.textContent = `(${score}/5점)`;
+  stars.forEach(function (star) {
+    star.addEventListener("change", function () {
+      var selectedScore = parseInt(this.value);
+      scoreDisplay.textContent = "(" + selectedScore + "/5점)";
 
-        labels.forEach((label, idx) => {
-          if (idx < score) {
-            label.classList.add('selected');
+      // 별 색상 변경
+      for (var i = 1; i <= 5; i++) {
+        var label = document.querySelector('label[for="star' + i + '"]');
+        if (label) {
+          if (i <= selectedScore) {
+            label.classList.add("selected"); // 노란 별
           } else {
-            label.classList.remove('selected');
+            label.classList.remove("selected"); // 회색 별
           }
-        });
-      });
+        }
+      }
     });
   });
-	
+
 	  // 이미지 미리보기
 	  function previewImage(input, idx) {
 	    var previewBox = document.getElementById("preview-box" + idx);
@@ -134,4 +137,3 @@
 	  }
 	</script>
     
-</script>

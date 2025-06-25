@@ -26,14 +26,14 @@
     <p><strong>도서명:</strong> ${book.book_title}</p>
 
     <!-- 별점 -->
-    <label>평점:</label>
-    <div class="star-rating">
-      <c:forEach var="i" begin="1" end="5">
-        <label>
-          <input type="radio" name="review_score" value="${i}" ${review.review_score == i ? 'checked' : ''}>★
-        </label>
-      </c:forEach>
-    </div>
+<div class="star-rating">
+  <c:forEach var="i" begin="1" end="5">
+    <label>
+      <input type="radio" name="review_score" value="${i}" ${review.review_score == i ? 'checked' : ''}>★
+    </label>
+  </c:forEach>
+  <span id="scoreDisplay">(0/5점)</span>
+</div>
 
     <!-- 리뷰 내용 -->
     <div>
@@ -131,6 +131,43 @@
     document.getElementById("new-preview-box" + idx).innerHTML = ""; // 미리보기 삭제
   }
 </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const radios = document.querySelectorAll('input[name="review_score"]');
+    const labels = document.querySelectorAll('.star-rating label');
+    const scoreDisplay = document.getElementById("scoreDisplay");
+
+    // 별점 색칠 함수
+    function updateStars(score) {
+      labels.forEach((label, index) => {
+        label.classList.toggle('selected', index < score);
+      });
+
+      // 점수 출력
+      if (!score || isNaN(score)) {
+        scoreDisplay.textContent = `(0/5점)`;
+      } else {
+        scoreDisplay.textContent = `(${score}/5점)`;
+      }
+    }
+
+    // 초기 점수 세팅 (수정 페이지 진입 시)
+    const checkedRadio = document.querySelector('input[name="review_score"]:checked');
+    if (checkedRadio) {
+      updateStars(parseInt(checkedRadio.value));
+    }
+
+    // 라디오 버튼 선택 시 반영
+    radios.forEach((radio) => {
+      radio.addEventListener("change", () => {
+        const score = parseInt(radio.value);
+        updateStars(score);
+      });
+    });
+  });
+</script>
+
 
 
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
