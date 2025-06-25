@@ -3,6 +3,8 @@ package com.itwillbs.persistence;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.itwillbs.domain.WishlistVO;
 import com.itwillbs.dto.WishlistBookDTO;
 
@@ -19,4 +21,11 @@ public interface WishlistDAO {
 
 	// 4. 회원별 찜 목록 조회 (DTO 리스트로 반환)
 	List<WishlistBookDTO> getWishlistByMember(int member_idx);
+	
+	// 페이징처리 
+	List<WishlistBookDTO> getWishlistByPage(@Param("member_idx") int member_idx,
+            @Param("startRow") int startRow,
+            @Param("size") int size);
+
+	int getWishlistCount(@Param("member_idx") int member_idx);
 }

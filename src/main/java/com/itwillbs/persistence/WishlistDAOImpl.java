@@ -42,5 +42,22 @@ public class WishlistDAOImpl implements WishlistDAO {
 	public List<WishlistBookDTO> getWishlistByMember(int member_idx) {
 		return sqlSession.selectList(NAMESPACE + ".getWishlistByMember", member_idx);
 	}
+	
+	// 페이징
+	 @Override
+	    public List<WishlistBookDTO> getWishlistByPage(int member_idx, int startRow, int size) {
+	        Map<String, Object> params = Map.of(
+	            "member_idx", member_idx,
+	            "startRow", startRow,
+	            "size", size
+	        );
+	        return sqlSession.selectList(NAMESPACE + ".getWishlistByPage", params);
+	    }
+
+	    @Override
+	    public int getWishlistCount(int member_idx) {
+	        return sqlSession.selectOne(NAMESPACE + ".getWishlistCount", member_idx);
+	    }
+
 
 }

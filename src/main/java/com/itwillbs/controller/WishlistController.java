@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.MemberVO;
@@ -42,18 +43,24 @@ public class WishlistController {
 
 	// 1. 찜 목록 보기
 	@GetMapping("/list")
-	public String getWishlist(HttpSession session, Model model) {
-		logger.info("WishlistController: GET /wishlist/list");
+	public String wishlistPage(@RequestParam(defaultValue = "1") int page,
+	                           HttpSession session, Model model) {
 
-		try {
-			MemberVO loginUser = getLoginUser(session);
-			List<WishlistBookDTO> wishlist = wishlistService.getWishlistByMember(loginUser.getMember_idx());
-			logger.info("찜 목록 개수: {}", wishlist.size());
-			model.addAttribute("wishlist", wishlist);
-			return "/wishlist/list";
-		} catch (IllegalStateException e) {
-			return "redirect:/member/login";
-		}
+	  MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+	  if (loginUser == null) return "redirect:/member/login";
+
+	  int size = 10;
+	  int startRow = (page - 1) * size;
+
+	  List<WishlistBookDTO> wishlist = wishlistService.getWishlistByPage(loginUser.getMember_idx(), startRow, size);
+	  int totalCount = wishlistService.getWishlistCount(loginUser.getMember_idx());
+	  int totalPage = (int)Math.ceil(totalCount / (double)size);
+
+	  model.addAttribute("wishlist", wishlist);
+	  model.addAttribute("currentPage", page);
+	  model.addAttribute("totalPage", totalPage);
+
+	  return "wishlist/list";
 	}
 
 	// 2. 찜 추가

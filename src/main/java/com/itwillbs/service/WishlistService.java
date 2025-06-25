@@ -19,4 +19,8 @@ public interface WishlistService {
 
 	// 4. 찜 목록 조회 (회원별) - DTO 리스트 반환
 	List<WishlistBookDTO> getWishlistByMember(int member_idx);
+	
+	// 5. 페이징처리 
+	List<WishlistBookDTO> getWishlistByPage(int member_idx, int startRow, int size);
+	int getWishlistCount(int member_idx);
 }

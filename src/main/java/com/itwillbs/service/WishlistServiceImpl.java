@@ -40,4 +40,15 @@ public class WishlistServiceImpl implements WishlistService {
 	public List<WishlistBookDTO> getWishlistByMember(int member_idx) {
 		return wishlistDAO.getWishlistByMember(member_idx);
 	}
+	
+	// 페이징처리 
+	@Override
+	public List<WishlistBookDTO> getWishlistByPage(int member_idx, int startRow, int size) {
+	    return wishlistDAO.getWishlistByPage(member_idx, startRow, size);
+	}
+
+	@Override
+	public int getWishlistCount(int member_idx) {
+	    return wishlistDAO.getWishlistCount(member_idx);
+	}
 }

@@ -34,7 +34,7 @@ public class MemberController {
 	private CategoryService categoryService;
 
 	@Inject
-	private PointHistoryService pointHistoryService; // 이걸로 써야 돼!
+	private PointHistoryService pointHistoryService; 
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
