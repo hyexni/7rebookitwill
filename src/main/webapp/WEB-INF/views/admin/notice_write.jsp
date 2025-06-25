@@ -11,7 +11,8 @@
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="include/sidebar.jsp" %> 
 
-		<div class="notice-form-container">
+<main class="main-content">
+		<div class="notice-form">
 		  <h1>공지사항 작성</h1>
 		  
 		  <form action="${pageContext.request.contextPath}/admin/notice_write" method="post">
@@ -30,7 +31,7 @@
 		    </div>
 		  </form>
 		</div>
-
+</main>
 	
 <%-- 4. 하단 푸터를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

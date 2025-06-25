@@ -57,14 +57,14 @@
 	  </tbody>
 	</table>
 	</div>
-</main>
 	
 	<!-- 새 글 등록 버튼 -->
-	<div style="text-align: right; margin-top: 20px;">
+	<div class="bottom-bar">
 	  <a href="${pageContext.request.contextPath}/admin/notice_write">
-	    <button class="btn btn-primary">+ 새 글 등록</button>
+	    <button class="notice-btn">+ 새 글 등록</button>
 	  </a>
 	</div>
+</main>
 	
 	<!-- 페이징 -->
 	<!-- 페이지네이션 버튼 -->
