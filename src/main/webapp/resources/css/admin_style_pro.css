@@ -691,45 +691,6 @@ a {
 }
 
 
-
-/* 통계 카드 */
-.stats-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-    margin-top: 20px;
-}
-.stats-card {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-@media (max-width: 1024px) {
-    .stats-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media (max-width: 600px) {
-    .stats-container {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* 슬라이드 카드 */
-.swiper-slide {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    background: #fff;
-    box-sizing: border-box;
-    width: 100%;
-    min-height: 350px;
-    display: flex;
-    flex-direction: column;
-}
-
 /* ✅ 하위 메뉴 항목 줄 초기화 + 개별 hover 적용 */
 .submenu li {
     border-left: none !important; /* 혹시라도 상위에서 내려온 border 제거 */

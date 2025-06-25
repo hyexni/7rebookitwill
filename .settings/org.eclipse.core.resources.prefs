@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/main/webapp/WEB-INF/views/admin/stats_chart.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/include/alert.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/include/footer.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/include/header.jsp=UTF-8
