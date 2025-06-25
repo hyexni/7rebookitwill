@@ -43,33 +43,39 @@
     review_image1,
     review_image2,
     review_image3,
+    book_title,        <!-- ✅ 책 제목 -->
+    member_id,         <!-- ✅ 작성자 아이디 -->
     review_date
- 	 ) VALUES (
+  ) VALUES (
     #{member_idx},  
     #{book_id},
     #{review_text},
     #{review_score},
     #{review_image1},
     #{review_image2},
-    #{review_image3},
+    #{review_image3}, 
+    #{book_title},
+    #{member_id},
     NOW()
- 	 )
-  </insert>
+  )
+</insert>
   	
 	<!-- [리뷰 수정 처리] - 이미지 포함, 실제로 DB에 null 저장됨 -->
 	<update id="updateReview" parameterType="com.itwillbs.domain.ReviewVO">
-	  UPDATE review
-	  SET
-	    review_score = #{review_score},
-	    review_text = #{review_text},
-	    review_image1 = #{review_image1}, <!-- null이면 null로 저장됨 -->
-	    review_image2 = #{review_image2},
-	    review_image3 = #{review_image3},
-	    review_date = NOW()
-	  WHERE
-	    review_id = #{review_id}
-	    AND member_idx = #{member_idx}  <!-- 로그인한 사용자만 수정 가능하게 -->
-	</update>
+  UPDATE review
+  SET
+    review_score = #{review_score},
+    review_text = #{review_text},
+    review_image1 = #{review_image1},
+    review_image2 = #{review_image2},
+    review_image3 = #{review_image3},  
+    book_title = #{book_title},       
+    member_id = #{member_id},         
+    review_date = NOW()
+  WHERE
+    review_id = #{review_id}
+    AND member_idx = #{member_idx}
+</update>
 	
 	<!-- [리뷰 단건 조회] - 수정 페이지에서 기존 텍스트/별점/이미지 불러오기 -->
 	<select id="getReviewById" parameterType="int" resultType="com.itwillbs.domain.ReviewVO">
@@ -84,4 +90,12 @@
 	  WHERE review_id = #{review_id}
 	    AND member_idx = #{member_idx}
 	</delete>
+	
+	<!-- 평균 별점 조회 -->
+<select id="getAverageRating" parameterType="int" resultType="double">
+  SELECT IFNULL(AVG(review_score), 0)
+  FROM review
+  WHERE book_id = #{book_id}
+</select>
+
 </mapper>

@@ -5,21 +5,61 @@
 
 <mapper namespace="com.itwillbs.persistence.WishlistDAO">
 
+  <!-- ✅ 1. 찜 중복 확인 -->
   <select id="checkWishlist" parameterType="map" resultType="int">
     SELECT COUNT(*) FROM wishlist
     WHERE member_idx = #{member_idx}
       AND book_id = #{book_id}
   </select>
 
+  <!-- ✅ 2. 찜 추가 -->
   <insert id="insertWishlist" parameterType="com.itwillbs.domain.WishlistVO">
     INSERT INTO wishlist (member_idx, book_id)
     VALUES (#{member_idx}, #{book_id})
   </insert>
 
+  <!-- ✅ 3. 찜 삭제 -->
   <delete id="deleteWishlist" parameterType="com.itwillbs.domain.WishlistVO">
-    DELETE FROM wishlist
-    WHERE member_idx = #{member_idx}
-      AND book_id = #{book_id}
-  </delete>
+  DELETE FROM wishlist
+  WHERE member_idx = #{member_idx}
+    AND book_id = #{book_id}
+</delete>
+
+  <!-- ✅ 4. 찜 목록 조회 -->
+  <select id="getWishlistByMember" parameterType="int" resultType="com.itwillbs.dto.WishlistBookDTO">
+    SELECT
+      w.wishlist_id,
+      w.member_idx,
+      w.book_id,
+      w.created_at,
+      b.book_title,
+      b.cover_image,
+      b.author_name 
+    FROM wishlist w
+    JOIN book b ON w.book_id = b.book_id
+    WHERE w.member_idx = #{member_idx}
+    ORDER BY w.created_at DESC
+  </select>
+  
+  <!--  페이징 처리  -->
+     <select id="getWishlistByPage" resultType="com.itwillbs.dto.WishlistBookDTO">
+	  SELECT
+	    w.wishlist_id,
+	    w.member_idx,
+	    w.book_id,
+	    w.created_at,
+	    b.book_title,
+	    b.cover_image,
+	    b.author_name
+	  FROM wishlist w
+	  JOIN book b ON w.book_id = b.book_id
+	  WHERE w.member_idx = #{member_idx}
+	  ORDER BY w.wishlist_id DESC
+	  LIMIT #{startRow}, #{size}
+	</select>
+	
+	<select id="getWishlistCount" resultType="int">
+	  SELECT COUNT(*) FROM wishlist WHERE member_idx = #{member_idx}
+	</select>
 
 </mapper>
