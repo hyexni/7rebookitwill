@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.itwillbs.service.ReceiptRecommendationService;
 import com.itwillbs.service.RecommendService;
 
 @Controller
@@ -137,6 +139,61 @@ public class RecommendController {
 	    return "recommend/recommend_page";
 
 	}
+	
+	
+	 // (신규) 영수증 카테고리 분석용 서비스
+    @Inject
+    private ReceiptRecommendationService receiptService;
+    
+   
+    // [신규 추가] http://localhost:8088/recommend/byReceipt
+    // 영수증 기반 추천 (GET)
+    @GetMapping("/byReceipt")
+    public String recommendByReceipt(HttpSession session,
+                                     @RequestParam(value = "sort", required = false, defaultValue = "") String sort,
+                                     Model model) throws Exception {
+        logger.info(" recommendByReceipt() 호출 ");
+
+        // 1. 로그인 확인
+        Integer memberIdx = (Integer) session.getAttribute("member_idx");
+        if (memberIdx == null) {
+            return "redirect:/member/login?needLogin=true";
+        }
+
+        // 2. [영수증 서비스 호출] 회원의 OCR 도서 제목 목록 조회
+        List<String> ocrBookTitles = receiptService.getOcrBookTitles(memberIdx);
+
+        if (ocrBookTitles == null || ocrBookTitles.isEmpty()) {
+            logger.info(memberIdx + "번 회원의 OCR 도서 기록이 없어 추천할 수 없습니다.");
+            model.addAttribute("receiptList", null); // View에서 분기 처리를 위해 null 전달
+            return "recommend/receipt"; // 영수증 추천 결과 페이지로 이동
+        }
+
+        // 3. [영수증 서비스 호출] 도서 제목들로 추천 카테고리 ID 목록 조회
+        List<Integer> recommendedCategoryIds = receiptService.getRecommendedCategoryIdsByTitles(ocrBookTitles);
+        
+        if (recommendedCategoryIds == null || recommendedCategoryIds.isEmpty()) {
+            logger.info("OCR 기반 추천 카테고리를 찾을 수 없습니다.");
+            model.addAttribute("receiptList", null);
+            return "recommend/receipt";
+        }
+        
+        logger.info("추천 대상 카테고리 ID 목록: " + recommendedCategoryIds);
+
+        // 4. [추천 서비스 호출] 카테고리 ID 목록으로 최종 도서 추천
+        Map<String, Object> param = new HashMap<>();
+        param.put("categoryIds", recommendedCategoryIds); // MyBatis foreach에서 사용할 리스트
+        param.put("sort", sort);
+        param.put("limit", 5); // 추천할 도서 개수
+
+        List<BookStatsDTO> receiptList = recommendService.findRecommendedBooksByOcrCategorized(param);
+
+        // 5. 뷰에 결과 전달
+        model.addAttribute("receiptList", receiptList);
+        model.addAttribute("currentSort", sort);
+
+        return "recommend/receipt"; // recommend 폴더 밑의 receipt.jsp
+    }
 	
 
 } // RecommendController

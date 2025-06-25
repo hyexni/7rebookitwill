@@ -37,7 +37,11 @@ public class RecommendServiceImpl implements RecommendService {
 	
 	
 	
-	
+ // 영수증 OCR 기반 추천
+    @Override
+    public List<BookStatsDTO> findRecommendedBooksByOcrCategorized(Map<String, Object> params) throws Exception {
+        return rDao.findRecommendedBooksByOcrCategorized(params);
+    }
 	
 
 	
