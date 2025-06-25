@@ -16,6 +16,7 @@
     LEFT JOIN member m ON r.member_idx = m.member_idx
   WHERE
     r.book_id = #{book_id}
+    AND r.review_status != 'N'		<!-- 숨김 처리된 리뷰는 제외 -->
   <choose>
     <when test="sort == 'rating'">
       ORDER BY r.review_score DESC

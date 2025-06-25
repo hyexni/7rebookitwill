@@ -51,6 +51,11 @@ public class AdminReviewController {
     public String hideReview(@RequestParam int review_id, @RequestParam String reason, RedirectAttributes rttr) {
         arService.hideReview(review_id, reason);
         rttr.addFlashAttribute("msg", "리뷰 숨김 처리 완료!");
+        
+        System.out.println("🔥 숨김 요청 review_id: " + review_id);
+        System.out.println("🔥 숨김 사유: " + reason);
+
+        
         return "redirect:/admin/review_list";
     }
 

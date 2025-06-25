@@ -71,6 +71,8 @@ Copyright ©<script>document.write(new Date().getFullYear());</script>2025 All r
     <script src="${pageContext.request.contextPath }/resources/js/plugins.js"></script>
     <!-- Active js -->
     <script src="${pageContext.request.contextPath }/resources/js/active.js"></script><a id="scrollUp" href="#top" style="position: fixed; z-index: 2147483647; display: none;"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
+    <!-- Admin js -->
+    <script src="${pageContext.request.contextPath }/resources/js/admin.js"></script>
 
 
 
