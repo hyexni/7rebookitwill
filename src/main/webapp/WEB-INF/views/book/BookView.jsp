@@ -74,9 +74,10 @@
 
 <!-- ======================== 리뷰 전체 영역 ======================== -->
 <div class="review-section">
+
+  <!-- 🔸 헤더: 리뷰 수 + 정렬 + 작성 버튼 -->
   <div class="review-header">
     <h3 class="review-title">🖍 리뷰 (${reviewCount}개)</h3>
-
     <div class="review-controls">
       <form method="get" action="${pageContext.request.contextPath}/book/view" class="sort-form">
         <input type="hidden" name="book_id" value="${book.book_id}" />
@@ -85,91 +86,107 @@
           <option value="rating" ${reviewSort == 'rating' ? 'selected' : ''}>⭐ 평점순</option>
         </select>
       </form>
-
-      <button class="write-review-btn" onclick="checkLoginBeforeWrite()" class="btn btn-primary">🖋 리뷰 작성</button>
+      <button class="write-review-btn" onclick="checkLoginBeforeWrite()">🖋 리뷰 작성</button>
     </div>
   </div>
 
+  <!-- 🔸 리뷰가 없는 경우 -->
   <c:if test="${empty reviewList}">
     <p class="no-review">등록된 리뷰가 없습니다.</p>
   </c:if>
 
- <ul class="review-list">
-  <c:forEach var="review" items="${reviewList}">
-    <li class="review-item">
+  <!-- 🔸 리뷰 리스트 시작 -->
+  <ul class="review-list">
+    <c:forEach var="review" items="${reviewList}">
+      <li class="review-item">
+        <div class="review-card">
 
-      <!-- ⭐ 별점 -->
-      <div class="review-stars">
-        <c:choose>
-          <c:when test="${review.review_score >= 0 && review.review_score <= 5}">
-            <c:forEach begin="1" end="${review.review_score}" var="i">⭐</c:forEach>
-            <c:forEach begin="1" end="${5 - review.review_score}" var="i">☆</c:forEach>
-          </c:when>
-          <c:otherwise>
-            ⚠ 평점 오류
-          </c:otherwise>
-        </c:choose>
-      </div>
+          <!-- 왼쪽: 텍스트 영역 -->
+          <div class="review-left">
 
-      <!-- 닉네임 + 날짜 -->
-      <div class="review-meta">
-        ${review.member_nick} |
-        <fmt:formatDate value="${review.review_date}" pattern="yyyy.MM.dd"/>
-      </div>
+            <!-- ⭐ 별점 -->
+            <div class="review-stars">
+              <c:choose>
+                <c:when test="${review.review_score >= 0 && review.review_score <= 5}">
+                  <c:forEach begin="1" end="${review.review_score}" var="i">⭐</c:forEach>
+                  <c:forEach begin="1" end="${5 - review.review_score}" var="i">☆</c:forEach>
+                </c:when>
+                <c:otherwise>⚠ 평점 오류</c:otherwise>
+              </c:choose>
+            </div>
 
-      <!-- 본문 -->
-      <div class="review-text-box" id="review-text-${review.review_id}" data-text="${review.review_text}">
-        <c:choose>
-          <c:when test="${not empty review.review_text and fn:length(review.review_text) > 100}">
-            <p class="short-text">${fn:substring(review.review_text, 0, 100)}...</p>
-            <p class="full-text" style="display: none;">${review.review_text}</p>
-            <button type="button" class="toggle-btn" onclick="toggleReview(this)">더보기</button>
-          </c:when>
-          <c:otherwise>
-            <p>${review.review_text}</p>
-          </c:otherwise>
-        </c:choose>
-      </div>
+             <div class="review-meta">
+            ${review.member_nick} |
+            <fmt:formatDate value="${review.review_date}" pattern="yyyy.MM.dd" />
+          </div>
+          <div class="review-text-box" id="review-text-${review.review_id}" data-text="${review.review_text}">
+            <c:choose>
+              <c:when test="${not empty review.review_text and fn:length(review.review_text) > 100}">
+                <p class="short-text">${fn:substring(review.review_text, 0, 100)}...</p>
+                <p class="full-text" style="display: none;">${review.review_text}</p>
+                <button type="button" class="toggle-btn" onclick="toggleReview(this)">더보기</button>
+              </c:when>
+              <c:otherwise>
+                <p>${review.review_text}</p>
+              </c:otherwise>
+            </c:choose>
+          </div>
 
-           <!-- 리뷰 이미지 -->
-          <c:if test="${not empty review.review_image1}">
-            <div class="review-image">
-              <img src="${pageContext.request.contextPath}/resources/upload/${review.review_image1}" alt="리뷰 이미지" />
+          <c:if test="${sessionScope.loginUser.member_idx == review.member_idx}">
+            <div class="review-actions">
+              <button type="button" class="edit-btn"
+                onclick="location.href='${pageContext.request.contextPath}/review/edit?review_id=${review.review_id}'">
+                수정
+              </button>
+              <button type="button" class="delete-btn" onclick="deleteReview(${review.review_id})">
+                삭제
+              </button>
             </div>
           </c:if>
+        </div>
 
-       <!-- ✅ 수정/삭제 버튼: 로그인한 본인일 때만 보이도록 -->
-		<c:if test="${sessionScope.loginUser.member_idx == review.member_idx}">
-		  <div class="review-actions">
-		    <a href="${pageContext.request.contextPath}/review/edit?review_id=${review.review_id}">
-		      <button type="button">수정</button>
-		    </a>
-		    <button type="button" onclick="deleteReview(${review.review_id})">삭제</button>
+        <!-- 오른쪽: 이미지 영역 -->
+        <c:set var="hasImage" value="${not empty review.review_image1 or not empty review.review_image2 or not empty review.review_image3}" />
+		<c:if test="${hasImage}">
+		  <div class="review-image-row">
+		    <c:if test="${not empty review.review_image1}">
+		      <img src="${pageContext.request.contextPath}/upload/reviews/${review.review_image1}"
+		           class="review-img"
+		           onclick="openImageInNewTab(this.src)" />
+		    </c:if>
+		    <c:if test="${not empty review.review_image2}">
+		      <img src="${pageContext.request.contextPath}/upload/reviews/${review.review_image2}"
+		           class="review-img"
+		           onclick="openImageInNewTab(this.src)" />
+		    </c:if>
+		    <c:if test="${not empty review.review_image3}">
+		      <img src="${pageContext.request.contextPath}/upload/reviews/${review.review_image3}"
+		           class="review-img"
+		           onclick="openImageInNewTab(this.src)" />
+		    </c:if>
 		  </div>
 		</c:if>
-		
+
+      </div>
     </li>
   </c:forEach>
 </ul>
- 
 
-  <!-- 페이징 처리 -->
+  <!-- 🔸 페이징 영역 -->
   <div class="pagination">
     <c:if test="${criteria.prev}">
       <a href="${pageContext.request.contextPath}/book/view?book_id=${book.book_id}&sort=${reviewSort}&page=${criteria.startPage - 1}">&laquo;</a>
     </c:if>
     <c:forEach begin="${criteria.startPage}" end="${criteria.endPage}" var="p">
-      <a href="${pageContext.request.contextPath}/book/view?book_id=${book.book_id}&sort=${reviewSort}&page=${p}" class="${criteria.page == p ? 'active' : ''}">${p}</a>
+      <a href="${pageContext.request.contextPath}/book/view?book_id=${book.book_id}&sort=${reviewSort}&page=${p}"
+         class="${criteria.page == p ? 'active' : ''}">${p}</a>
     </c:forEach>
     <c:if test="${criteria.next}">
       <a href="${pageContext.request.contextPath}/book/view?book_id=${book.book_id}&sort=${reviewSort}&page=${criteria.endPage + 1}">&raquo;</a>
     </c:if>
   </div>
-</div>
 
-
-<%-- 4. 하단 푸터를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+</div> <!-- review-section 닫기 -->
 
 
 	<!-- ✅ 리뷰 수정/삭제 관련 스크립트 -->
@@ -216,8 +233,7 @@
 	
 	  // 리뷰 삭제
 	  function deleteReview(review_id) {
-	    alert("삭제 함수 진입 확인: " + review_id); // ✅ 디버깅용
-	
+
 	    if (!confirm("정말 삭제하시겠습니까?")) return;
 	
 	    const form = document.createElement("form");
@@ -233,7 +249,7 @@
 	    document.body.appendChild(form);
 	    form.submit();
 	  }
-  <!-- ✅ 구매 버튼 스크립트 -->
+  // ✅ 구매 버튼 스크립트
   function goBuy(bookId) {
     const isLoggedIn = '${not empty sessionScope.loginUser}';
     if (isLoggedIn === 'true') {
@@ -326,7 +342,6 @@
     }, 2000);
   }
 
- <!-- 로그인 여부 확인 후 리뷰 작성 페이지 이동 -->
     function checkLoginBeforeWrite() {
       const isLoggedIn = '${not empty sessionScope.loginUser}';
       if (isLoggedIn === 'true') {
@@ -348,5 +363,14 @@
       fullText.style.display = isExpanded ? 'none' : 'block';
       btn.innerText = isExpanded ? '더보기' : '접기';
     }
-  </script>
-  
+
+
+    function openImageInNewTab(src) {
+      window.open(src, '_blank');
+    }
+   
+</script>
+
+
+<%-- 4. 하단 푸터를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>

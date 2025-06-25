@@ -35,25 +35,18 @@
     <!-- 제목 -->
     <div class="page-title">📚 책 목록 페이지</div>
 
-    <!-- 🔍 검색 + 정렬 -->
-    <div class="book-toolbar">
-      <form action="${pageContext.request.contextPath}/book/list" method="get" class="search-form">
-        <input type="hidden" name="category_id" value="${param.category_id}" />
-        <input type="text" name="search" placeholder="도서 검색" value="${param.search}" />
-        <button type="submit">검색</button>
-      </form>
-
-      <form action="${pageContext.request.contextPath}/book/list" method="get" class="sort-form">
-        <input type="hidden" name="search" value="${param.search}" />
-        <input type="hidden" name="category_id" value="${param.category_id}" />
-        <select name="sort" onchange="this.form.submit()">
-          <option value="sales" ${param.sort == 'sales' ? 'selected' : ''}>📦 인기순</option>
-          <option value="recent" ${param.sort == 'recent' ? 'selected' : ''}>🕓 최신순</option>
-          <option value="review" ${param.sort == 'review' ? 'selected' : ''}>📝 리뷰 많은 순</option>
-          <option value="rating" ${param.sort == 'rating' ? 'selected' : ''}>⭐ 평점 높은 순</option>
-        </select>
-      </form>
-    </div>
+    <!-- 정렬 -->
+<div class="book-toolbar">
+  <form action="${pageContext.request.contextPath}/book/list" method="get" class="sort-form">
+    <input type="hidden" name="category_id" value="${param.category_id}" />
+    <select name="sort" onchange="this.form.submit()">
+      <option value="sales" ${param.sort == 'sales' ? 'selected' : ''}>📦 인기순</option>
+      <option value="recent" ${param.sort == 'recent' ? 'selected' : ''}>🕓 최신순</option>
+      <option value="review" ${param.sort == 'review' ? 'selected' : ''}>📝 리뷰 많은 순</option>
+      <option value="rating" ${param.sort == 'rating' ? 'selected' : ''}>⭐ 평점 높은 순</option>
+    </select>
+  </form>
+</div>
 
     <!-- 도서 목록 -->
     <div class="book-grid">
@@ -63,17 +56,19 @@
      <c:forEach var="book" items="${bookList}">
   <div class="book-card">
 
-    <!-- ✅ 도서 이미지: 기본 이미지 분기 처리 -->
-    <c:choose>
-      <c:when test="${empty book.cover_image or book.cover_image == ''}">
-        <img src="${pageContext.request.contextPath}/resources/img/product-img/placeholder.png"
-             alt="기본 이미지" />
-      </c:when>
-      <c:otherwise>
-        <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}"
-             alt="${book.book_title}" />
-      </c:otherwise>
-    </c:choose>
+  <!-- ✅ 도서 이미지: 기본 이미지 분기 처리 -->
+<c:choose>
+  <c:when test="${empty book.cover_image}">
+    <img class="book-cover"
+         src="${pageContext.request.contextPath}/resources/img/product-img/placeholder.png"
+         alt="기본 이미지" />
+  </c:when>
+  <c:otherwise>
+    <img class="book-cover"
+         src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}"
+         alt="${book.book_title}" />
+  </c:otherwise>
+</c:choose>
 
     <!-- 도서 정보 -->
     <p class="book-title">${book.book_title}</p>
@@ -90,19 +85,21 @@
      
     </div>
 
-    <!-- ⏩ 페이징 -->
-    <div class="pagination">
-      <c:if test="${criteria.prev}">
-        <a href="?page=${criteria.startPage - 1}&search=${param.search}&category_id=${param.category_id}&sort=${param.sort}">&laquo;</a>
-      </c:if>
-      <c:forEach begin="${criteria.startPage}" end="${criteria.endPage}" var="p">
-        <a href="?page=${p}&search=${param.search}&category_id=${param.category_id}&sort=${param.sort}"
-           class="${criteria.page == p ? 'active' : ''}">${p}</a>
-      </c:forEach>
-      <c:if test="${criteria.next}">
-        <a href="?page=${criteria.endPage + 1}&search=${param.search}&category_id=${param.category_id}&sort=${param.sort}">&raquo;</a>
-      </c:if>
-    </div>
+   <!-- ⏩ 페이징 -->
+<div class="pagination">
+  <c:if test="${pageDTO.prev}">
+    <a href="?page=${pageDTO.startPage - 1}&search=${param.search}&category_id=${param.category_id}&sort=${param.sort}">&laquo;</a>
+  </c:if>
+
+  <c:forEach begin="${pageDTO.startPage}" end="${pageDTO.endPage}" var="p">
+    <a href="?page=${p}&search=${param.search}&category_id=${param.category_id}&sort=${param.sort}"
+       class="${pageDTO.criteria.page == p ? 'active' : ''}">${p}</a>
+  </c:forEach>
+
+  <c:if test="${pageDTO.next}">
+    <a href="?page=${pageDTO.endPage + 1}&search=${param.search}&category_id=${param.category_id}&sort=${param.sort}">&raquo;</a>
+  </c:if>
+</div>
 
     <!-- 푸터 여백 확보 -->
     <div style="height: 120px;"></div>

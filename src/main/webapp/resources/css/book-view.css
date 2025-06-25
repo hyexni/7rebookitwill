@@ -7,17 +7,18 @@
   margin: 40px 0;
 }
 
-/* 왼쪽 이미지 + 별점 */
 .book-image-column {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 250px;
 }
+
 .book-image img {
   width: 100%;
   border-radius: 8px;
 }
+
 .avg-star-box {
   margin-top: 15px;
   display: flex;
@@ -26,47 +27,31 @@
   font-size: 1.1rem;
   color: #333;
 }
-.stars-outer {
-  position: relative;
-  display: inline-block;
-  width: 100px;
-  height: 20px;
-  background: url('/resources/img/icon/star-empty.png') repeat-x;
-}
-.stars-inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0%;
-  height: 20px;
-  background: url('/resources/img/icon/star-full.png') repeat-x;
-}
 
-/* 가운데 책 정보 */
 .book-info {
   flex: 1;
 }
+
 .book-info p {
   font-size: 0.95rem;
   margin: 6px 0;
   color: #444;
 }
 
-/* ✅ 버튼 묶음 전체 */
 .book-action-column {
   display: flex;
-  flex-direction: row;         /* 가로 정렬 */
-  justify-content: flex-end;   /* 오른쪽 정렬 */
-  gap: 10px;                   /* 버튼 사이 간격 */
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
   margin-right: 60px;
-  margin-top: auto;            /* 👉 아래로 밀어내기 */
+  margin-top: auto;
 }
 
-/* ✅ 구매 버튼 */
+/* ======================== 버튼 스타일 ======================== */
 .buy-btn {
   background-color: #ffc107;
   color: #000;
-  padding: 16px 28px;          /* 더 큼직하게 */
+  padding: 16px 28px;
   font-size: 1.15rem;
   font-weight: bold;
   border: none;
@@ -79,25 +64,13 @@
   background-color: #e0a800;
 }
 
-/* ✅ 찜 버튼 */
 .wishlist-btn {
-  all: unset; /* 모든 기본 스타일 제거 */
+  all: unset;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0;
-  padding: 0;
-  outline: none;       /* 클릭시 테두리 제거 */
-  box-shadow: none;    /* 혹시 있을 그림자 제거 */
-  border: none; 
-
-}
-
-.wishlist-btn:focus {
   outline: none;
-  box-shadow: none;
-  border: none;
 }
 
 .wishlist-btn img {
@@ -106,73 +79,6 @@
   display: block;
 }
 
-/* 별 이미지 설정 */ 
-/* ⭐ 바깥 별 (회색) */
-.stars-outer {
-  position: relative;
-  display: inline-block;
-  width: 150px;           /* ⭐ 전체 너비 늘리기 (기존 100px) */
-  height: 32px;           /* ⭐ 높이 키우기 (기존 20px) */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ccc' viewBox='0 0 24 24'%3E%3Cpath d='M12 17.27L18.18 21 16.54 13.97 22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E");
-  background-size: 30px;  /* ⭐ 별 하나 크기 키우기 (기존 20px) */
-  background-repeat: repeat-x;
-}
-
-/* ⭐ 안쪽 별 (노란색) */
-.stars-inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 32px;           /* ⭐ 별 높이 맞춰주기 */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffca28' viewBox='0 0 24 24'%3E%3Cpath d='M12 17.27L18.18 21 16.54 13.97 22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E");
-  background-size: 30px;  /* ⭐ 노란 별 크기도 같게 */
-  background-repeat: repeat-x;
-}
-
-
-/* ======================== 리뷰 전체 영역 ======================== */
-/* ✅ 전체 리뷰 영역 */
-.review-section {
-  padding: 40px 0;
-  border-top: 1px solid #ddd; /* 상세 페이지와 구분 줄 */
-  margin-top: 60px;
-}
-
-/* ✅ 헤더 영역: 제목 + 정렬 + 버튼 */
-.review-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 25px;
-}
-
-.review-title-box {
-  display: flex;
-  align-items: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  gap: 10px;
-}
-
-/* ✅ 정렬 + 작성버튼 묶음 */
-.review-controls {
-  display: flex;
-  align-items: center;
-  margin-left: auto;  /* 👉 오른쪽으로 정렬 */
-  gap: 10px;
-    width: 300px;    
-}
-
-/* ✅ 셀렉트 박스 */
-.review-controls select {
-  padding: 6px 10px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-/* ✅ 리뷰 작성 버튼 */
 .write-review-btn {
   background-color: #1e60d1;
   color: white;
@@ -188,86 +94,137 @@
   background-color: #004bb8;
 }
 
-/* ✅ 리뷰 리스트 */
-.review-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+/* ======================== 리뷰 섹션 ======================== */
+
+.review-image-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 8px 0;
 }
 
-.review-item {
-  border-top: 1px solid #eee;
-  padding: 20px 0;
-  position: relative;
+
+.review-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: transform 0.2s ease;
 }
 
-/* ⭐ 별점 */
+.review-image-row::-webkit-scrollbar {
+  height: 6px;
+}
+
+.review-image-row::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+/* 호버 시 부드러운 확대 효과 제거 */
+.review-img:hover {
+  transform: none;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.review-section {
+  padding: 40px 0;
+  border-top: 1px solid #ddd;
+  margin-top: 60px;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.review-controls {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  gap: 10px;
+  width: 300px;
+}
+
+.review-controls select {
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.review-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.review-left {
+  flex: 1;
+}
+
+/* 이미지 세로 정렬 + 오른쪽 배치 */
+.review-image-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
 .review-stars {
   font-size: 18px;
   color: #f5c518;
   margin-bottom: 5px;
 }
 
-/* 👤 닉네임 + 날짜 */
-.review-meta {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 10px;
-}
-
-/* 📝 리뷰 본문 */
 .review-text-box p {
   font-size: 1rem;
   color: #333;
-  margin: 0 0 10px;
   white-space: pre-line;
 }
 
-/* 더보기 버튼 */
 .toggle-btn {
   background: none;
   border: none;
   color: #1e60d1;
   font-size: 14px;
   cursor: pointer;
-  padding: 0;
-  margin-top: -5px;
-}
-
-/* 🖼️ 리뷰 이미지 */
-.review-image img {
-  max-width: 200px;
-  max-height: 200px;
-  border-radius: 8px;
-  margin-top: 10px;
-}
-
-/* ✏️ 수정/삭제 버튼 */
-.review-actions {
-  position: absolute;
-  top: 20px;
-  right: 10px;
-  display: flex;
-  gap: 6px;
 }
 
 .review-actions button {
-  background-color: #eee;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 4px 10px;
-  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background-color: #f8f9fa;
   cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
 }
-.review-actions button:hover {
-  background-color: #ddd;
+
+.review-actions .edit-btn:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.review-actions .delete-btn:hover {
+  background-color: #dc3545;
+  color: white;
 }
 
 
-/* 알림 */ 
 .wishlist-alert {
   position: fixed;
-   top: 500px;
+  top: 500px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #fff8dc;
@@ -282,22 +239,35 @@
   animation: fadeInOut 2.2s ease-in-out;
 }
 
-/* 부드러운 페이드 애니메이션 */
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -10px);
-  }
-  10% {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-  90% {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -10px);
-  }
+.avg-star-box {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  color: #333;
 }
+
+/* ⭐ 빈 별 */
+.stars-outer {
+  position: relative;
+  display: inline-block;
+  width: 150px;
+  height: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ccc' viewBox='0 0 24 24'%3E%3Cpath d='M12 17.27L18.18 21 16.54 13.97 22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E");
+  background-size: 30px;
+  background-repeat: repeat-x;
+}
+
+/* ⭐ 채워진 별 */
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffca28' viewBox='0 0 24 24'%3E%3Cpath d='M12 17.27L18.18 21 16.54 13.97 22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E");
+  background-size: 30px;
+  background-repeat: repeat-x;
+  width: 0%; /* ← JSP에서 style로 width: ${averageRating * 20}% 로 설정됨 */
+}
+

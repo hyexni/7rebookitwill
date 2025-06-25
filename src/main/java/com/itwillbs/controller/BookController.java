@@ -18,6 +18,7 @@ import com.itwillbs.domain.CategoryVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.ReviewVO;
+import com.itwillbs.dto.BookPageDTO;
 import com.itwillbs.service.BookService;
 import com.itwillbs.service.CategoryService;
 import com.itwillbs.service.ReviewService;
@@ -68,6 +69,10 @@ public class BookController {
 		int totalCount = bookService.getBookCount(criteria);
 		criteria.setTotalCount(totalCount);
 
+		BookPageDTO pageDTO = new BookPageDTO(criteria, totalCount);
+		model.addAttribute("pageDTO", pageDTO);     // 👉 BookPageDTO는 pageDTO로
+		model.addAttribute("criteria", criteria);   // 👉 Criteria는 criteria 그대로
+		
 		// 4️⃣ JSP에서 사용할 데이터 추가
 		model.addAttribute("bookList", bookList);
 		model.addAttribute("totalCount", totalCount);
