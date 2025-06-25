@@ -22,7 +22,7 @@
       <property name="dataSource" ref="dataSource" />
       <property name="configLocation" value="classpath:/mybatis-config.xml" />
       <property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" />
-      <property name="typeAliasesPackage" value="com.itwillbs.domain" />
+      <!-- <property name="typeAliasesPackage" value="com.itwillbs.domain" /> -->
    </bean>
    
    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close">
