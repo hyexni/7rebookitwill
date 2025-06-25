@@ -45,7 +45,11 @@ public class RecommendDAOImpl implements RecommendDAO {
 	
 	
 	
-	
+	// 영수증 OCR 기반 추천 + 정렬 (Map 파라미터)
+    @Override
+    public List<BookStatsDTO> findRecommendedBooksByOcrCategorized(Map<String, Object> params) {
+        return sqlSession.selectList(NAMESPACE + "findRecommendedBooksByOcrCategorized", params);
+    }
 	
 
 	

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.domain.CategoryVO;
 import com.itwillbs.domain.MemberCategoryVO;
@@ -12,6 +13,9 @@ import com.itwillbs.domain.MemberVO;
 import com.itwillbs.persistence.CategoryDAO;
 import com.itwillbs.persistence.MemberCategoryDAO;
 import com.itwillbs.persistence.MemberDAO;
+
+import com.itwillbs.persistence.PointHistoryDAO; 
+import com.itwillbs.service.PointHistoryService;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -24,6 +28,10 @@ public class MemberServiceImpl implements MemberService {
 
 	@Inject
 	private CategoryDAO cdao;
+	
+	@Inject
+	private PointHistoryService pointHistoryService;
+	
 
 	// 서버 시간 조회
 	@Override
@@ -44,24 +52,39 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	// 관심 카테고리 포함 회원가입
-	@Override
-	public void joinMemberWithCategory(MemberVO vo, List<Integer> categoryIds) {
-		// ✅ 이메일 공백일 경우 null 처리
-		if (vo.getMember_email() != null && vo.getMember_email().trim().isEmpty()) {
-			vo.setMember_email(null);
-		}
-		// 1. 회원정보 등록
-		mdao.insertMember(vo); // PK가 vo.getMember_idx()에 들어감
+	// 관심 카테고리 포함 회원가입
+		@Transactional
+		@Override
+		public void joinMemberWithCategory(MemberVO vo, List<Integer> categoryIds) {
+			// ✅ try-catch 블록으로 전체 로직을 감싸 안정성을 높입니다.
+			try {
+				// 이메일 공백일 경우 null 처리
+				if (vo.getMember_email() != null && vo.getMember_email().trim().isEmpty()) {
+					vo.setMember_email(null);
+				}
+				// 1. 회원정보 등록
+				mdao.insertMember(vo); // PK가 vo.getMember_idx()에 들어감
 
-		// 2. 관심 카테고리 등록
-		int member_idx = vo.getMember_idx();
-		for (int cateId : categoryIds) {
-			MemberCategoryVO mcvo = new MemberCategoryVO();
-			mcvo.setMember_idx(member_idx);
-			mcvo.setCategory_id(cateId);
-			mcdao.insertMemberCategory(mcvo);
+				// 2. 관심 카테고리 등록
+				int member_idx = vo.getMember_idx();
+				for (int cateId : categoryIds) {
+					MemberCategoryVO mcvo = new MemberCategoryVO();
+					mcvo.setMember_idx(member_idx);
+					mcvo.setCategory_id(cateId);
+					mcdao.insertMemberCategory(mcvo);
+				}
+				
+				// 3. 신규 가입 축하 포인트 1000점 적립
+				pointHistoryService.addPoint(member_idx, 1000, "신규 회원가입 축하");
+				
+			} catch (Exception e) {
+				// ❗️ 예외 발생 시 로그를 기록하여 원인 파악을 용이하게 합니다.
+				e.printStackTrace(); 
+				
+				// ❗️ 처리된 예외를 다시 런타임 예외로 던져서 트랜잭션이 반드시 롤백되도록 합니다.
+				throw new RuntimeException("회원가입 및 포인트 적립 중 오류 발생: " + e.getMessage());
+			}
 		}
-	}
 
 	// 닉네임으로 회원 조회
 	@Override

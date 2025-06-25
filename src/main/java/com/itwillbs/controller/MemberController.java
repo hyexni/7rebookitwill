@@ -62,8 +62,10 @@ public class MemberController {
 			rttr.addFlashAttribute("icon", "warning");
 			return "redirect:/member/join";
 		}
+		// 회원가입+카테고리+포인트 트랜잭션이 같이 처리
 		mService.joinMemberWithCategory(vo, categoryIds);
-		rttr.addFlashAttribute("msg", "회원가입 완료!");
+		
+		rttr.addFlashAttribute("msg", "회원가입 완료! 1000포인트가 적립되었습니다!");
 		rttr.addFlashAttribute("icon", "success");
 		return "redirect:/member/login";
 	}

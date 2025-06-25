@@ -23,7 +23,6 @@ a {
 /* 1. 왼쪽 사이드바 */
 .sidebar {
     width: 280px; /* 사이드바 너비 고정 */
-    min-height: 100vh; /* 화면 전체 높이를 차지하도록 */
     padding: 40px;
     box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
     border-right: 1px solid #eee;

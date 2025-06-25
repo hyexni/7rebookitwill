@@ -229,10 +229,6 @@
                 <fmt:formatNumber value="${totalPoints}" type="number"/>
                 <span class="unit">P</span>
             </div>
-            <div class="action-buttons">
-                <a href="#" class="btn btn-primary">충전하기</a>
-                <a href="#" class="btn btn-primary">선물하기</a>
-            </div>
         </div>
 
         <%-- 월별 내역 카드 --%>
@@ -321,15 +317,15 @@
 
                     <%-- 내역 필터 탭 --%>
                     <div class="history-tabs">
-                        <div class="tab active">전체</div>
-                        <div class="tab inactive">적립</div>
-                        <div class="tab inactive">사용</div>
+                        <div class="tab active" data-filter="all">전체</div>
+                        <div class="tab" data-filter="earned">적립</div>
+                        <div class="tab" data-filter="used">사용</div>
                     </div>
                     
                     <%-- 3. 포인트 상세 내역 리스트 --%>
                     <div class="point-list">
                         <c:forEach var="point" items="${pointHistoryList}">
-                            <div class="point-list-item">
+                            <div class="point-list-item" data-type="${point.change_amount > 0 ? 'earned' : 'used'}">
                                 <div class="details">
                                     <div class="reason">${point.change_reason}</div>
                                     <div class="sub-info">
@@ -342,6 +338,11 @@
                             </div>
                         </c:forEach>
                     </div>
+                    
+                    <%-- ✨ [추가] 필터링된 내역이 없을 때 보여줄 메시지 --%>
+                    <div id="no-filtered-records" class="no-records" style="display: none;">
+                        선택하신 조건의 내역이 없습니다.
+                    </div>
 
                 </c:when>
                 <c:otherwise>
@@ -351,5 +352,54 @@
         </div> <%-- /.card --%>
     </div> <%-- /.point-history-container --%>
 </main>
- <%-- 5. 하단 푸터 --%>
+
+
+<%-- ===================================================================== --%>
+<%-- ✨ [추가] 포인트 내역 필터링을 위한 자바스크립트                            --%>
+<%-- ===================================================================== --%>
+<script>
+// 페이지의 모든 HTML 요소가 로드된 후에 이 스크립트를 실행합니다.
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // 1. 필요한 HTML 요소들을 변수에 저장합니다.
+    const tabs = document.querySelectorAll('.history-tabs .tab');
+    const pointListItems = document.querySelectorAll('.point-list .point-list-item');
+    const noFilteredRecordsMessage = document.getElementById('no-filtered-records');
+
+    // 2. 모든 탭(전체, 적립, 사용)에 클릭 이벤트를 감지하도록 설정합니다.
+    tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            // (A) 클릭된 탭의 필터 종류를 가져옵니다. (예: 'all', 'earned', 'used')
+            const filterValue = this.getAttribute('data-filter');
+
+            // (B) 탭의 활성화/비활성화 스타일을 변경합니다.
+            tabs.forEach(t => t.classList.remove('active')); // 모든 탭에서 'active' 스타일 제거
+            this.classList.add('active'); // 클릭된 탭에만 'active' 스타일 추가
+
+            // (C) 모든 포인트 내역을 하나씩 확인하며 필터링합니다.
+            let visibleItemCount = 0; // 화면에 보이는 내역의 개수를 셀 변수
+            pointListItems.forEach(function(item) {
+                const itemType = item.getAttribute('data-type'); // 각 내역의 타입 ('earned' 또는 'used')
+
+                // '전체' 탭을 눌렀거나, 탭의 종류와 내역의 종류가 일치하면
+                if (filterValue === 'all' || filterValue === itemType) {
+                    item.style.display = 'flex'; // 내역을 보여줍니다. (원래 display 속성인 flex로 설정)
+                    visibleItemCount++; // 보이는 내역 개수 증가
+                } else {
+                    item.style.display = 'none'; // 종류가 다르면 내역을 숨깁니다.
+                }
+            });
+
+            // (D) 필터링된 결과가 하나도 없는지 확인하고 메시지를 처리합니다.
+            if (visibleItemCount === 0) {
+                noFilteredRecordsMessage.style.display = 'block'; // 보이는 내역이 없으면 메시지 표시
+            } else {
+                noFilteredRecordsMessage.style.display = 'none'; // 내역이 있으면 메시지 숨김
+            }
+        });
+    });
+});
+</script>
+
+<%-- 5. 하단 푸터 --%>
 <%@include file="../include/footer.jsp" %>

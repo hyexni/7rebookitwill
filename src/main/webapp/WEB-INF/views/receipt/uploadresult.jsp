@@ -22,12 +22,40 @@
         .items-table td.center { text-align: center; }
         .items-table td.right { text-align: right; }
         pre { background-color: #f1f3f5; padding: 1em; border: 1px solid #ced4da; white-space: pre-wrap; word-wrap: break-word; }
-        .btn-link { text-decoration: none; background-color: #007bff; color: white; padding: 10px 15px; border-radius: 5px; display: inline-block; margin-top: 2em; }
         /* [개선] 정보가 없을 때 표시할 텍스트 스타일 추가 */
         .text-muted { color: #6c757d; font-style: italic; }
         
         .highlight { background-color: #e8f6ff; padding: 15px; border-radius: 5px; margin-top: 20px; }
         .highlight strong { font-size: 20px; color: #007bff; }
+        
+        /* [수정] 버튼 기본 스타일 */
+    .btn-link {
+        display: inline-block; /* 버튼 정렬 및 크기 적용을 위함 */
+        text-decoration: none; /* 밑줄 제거 */
+        color: white; /* 글자색 */
+        font-size: 16px; /* 글자 크기 키우기 */
+        font-weight: bold; /* 글자 굵게 */
+        
+        background-color: #007bff; /* 기본 배경색 */
+        padding: 12px 24px; /* 내부 여백을 늘려 버튼 크기 키우기 */
+        margin-top: 2em; /* 위쪽 여백 */
+        margin-right: 10px; /* 오른쪽 여백 (버튼 사이 간격) */
+        
+        border: none; /* 테두리 제거 */
+        border-radius: 8px; /* 모서리를 더 둥글게 */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.15); /* 입체감을 위한 그림자 */
+        
+        cursor: pointer; /* 마우스 커서를 손가락 모양으로 */
+        transition: all 0.3s ease; /* 모든 효과를 0.3초 동안 부드럽게 전환 */
+    }
+
+/*     /* [추가] 마우스를 버튼에 올렸을 때 스타일 */ */
+/*     .btn-link:hover { */
+/*         background-color: #0056b3; /* 배경색을 더 진하게 */ */
+/*         box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* 그림자를 더 강조 */ */
+/*         transform: translateY(-2px); /* 버튼이 살짝 위로 떠오르는 효과 */ */
+/*     } */
+        
         
     </style>
 
@@ -133,9 +161,9 @@
             </c:otherwise>
         </c:choose>
 
-       
-        
+               
         <a href="${pageContext.request.contextPath}/receipt/upload" class="btn-link">🔄 다시 업로드하기</a>
+         <a href="${pageContext.request.contextPath}/recommend/byReceipt" class="btn-link">🔄 영수증 기반 추천도서</a>
     </div>
     
     <%-- 5. 하단 푸터 --%>
