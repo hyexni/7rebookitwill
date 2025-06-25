@@ -16,4 +16,5 @@ public class InquiryVO {
 	private Timestamp created_at;		// 작성 일시
 	private Timestamp processed_at;
 
+	
 }
