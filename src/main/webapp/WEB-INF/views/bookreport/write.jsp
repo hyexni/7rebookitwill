@@ -197,46 +197,8 @@
             <div id="content-error" class="error-message">내용을 100자 이상 입력해주세요.</div>
             <div id="charCounter" class="char-counter">0 / 1000자</div>
         </div>
-        
-<!--         <div class="form-group"> -->
-<!--             <label>공개 여부</label> -->
-<!--             <div class="radio-group"> -->
-<!--                 <label><input type="radio" name="status" value="public" checked> 공개</label> -->
-<!--                 <label><input type="radio" name="status" value="private"> 비공개</label> -->
-                   
-<!--             </div> -->
-<!--         </div> -->
 
-        <hr>
-
-        이미지 첨부
-        <div class="form-group">
-            <label>파일 첨부</label>
-            <p class="help-text">책 사진, 메모 등을 이미지 파일(JPG, PNG 등)로 첨부할 수 있습니다.</p>
-            <div class="file-input-wrapper" style="margin-top: 1rem;">
-                <button type="button" class="btn-upload">파일 선택</button>
-                <input type="file" name="report_image1" class="file-input" data-preview-id="preview1" accept="image/*">
-                <span class="file-name" data-default-text="파일 1">파일 1</span>
-            </div>
-            <img id="preview1" class="image-preview" src="#" alt="이미지 미리보기"/>
-        </div>
-         <div class="form-group">
-            <div class="file-input-wrapper">
-                <button type="button" class="btn-upload">파일 선택</button>
-                <input type="file" name="report_image2" class="file-input" data-preview-id="preview2" accept="image/*">
-                <span class="file-name" data-default-text="파일 2">파일 2</span>
-            </div>
-            <img id="preview2" class="image-preview" src="#" alt="이미지 미리보기"/>
-        </div>
-         <div class="form-group">
-            <div class="file-input-wrapper">
-                <button type="button" class="btn-upload">파일 선택</button>
-                <input type="file" name="report_image3" class="file-input" data-preview-id="preview3" accept="image/*">
-                <span class="file-name" data-default-text="파일 3">파일 3</span>
-            </div>
-            <img id="preview3" class="image-preview" src="#" alt="이미지 미리보기"/>
-        </div>
-
+       
         <div class="btn-container">
             <button type="submit" class="btn btn-primary">등록하기</button>
             <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>

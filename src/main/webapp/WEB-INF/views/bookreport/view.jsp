@@ -130,12 +130,7 @@
             <span><strong>독서일:</strong> <fmt:formatDate value="${report.read_date}" pattern="yyyy년 MM월 dd일"/></span>
         </div>
 
-        <div class="view-images">
-            <c:if test="${not empty report.report_image1}"><img src="<c:url value='/resources/upload/${report.report_image1}'/>" alt="첨부 이미지 1"></c:if>
-            <c:if test="${not empty report.report_image2}"><img src="<c:url value='/resources/upload/${report.report_image2}'/>" alt="첨부 이미지 2"></c:if>
-            <c:if test="${not empty report.report_image3}"><img src="<c:url value='/resources/upload/${report.report_image3}'/>" alt="첨부 이미지 3"></c:if>
-        </div>
-
+      
         <div class="view-content">
             ${report.report_text}
         </div>

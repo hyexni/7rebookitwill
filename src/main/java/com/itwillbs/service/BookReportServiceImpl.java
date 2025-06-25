@@ -33,7 +33,7 @@ public class BookReportServiceImpl implements BookReportService {
     
     // [독후감 등록 처리]
     @Override
-    public void writeBookReport(BookReportVO vo) throws Exception {
+    public void insertBookReport(BookReportVO vo) throws Exception {
         bookreportDAO.insertBookReport(vo);
     }
     

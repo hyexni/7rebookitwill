@@ -85,6 +85,13 @@
 );
 
 </insert> 
+
+  <!-- 5. 포인트 적립 -->
+   <update id="givePoints" parameterType="com.itwillbs.dto.PaymentDTO">
+     UPDATE member
+     SET point_total = point_total + #{change_amount}
+     WHERE member_idx = #{member_idx}
+   </update>
     
     
 <!-- 사용자 모드 끝 -->

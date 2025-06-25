@@ -12,22 +12,15 @@ public class BookReportVO {
 	
 	private int report_id;   
 	private int member_idx;   
-	private int book_id;
-	
+	private int book_id;	
 	private String author_name;
 	private String publisher;
 	private String report_title; //
 	
 	//날짜
 	@DateTimeFormat(pattern="yyyy/MM/dd")
-	private Date read_date;
-	
-	
-	private String report_text;
-	private String report_image1;
-	private String report_image2;
-	private String report_image3;
-	private String status;
+	private Date read_date;	
+	private String report_text;	
     private Date report_regdate;
 	
 }
