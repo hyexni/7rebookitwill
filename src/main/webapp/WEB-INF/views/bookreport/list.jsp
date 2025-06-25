@@ -133,12 +133,12 @@
                     </td>
                     <td>${report.author_name}</td>
                     <td><fmt:formatDate value="${report.read_date}" pattern="yyyy-MM-dd" /></td>
-                    <td>
-                        <c:choose>
-                            <c:when test="${report.status eq 'public'}"><span class="status-badge status-public">공개</span></c:when>
-                            <c:otherwise><span class="status-badge status-private">비공개</span></c:otherwise>
-                        </c:choose>
-                    </td>
+<!--                     <td> -->
+<%--                         <c:choose> --%>
+<%--                             <c:when test="${report.status eq 'public'}"><span class="status-badge status-public">공개</span></c:when> --%>
+<%--                             <c:otherwise><span class="status-badge status-private">비공개</span></c:otherwise> --%>
+<%--                         </c:choose> --%>
+<!--                     </td> -->
                     <td><fmt:formatDate value="${report.report_regdate}" pattern="yyyy-MM-dd" /></td>
                 </tr>
             </c:forEach>

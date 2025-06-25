@@ -8,8 +8,8 @@
     <!-- ✅ [수정] 독후감 등록 - 'public'/'private' 문자열을 1/0 숫자로 변환하여 저장 -->
     <insert id="insertBookReport" parameterType="com.itwillbs.domain.BookReportVO">
         INSERT INTO book_report (
-            member_idx, 
-         
+        	report_id,
+            member_idx,         
             report_title,
             author_name, 
             publisher, 
@@ -17,11 +17,11 @@
             report_text, 
             report_image1, 
             report_image2, 
-            report_image3, 
-            is_public
+            report_image3
+<!--            // is_publc -->
         ) VALUES (
-            #{member_idx},
-            
+            #{report_id},
+            #{member_idx},            
             #{report_title},
             #{author_name},
             #{publisher},
@@ -29,11 +29,11 @@
             #{report_text},
             #{report_image1},
             #{report_image2},
-            #{report_image3},
-            <choose>
-                <when test="status == 'public'">1</when>
-                <otherwise>0</otherwise>
-            </choose>
+            #{report_image3}
+<!--             #{is_public}=<choose> -->
+<!--                 <when test="status == 'public'">1</when> -->
+<!--                 <otherwise>0</otherwise> -->
+<!--             </choose> -->
         )
     </insert>
 
@@ -66,7 +66,7 @@
             b.report_title,
             b.author_name,
             b.read_date,
-            b.is_public,
+<!--             b.is_public, -->
             b.report_regdate            
         FROM 
             book_report b

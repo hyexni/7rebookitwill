@@ -34,6 +34,7 @@ public class DAOTest {
 		//System.out.println(phDAO.getPointHistory(1));
 //		System.out.println(rdao);
 		System.out.println(rdao.findOcrBookTitlesByMemberIdx(1));
+		System.out.println(rdao.findOcrBookTitlesByMemberIdx(1));
 	}
 
 }
