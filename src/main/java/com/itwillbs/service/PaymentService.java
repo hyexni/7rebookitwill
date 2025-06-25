@@ -26,6 +26,10 @@ public interface PaymentService {
 	// 배송 정보
 	public MemberVO getMemberInfo(int member_idx);
 	
+	// 포인트 이력 저장
+	void insertPointUsage(PaymentDTO dto);
+	void insertPointHistory(PaymentDTO dto);
+	
 
 
 

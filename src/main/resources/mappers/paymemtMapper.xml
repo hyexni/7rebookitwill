@@ -112,6 +112,43 @@
 	</select>
 	
 	
+	<!-- 포인트 사용 이력 저장 -->
+	<insert id="insertPointUsage" parameterType="com.itwillbs.dto.PaymentDTO">
+	  INSERT INTO point (
+	    member_idx,
+	    point_amount,
+	    change_amount,
+	    change_reason,
+	    change_date,
+	    point_status
+	  ) VALUES (
+	    #{member_idx},
+	    (SELECT point_total FROM member WHERE member_idx = #{member_idx}),
+	    -#{used_points},
+	    '결제 시 포인트 사용',
+	    NOW(),
+	    '사용 완료'
+	  )
+	</insert>
+	
+	<!-- 포인트 적립 이력 저장 -->
+	<insert id="insertPointHistory" parameterType="com.itwillbs.dto.PaymentDTO">
+	  INSERT INTO point (
+	    member_idx,
+	    point_amount,
+	    change_amount,
+	    change_reason,
+	    change_date,
+	    point_status
+	  ) VALUES (
+	    #{member_idx},
+	    (SELECT point_total FROM member WHERE member_idx = #{member_idx}),
+	    #{saved_points},
+	    '결제 적립금',
+	    NOW(),
+	    '적립 완료'
+	  )
+	</insert>
 	
 	
 	

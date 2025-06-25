@@ -102,6 +102,22 @@ public class PaymentServiceImpl implements PaymentService {
 	public MemberVO getMemberInfo(int member_idx) {
 	    return pDAO.getMemberInfo(member_idx);
 	}
+	
+	
+	// 결제시 포인트 차감/적립 이력
+	@Override
+	public void insertPointUsage(PaymentDTO dto) {
+	    pDAO.insertPointUsage(dto);
+	}
+
+	@Override
+	public void insertPointHistory(PaymentDTO dto) {
+	    pDAO.insertPointHistory(dto);
+	}
+	
+	
+	
+	
 
 
 
