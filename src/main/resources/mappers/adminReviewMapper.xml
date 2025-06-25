@@ -66,6 +66,13 @@
     DELETE FROM review
     WHERE review_id = #{review_id}
   </delete>
+  
+  <update id="updateReviewChecked">
+	  UPDATE review
+	  SET review_checked = 'Y'
+	  WHERE review_id = #{reviewId}
+  </update>
+  
 
 
 </mapper>

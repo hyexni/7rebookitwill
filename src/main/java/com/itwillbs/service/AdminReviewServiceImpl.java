@@ -25,10 +25,12 @@ public class AdminReviewServiceImpl implements AdminReviewService {
         return arDAO.getReviewCount(keyword);
     }
     
+    // 리뷰 숨김
     @Override
     public boolean hideReview(int review_id, String reason) {
         try {
             arDAO.hideReview(review_id, reason);
+            arDAO.updateReviewChecked(review_id); // ✅ 확인 처리 추가
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,13 +42,20 @@ public class AdminReviewServiceImpl implements AdminReviewService {
     public boolean deleteReview(int review_id, String reason) {
         try {
             arDAO.deleteReview(review_id, reason);
+            arDAO.updateReviewChecked(review_id); // ✅ 확인 처리 추가
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
+    
 
+	@Override
+	public void updateReviewChecked(int reviewId) {
+		arDAO.updateReviewChecked(reviewId);
+		
+	}
 
     
 }

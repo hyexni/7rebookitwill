@@ -150,7 +150,7 @@
         border-color: #4c6ef5;
         color: #4c6ef5;
     }
-    .admin-point-container .pagination a.active {
+    .admin-point-containrer .pagination a.active {
         background-color: #4c6ef5;
         border-color: #4c6ef5;
         color: #fff;

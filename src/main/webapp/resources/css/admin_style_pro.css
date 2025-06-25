@@ -434,28 +434,6 @@ a {
 
 
 
-/* 로그인 버튼 스타일 */
-.auth-buttons .btn-login {
-    background-color: #fff;
-    border-color: #fff;
-    color: #333;
-}
-.auth-buttons .btn-login:hover {
-    background-color: #f0f0f0;
-}
-
-/* 회원가입 버튼 스타일 */
-.auth-buttons .btn-signup {
-    background-color: #febb61; 
-    border-color: #febb61;
-    color: #fff;
-}
-.auth-buttons .btn-signup:hover {
-    background-color: #fca94a;
-    border-color: #fca94a;
-}
-
-
         /* 각 도서 섹션 스타일 */
         .book-section {
             margin-bottom: 60px;
@@ -913,58 +891,6 @@ a {
 	  border-right: none;
 	}
 
-
-
-/* 리뷰관리 모달창 */
-	.modal {
-	  position: fixed;
-	  z-index: 1000;
-	  left: 50%;
-	  top: 50%;
-	  transform: translate(-50%, -50%);
-	  width: 700px;
-	  max-height: 90vh;
-	  overflow-y: auto;
-	  background-color: rgba(0,0,0,0.4);
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
-	}
-	
-	.modal-content {
-	  background-color: #fff;
-	  padding: 25px 30px;
-	  border-radius: 10px;
-	  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-	  width: 100%;
-	  max-height: 90vh;
-	  overflow-y: auto;
-	}
-	
-	.modal-buttons {
-  margin-top: 20px;
-  text-align: right;
-  border-top: 1px solid #ddd;
-  padding-top: 15px;
-}
-
-	.modal-buttons button {
-	  padding: 8px 20px;
-	  font-size: 15px;
-	  border-radius: 6px;
-	  margin-left: 10px;
-	  transition: all 0.2s ease-in-out;
-	}
-	
-	.modal-buttons .btn-outline-primary:hover {
-	  background-color: #4c6ef5;
-	  color: #fff;
-	}
-	
-	.modal-buttons .btn-outline-danger:hover {
-	  background-color: #dc3545;
-	  color: #fff;
-	}
 	
 	/* 리뷰 상태 */
 	.badge {
@@ -999,9 +925,88 @@ a {
 	  background-color: #F44336;
 	}
 	
+	.review-detail-row > td {
+	  text-align: center;
+	}
+	
+	.review-action-buttons {
+	  display: inline-flex;
+	  justify-content: center;
+	  align-items: center;
+	  gap: 15px;
+	  flex-wrap: wrap;
+	  margin-top: 10px;
+	}
+	
+	.input-small {
+	  width: 120px;
+	  padding: 7px 10px;
+	  font-size: 14px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	.btn-sm {
+	  padding: 7px 12px;
+	  font-size: 14px;
+	  border: 1px solid #ccc;
+	  border-radius: 5px;
+	  cursor: pointer;
+	  background-color: #f9f9f9;
+	}
+	
+	.btn-sm:hover {
+	  background-color: #eaeaea;
+	}
+	
+	.btn-danger {
+	  background-color: #f44336;
+	  color: white;
+	  border: none;
+	}
+	
+	.btn-danger:hover {
+	  background-color: #d32f2f;
+	}
+	
+	.btn-hide {
+	  background-color: #fbc02d;
+	  border: none;
+	  color: #333;
+	}
+	
+	.btn-hide:hover {
+	  background-color: #f9a825;
+	}
+	
+	.btn-check-confirm {
+	  background-color: #4CAF50;
+	  color: white;
+	  padding: 7px 14px;
+	  font-size: 14px;
+	  border: none;
+	  border-radius: 5px;
+	  cursor: pointer;
+	}
+	
+	.btn-toggle {
+	  padding: 6px 10px;
+	  font-size: 13px;
+	  background-color: #fff;
+	  border: 1px solid #888;
+	  border-radius: 4px;
+	  cursor: pointer;
+	  transition: background 0.2s;
+	}
+	
+	.btn-toggle.open {
+	  background-color: #e0f7fa;
+	  color: #00796b;
+	}
+
 
 	
-
+	
 	
 	.btn-modern {
 	  padding: 6px 14px;

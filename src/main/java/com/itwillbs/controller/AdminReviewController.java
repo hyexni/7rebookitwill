@@ -68,6 +68,14 @@ public class AdminReviewController {
         rttr.addFlashAttribute("msg", "리뷰 삭제 완료!");
         return "redirect:/admin/review_list";
     }
+    
+    
+    @PostMapping("/review_check")
+    public String checkReview(@RequestParam("review_id") int reviewId) {
+        arService.updateReviewChecked(reviewId);  // 서비스 호출
+        return "redirect:/admin/review_list"; // 확인 후 목록으로
+    }
+
 
 
 }
