@@ -10,6 +10,7 @@ import com.itwillbs.domain.DeliveryVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.OrdersVO;
 import com.itwillbs.domain.PaymentVO;
+import com.itwillbs.dto.DeliveryDTO;
 import com.itwillbs.dto.PaymentDTO;
 
 @Repository
@@ -82,29 +83,29 @@ public class PaymentDAOImpl implements PaymentDAO {
 	
 	@Override
 	public OrdersVO getLatestOrder(int member_idx) {
-		return sqlSession.selectOne("payment.getLatestOrder", member_idx);
+		return sqlSession.selectOne(NAMESPACE + "getLatestOrder", member_idx);
 	}
 
 	@Override
 	public PaymentVO getLatestPayment(int member_idx) {
-		return sqlSession.selectOne("payment.getLatestPayment", member_idx);
+		return sqlSession.selectOne(NAMESPACE + "getLatestPayment", member_idx);
 	}
 
 	@Override
-	public DeliveryVO getLatestDelivery(int member_idx) {
-		return sqlSession.selectOne("payment.getLatestDelivery", member_idx);
+	public DeliveryVO getLatestDelivery(int order_id) {
+		return sqlSession.selectOne(NAMESPACE + "getLatestDelivery", order_id);
 	}
 
 
 	// 배송 정보
 	@Override
 	public MemberVO getMemberInfo(int member_idx) {
-	    return sqlSession.selectOne("payment.getMemberInfo", member_idx);
+		return sqlSession.selectOne(NAMESPACE + "getMemberInfo", member_idx);
 	}
 
 
 	@Override
-    public boolean processPayment(PaymentDTO dto) {
+    public boolean processPayment(PaymentDTO dto, DeliveryDTO deliveryDTO) {
         try {
             sqlSession.update(NAMESPACE + "usePoints", dto);
             sqlSession.insert(NAMESPACE + "insertOrder", dto);
@@ -113,6 +114,7 @@ public class PaymentDAOImpl implements PaymentDAO {
             sqlSession.insert(NAMESPACE + "insertOrderItem", dto);
             sqlSession.insert(NAMESPACE + "insertPayment", dto);
             sqlSession.update(NAMESPACE + "givePoints", dto);
+            sqlSession.insert(NAMESPACE + "insertDelivery", deliveryDTO);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,7 +126,7 @@ public class PaymentDAOImpl implements PaymentDAO {
 
 	
 	
-}
+
 
 
 

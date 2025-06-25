@@ -44,7 +44,7 @@
 	      </button>
 	      <div class="dropdown-menu">
 	        <a href="/admin/stats">서비스 홈</a>
-	        <a href="/logout">로그아웃</a>
+	        <a href="/member/logout">로그아웃</a>
 	      </div>
 	    </div>
 	  </div>
