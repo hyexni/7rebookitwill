@@ -33,4 +33,4 @@
 
 	
 <%-- 4. 하단 푸터를 불러옵니다. --%>
-<%@ include file="include/footer.jsp" %> 
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>

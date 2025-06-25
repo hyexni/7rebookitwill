@@ -15,9 +15,9 @@
 
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<div class="main-content container">
-    <h1>1:1 문의 관리</h1>
+<main class="main-content">
+	<div class="admin-container">
+	  <h1>📩 1:1 문의 관리</h1>
 
     <!-- 🔍 검색 영역 -->
     <form class="search-form" method="get" action="list">
@@ -26,7 +26,7 @@
     </form>
 
     <!-- 📋 문의 목록 테이블 -->
-    <table>
+    <table class="admin-table">
         <thead>
             <tr>
                 <th><a href="?sort=desc" class="desc">등록번호</a></th>
@@ -92,13 +92,11 @@
 	  <a href="${pageContext.request.contextPath}/admin/list?page=${currentPage + 1}"
 	     <c:if test="${currentPage == totalPages}">class="disabled"</c:if>>&raquo;</a>
 	
+	 </div>
 	</div>
-
-</div>
-
-
+</main>
 
 
 
 <%-- 4. 하단 푸터를 불러옵니다. --%>
-<%@ include file="include/footer.jsp" %> 
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>

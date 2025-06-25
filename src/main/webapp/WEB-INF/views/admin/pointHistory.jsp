@@ -164,7 +164,7 @@
 <main class="main-content">
     <%-- 이 페이지의 모든 콘텐츠를 감싸는 고유한 컨테이너 클래스 추가 --%>
     <div class="admin-point-container">
-        <h1>고객 포인트 전체 내역</h1>
+        <h1>💰 고객 포인트 전체 내역</h1>
 
         <div class="search-form">
             <%-- [수정] URL 경로를 하이픈(-)이 없는 이전 버전으로 되돌렸습니다. --%>
@@ -240,4 +240,4 @@
 </main> <%-- /.main-content --%>
 
 <%-- 4. 하단 푸터를 불러옵니다. --%>
-<%@ include file="include/footer.jsp" %> 
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
