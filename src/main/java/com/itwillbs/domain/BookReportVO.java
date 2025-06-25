@@ -1,8 +1,6 @@
 package com.itwillbs.domain;
 
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import java.sql.Timestamp;
 
 import lombok.Data;
 
@@ -11,16 +9,14 @@ import lombok.Data;
 public class BookReportVO {
 	
 	private int report_id;   
-	private int member_idx;   
-	private int book_id;	
+	private int member_idx;  	
 	private String author_name;
 	private String publisher;
-	private String report_title; //
-	
-	//날짜
-	@DateTimeFormat(pattern="yyyy/MM/dd")
-	private Date read_date;	
+	private String report_title; 
 	private String report_text;	
-    private Date report_regdate;
+    private Timestamp report_regdate;
+    private String rbook_title;
+   
+    
 	
 }
