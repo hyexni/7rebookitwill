@@ -84,8 +84,12 @@ public class ReviewController {
         vo.setReview_score(review_score);
         vo.setReview_text(review_text);
         
+        BookVO book = bookService.getBookDetail(book_id);
+        vo.setBook_title(book.getBook_title());     // 📘 책 제목 넣기
+        vo.setMember_id(loginUser.getMember_id());  // 🙋‍♀️ 작성자 ID 넣기
+        
         // 파일 저장 경로 설정
-        String uploadDir = session.getServletContext().getRealPath("/resources/upload");
+        String uploadDir = "C:/upload/reviews";
 
         // 폴더 없으면 자동 생성
         File uploadFolder = new File(uploadDir);
@@ -179,43 +183,54 @@ public class ReviewController {
 
         try {
             // 📂 업로드 경로
-            String uploadDir = session.getServletContext().getRealPath("/resources/upload");
-            File folder = new File(uploadDir);
-            if (!folder.exists()) folder.mkdirs();
+        	String uploadDir = "C:/upload/reviews";
+        	File folder = new File(uploadDir);
+        	if (!folder.exists()) folder.mkdirs();
 
-            // --- 이미지 1 ---
-            if ("on".equals(deleteImage1)) { // 삭제 체크시 null
-                vo.setReview_image1(null);
-            } else if (file1 != null && !file1.isEmpty()) { // 새 이미지 업로드시
-                String name1 = UUID.randomUUID() + "_" + file1.getOriginalFilename();
-                file1.transferTo(new File(uploadDir, name1));
-                vo.setReview_image1(name1);
-            } else { // 그대로 유지
-                vo.setReview_image1(original.getReview_image1());
-            }
+        	// --- 이미지 1 ---
+        	if ("true".equals(deleteImage1)) {
+        	    if (original.getReview_image1() != null) {
+        	        File img1 = new File(uploadDir, original.getReview_image1());
+        	        if (img1.exists()) img1.delete();
+        	    }
+        	    vo.setReview_image1(null);
+        	} else if (file1 != null && !file1.isEmpty()) {
+        	    String name1 = UUID.randomUUID() + "_" + file1.getOriginalFilename();
+        	    file1.transferTo(new File(uploadDir, name1));
+        	    vo.setReview_image1(name1);
+        	} else {
+        	    vo.setReview_image1(original.getReview_image1());
+        	}
 
-            // --- 이미지 2 ---
-            if ("on".equals(deleteImage2)) {
-                vo.setReview_image2(null);
-            } else if (file2 != null && !file2.isEmpty()) {
-                String name2 = UUID.randomUUID() + "_" + file2.getOriginalFilename();
-                file2.transferTo(new File(uploadDir, name2));
-                vo.setReview_image2(name2);
-            } else {
-                vo.setReview_image2(original.getReview_image2());
-            }
+        	// --- 이미지 2 ---
+        	if ("true".equals(deleteImage2)) {
+        	    if (original.getReview_image2() != null) {
+        	        File img2 = new File(uploadDir, original.getReview_image2());
+        	        if (img2.exists()) img2.delete();
+        	    }
+        	    vo.setReview_image2(null);
+        	} else if (file2 != null && !file2.isEmpty()) {
+        	    String name2 = UUID.randomUUID() + "_" + file2.getOriginalFilename();
+        	    file2.transferTo(new File(uploadDir, name2));
+        	    vo.setReview_image2(name2);
+        	} else {
+        	    vo.setReview_image2(original.getReview_image2());
+        	}
 
-            // --- 이미지 3 ---
-            if ("on".equals(deleteImage3)) {
-                vo.setReview_image3(null);
-            } else if (file3 != null && !file3.isEmpty()) {
-                String name3 = UUID.randomUUID() + "_" + file3.getOriginalFilename();
-                file3.transferTo(new File(uploadDir, name3));
-                vo.setReview_image3(name3);
-            } else {
-                vo.setReview_image3(original.getReview_image3());
-            }
-
+        	// --- 이미지 3 ---
+        	if ("true".equals(deleteImage3)) {
+        	    if (original.getReview_image3() != null) {
+        	        File img3 = new File(uploadDir, original.getReview_image3());
+        	        if (img3.exists()) img3.delete();
+        	    }
+        	    vo.setReview_image3(null);
+        	} else if (file3 != null && !file3.isEmpty()) {
+        	    String name3 = UUID.randomUUID() + "_" + file3.getOriginalFilename();
+        	    file3.transferTo(new File(uploadDir, name3));
+        	    vo.setReview_image3(name3);
+        	} else {
+        	    vo.setReview_image3(original.getReview_image3());
+        	}
             logger.info("🎯 최종 저장할 리뷰 VO: {}", vo.toString());
 
             // 💾 리뷰 업데이트
@@ -295,7 +310,22 @@ public class ReviewController {
          rttr.addFlashAttribute("msg", "삭제 권한이 없습니다.");
          return "redirect:/book/view?book_id=" + review.getBook_id();
      }
-
+     
+  // ✅ 서버 이미지 삭제 처리
+     String uploadDir = "C:/upload/reviews";
+     if (review.getReview_image1() != null) {
+         File img1 = new File(uploadDir, review.getReview_image1());
+         if (img1.exists()) img1.delete();
+     }
+     if (review.getReview_image2() != null) {
+         File img2 = new File(uploadDir, review.getReview_image2());
+         if (img2.exists()) img2.delete();
+     }
+     if (review.getReview_image3() != null) {
+         File img3 = new File(uploadDir, review.getReview_image3());
+         if (img3.exists()) img3.delete();
+     }
+     
      // ✅ 삭제를 위한 VO 준비
      ReviewVO vo = new ReviewVO();
      vo.setReview_id(review_id);

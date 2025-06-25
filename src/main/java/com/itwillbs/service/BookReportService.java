@@ -28,9 +28,3 @@ public interface BookReportService {
   
     // 독후감 삭제
     int deleteBookReport(BookReportVO vo);
-
-	
-
-	
-
-}
