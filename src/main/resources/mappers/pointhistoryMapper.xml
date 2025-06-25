@@ -44,10 +44,10 @@
             0)
     </select>
      
-<!-- <insert id="insertPointHistory" parameterType="com.itwillbs.domain.PointVO"> -->
-<!--         INSERT INTO point (member_idx, point_amount,change_amount, change_reason, change_date) -->
-<!--         VALUES (#{member_idx}, #{change_amount},  #{change_amount}, #{change_reason}, NOW()) -->
-<!--     </insert> -->
+<insert id="insertPointHistory" parameterType="com.itwillbs.domain.PointVO">
+        INSERT INTO point (member_idx, point_amount,change_amount, change_reason, change_date)
+        VALUES (#{member_idx}, #{change_amount},  #{change_amount}, #{change_reason}, NOW())
+    </insert>
 
 
 <select id="selectMemberPoints" resultType="int" parameterType="int">
