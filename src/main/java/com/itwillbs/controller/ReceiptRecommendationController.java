@@ -34,7 +34,7 @@ public class ReceiptRecommendationController {
         logger.debug("Controller: /recommendations/receipt-based 호출");
 
         // 1. 세션에서 회원 ID 가져오기
-        Long member_idx = (Long) session.getAttribute("member_idx"); 
+        Integer member_idx = (Integer) session.getAttribute("member_idx"); 
         // "member_idx"는 실제 세션에 저장된 키값으로 변경해야 합니다.
 
         if (member_idx == null) {
@@ -47,6 +47,8 @@ public class ReceiptRecommendationController {
             // 2. 서비스를 통해 회원의 OCR 도서 제목 목록 조회
             List<String> ocrBookTitles = rService.getOcrBookTitles(member_idx);
 
+            System.out.println(ocrBookTitles);
+            
             if (ocrBookTitles == null || ocrBookTitles.isEmpty()) {
                 logger.info(member_idx + "번 회원의 OCR 도서 기록이 없습니다.");
                 // 내용 없음(204) 또는 빈 리스트와 함께 정상(200) 응답 가능
