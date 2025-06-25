@@ -11,7 +11,6 @@ public interface BookReportDAO {
     
     // ✅ 특정 회원이 작성한 모든 독후감 목록 조회
     public List<BookReportVO> getReportListByMember(int member_idx) throws Exception;
-
     
     // [독후감 등록]
     void insertBookReport(BookReportVO vo) throws Exception;

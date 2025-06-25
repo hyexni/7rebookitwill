@@ -5,35 +5,26 @@
   
 <mapper namespace="com.itwillbs.persistence.BookReportDAO">
 
-    <!-- ✅ [수정] 독후감 등록 - 'public'/'private' 문자열을 1/0 숫자로 변환하여 저장 -->
+    <!-- ✅  독후감 등록  -->
     <insert id="insertBookReport" parameterType="com.itwillbs.domain.BookReportVO">
         INSERT INTO book_report (
-        	report_id,
-            member_idx,         
+            report_id,
             report_title,
             author_name, 
             publisher, 
             read_date, 
-            report_text, 
-            report_image1, 
-            report_image2, 
-            report_image3
-<!--            // is_publc -->
+            report_text 
+            
         ) VALUES (
-            #{report_id},
-            #{member_idx},            
+            #{report_id}
             #{report_title},
             #{author_name},
             #{publisher},
             #{read_date},
-            #{report_text},
-            #{report_image1},
-            #{report_image2},
-            #{report_image3}
-<!--             #{is_public}=<choose> -->
-<!--                 <when test="status == 'public'">1</when> -->
-<!--                 <otherwise>0</otherwise> -->
-<!--             </choose> -->
+            #{report_text}
+            where member_idx=#{member_idx}
+           
+
         )
     </insert>
 
@@ -46,10 +37,7 @@
             br.author_name,
             br.publisher,
             br.read_date,
-            br.report_text,
-            br.report_image1,
-            br.report_image2,
-            br.report_image3,           
+            br.report_text,                    
             br.report_regdate
              
         FROM 

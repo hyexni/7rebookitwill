@@ -3,6 +3,7 @@ package com.itwillbs.service;
 import java.util.List;
 
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.InquiryVO;
 import com.itwillbs.domain.BookReportVO;
 
 public interface BookReportService {
@@ -15,7 +16,8 @@ public interface BookReportService {
 
 
    // [독후감 등록 처리]
-    void writeBookReport(BookReportVO vo) throws Exception;
+    void insertBookReport(BookReportVO vo) throws Exception;
+    
     
     // ✅ 독후감 상세 정보 조회
     public BookReportVO getBookReportDetail(int report_id) throws Exception;
@@ -26,6 +28,3 @@ public interface BookReportService {
   
     // 독후감 삭제
     int deleteBookReport(BookReportVO vo);
-
-}
-
