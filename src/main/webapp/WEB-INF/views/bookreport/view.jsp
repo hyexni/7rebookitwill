@@ -120,8 +120,7 @@
                 </div>
                 <div class="date-info">
                     <span><i class="fas fa-calendar-alt"></i> <fmt:formatDate value="${report.report_regdate}" pattern="yyyy.MM.dd HH:mm"/></span>
-                    <span><i class="fas fa-eye"></i> ${report.view_count}</span>
-                </div>
+                    </div>
             </div>
         </div>
 

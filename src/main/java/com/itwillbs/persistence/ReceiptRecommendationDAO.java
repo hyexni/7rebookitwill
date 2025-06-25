@@ -9,7 +9,7 @@ public interface ReceiptRecommendationDAO {
      * @param memberIdx 회원 ID
      * @return ocr_booktitle 목록
      */
-    List<String> findOcrBookTitlesByMemberIdx(Long member_idx);
+    List<String> findOcrBookTitlesByMemberIdx(Integer member_idx);
 
     /**
      * 주어진 제목과 유사한(포함하는) 도서들의 category_id를 조회합니다.

@@ -164,7 +164,7 @@
     </div>
 
     <%-- 폼 시작: id를 부여하고, 파일 업로드를 위해 enctype 설정 --%>
-    <form action="<c:url value='/bookreport/write'/>" method="post" enctype="multipart/form-data" id="reportForm">
+    <form action="<c:url value='/bookreport/list'/>" method="post" enctype="multipart/form-data" id="reportForm">
 
         <%-- book_id가 없으므로 사용자가 직접 책 정보를 입력하는 부분만 남깁니다. --%>
         <div class="form-group">
@@ -198,14 +198,14 @@
             <div id="charCounter" class="char-counter">0 / 1000자</div>
         </div>
         
-        <div class="form-group">
-            <label>공개 여부</label>
-            <div class="radio-group">
-                <label><input type="radio" name="status" value="public" checked> 공개</label>
-                <label><input type="radio" name="status" value="private"> 비공개</label>
+<!--         <div class="form-group"> -->
+<!--             <label>공개 여부</label> -->
+<!--             <div class="radio-group"> -->
+<!--                 <label><input type="radio" name="status" value="public" checked> 공개</label> -->
+<!--                 <label><input type="radio" name="status" value="private"> 비공개</label> -->
                    
-            </div>
-        </div>
+<!--             </div> -->
+<!--         </div> -->
 
         <hr>
 

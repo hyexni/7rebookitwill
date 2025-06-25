@@ -23,18 +23,17 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.BookReportVO;
-import com.itwillbs.domain.BookVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.service.BookReportService;
-import com.itwillbs.service.BookService;
-
 
 @Controller
 @RequestMapping("/bookreport")
 public class BookReportController {
 
-    @Inject
-    private BookService bookService;
+    // BookService 주입은 /write 에서 더 이상 사용하지 않으므로 제거 가능합니다.
+    // 만약 다른 곳에서 사용한다면 유지합니다.
+    // @Inject
+    // private BookService bookService; 
     
     @Inject
     private BookReportService bookreportService; 
@@ -43,15 +42,13 @@ public class BookReportController {
 
     
     /**
-     * ✅ 독후감 작성 폼 이동 (기존/신규 도서 공용)
-     * - book_id 파라미터를 선택적으로 받도록 변경 (required = false)
-     * - book_id가 있으면 기존 도서 정보를 조회하여 폼에 전달합니다.
-     * - book_id가 없으면 사용자가 직접 도서 정보를 입력하는 폼으로 이동합니다.
+     * ✅ 독후감 작성 폼으로 이동
+     * - 이 메소드는 로그인한 사용자를 독후감 작성 페이지로 안내하는 역할만 합니다.
+     * - 기존 도서 검색 및 선택은 작성 페이지 내부에서 JavaScript/Ajax로 처리하는 것을 전제로 합니다.
      */
     @GetMapping("/write")
-    public String writeBookReportForm(@RequestParam(value = "book_id", required = false, defaultValue = "0") int book_id,
-                                      Model model,HttpSession session, RedirectAttributes rttr) {
-    	 // ✅ [추가] 로그인 상태를 확인하여 비로그인 시 로그인 페이지로 리다이렉트
+    public String writeBookReportForm(HttpSession session, RedirectAttributes rttr) {
+        // [필수] 로그인 상태를 확인하여 비로그인 시 로그인 페이지로 리다이렉트
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
         if (loginUser == null) {
             logger.warn("⚠ 비로그인 상태에서 독후감 작성 페이지 접근 시도");
@@ -59,35 +56,23 @@ public class BookReportController {
             return "redirect:/member/login"; 
         }
         
-        if (book_id > 0) {
-            logger.info("✅ 기존 도서에 대한 독후감 작성 폼 요청 - book_id: {}", book_id);
-            BookVO book = bookService.getBookDetail(book_id);
-            model.addAttribute("book", book); // JSP에서 이 객체를 사용해 도서 정보 출력
-        } else {
-            logger.info("✅ 신규 도서에 대한 독후감 작성 폼 요청");
-            // model에 book 객체를 넘기지 않으면, JSP에서 직접 입력하는 폼을 보여줌
-        }
+        logger.info("✅ 독후감 작성 폼으로 이동");
         
+        // book_id에 따른 분기 로직 제거. 항상 동일한 작성 폼 뷰를 반환.
         return "bookreport/write"; 
     }
     
     /**
-     * ✅ 독후감 등록 처리 (기존/신규 도서 공용)
-     * - book_id가 없는 경우, 사용자가 입력한 도서 정보(작가, 출판사 등)를 함께 저장합니다.
+     * ✅ 독후감 등록 처리
+     * - 사용자가 작성한 독후감 정보를 DB에 저장합니다.
      */
-    @PostMapping("/write")
+    @PostMapping("/list")
     public String writeBookReport(
-            // ✅  book_id를 선택적으로 받도록 변경. 없으면 0으로 처리.
-            @RequestParam(value = "book_id", required = false, defaultValue = "0") int book_id,
-            @RequestParam("report_title") String report_title,
-            
-            // ✅ book_id가 없을 때 사용자가 직접 입력할 필드들 (선택적으로 받음)
+            @RequestParam(value = "report_id") int report_id,
+            @RequestParam("report_title") String report_title,  
             @RequestParam(value = "author_name", required = false) String author_name,
-            @RequestParam(value = "publisher", required = false) String publisher,
-            
-            // ✅ 날짜 형식 변환을 위해 @DateTimeFormat 추가
-            @RequestParam("read_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date read_date,
-            @RequestParam(value="is_public", defaultValue="N") String is_public,
+            @RequestParam(value = "publisher", required = false) String publisher,            
+            @RequestParam("read_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date read_date,           
             @RequestParam("report_text") String report_text, 
             @RequestParam(value = "report_image1", required = false) MultipartFile file1,
             @RequestParam(value = "report_image2", required = false) MultipartFile file2,
@@ -104,19 +89,17 @@ public class BookReportController {
         int member_idx = loginUser.getMember_idx();
 
         // VO 객체 세팅
-        BookReportVO vo = new BookReportVO();
-        if (book_id > 0) {
-            vo.setBook_id(book_id); // 넘어온 book_id가 있을 경우에만 세팅
-        }
+        BookReportVO vo = new BookReportVO();        
+        
+        vo.setBook_id(report_id);        
         vo.setMember_idx(member_idx);
         vo.setReport_title(report_title);
-        vo.setReport_text(report_text);
-        
-        // book_id가 없을 경우를 대비해 직접 입력한 정보 저장
+        vo.setReport_text(report_text);       
         vo.setAuthor_name(author_name);
-        vo.setPublisher(publisher);
+        vo.setPublisher(publisher);        
         vo.setRead_date(read_date);
-        vo.setStatus(is_public);
+        
+
         // 파일 저장 처리
         String uploadDir = session.getServletContext().getRealPath("/resources/upload");
         File uploadFolder = new File(uploadDir);
@@ -129,18 +112,22 @@ public class BookReportController {
         vo.setReport_image3(saveFile(file3, uploadDir));
         
         try {
-            bookreportService.writeBookReport(vo);
+             bookreportService.writeBookReport(vo);
             
-            logger.info("🎉 독후감 등록 성공!");
+            logger.info("🎉 독후감 등록 성공! (report_id: {})", vo.getReport_id());
             rttr.addFlashAttribute("msg", "독후감이 등록되었습니다.");
+            
+            // [수정] 등록 성공 시, 생성된 독후감 상세 페이지로 이동
+            return "redirect:/bookreport/view?report_id=" + vo.getReport_id();
+
         } catch (Exception e) {
             logger.error("❌ 독후감 등록 실패 - " + e.getMessage(), e);
-            rttr.addFlashAttribute("errorMsg", "독후감 등록에 실패했습니다.");
-        }
+            rttr.addFlashAttribute("errorMsg", "독후감 등록에 실패했습니다. 다시 시도해주세요.");
 
-            return "/bookreport/list"; 
+            // [수정] 실패 시, 작성하던 페이지로 다시 이동
+            return "redirect:/bookreport/write";
         }
-  
+    }
  // =================================== [R]ead =====================================
 
     /**
