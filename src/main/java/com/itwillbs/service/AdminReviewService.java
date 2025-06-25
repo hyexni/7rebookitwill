@@ -13,4 +13,8 @@ public interface AdminReviewService {
 
     // ✅ 삭제 처리용 메서드
     boolean deleteReview(int review_id, String reason);
+    
+    // 리뷰 확인용 메서드
+	void updateReviewChecked(int reviewId);
+
 }

@@ -17,5 +17,7 @@ public interface AdminReviewDAO {
     void hideReview(@Param("review_id") int review_id, @Param("reason") String reason);
     void deleteReview(@Param("review_id") int review_id, @Param("reason") String reason);
 
+    void updateReviewChecked(int reviewId);
+    
 }
 

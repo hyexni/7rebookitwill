@@ -51,6 +51,11 @@ public class AdminReviewController {
     public String hideReview(@RequestParam int review_id, @RequestParam String reason, RedirectAttributes rttr) {
         arService.hideReview(review_id, reason);
         rttr.addFlashAttribute("msg", "리뷰 숨김 처리 완료!");
+        
+        System.out.println("🔥 숨김 요청 review_id: " + review_id);
+        System.out.println("🔥 숨김 사유: " + reason);
+
+        
         return "redirect:/admin/review_list";
     }
 
@@ -63,6 +68,14 @@ public class AdminReviewController {
         rttr.addFlashAttribute("msg", "리뷰 삭제 완료!");
         return "redirect:/admin/review_list";
     }
+    
+    
+    @PostMapping("/review_check")
+    public String checkReview(@RequestParam("review_id") int reviewId) {
+        arService.updateReviewChecked(reviewId);  // 서비스 호출
+        return "redirect:/admin/review_list"; // 확인 후 목록으로
+    }
+
 
 
 }

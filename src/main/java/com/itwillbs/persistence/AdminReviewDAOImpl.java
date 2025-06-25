@@ -55,5 +55,11 @@ public class AdminReviewDAOImpl implements AdminReviewDAO {
         paramMap.put("reason", reason);
         sqlSession.update(NAMESPACE + ".deleteReview", review_id);
     }
+    
+    
+    @Override
+    public void updateReviewChecked(int reviewId) {
+        sqlSession.update(NAMESPACE + ".updateReviewChecked", reviewId);
+    }
 
 }

@@ -11,7 +11,8 @@
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="include/sidebar.jsp" %> 
 
-	<div class="notice-form-container">
+<main class="main-content">
+	<div class="notice-form">
 	  <div class="notice-meta">
 	   공지사항 번호: ${notice.notice_id}
 	  </div>
@@ -36,7 +37,7 @@
 	    </div>
 	  </form>
 	</div>
-
+</main>
 
 
 <%-- 4. 하단 푸터를 불러옵니다. --%>

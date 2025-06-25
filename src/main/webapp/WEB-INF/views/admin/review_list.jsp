@@ -7,73 +7,107 @@
 <%@ include file="include/header.jsp" %> 
 <%@ include file="include/sidebar.jsp" %>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/custom.css">
 <main class="main-content">
 	<div class="admin-container">
 	  <h1>💭 리뷰 관리</h1>
 	
-	  <!-- 🔍 검색창 -->
-	  <form method="get" action="${pageContext.request.contextPath}/admin/review_list" class="search-form">
-	    <input type="text" name="keyword" value="${param.keyword}" placeholder="도서명, 리뷰내용, 회원ID/이름 검색" />
-	    <button type="submit">검색</button>
-	  </form>
-	
-	  <!-- 📋 테이블 -->
-	  <table>
-	    <thead>
-	      <tr>
-	        <th>리뷰ID</th>
-	        <th>도서명</th>
-	        <th>회원ID</th>
-	        <th>작성자</th>
-	        <th>작성일</th>
-	        <th>평점</th>
-	        <th>상태</th>
-	        <th>요약</th>
-	        <th>상세보기</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <c:forEach var="review" items="${reviewList}">
-	        <tr>
-	          <td>${review.review_id}</td>
-	          <td>${review.book_title}</td>
-	          <td>${review.member_id}</td>
-	          <td>${review.member_name}</td>
-	          <td><fmt:formatDate value="${review.review_date}" pattern="yyyy-MM-dd" /></td>
-	          <td>${review.review_score}</td>
-	          <td>
-				  <c:choose>
-				    <c:when test="${review.review_status eq 'Y'}">
-				      <span class="badge badge-green">정상</span>
-				    </c:when>
-				    <c:when test="${review.review_status eq 'N'}">
-				      <span class="badge badge-yellow">숨김</span>
-				    </c:when>
-				    <c:otherwise>
-				      <span class="badge">-</span>
-				    </c:otherwise>
-				  </c:choose>
-			  </td>
-	          <td>${fn:substring(review.review_text, 0, 20)}...</td>
-	          <td>
-			   <button class="btn-modern openModalBtn"
-			           data-id="${review.review_id}"
-			           data-book="${review.book_title}"
-			           data-writer="${review.member_name}"
-			           data-date="<fmt:formatDate value='${review.review_date}' pattern='yyyy-MM-dd'/>"
-			           data-score="${review.review_score}"
-			           data-text="${review.review_text}">
-			     상세보기
-			   </button>
-	          </td>
-	        </tr>
-	      </c:forEach>
-	      <c:if test="${empty reviewList}">
-	        <tr><td colspan="9">조회된 리뷰가 없습니다.</td></tr>
-	      </c:if>
-	    </tbody>
-	  </table>
+		
+	  	  <!-- 🔍 검색창 -->
+		  <form method="get" action="${pageContext.request.contextPath}/admin/review_list" class="search-form">
+		    <input type="text" name="keyword" value="${param.keyword}" placeholder="도서명, 리뷰내용, 회원ID/이름 검색" />
+		    <input type="submit" value="검색">
+		  </form>
+		  
+		<!-- 📋 테이블 -->
+		<table>
+		  <thead>
+		    <tr>
+		      <th>리뷰ID</th>
+		      <th>도서명</th>
+		      <th>회원ID</th>
+		      <th>작성자</th>
+		      <th>작성일</th>
+		      <th>평점</th>
+		      <th>상태</th>
+		      <th>확인</th>
+		      <th>요약</th>
+		      <th>상세보기</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <c:forEach var="review" items="${reviewList}">
+		      <!-- 목록 행 -->
+		      <tr>
+		        <td>${review.review_id}</td>
+		        <td>${review.book_title}</td>
+		        <td>${review.member_id}</td>
+		        <td>${review.member_name}</td>
+		        <td><fmt:formatDate value="${review.review_date}" pattern="yyyy-MM-dd" /></td>
+		        <td>${review.review_score}</td>
+		        <td>
+		          <c:choose>
+		            <c:when test="${review.review_status eq 'Y'}"><span class="badge badge-green">정상</span></c:when>
+		            <c:when test="${review.review_status eq 'N'}"><span class="badge badge-yellow">숨김</span></c:when>
+		            <c:otherwise><span class="badge">-</span></c:otherwise>
+		          </c:choose>
+		        </td>
+		        <td>
+		          <c:choose>
+		            <c:when test="${review.review_checked eq 'Y'}">
+		              <span class="badge badge-blue">확인됨</span>
+		            </c:when>
+		            <c:otherwise>
+		              <span class="badge badge-gray">미확인</span>
+		            </c:otherwise>
+		          </c:choose>
+		        </td>
+		        <td>${fn:substring(review.review_text, 0, 20)}...</td>
+		        <td><button type="button" class="toggleDetailBtn btn-toggle">▼ 상세보기</button></td>
+		      </tr>
+		
+		      <!-- 상세보기 줄 -->
+		      <tr class="review-detail-row" style="display:none;">
+		        <td colspan="10">
+		          <p><strong>전체 리뷰 내용:</strong><br>${review.review_text}</p>
+		
+		          <!-- ✅ 숨김/삭제/확인 처리 버튼 일렬 정렬 -->
+		          <div class="review-action-buttons">
+		            <!-- 숨김 -->
+		            <form method="post" action="${pageContext.request.contextPath}/admin/review_hide" style="display:flex; align-items:center;">
+		              <input type="hidden" name="review_id" value="${review.review_id}" />
+		              <input type="text" name="reason" placeholder="숨김 사유" required class="input-small" />
+		              <button type="submit" class="btn-sm btn-hide">숨김</button>
+		            </form>
+		
+		            <!-- 삭제 -->
+		            <form method="post" action="${pageContext.request.contextPath}/admin/review_delete" style="display:flex; align-items:center; margin-left:10px;" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+		              <input type="hidden" name="review_id" value="${review.review_id}" />
+		              <input type="text" name="reason" placeholder="삭제 사유" required class="input-small" />
+		              <button type="submit" class="btn-sm btn-danger">삭제</button>
+		            </form>
+		
+		            <!-- 확인 -->
+		            <c:if test="${review.review_checked eq 'N'}">
+		              <form method="post" action="${pageContext.request.contextPath}/admin/review_check" style="margin-left:10px;">
+		                <input type="hidden" name="review_id" value="${review.review_id}" />
+		               <button type="submit" class="btn-check-confirm">
+ 							 <span>✅</span> 이 리뷰 확인 처리
+					   </button>
+		              </form>
+		            </c:if>
+		            <c:if test="${review.review_checked eq 'Y'}">
+		              <span class="badge badge-confirmed" style="margin-left:10px;">✅ 이 리뷰는 확인 완료됨</span>
+		            </c:if>
+		          </div>
+		        </td>
+		      </tr>
+		    </c:forEach>
+		
+		    <c:if test="${empty reviewList}">
+		      <tr><td colspan="10">조회된 리뷰가 없습니다.</td></tr>
+		    </c:if>
+		  </tbody>
+		</table>
 	
 	  <!-- 📌 페이징 -->
 		<!-- 페이지네이션 버튼 -->
@@ -95,98 +129,31 @@
 </main>
 	
 	<form id="reviewActionForm" method="post">
- 		 <input type="hidden" name="review_id" id="modalReviewId">
+ 		 <input type="hidden" name="review_id" id="modalReviewId_form">
  		 <input type="hidden" name="reason" id="modalReasonHidden">
 	</form>
 	<c:if test="${not empty msg}">
   <script>alert('${msg}');</script>
 </c:if>
-	
-	
-	<!-- ✅ 상세보기 모달 -->
-	<div id="reviewModal" class="modal" style="display:none;">
-	  <div class="modal-content">
-	    <span class="close">&times;</span>
-	    <h3>리뷰 상세 내용</h3>
-	
-	    <!-- 숨겨진 리뷰 ID -->
-	    <input type="hidden" id="modalReviewId">
-	
-	    <p><strong>도서명:</strong> <span id="modalBookTitle"></span></p>
-	    <p><strong>작성자:</strong> <span id="modalWriter"></span></p>
-	    <p><strong>작성일:</strong> <span id="modalDate"></span></p>
-	    <p><strong>평점:</strong> <span id="modalScore"></span></p>
-	    <p><strong>내용:</strong> <span id="modalText"></span></p>
-	
-	    <div class="modal-reason-box">
-	      <label>사유 입력:</label><br>
-	      <textarea id="modalReason" rows="3" style="width:100%;"></textarea>
-	    </div>
-	
-	    <div class="modal-buttons" style="margin-top: 15px; text-align: right;">
-	      <button id="hideBtn" class="btn-outline-primary">숨김</button>
-	      <button id="deleteBtn" class="btn-outline-danger">삭제</button>
-	    </div>
-	  </div>
-	</div>
-	
-	<script>
-	  const ctx = '${pageContext.request.contextPath}';
-	
-	  // 상세보기 모달 열기
-	  document.querySelectorAll('.openModalBtn').forEach(btn => {
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	  document.querySelectorAll('.toggleDetailBtn').forEach(btn => {
 	    btn.addEventListener('click', function () {
-	      document.getElementById('modalBookTitle').textContent = this.dataset.book;
-	      document.getElementById('modalWriter').textContent = this.dataset.writer;
-	      document.getElementById('modalDate').textContent = this.dataset.date;
-	      document.getElementById('modalScore').textContent = this.dataset.score;
-	      document.getElementById('modalText').textContent = this.dataset.text;
-	      document.getElementById('modalReviewId').value = this.dataset.id;
-	      document.getElementById('modalReason').value = ''; // 초기화
-	
-	      document.getElementById('reviewModal').style.display = 'block';
+	      const row = this.closest('tr').nextElementSibling;
+	      const isOpen = row.style.display === 'table-row';
+	      row.style.display = isOpen ? 'none' : 'table-row';
+	      this.textContent = isOpen ? '▼ 상세보기' : '▲ 닫기';
+	      this.classList.toggle('open', !isOpen); // 버튼 스타일 바꿔주기 위해 클래스 toggle
 	    });
 	  });
+	});
+
+</script>
 	
-	  // 모달 외부 클릭 시 닫기
-	  window.addEventListener('click', e => {
-	    const modal = document.getElementById('reviewModal');
-	    if (e.target == modal) modal.style.display = 'none';
-	  });
 	
-	  // X 버튼 클릭 시 닫기
-	  document.querySelector('.modal .close').addEventListener('click', () => {
-	    document.getElementById('reviewModal').style.display = 'none';
-	  });
 	
-	  // 숨김 / 삭제 처리
-	  function handleReviewAction(type) {
-	    const reviewId = document.getElementById('modalReviewId').value;
-	    const reason = document.getElementById('modalReason').value.trim();
-	
-	    if (!reason) return alert('사유를 입력해주세요.');
-	    if (type == 'delete' && !confirm('정말 삭제하시겠습니까?')) return;
-	
-	    fetch(`${ctx}/admin/review_${type}`, {
-	      method: 'POST',
-	      headers: { 'Content-Type': 'application/json' },
-	      body: JSON.stringify({ review_id: reviewId, reason })
-	    })
-	    .then(res => res.text())
-	    .then(msg => {
-	      if (msg == 'success') {
-	        alert(`리뷰가 ${type == 'hide' ? '숨김 처리' : '삭제'}되었습니다.`);
-	        location.reload();
-	      } else {
-	        alert('처리 실패');
-	      }
-	    });
-	  }
-	
-	  // 버튼 연결
-	  document.getElementById('hideBtn').addEventListener('click', () => handleReviewAction('hide'));
-	  document.getElementById('deleteBtn').addEventListener('click', () => handleReviewAction('delete'));
-	</script>
+
 
 
 	
