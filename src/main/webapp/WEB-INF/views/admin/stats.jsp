@@ -23,18 +23,17 @@
 	<!-- SweetAlert2 라이브러리 불러오기 -->
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		
-			<c:if test="${not empty adminLogin.ad_nick}">
+			<c:if test="${not empty msg}">
 			  <script>
 			    window.addEventListener('DOMContentLoaded', () => {
-			      const adminNick = "${adminLogin.ad_nick}";
 			      Swal.fire({
-			        icon: 'success',
-			        title: '관리자 로그인 성공!',
-			        text: adminNick + '님 환영합니다 👑'
+			        icon: '${icon}',      // success, error 등
+			        title: '${msg}'       // ex. 최고관리자님 환영합니다 👑
 			      });
 			    });
 			  </script>
 			</c:if>
+
 
 		
 
