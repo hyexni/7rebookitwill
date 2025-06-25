@@ -28,15 +28,18 @@ public interface ReceiptDAO {
     // 모든 영수증 목록을 조회하는 메서드 선언
     public List<ReceiptVO> selectAllReceipts() throws Exception;
     
+    
+    // 영수증 파일 이름 가져오는 메서드
     int countByFilename(String filename);
     
+    //영수증을 가져오는 메서드    
 	public void insertReceipt(ReceiptVO vo);
 	
 	// 파일 해시값(String)을 받아 중복된 개수(int)를 반환하는 메서드입니다.
 	public int countByFileHash(String fileHash);
 
 	// 포인트 적립 메서드: PointHistoryVO 대신 Map으로 필요한 값만 받음
-    public void addPointHistory(Map<String, Object> params);
+    //public void addPointHistory(Map<String, Object> params);
 
     // 회원 총 포인트 업데이트 메서드는 그대로 사용
     public void updateUserPoint(Map<String, Object> params);

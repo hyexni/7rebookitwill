@@ -48,6 +48,11 @@ public class PointHistoryServiceImpl implements PointHistoryService {
     @Override
     public void addPoint(int member_idx, int change_amount, String change_reason) throws Exception {
         
+    	 // 특정 사유일 경우 실행하지 않음
+        if ("영수증 인증 적립".equals(change_reason)) {
+            return; // 메소드 종료
+        }
+    	
         // 1. 전달받은 정보로 PointVO 객체를 만듭니다.
         PointVO pointVO = new PointVO();
         pointVO.setMember_idx(member_idx);
