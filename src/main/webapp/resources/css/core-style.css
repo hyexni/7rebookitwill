@@ -560,7 +560,7 @@ img {
         -ms-flex-order: 2;
         order: 2; } }
   .main-content-wrapper .amado_product_area {
-    position: relative;
+    position: left;
     z-index: 1;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 calc(95% - 550px);

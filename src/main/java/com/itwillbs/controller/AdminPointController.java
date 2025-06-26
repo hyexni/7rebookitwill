@@ -4,10 +4,10 @@ import com.itwillbs.domain.PointVO;
 import com.itwillbs.domain.SearchCriteria;
 import com.itwillbs.dto.PageMakerDTO;
 import com.itwillbs.dto.PointHistoryDTO;
-import com.itwillbs.service.PointHistoryService; // service import
+import com.itwillbs.service.PointHistoryService;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired; // Autowired import
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,28 +25,40 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/admin")
 public class AdminPointController {
 
-    //  Service 객체를 주입받기 위한 필드 선언 및 @Autowired 추가
     @Autowired
     private PointHistoryService pointHistoryService;
 
     @GetMapping("/pointHistory")
     public String getPointHistory(@ModelAttribute("cri") SearchCriteria cri, Model model) {
 
-        // 클래스 이름(PointHistoryService) 대신 주입받은 객체(pointHistoryService) 사용
+        // ========================= [ 수정된 부분 1: 기본 정렬 기준 설정 ] =========================
+        // 뷰로부터 정렬 관련 파라미터가 전달되지 않은 경우(최초 페이지 접근 시),
+        // 기본 정렬 기준(변경일 최신순)을 설정합니다.
+        if (cri.getSortColumn() == null || cri.getSortColumn().isEmpty()) {
+            cri.setSortColumn("change_date");
+            cri.setSortOrder("DESC");
+        }
+        // =======================================================================================
+
         List<PointHistoryDTO> historyList = pointHistoryService.getPointHistoryList(cri);
         int totalCount = pointHistoryService.getPointHistoryCount(cri);
         
-     // ================= [ 디버깅 코드 추가 ] =================
         System.out.println("### Service로부터 받은 데이터 개수: " + historyList.size()); 
-        // =======================================================
 
-        // Map 대신 PageMakerDTO 사용
         PageMakerDTO pageMaker = new PageMakerDTO();
         pageMaker.setCri(cri);
         pageMaker.setTotalCount(totalCount);
 
         model.addAttribute("historyList", historyList);
         model.addAttribute("pageMaker", pageMaker);
+
+        // ========================= [ 수정된 부분 2: cri 객체 전달 ] =========================
+        // @ModelAttribute("cri")로 인해 자동으로 모델에 추가되지만,
+        // 명시적으로 추가하여 코드의 가독성을 높일 수 있습니다.
+        // JSP 뷰에서 cri.sortUrl() 이나 cri.pageUrl() 같은 헬퍼 메소드를 사용하려면
+        // cri 객체가 모델에 담겨있어야 합니다.
+        model.addAttribute("cri", cri);
+        // =================================================================================
 
         return "admin/pointHistory";
     }

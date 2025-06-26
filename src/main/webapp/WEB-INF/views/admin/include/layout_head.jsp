@@ -39,6 +39,22 @@
 		  font-weight: 900 !important;
 		  font-style: normal !important;
 		}
+		
+		  /* ================================================================ */
+    /* ※ 이 스타일은 layout_head.jsp의 공통 CSS 파일로 옮기는 것을 추천합니다. */
+    html {
+        height: 100%;
+    }
+    body {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    main {
+        flex: 1; /* 핵심: main 영역이 남는 공간을 채워서 footer를 밀어냅니다. */
+    }
+    /* ================================================================ */
+		
 	</style>
 
 

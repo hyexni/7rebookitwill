@@ -1,41 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ include file="/WEB-INF/views/include/alert.jsp" %> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
-<%-- 1. 페이지 기본 골격과 공통 CSS/폰트 링크를 불러옵니다. --%>
+<%-- 1. 페이지 기본 골격과 CSS/폰트 링크를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 
-
-<%-- 2. 상단 헤더 --%>
+<%-- 2. 상단 헤더를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/header.jsp" %> 
 
-<%-- 3. 왼쪽 사이드바 --%>
+<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
 
+<%-- 4. 여기서부터 '1:1 문의 목록' 페이지만의 고유한 컨텐츠가 시작됩니다. --%>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>독후감 게시판</title>
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-    body { padding: 2rem; }
-</style>
-</head>
-<body>
+<section class="mypage-inquiry-list">
+  <div class="inquiry-header">
+    <h2><i class="fa fa-clipboard-list"></i>📋 나의 독후감 리스트</h2>
+    <a href="/bookreport/write" class="btn-write">새글 등록</a>
+  </div>
 
-<div class="container">
-    <h1 class="mb-4">독후감 게시판</h1>
-    
-    <table class="table table-hover text-center">
+  <div class="table-wrapper">
+    <table class="styled-table">
         <thead class="table-dark">
             <tr>
                 <th>글번호</th>
                 <th>제목</th>
+                <th>도서명</th>
                 <th>저자</th>
                 <th>작성일</th>
             </tr>
@@ -45,6 +35,7 @@
                 <tr style="cursor:pointer;" onclick="location.href='/bookreport/read?report_id=${report.report_id}'">
                     <td>${report.report_id}</td>
                     <td><c:out value="${report.report_title}"/></td>
+                    <td><c:out value="${report.rbook_title}"/></td>
                     <td><c:out value="${report.author_name}"/></td>
                     <td>
                         <fmt:formatDate value="${report.report_regdate}" pattern="yyyy-MM-dd"/>
@@ -64,23 +55,5 @@
     </div>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // 글쓰기, 수정, 삭제 후 alert 창
-    const result = '${result}';
-    if(result === 'CREATE_OK') {
-        alert('독후감이 성공적으로 등록되었습니다.');
-    } else if (result === 'MODIFY_OK') {
-        alert('독후감이 수정되었습니다.');
-    } else if (result === 'DELETE_OK') {
-        alert('독후감이 삭제되었습니다.');
-    }
-    
-    const authMsg = '${auth_msg}';
-    if(authMsg) {
-    	alert(authMsg);
-    }
-</script>
 </body>
 </html>

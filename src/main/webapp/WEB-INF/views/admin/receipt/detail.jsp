@@ -72,7 +72,7 @@
         <div class="summary-box">
             <h2>영수증 요약</h2>
             <p>
-                <strong>이름:</strong>
+                <strong>회원명:</strong>
                 <%-- [개선] ocr_store 값이 비어있지 않을 때만 표시 --%>
                 <c:choose>
                     <c:when test="${not empty memberVO.member_name}">
@@ -143,10 +143,8 @@
         </div>
         
         
-
                
-        <a href="${pageContext.request.contextPath}/receipt/upload" class="btn-link">🔄 목록으로 가기</a>
-         <a href="${pageContext.request.contextPath}/recommend/byReceipt" class="btn-link">🔄 영수증 기반 추천도서</a>
+        <a href="${pageContext.request.contextPath}/admin/receiptList" class="btn-link">🔄 목록으로 가기</a>
     </div>
     
     <%-- 5. 하단 푸터 --%>
