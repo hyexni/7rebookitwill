@@ -10,6 +10,7 @@
 
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="include/sidebar.jsp" %>  
+<%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
 <main class="main-content">
 	<div class="admin-container">
@@ -59,9 +60,9 @@
 	</div>
 	
 	<!-- 새 글 등록 버튼 -->
-	<div class="bottom-bar">
+	<div style="margin-top: 20px; text-align: right;">
 	  <a href="${pageContext.request.contextPath}/admin/notice_write">
-	    <button class="notice-btn">+ 새 글 등록</button>
+	    <button type="submit" class="btn btn-primary">+새글 등록</button>
 	  </a>
 	</div>
 </main>

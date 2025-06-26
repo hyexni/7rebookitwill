@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.InquiryVO;
 import com.itwillbs.domain.ResponseVO;
@@ -40,7 +41,8 @@ public class InquiryController {
 	
 	// 글쓰기 (정보 처리) / POST
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public String inquiryWritePOST(InquiryVO vo, HttpSession session) throws Exception {
+	public String inquiryWritePOST(InquiryVO vo, HttpSession session,
+								  RedirectAttributes rttr) throws Exception {
 		// member_idx가 없으면 로그인 페이지로 이동
 		Integer member_idx = (Integer) session.getAttribute("member_idx");
 		    if (member_idx == null) {
@@ -53,6 +55,10 @@ public class InquiryController {
 
 	    // 3. 글쓰기 처리
 	    iService.inquiryWrite(vo);
+	    
+	    // 접수 메시지
+        rttr.addFlashAttribute("msg",  "문의 접수 완료!");
+        rttr.addFlashAttribute("icon", "success");
 		
 		
 		return "redirect:/cs/list";
@@ -107,8 +113,14 @@ public class InquiryController {
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String inquiryUpdatePOST(InquiryVO vo) throws Exception {
+	public String inquiryUpdatePOST(InquiryVO vo,
+								RedirectAttributes rttr) throws Exception {
 	    iService.updateInquiry(vo);
+	    
+	    // 수정 메시지
+        rttr.addFlashAttribute("msg",  "문의 수정 완료!");
+        rttr.addFlashAttribute("icon", "success");
+	    
 	    return "redirect:/cs/read?inquiry_id=" + vo.getInquiry_id();
 	}
 	
@@ -116,8 +128,14 @@ public class InquiryController {
 	
 	/* 삭제 기능 */
 	@GetMapping("/delete")
-	public String inquiryDelete(@RequestParam("inquiry_id") int inquiry_id) throws Exception {
+	public String inquiryDelete(@RequestParam("inquiry_id") int inquiry_id,
+								RedirectAttributes rttr) throws Exception {
 	    iService.deleteInquiry(inquiry_id);
+	    
+	    // 삭제 메시지
+        rttr.addFlashAttribute("msg",  "문의 삭제 완료!");
+        rttr.addFlashAttribute("icon", "success");
+	    
 	    return "redirect:/cs/list";
 	}
 

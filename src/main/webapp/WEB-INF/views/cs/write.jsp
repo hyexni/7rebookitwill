@@ -6,6 +6,7 @@
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+<%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/custom.css">
 

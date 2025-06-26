@@ -5,23 +5,17 @@
   
   <mapper namespace="com.itwillbs.persistence.AdminInquiryDAO">
 
+  <!-- 전체 문의글 등록일자 기준 내림차순  -->
   <select id="getAllInquiries" resultType="com.itwillbs.domain.InquiryVO">
     SELECT * FROM inquiry ORDER BY created_at DESC
   </select>
 
-  <select id="getInquiry" resultType="com.itwillbs.domain.InquiryVO">
-    SELECT 
-    i.*, 
-    m.member_id
- 	FROM inquiry i
-    JOIN member m ON i.member_idx = m.member_idx
-    WHERE i.inquiry_id = #{inquiry_id}
-  </select>
-
+  <!-- 답변 내용 조회 -->
   <select id="getResponse" resultType="com.itwillbs.domain.ResponseVO">
     SELECT * FROM response WHERE inquiry_id = #{inquiry_id}
   </select>
 
+  <!-- 답변 작성 시 답변 테이블에 INSERT -->
   <insert id="insertResponse">
     INSERT INTO response (inquiry_id, ad_id, response_content, created_at)
     VALUES (#{inquiry_id}, #{ad_id}, #{response_content}, #{created_at})
@@ -33,12 +27,14 @@
 	  WHERE inquiry_id = #{inquiry_id}
   </update>
   
+  <!-- 관리자 답변 수정 -->
   <update id="updateResponse">
     UPDATE response
     SET response_content = #{response_content}
     WHERE response_id = #{response_id}
   </update>
 
+  <!-- 관리자 답변 삭제  -->
   <delete id="deleteResponse">
     DELETE FROM response WHERE response_id = #{response_id}
   </delete>
@@ -99,6 +95,7 @@
 	   LIMIT #{startRow}, #{pageSize}
 	 </select>
 
+	 <!-- 페이징 처리를 위한 전체 문의 수 조회 (검색 포함) -->
 	  <select id="getInquiryCount" resultType="int">
 	  	 SELECT COUNT(*)
 	 	 FROM inquiry i
@@ -109,6 +106,37 @@
 	 	   </if>
 		 </where>
 	  </select>
+	  
+	  
+	 <!-- 문의 내역에 아이디 조회 해결 -->   <!-- 문의 상세보기용 -->
+	 <resultMap id="InquiryWithMemberId" type="com.itwillbs.domain.InquiryVO">
+		  <id property="inquiry_id" column="inquiry_id"/>
+		  <result property="member_idx" column="member_idx"/>
+		  <result property="member_id" column="member_id"/>
+		  <result property="category" column="category"/>
+		  <result property="title" column="title"/>
+		  <result property="content" column="content"/>
+		  <result property="status" column="status"/>
+		  <result property="created_at" column="created_at"/>
+		  <result property="processed_at" column="processed_at"/>
+		</resultMap>
+		
+		<select id="getInquiry" resultMap="InquiryWithMemberId">
+		  SELECT 
+		    i.inquiry_id,
+		    i.member_idx,
+		    i.category,
+		    i.title,
+		    i.content,
+		    i.status,
+		    i.created_at,
+		    i.processed_at,
+		    m.member_id AS member_id
+		  FROM inquiry i
+		  JOIN member m ON i.member_idx = m.member_idx
+		  WHERE i.inquiry_id = #{inquiry_id}
+		  </select>
+	  
 
 </mapper>
   
