@@ -132,6 +132,13 @@ public class PaymentDAOImpl implements PaymentDAO {
 	public void insertPointHistory(PaymentDTO dto) {
 	    sqlSession.insert(NAMESPACE + "insertPointHistory", dto);
 	}
+
+
+	@Override
+	public void insertDelivery(DeliveryDTO dto) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	
