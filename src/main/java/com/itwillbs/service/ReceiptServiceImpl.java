@@ -14,8 +14,8 @@ import com.google.cloud.vertexai.generativeai.ResponseHandler;
 import com.google.protobuf.ByteString;
 import com.itwillbs.domain.PointVO;
 import com.itwillbs.domain.ReceiptVO;
+import com.itwillbs.domain.SearchCriteria;
 import com.itwillbs.domain.BookVO;
-import com.itwillbs.domain.Criteria;
 import com.itwillbs.dto.AdminReceiptDTO;
 import com.itwillbs.dto.ReceiptDTO;
 import com.itwillbs.dto.ReceiptItemDTO;
@@ -332,66 +332,28 @@ public class ReceiptServiceImpl implements ReceiptService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	        
     
-//    
-//    /**
-//     * [신규] OCR 처리된 ReceiptDTO를 받아 각 품목을 DB의 도서와 매칭하고,
-//     * 매칭된 결과를 DTO에 직접 업데이트하는 헬퍼 메서드.
-//     */
-//    private void matchBooksAndUpdateDto(ReceiptDTO dto) {
-//        if (dto == null || dto.getItems() == null) {
-//            return; // 처리할 아이템이 없으면 종료
-//        }
-//
-//        for (ReceiptItemDTO item : dto.getItems()) {
-//            String titleToSearch = item.getBookTitle(); 
-//
-//            if (titleToSearch == null || titleToSearch.trim().isEmpty()) {
-//                continue; 
-//            }
-//
-//          
-//            List<BookVO> matchedBooks = BookDAO.findByTitleContaining(titleToSearch);
-//
-//            if (matchedBooks != null && !matchedBooks.isEmpty()) {
-//                // 매칭에 성공한 경우
-//                BookVO foundBook = matchedBooks.get(0); 
-//                item.setMatchedBook(foundBook);
-//                System.out.println("매칭 성공: '" + titleToSearch + "' -> '" + foundBook.getBook_title() + "'");
-//            } else {
-//                // 매칭에 실패한 경우
-//                System.out.println("매칭 실패: '" + titleToSearch + "'");
-//            }
-//        }
-//    }
-//    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+     
     //관리자페이지 //
 
-    @Override
-    public List<AdminReceiptDTO> getReceiptListAdmin(Criteria cri) throws Exception {
-        return receiptDAO.getReceiptListAdmin(cri);
-    }
 
-    @Override
-    public int getReceiptTotalCount(Criteria cri) throws Exception {
-        return receiptDAO.getReceiptTotalCount(cri);
-    }
+	@Override
+	public List<AdminReceiptDTO> getReceiptListAdmin(SearchCriteria cri) throws Exception {
+		return receiptDAO.getReceiptListAdmin(cri);
+	}
 
 
+	@Override
+	public int getReceiptTotalCount(SearchCriteria cri) throws Exception {
+		return receiptDAO.getReceiptTotalCount(cri);
+	}
+
+
+	
+	
 	
 
     
