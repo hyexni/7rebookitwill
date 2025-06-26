@@ -14,7 +14,7 @@ import com.itwillbs.domain.ReviewVO;
 @Repository
 public class AdminReviewDAOImpl implements AdminReviewDAO {
 
-    private static final String NAMESPACE = "com.itwillbs.persistence.AdminReviewDAO";
+    private static final String NAMESPACE = "com.itwillbs.persistence.AdminReviewDAO.";
 
     @Inject
     private SqlSession sqlSession;
@@ -25,7 +25,7 @@ public class AdminReviewDAOImpl implements AdminReviewDAO {
         paramMap.put("startRow", startRow);
         paramMap.put("pageSize", pageSize);
         paramMap.put("keyword", keyword);
-        return sqlSession.selectList(NAMESPACE + ".getReviewList", paramMap);
+        return sqlSession.selectList(NAMESPACE + "getReviewList", paramMap);
     }
 
 
@@ -44,7 +44,7 @@ public class AdminReviewDAOImpl implements AdminReviewDAO {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("review_id", review_id);
         paramMap.put("reason", reason);
-        sqlSession.update(NAMESPACE + ".hideReview", paramMap);
+        sqlSession.update(NAMESPACE + "hideReview", paramMap);
     }
 
 
@@ -53,13 +53,33 @@ public class AdminReviewDAOImpl implements AdminReviewDAO {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("review_id", review_id);
         paramMap.put("reason", reason);
-        sqlSession.update(NAMESPACE + ".deleteReview", review_id);
+        sqlSession.update(NAMESPACE + "deleteReview", review_id);
     }
     
     
     @Override
-    public void updateReviewChecked(int reviewId) {
-        sqlSession.update(NAMESPACE + ".updateReviewChecked", reviewId);
+    public void updateReviewChecked(int review_id) {
+        sqlSession.update(NAMESPACE + "updateReviewChecked", review_id);
     }
+
+
+    // 리뷰 필터
+    @Override
+    public List<ReviewVO> selectReviewListFiltered(Map<String, Object> paramMap) {
+        return sqlSession.selectList(NAMESPACE + "selectReviewListFiltered", paramMap);
+    }
+
+    @Override
+    public int selectReviewCountFiltered(Map<String, Object> paramMap) {
+        return sqlSession.selectOne(NAMESPACE + "selectReviewCountFiltered", paramMap);
+    }
+    
+    // 미확인 건수
+    @Override
+    public int countUncheckedReviews() {
+        return sqlSession.selectOne(NAMESPACE + "countUncheckedReviews");
+    }
+
+    
 
 }
