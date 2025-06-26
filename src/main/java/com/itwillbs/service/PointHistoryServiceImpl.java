@@ -63,31 +63,7 @@ public class PointHistoryServiceImpl implements PointHistoryService {
         pointHistoryDAO.insertPointHistory(pointVO);
     }
 
-    
-    // 포인트 사용 트랜잭션 처리
-    @Transactional
-    @Override
-    public void usePoint(PointVO pointVO) throws Exception {
-        // 1. 현재 총 포인트 조회
-        Integer currentTotal = pointHistoryDAO.getTotalPoints(pointVO.getMember_idx());
-        if (currentTotal == null || currentTotal < Math.abs(pointVO.getChange_amount())) {
-            throw new Exception("포인트가 부족합니다."); // 사용하려는 포인트보다 현재 포인트가 적을 경우 예외 발생
-        }
 
-        // 2. 새로운 총 포인트 계산
-        int newTotal = currentTotal + pointVO.getChange_amount(); // change_amount는 이미 음수
-
-        // 3. PointVO에 최종 포인트 잔액 및 현재 시간 설정
-        pointVO.setPoint_amount(newTotal); // 현재 시점의 총 포인트
-        pointVO.setChange_date(Timestamp.valueOf(LocalDateTime.now())); // 현재 시간 기록
-
-        // 4. 포인트 내역 DB에 삽입
-        pointHistoryDAO.insertPointHistory(pointVO);
-
-        // 5. 회원 테이블의 총 포인트 필드 업데이트 (만약 회원 테이블에 총 포인트 필드가 있다면)
-       // pointHistoryDAO.updateMemberTotalPoints(pointVO.getMember_idx(), newTotal);
-    
-    }
     
    //영수증으로 적립된 포인트 가져오기
 	@Override
@@ -96,15 +72,26 @@ public class PointHistoryServiceImpl implements PointHistoryService {
 		return 0;
 	}
     
-    
-    
- // 수정된 DAO 메서드를 호출하도록 변경
+		
+    //포인트를 멤버테이블에 업데이트 하는 메서드
+	  @Transactional
+	  @Override
+	  public void updateMemberTotalPoints(int member_idx) throws Exception {
+						
+		}
+		
+ 
+
+	// 수정된 DAO 메서드를 호출하도록 변경
     @Override
     public List<PointHistoryDTO> getPointHistoryList(SearchCriteria cri) {
         return pointHistoryDAO.getPointHistoryAdmin(cri);
     }
 
-    //수정된 DAO 메서드를 호출하도록 변경
+  
+
+
+	//수정된 DAO 메서드를 호출하도록 변경
     @Override
     public int getPointHistoryCount(SearchCriteria cri) {
         return pointHistoryDAO.getPointHistoryCount(cri);

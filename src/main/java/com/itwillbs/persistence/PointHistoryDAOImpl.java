@@ -1,9 +1,6 @@
 package com.itwillbs.persistence;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -50,22 +47,18 @@ public class PointHistoryDAOImpl implements PointHistoryDAO {
 		
 	}
 
+	
 	@Override
-	public void updateMemberTotalPoints2(PointVO pointVO) throws Exception {
-//		Map<String, Integer> pointmap = new HashMap<String, Integer>();
-//		pointmap.put("member_idx", member_idx);
-//		pointmap.put("pointsToCredit", pointsToCredit);
-		logger.info("++++++++++++++++++++++++++++++++++++");
-//		logger.info("pointmap"+pointmap);
-//		sqlSession.update(NAMESPACE + ".updateMemberTotalPoints",pointmap);
-		
-	}
-		
-		
+      public int updateMemberTotalPoints(int member_idx) throws Exception {
+	
+	return sqlSession.selectOne(NAMESPACE + ".updateMemberTotalPoints", member_idx);
+    }
+
 	@Override
 	public int selectMemberPoints(int member_idx) throws Exception {
 		return sqlSession.selectOne(NAMESPACE + ".selectMemberPoints", member_idx);
 	}
+	
 	
 	
 

@@ -24,14 +24,11 @@ public interface PointHistoryDAO {
     //영수증에서 적립된 포인트를 포인트로 전환
    	public void insertReceiptPoint(PointVO pointVO) throws Exception;
    	
-   	//포인트 테이블의 총 포인트도 업데이트
-   	
-    //public void updateMemberTotalPoints2(int member_idx, int change_amount) throws Exception;
-    public void updateMemberTotalPoints2(PointVO pointVO) throws Exception;
-   	
-   	
+   	//멤버 테이블의 총 토탈포인트 업데이트   
+    public int updateMemberTotalPoints(int memeber_idx) throws Exception;  
+    
+       	//회원 포인트 가져오기
    	public int selectMemberPoints(int member_idx) throws Exception;
-
     
     //-관리자 모드-//
     
@@ -40,24 +37,8 @@ public interface PointHistoryDAO {
 
     // 파라미터를 SearchCriteria 객체로 변경
     public int getPointHistoryCount(SearchCriteria cri);
-
-	
-
 	
 
 
-	
-
-	
-
-   
-
-    //회원 테이블의 총 포인트 필드 업데이트
-	//public void updateMemberTotalPoints(int member_idx, int newTotal);
-
-    
-    
-    
-    
 
 }
