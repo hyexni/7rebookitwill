@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.persistence.MainDAO">
+
+    <select id="getBookList" resultType="com.itwillbs.domain.BookVO">
+        SELECT
+          b.book_id,
+          b.book_title,
+          b.cover_image,
+          b.author_name,
+          b.book_price,
+         COALESCE(s.totalSales, 0) AS totalSales,
+         COALESCE(r.avgRating,  0) AS avgRating
+          FROM book b
+          
+        
+        
+        <!--판매량(salesCount) 집계 -->
+           LEFT JOIN (
+      SELECT book_id, SUM(quantity) AS totalSales
+      FROM orderitem
+      GROUP BY book_id
+    ) s ON b.book_id = s.book_id
+
+        
+        
+           <!--평균 평점(averageRating)  집계 -->
+
+     LEFT JOIN (
+      SELECT book_id, AVG(review_score) AS avgRating
+      FROM review
+      GROUP BY book_id
+    ) r ON b.book_id = r.book_id
+        ORDER BY b.created_at DESC
+        
+        <if test="limit != null">
+          LIMIT #{limit}
+        </if>
+        
+        
+    </select>
+    
+</mapper>

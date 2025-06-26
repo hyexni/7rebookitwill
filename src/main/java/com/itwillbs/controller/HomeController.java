@@ -3,7 +3,10 @@ package com.itwillbs.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.itwillbs.domain.BookVO;
+import com.itwillbs.domain.Criteria;
+import com.itwillbs.service.BookService;
 
 /**
  * Handles requests for the application home page.
@@ -42,5 +49,11 @@ public class HomeController {
     public String paymentTerms() {
         return "terms/payment_terms";
     }
+	
+	
+	
+	
+	
+	
 	
 }
