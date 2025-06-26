@@ -21,6 +21,19 @@ public class RecommendServiceImpl implements RecommendService {
 	@Inject
 	private RecommendDAO rDao;
 
+	// 구매 이력 여부 확인
+	@Override
+	public boolean hasPurchaseHistory(int member_idx) {
+		return rDao.countUserPurchases(member_idx) > 0;
+	}
+
+	// 찜 이력 여부 확인
+	@Override
+	public boolean hasWishHistory(int member_idx) {
+		int count = rDao.countUserWishes(member_idx);
+		System.out.println("찜 개수: " + count);
+		return count > 0;
+	}
 
 	// 찜 기반 정렬 메서드 (6/16) 
     @Override

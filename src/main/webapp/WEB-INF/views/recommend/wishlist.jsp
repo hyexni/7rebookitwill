@@ -20,8 +20,18 @@
 		<div class="box-header with-border">
 		
 		<c:choose>
-		  <c:when test="${empty wishList}">
-		    <p>😢 찜한 도서 없음</p>
+		  <c:when test="${empty wishList && hasWishHistory}">
+		    <div style="text-align: center; padding: 30px;">
+		     	 💖 찜하신 책이 해당 장르의 유일한 도서라<br/>추천드릴 다른 책이 없어요.
+				다른 장르의 책들도 한 번 둘러보세요! 😉
+		    </div>
+		  </c:when>
+		  
+		  <c:when test="${empty wishList && !hasWishHistory}">
+		    <div style="text-align: center; padding: 30px;">
+		      아직 찜한 도서가 없어요!<br/>
+		      책을 찜하면 맞춤 추천을 받을 수 있어요 💖
+		    </div>
 		  </c:when>
 		  
 		  <c:otherwise>
@@ -49,16 +59,16 @@
 		          
 		          <!-- 별점 평균 -->
 		          <div style="font-size: 14px;">
-		            <c:forEach var="i" begin="1" end="5">
-		              <c:choose>
-		                <c:when test="${i <= book.avgRating}">
-		                  ⭐
-		                </c:when>
-		                <c:otherwise>
-		                  ☆
-		                </c:otherwise>
-		              </c:choose>
-		            </c:forEach>
+		            <p>
+		              <c:set var="rating" value="${book.avgRating}"/>
+		              <c:forEach var="i" begin="1" end="5">
+		                <c:choose>
+		                  <c:when test="${i <= rating}">⭐</c:when>
+		                  <c:otherwise>☆</c:otherwise>
+		                </c:choose>
+		              </c:forEach>
+		              (<fmt:formatNumber value="${book.avgRating}" pattern="#0.0"/>)
+		            </p>
 		          </div>
 		         
                 </div>

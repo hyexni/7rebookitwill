@@ -976,6 +976,14 @@ a {
 	margin-top: 10px;
 }
 
+.review-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+ }
+ .review-row:hover {
+   background-color: #f1f3f5;
+ }
+
 .input-small {
 	width: 120px;
 	padding: 7px 10px;

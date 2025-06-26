@@ -24,6 +24,18 @@ public class RecommendDAOImpl implements RecommendDAO {
 	
 	private static final String NAMESPACE="com.itwillbs.persistence.RecommendDAO.";
 
+	// 구매 이력 여부 확인
+	@Override
+	public int countUserPurchases(int member_idx) {
+		return sqlSession.selectOne(NAMESPACE + "countUserPurchases", member_idx);
+	}
+	
+	// 찜 이력 여부 확인
+	@Override
+	public int countUserWishes(int member_idx) {
+		return sqlSession.selectOne(NAMESPACE + "countUserWishes", member_idx);
+	}
+
 	// 구매 기반 + 정렬 (Map 파라미터)
 	@Override
 	public List<BookStatsDTO> findRecommendedBooksByPurchaseSorted(Map<String, Object> params) {

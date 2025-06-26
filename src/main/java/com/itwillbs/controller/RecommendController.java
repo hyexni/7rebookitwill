@@ -57,10 +57,12 @@ public class RecommendController {
 
 	    // 구매 기반 추천만 사용
 	    List<BookStatsDTO> purchaseList = recommendService.findRecommendedBooksByPurchaseSorted(param);
-
+	    boolean hasPurchaseHistory = recommendService.hasPurchaseHistory(memberIdx); // ✅ 추가!
+	    
 	    model.addAttribute("purchaseList", purchaseList);
 	    model.addAttribute("currentSort", sort);
-		  
+	    model.addAttribute("hasPurchaseHistory", hasPurchaseHistory); // ✅ 추가!
+	    
 		  return "recommend/purchase";
 	}
 	
@@ -85,9 +87,11 @@ public class RecommendController {
 	    param.put("limit", 5);
 
 	    List<BookStatsDTO> wishList = recommendService.findRecommendedBooksByWishSorted(param);
+	    boolean hasWishHistory = recommendService.hasWishHistory(memberIdx); // ✅ 추가!
 
 	    model.addAttribute("wishList", wishList);
 	    model.addAttribute("currentSort", sort);
+	    model.addAttribute("hasWishHistory", hasWishHistory); // ✅ 추가!
 		
 		return "recommend/wishlist";
 	}
@@ -126,7 +130,11 @@ public class RecommendController {
 	    param.put("member_idx", memberIdx);
 	    param.put("sort",      sort);
 	    param.put("limit",     5);   // 원하는 개수
-
+	    
+	    // 🟡 이력 여부
+	    boolean hasPurchaseHistory = recommendService.hasPurchaseHistory(memberIdx);
+	    boolean hasWishHistory = recommendService.hasWishHistory(memberIdx);
+	    
 	    // 1) 구매 기반 추천 + 정렬
 	    List<BookStatsDTO> purchaseList
 	        = recommendService.findRecommendedBooksByPurchaseSorted(param);
@@ -139,6 +147,11 @@ public class RecommendController {
 	    model.addAttribute("purchaseList", purchaseList);
 	    model.addAttribute("wishList",     wishList);
 	    model.addAttribute("currentSort",  sort);
+	    
+	    // ⬇️ 이거 추가하면 문제 해결
+	    model.addAttribute("hasPurchaseHistory", hasPurchaseHistory);
+	    model.addAttribute("hasWishHistory", hasWishHistory);
+	    
 	    return "recommend/recommend_page";
 
 	}

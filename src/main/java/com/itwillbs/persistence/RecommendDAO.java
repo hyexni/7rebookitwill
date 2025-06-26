@@ -9,6 +9,12 @@ import com.itwillbs.domain.BookVO;
 import com.itwillbs.dto.BookStatsDTO;
 
 public interface RecommendDAO {
+	
+	// 구매 이력 여부 확인
+	int countUserPurchases(int member_idx);
+	// 찜 이력 여부 확인
+	int countUserWishes(int member_idx);
+	
     
     // 구매 기반 + 정렬 (Map 파라미터)
     List<BookStatsDTO> findRecommendedBooksByPurchaseSorted(Map<String,Object> params);
