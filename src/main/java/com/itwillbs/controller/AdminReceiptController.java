@@ -8,6 +8,7 @@ import com.itwillbs.domain.ReceiptVO;
 import com.itwillbs.domain.SearchCriteria;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -64,8 +65,9 @@ public class AdminReceiptController {
     @GetMapping("/receiptDetail")
     public String getReceiptDetail(@RequestParam("upload_id") int upload_id, Model model) {
         try {
-            ReceiptVO receipt = adminReceiptService.getReceiptDetail(upload_id);
-            model.addAttribute("receiptDetail", receipt); // View에서 사용할 이름 "receiptDetail"
+            Map<String, Object> result = adminReceiptService.getReceiptDetail(upload_id);
+            model.addAttribute("receiptDetail", result.get("ReceiptVO")); // View에서 사용할 이름 "receiptDetail"
+            model.addAttribute("memberVO", result.get("MemberVO")); // View에서 사용할 이름 "receiptDetail"
             return "admin/receipt/detail"; // View 파일 경로: /WEB-INF/views/admin/receipt/detail.jsp
         } catch (Exception e) {
             e.printStackTrace();

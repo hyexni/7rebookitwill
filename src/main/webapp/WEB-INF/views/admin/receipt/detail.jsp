@@ -68,9 +68,21 @@
 
     <div class="container">
         <h1>🧾 영수증 인식 결과</h1>
-${receiptDetail }
+
         <div class="summary-box">
             <h2>영수증 요약</h2>
+            <p>
+                <strong>이름:</strong>
+                <%-- [개선] ocr_store 값이 비어있지 않을 때만 표시 --%>
+                <c:choose>
+                    <c:when test="${not empty memberVO.member_name}">
+                        ${memberVO.member_name}
+                    </c:when>
+                    <c:otherwise>
+                        <span class="text-muted">인식된 정보 없음</span>
+                    </c:otherwise>
+                </c:choose>
+            </p>
             <p>
                 <strong>구매처:</strong>
                 <%-- [개선] ocr_store 값이 비어있지 않을 때만 표시 --%>
@@ -131,38 +143,9 @@ ${receiptDetail }
         </div>
         
         
-        <h2>구매 품목 목록</h2>
-        <%-- [개선] items 리스트가 비어있지 않을 때만 테이블을 표시 --%>
-        <c:choose>
-            <c:when test="${not empty receiptDetail.items}">
-                <table class="items-table">
-                    <thead>
-                        <tr>
-                            <th>품명 (도서명)</th>
-                            <th class="center">수량</th>
-                            <th class="right">단가</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="item" items="${receiptDetail.items}">
-                            <tr>
-                                <td>${item.bookTitle}</td>
-                                <td class="center">${item.quantity}</td>
-                                <td class="right">
-                                    <fmt:formatNumber value="${item.price}" pattern="#,###"/> 원
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </c:when>
-            <c:otherwise>
-                <p class="text-muted">인식된 구매 품목이 없습니다.</p>
-            </c:otherwise>
-        </c:choose>
 
                
-        <a href="${pageContext.request.contextPath}/receipt/upload" class="btn-link">🔄 다시 업로드하기</a>
+        <a href="${pageContext.request.contextPath}/receipt/upload" class="btn-link">🔄 목록으로 가기</a>
          <a href="${pageContext.request.contextPath}/recommend/byReceipt" class="btn-link">🔄 영수증 기반 추천도서</a>
     </div>
     
