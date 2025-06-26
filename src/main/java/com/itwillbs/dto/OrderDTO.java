@@ -12,11 +12,14 @@ public class OrderDTO {
 	private Timestamp order_date;
 	private int total_price;
 	private String status;
+	private String member_id;
+	private String member_name; 
 
 	// 책 정보 (단일 주문 기준)
 	private String book_title;
 	private String book_cover;
 	private int book_count;
+	private int book_id;
 
 	// 결제 정보
 	private String payment_method;
@@ -27,4 +30,5 @@ public class OrderDTO {
 
 	// 배송 정보 포함
 	private DeliveryDTO delivery;
+	
 }

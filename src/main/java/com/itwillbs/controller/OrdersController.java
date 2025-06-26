@@ -1,7 +1,6 @@
 package com.itwillbs.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.dto.OrderDTO;
 import com.itwillbs.service.OrdersService;
@@ -29,27 +29,35 @@ public class OrdersController {
 
 	// ✅ 사용자 주문 목록 조회
 	@GetMapping("/list")
-	public String orderList(HttpSession session, Model model) {
+	public String orderList(HttpSession session, Criteria cri, Model model) {
 
 		logger.debug("▶▶▶ 주문 목록 조회 요청");
 
-		// 로그인 체크
 		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 		if (loginUser == null) {
 			logger.warn("⛔ 로그인 안 된 사용자 접근 시도");
 			return "redirect:/member/login";
 		}
 
-		// 서비스 호출
 		int member_idx = loginUser.getMember_idx();
 		logger.debug("▶ 사용자 member_idx = {}", member_idx);
 
-		model.addAttribute("orderList", ordersService.getOrdersByMember(member_idx));
-		logger.debug("✅ 주문 목록 조회 완료");
+		// 전체 주문 수 조회 + 세팅
+		int totalCount = ordersService.getOrderCountByMember(member_idx);
+		cri.setMember_idx(member_idx);         // 검색 조건 추가
+		cri.setTotalCount(totalCount);         // 블록 페이징 계산
+
+		// 페이징된 목록 조회
+		List<OrderDTO> orderList = ordersService.getOrdersByMemberPaged(cri);
+
+		model.addAttribute("orderList", orderList);
+		model.addAttribute("cri", cri);
+
+		logger.debug("✅ 페이징된 주문 목록 조회 완료");
 
 		return "orders/list";
 	}
-
+	// ✅ 사용자 주문 상세 조회
 	// ✅ 사용자 주문 상세 조회
 	@GetMapping("/detail")
 	public String orderDetail(@RequestParam("order_id") int order_id, HttpSession session, Model model) {
@@ -63,13 +71,8 @@ public class OrdersController {
 			return "redirect:/member/login";
 		}
 
-		// 파라미터 Map에 담아서 서비스로 전달
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("order_id", order_id);
-		paramMap.put("member_idx", loginUser.getMember_idx());
-
 		// 주문 상세 조회
-		OrderDTO order = ordersService.getOrderDetailByMember(paramMap);
+		OrderDTO order = ordersService.getOrderDetailByMember(order_id, loginUser.getMember_idx());
 		if (order == null) {
 			logger.warn("❌ 해당 주문이 없거나 권한이 없음: order_id={}, member_idx={}", order_id, loginUser.getMember_idx());
 			model.addAttribute("errorMsg", "주문 정보를 찾을 수 없습니다.");
@@ -79,6 +82,7 @@ public class OrdersController {
 		model.addAttribute("order", order);
 		logger.debug("✅ 주문 정보 조회 완료: {}", order);
 
-		return "orders/detail"; // 📄 /WEB-INF/views/orders/detail.jsp
+		return "orders/detail";
 	}
+
 }

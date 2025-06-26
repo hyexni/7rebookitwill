@@ -34,9 +34,11 @@
             <tr>
               <!-- 책 이미지 -->
               <td>
-                <img src="${pageContext.request.contextPath}/resources/img/product-img/${order.book_cover}" 
-                     alt="${order.book_title}" class="order-book-img" />
-              </td>
+				  <a href="${pageContext.request.contextPath}/book/view?book_id=${order.book_id}">
+				    <img src="${pageContext.request.contextPath}/resources/img/product-img/${order.book_cover}" 
+				         alt="${order.book_title}" class="order-book-img" />
+				  </a>
+			  </td>
 
               <!-- 주문번호 -->
               <td>${order.order_id}</td>
@@ -64,20 +66,20 @@
 			  </c:choose>
 			</td>
 
-              <!-- 주문 상태 -->
-              <td>
-                <c:choose>
-                  <c:when test="${order.status == '결제완료'}">
-                    <span class="badge badge-yellow">${order.status}</span>
-                  </c:when>
-                  <c:when test="${order.status == '배송완료'}">
-                    <span class="badge badge-green">${order.status}</span>
-                  </c:when>
-                  <c:otherwise>
-                    <span class="badge badge-gray">${order.status}</span>
-                  </c:otherwise>
-                </c:choose>
-              </td>
+              <!-- 배송 상태 -->
+			<td>
+			  <c:choose>
+			    <c:when test="${order.delivery.status_code == '배송중'}">
+			      <span class="badge badge-blue">🚚  배송중</span>
+			    </c:when>
+			    <c:when test="${order.delivery.status_code == '배송완료'}">
+			      <span class="badge badge-green">✅  배송완료</span>
+			    </c:when>
+			    <c:otherwise>
+			      <span class="badge badge-gray">📦 배송 준비중</span>
+			    </c:otherwise>
+			  </c:choose>
+			</td>
 
               <!-- 상세보기 버튼 -->
               <td>
@@ -90,6 +92,22 @@
     </c:otherwise>
   </c:choose>
 </div>
+
+<!-- ✅ 페이징 바 -->
+<div class="pagination">
+  <c:if test="${cri.prev}">
+    <a href="?page=${cri.startPage - 1}">&laquo;</a>
+  </c:if>
+
+  <c:forEach var="i" begin="${cri.startPage}" end="${cri.endPage}">
+    <a href="?page=${i}" class="${cri.page == i ? 'active' : ''}">${i}</a>
+  </c:forEach>
+
+  <c:if test="${cri.next}">
+    <a href="?page=${cri.endPage + 1}">&raquo;</a>
+  </c:if>
+</div>
+
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
@@ -130,17 +148,9 @@
 }
 
 /* 주문 상태 배지 스타일 */
-.badge {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.badge-yellow {
-  background-color: #ffe082;
-  color: #333;
+.badge-blue {
+  background-color: #90caf9;
+  color: #0d47a1;
 }
 
 .badge-green {
@@ -149,7 +159,7 @@
 }
 
 .badge-gray {
-  background-color: #e0e0e0;
+  background-color: #eeeeee;
   color: #555;
 }
 
@@ -168,5 +178,35 @@
   background-color: #1976d2;
 }
 
+/* 📄 페이징 바 스타일 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 8px;
+}
 
+.pagination a {
+  padding: 8px 14px;
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.pagination a.active {
+  background-color: #2196f3;
+  color: white;
+  border-color: #2196f3;
+}
+
+.pagination a:hover {
+  background-color: #e3f2fd;
+  border-color: #90caf9;
+}
 </style>
+
+
+
