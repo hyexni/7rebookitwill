@@ -96,6 +96,11 @@ public class PaymentController {
         paymentDTO.setMember_idx(member_idx);
         deliveryDTO.setMember_idx(member_idx); // ✅ 필수
         
+        // ✨ 이거 추가해줘야 DB에 제대로 들어감!
+        paymentDTO.setMember_address(deliveryDTO.getDelivery_address());
+        paymentDTO.setMember_address_detail(deliveryDTO.getAddress_detail());
+
+        
         int totalPrice = paymentDTO.getUnit_price() * paymentDTO.getQuantity();
         int payAmount = totalPrice - paymentDTO.getUsed_points();
         int savedPoints = Math.max(0, (int)(payAmount * 0.1));

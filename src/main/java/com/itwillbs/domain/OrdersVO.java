@@ -12,5 +12,6 @@ public class OrdersVO {
 	private String status;
 	private Timestamp order_date;
 	private String delivery_address;
+	private String address_detail;
 
 }
