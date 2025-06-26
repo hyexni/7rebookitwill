@@ -17,6 +17,14 @@
 	
 	
 	<!-- 결제 처리 -->
+	<!-- 1. 포인트 차감 -->
+	<update id="usePoints" parameterType="com.itwillbs.dto.PaymentDTO">
+	  UPDATE member
+	  SET point_total = point_total - #{used_points}
+	  WHERE member_idx = #{member_idx}
+	</update>
+	
+	
 	<!-- 2. 주문 저장 -->
 	<insert id="insertOrder" parameterType="com.itwillbs.dto.PaymentDTO">
 	  INSERT INTO orders (member_idx, total_price, status, order_date, delivery_address, address_detail)
@@ -38,6 +46,14 @@
 	  INSERT INTO payment (order_id, member_idx, pay_amount, pay_method, used_points, saved_points, paid_at)
 	  VALUES (#{order_id}, #{member_idx}, #{pay_amount}, #{pay_method}, #{used_points}, #{saved_points}, NOW())
 	</insert>
+	
+	<!-- 5. 포인트 적립 -->
+	<update id="givePoints" parameterType="com.itwillbs.dto.PaymentDTO">
+	  UPDATE member
+	  SET point_total = point_total + #{saved_points}
+	  WHERE member_idx = #{member_idx}
+	</update>
+	
 	
 	<!-- 결제 완료 -->
 	<select id="getLatestSummary" resultType="com.itwillbs.dto.PaymentDTO">
