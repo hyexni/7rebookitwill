@@ -15,9 +15,8 @@ public class SearchCriteria {
     private String keyword;
 
     // 정렬 정보
-    private String sortColumn1 = "upload_time"; // 영수증 정렬컬럼
-    private String sortColumn = "change_date"; // 포인트 정렬 컬럼
-    private String sortOrder = "DESC";         // 기본 정렬 순서
+    private String sortColumn; // 정렬 컬럼
+    private String sortOrder = "DESC";// 기본 정렬 순서
 
     /**
      * SQL의 LIMIT 구문에서 사용할 시작 위치를 계산합니다.

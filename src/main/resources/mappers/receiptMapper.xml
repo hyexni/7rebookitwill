@@ -49,7 +49,7 @@
             
         SELECT 
             r.upload_id, r.member_idx, r.ocr_store, r.ocr_amount, r.ocr_date, r.upload_time, r.upload_status,
-            m.member_id, m.member_name , earnedPoints
+            m.member_id, m.member_name , r.earnedPoints
         FROM 
             receipts r
         JOIN 
@@ -57,7 +57,7 @@
         <where>
             <include refid="adminSearchCondition"></include>
         </where>
-       ORDER BY ${sortColumn1} ${sortOrder}
+       ORDER BY ${sortColumn} ${sortOrder}
     
     	LIMIT #{pageStart}, #{perPageNum}
        

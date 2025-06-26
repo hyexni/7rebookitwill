@@ -1,54 +1,173 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>독후감 상세</title>
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-    body { padding: 2rem; }
-    .card-body { white-space: pre-wrap; } /* 줄바꿈 적용 */
-</style>
-</head>
-<body>
 
-<div class="container">
-    <h1 class="mb-4">독후감 상세 보기</h1>
+<%-- 1. 페이지 기본 골격 링크 --%>
+<%@include file="/WEB-INF/views/include/layout_head.jsp" %>
+
+<style>
+    /* ================================================================ */
+    /* ※ 이 스타일은 layout_head.jsp의 공통 CSS 파일로 옮기는 것을 추천합니다. */
+    html {
+        height: 100%;
+    }
+    body {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        /* 기본 폰트와 배경색 설정 */
+        font-family: 'Noto Sans KR', sans-serif;
+         color: #343a40; /* 기본 텍스트 색상 */
+    }
+    main {
+        flex: 1; 
+    }
+    /* ================================================================ */
+
+    .container {
+        max-width: 900px; /* 본문 폭을 살짝 줄여 가독성 향상 */
+        margin: 50px auto;
+        padding: 0 15px;
+    }
+
+    /* 페이지 제목 스타일 */
+    .page-title {
+        font-weight: 700;
+        font-size: 3rem;
+        color: #212529;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    /* 폼 전체를 감싸는 카드 디자인 */
+    .card {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    }
+    
+    }
+    .card-header {
+        background-color: #ffffff;
+        border-bottom: 1px solid #e9ecef;
+        padding: 20px 25px;
+    }
+    .card-header h3 {
+        margin: 0;
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
+    .card-body {
+        padding: 25px;
+        font-size: 1rem;
+    }
+    .card-body p {
+        margin-bottom: 10px;
+    }
+
+    /* 독후감 본문 가독성 향상 */
+    .report-content {
+        line-height: 1.8; /* 줄 간격 넓히기 */
+        white-space: pre-wrap; /* DB에 저장된 줄바꿈, 공백을 그대로 표시 */
+        font-size: 1.05rem;
+        color: #495057;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid #e9ecef;
+        color: #6c757d;
+        font-size: 0.9rem;
+        padding: 15px 25px;
+    }
+    
+    hr {
+        margin: 25px 0;
+        border-color: #dee2e6;
+    }
+
+    /* 버튼 공통 스타일 */
+    .btn {
+        display: inline-block;
+        font-weight: 500;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        user-select: none;
+        border: 1px solid transparent;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+    }
+    
+    /* 버튼 개별 스타일 및 호버 효과 */
+    .btn-secondary { /* 목록 */
+        background-color: #6c757d;
+        color: white;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+    .btn-warning { /* 수정 */
+        background-color: #ffc107;
+        color: #212529;
+    }
+    .btn-warning:hover {
+        background-color: #e0a800;
+    }
+    .btn-danger { /* 삭제 */
+        background-color: #dc3545;
+        color: white;
+    }
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+</style>
+
+<%@include file="/WEB-INF/views/include/header.jsp" %>
+
+<main class="d-flex">
+    <%@include file="/WEB-INF/views/include/sidebar.jsp" %>
+    <%@ include file="/WEB-INF/views/include/alert.jsp" %>
+
+    <div class="container">
     
     <div class="card">
-        <div class="card-header">
-            <h3><c:out value="${vo.report_title}"/></h3>
+        <h2 class="page-title">독후감 상세 보기✏️</h2>        
+        
+            <div class="card-header">
+                <h3><c:out value="${vo.report_title}"/></h3>
+            </div>
+            <div class="card-body">
+                <p><strong>책제목:</strong> <c:out value="${vo.rbook_title}"/></p>
+                <p><strong>저자:</strong> <c:out value="${vo.author_name}"/></p>
+                <p><strong>출판사:</strong> <c:out value="${vo.publisher}"/></p>
+                <hr>
+                <p class="card-text report-content"><c:out value="${vo.report_text}"/></p>
+            </div>
+            <div class="card-footer text-muted">
+                작성일: <fmt:formatDate value="${vo.report_regdate}" pattern="yyyy-MM-dd HH:mm"/>
+            </div>
         </div>
-        <div class="card-body">
-            <p><strong>책제목:</strong> <c:out value="${vo.rbook_title}"/></p>
-            <p><strong>저자:</strong> <c:out value="${vo.author_name}"/></p>
-            <p><strong>출판사:</strong> <c:out value="${vo.publisher}"/></p>
-            <hr>
-            <p class="card-text">${vo.report_text}</p>
-        </div>
-        <div class="card-footer text-muted">
-            작성일: <fmt:formatDate value="${vo.report_regdate}" pattern="yyyy-MM-dd HH:mm"/>
+        
+        <div class="d-flex justify-content-end gap-3 mt-4">
+            <a href="/bookreport/list" class="btn btn-secondary">목록으로</a>
+            
+            <c:if test="${sessionScope.member_idx == vo.member_idx}">
+                <a href="/bookreport/modify?report_id=${vo.report_id}" class="btn btn-warning">수정</a>
+                
+                <form action="/bookreport/delete" method="post" onsubmit="return confirm('정말로 삭제하시겠습니까?');" style="display: inline;">
+                    <input type="hidden" name="report_id" value="${vo.report_id}">
+                    <button type="submit" class="btn btn-danger">삭제</button> <%-- btn-primary에서 btn-danger로 변경 --%>
+                </form>
+            </c:if>
         </div>
     </div>
-    
-    <div class="d-flex justify-content-end gap-2 mt-4">
-        <a href="/bookreport/list" class="btn btn-secondary">목록으로</a>
-        
-        <!-- 본인 글일 경우에만 수정/삭제 버튼 표시 -->
-        <c:if test="${sessionScope.member_idx == vo.member_idx}">
-            <a href="/bookreport/modify?report_id=${vo.report_id}" class="btn btn-warning">수정</a>
-        
-            <form action="/bookreport/delete" method="post" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
-                <input type="hidden" name="report_id" value="${vo.report_id}">
-                <button type="submit" class="btn btn-danger">삭제</button>
-            </form>
-        </c:if>
-    </div>
-</div>
+</main>
 
-</body>
-</html>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>

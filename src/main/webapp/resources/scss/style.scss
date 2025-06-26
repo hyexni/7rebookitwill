@@ -462,6 +462,11 @@ img {
 /* :: 5.0 Welcome Area CSS */
 
 .main-content-wrapper {
+    /* ▼▼▼▼▼▼ 이 두 줄을 추가하세요! ▼▼▼▼▼▼ */
+    display: flex;
+    justify-content: flex-start; /* 자식 요소들을 왼쪽으로 정렬합니다. */
+    /* ▲▲▲▲▲▲ 이 두 줄을 추가하세요! ▲▲▲▲▲▲ */
+    
     position: relative;
     z-index: 1;
     @include trans-duration(500ms);
