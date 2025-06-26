@@ -80,6 +80,11 @@ public class PaymentController {
     							RedirectAttributes rttr) {
     	
     	Integer member_idx = (Integer) session.getAttribute("member_idx");
+    	
+    	System.out.println("🔍 book_id = " + paymentDTO.getBook_id());
+    	System.out.println("🔍 quantity = " + paymentDTO.getQuantity());
+    	System.out.println("🔍 unit_price = " + paymentDTO.getUnit_price());
+
 
         // ✅ 로그인 안 했으면 로그인 페이지로 리다이렉트
         if (member_idx == null) {
@@ -91,9 +96,14 @@ public class PaymentController {
         paymentDTO.setMember_idx(member_idx);
         deliveryDTO.setMember_idx(member_idx); // ✅ 필수
         
+        // ✨ 이거 추가해줘야 DB에 제대로 들어감!
+        paymentDTO.setMember_address(deliveryDTO.getDelivery_address());
+        paymentDTO.setMember_address_detail(deliveryDTO.getAddress_detail());
+
+        
         int totalPrice = paymentDTO.getUnit_price() * paymentDTO.getQuantity();
         int payAmount = totalPrice - paymentDTO.getUsed_points();
-        int savedPoints = (int)(payAmount * 0.1);
+        int savedPoints = Math.max(0, (int)(payAmount * 0.1));
         
         paymentDTO.setTotal_price(totalPrice);
         paymentDTO.setPay_amount(payAmount);
@@ -120,9 +130,6 @@ public class PaymentController {
         }
     }
 
-    
-    
-    
     
     // 결제 완료
     @GetMapping("/complete")
@@ -151,45 +158,65 @@ public class PaymentController {
     }
 
 
+    // 간편결제
     @GetMapping("/success")
-    public String kakaoPaySuccess(@RequestParam Map<String, String> params,
-                                  HttpSession session, RedirectAttributes rttr) {
-
+    public String kakaoPaySuccess(
+    		@RequestParam("book_id") int bookId,
+    	    @RequestParam("unit_price") int unitPrice,
+    	    @RequestParam("quantity") int quantity,
+    	    @RequestParam("used_points") int usedPoints,
+    	    @RequestParam("receiver_name") String receiverName,
+    	    @RequestParam("receiver_phone") String receiverPhone,
+    	    @RequestParam("zipcode") String zipcode,
+    	    @RequestParam("delivery_address") String deliveryAddress,
+    	    @RequestParam("address_detail") String addressDetail,
+    	    @RequestParam("memo") String memo,
+    	    @RequestParam("pay_amount") int payAmount,
+    	    @RequestParam("pay_method") String payMethod,
+    	    HttpSession session,
+    	    RedirectAttributes rttr) {
+    	
+    	 // 세션에서 회원 번호 꺼내기
         Integer member_idx = (Integer) session.getAttribute("member_idx");
         if (member_idx == null) {
             rttr.addFlashAttribute("errorMsg", "로그인이 필요합니다.");
             return "redirect:/member/login";
         }
 
-        // 1. PaymentDTO 매핑
+        // 1. PaymentDTO
         PaymentDTO paymentDTO = new PaymentDTO();
         paymentDTO.setMember_idx(member_idx);
-        paymentDTO.setBook_id(Integer.parseInt(params.get("book_id")));
-        paymentDTO.setUnit_price(Integer.parseInt(params.get("unit_price")));
-        paymentDTO.setQuantity(Integer.parseInt(params.get("quantity")));
-        paymentDTO.setUsed_points(Integer.parseInt(params.get("used_points")));
-
-        int totalPrice = paymentDTO.getUnit_price() * paymentDTO.getQuantity();
-        int payAmount = totalPrice - paymentDTO.getUsed_points();
-        int savedPoints = (int)(payAmount * 0.1);
-
+        paymentDTO.setBook_id(bookId);
+        paymentDTO.setUnit_price(unitPrice);
+        paymentDTO.setQuantity(quantity);
+        paymentDTO.setUsed_points(usedPoints);
+        
+        // 결제 총액 계산
+        // ✅ 결제금액의 10% 포인트 적립
+        int totalPrice = unitPrice * quantity;
         paymentDTO.setTotal_price(totalPrice);
         paymentDTO.setPay_amount(payAmount);
-        paymentDTO.setSaved_points(savedPoints);
-        paymentDTO.setPay_method("카카오페이");
+        paymentDTO.setSaved_points((int)(payAmount * 0.1));
+        
+        // ✅ 결제 방식 세팅
+        paymentDTO.setPay_method(payMethod);
 
-        // 2. DeliveryDTO 매핑
+        // 2. DeliveryDTO
         DeliveryDTO deliveryDTO = new DeliveryDTO();
-        deliveryDTO.setReceiver_name(params.get("receiver_name"));
-        deliveryDTO.setReceiver_phone(params.get("receiver_phone"));
-        deliveryDTO.setZipcode(params.get("zipcode"));
-        deliveryDTO.setDelivery_address(params.get("address"));
-        deliveryDTO.setAddress_detail(params.get("address_detail"));
-        deliveryDTO.setMemo(params.get("memo"));
-        deliveryDTO.setMember_idx(member_idx); // ✅ 필수
+        deliveryDTO.setMember_idx(member_idx);
+        deliveryDTO.setReceiver_name(receiverName);
+        deliveryDTO.setReceiver_phone(receiverPhone);
+        deliveryDTO.setZipcode(zipcode);
+        deliveryDTO.setDelivery_address(deliveryAddress);
+        deliveryDTO.setAddress_detail(addressDetail);
+        deliveryDTO.setMemo(memo);
 
-        // 3. 결제 처리
-        boolean result = pService.processPayment(paymentDTO, deliveryDTO); // DeliveryDTO는 별도로 넘김
+        // ✨ 이거 추가해줘야 DB에 제대로 들어감!
+        paymentDTO.setMember_address(deliveryDTO.getDelivery_address());
+        paymentDTO.setMember_address_detail(deliveryDTO.getAddress_detail());
+
+        // 3. 결제 처리 서비스 호출 + 결과 저장
+        boolean result = pService.processPayment(paymentDTO, deliveryDTO);
 
         if (result) {
             // 포인트 사용 이력 기록 (사용한 경우만)

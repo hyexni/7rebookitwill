@@ -15,6 +15,7 @@ public interface PaymentDAO {
 	int getMemberPoint(int member_idx);
 	
 	// 결제 처리
+	// 결제 처리
 	// 1. 포인트 차감
 	void usePoints(PaymentDTO dto);
 
@@ -27,10 +28,12 @@ public interface PaymentDAO {
 	
 	// 4. 결제 저장
 	void insertPayment(PaymentDTO dto);
-
+	
 	// 5. 포인트 적립
 	void givePoints(PaymentDTO dto);
-	
+
+
+	// 배송 저장
 	void insertDelivery(DeliveryDTO dto);
 	
 	
