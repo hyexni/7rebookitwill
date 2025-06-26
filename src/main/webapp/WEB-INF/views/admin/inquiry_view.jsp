@@ -89,7 +89,7 @@
 	            <div style="margin-top: 20px; text-align: right;">
 	                <a href="list" class="btn btn-outline-primary">목록</a>
 	                <button type="submit" class="btn btn-outline-primary">답변 수정</button>
-	                <a href="inquiry/responseDelete?response_id=${response.response_id}&inquiry_id=${inquiry.inquiry_id}"
+	                <a href="inquiry/inquiryDelete?response_id=${response.response_id}&inquiry_id=${inquiry.inquiry_id}"
 	                   class="btn btn-outline-danger"
 	                   onclick="return confirm('정말 삭제하시겠습니까?');">답변 삭제</a>
 	            </div>

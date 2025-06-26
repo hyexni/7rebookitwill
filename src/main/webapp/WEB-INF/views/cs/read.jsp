@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/inquiry_detail.css">
 
 <%-- 1. 페이지 기본 골격과 CSS/폰트 링크를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
@@ -14,10 +15,10 @@
 
 <%-- 4. 여기서부터 '문의 상세조회' 페이지만의 고유한 컨텐츠가 시작됩니다. --%>
 
-<section class="inquiry-detail">
-  <h2><i class="fa fa-comment-dots"></i> 문의 상세</h2>
+<div class="inquiry-detail">
+  <h1>문의 상세</h1>
 
-  <div class="inquiry-box">
+  <!-- 메타 정보 -->
   <div class="inquiry-meta">
     <div><strong>번호:</strong> ${vo.inquiry_id}</div>
     <div><strong>작성일:</strong> <fmt:formatDate value="${vo.created_at}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
@@ -25,59 +26,52 @@
     <div><strong>상태:</strong> ${vo.status}</div>
   </div>
 
-  <div class="inquiry-title-content">
-    <h3 class="inquiry-title">제목: ${vo.title}</h3>
-    <p class="inquiry-content">${vo.content}</p>
+  <!-- 제목과 내용 -->
+  <div class="inquiry-title">제목: ${vo.title}</div>
+  <div class="inquiry-body">${vo.content}</div>
+
+	<!-- 관리자 답변 (없으면 출력 안 됨) -->
+	<c:if test="${not empty responseVO}">
+	  <div class="reply-box">
+	    <div class="reply-title">↩ 관리자 답변</div>
+	    <div class="reply-body">${responseVO.response_content}</div>
+	    <div class="reply-date">
+	      <fmt:formatDate value="${responseVO.created_at}" pattern="yyyy-MM-dd HH:mm:ss"/>
+	    </div>
+	  </div>
+	</c:if>
+
+
+  <!-- 수정/삭제/목록 버튼 -->
+  <div class="button-box">
+    <a href="/cs/list" class="btn-back">목록으로</a>
+
+    <c:if test="${vo.status eq '접수'}">
+      <button class="btn btn-outline-warning" onclick="document.getElementById('editForm').style.display='block'">✏ 수정하기</button>
+      <a href="${pageContext.request.contextPath}/cs/delete?inquiry_id=${vo.inquiry_id}" 
+         class="btn btn-outline-danger"
+         onclick="return confirm('정말 삭제하시겠습니까?');">🗑 삭제</a>
+    </c:if>
   </div>
 
-  <div class="inquiry-back">
-    <a href="/cs/list" class="btn-back"><i class="fa fa-arrow-left"></i> 목록으로</a>
-  </div>
+  <!-- 수정 폼 -->
+  <c:if test="${vo.status eq '접수'}">
+    <div id="editForm" style="display:none; margin-top:20px;">
+      <form action="${pageContext.request.contextPath}/cs/update" method="post">
+        <input type="hidden" name="inquiry_id" value="${vo.inquiry_id}" />
+
+        <label>제목</label>
+        <input type="text" name="title" class="form-control" value="${vo.title}" />
+
+        <label class="mt-3">내용</label>
+        <textarea name="content" class="form-control" rows="5">${vo.content}</textarea>
+
+        <button type="submit" class="btn btn-primary mt-3">수정 완료</button>
+      </form>
+    </div>
+  </c:if>
 </div>
 
-  
-	  <c:if test="${not empty responseVO}">
-	  <div class="inquiry-response">
-	    <div class="response-header">
-	      <i class="fa fa-reply"></i> <strong>관리자 답변</strong>
-	    </div>
-	    <div class="response-meta">
-	      <span class="response-writer">${responseVO.response_content}</span>
-	      <span class="response-date">
-	        <fmt:formatDate value="${responseVO.created_at}" pattern="yyyy-MM-dd HH:mm:ss"/>
-	      </span>
-	    </div>
-	  </div>
-	</c:if>
-	
-	<!-- 기존 read.jsp 내용 아래에 삽입 -->
-	<c:if test="${vo.status eq '접수'}">
-	  <button class="btn btn-outline-warning" onclick="document.getElementById('editForm').style.display='block'">✏ 수정하기</button>
-	
-	  <div id="editForm" style="display:none; margin-top:20px;">
-	    <form action="${pageContext.request.contextPath}/cs/update" method="post">
-	      <input type="hidden" name="inquiry_id" value="${vo.inquiry_id}" />
-	
-	      <label>제목</label>
-	      <input type="text" name="title" class="form-control" value="${vo.title}" />
-	
-	      <label class="mt-3">내용</label>
-	      <textarea name="content" class="form-control" rows="5">${vo.content}</textarea>
-	
-	      <button type="submit" class="btn btn-primary mt-3">수정 완료</button>
-	    </form>
-	  </div>
-	</c:if>
-	
-	<c:if test="${vo.status eq '접수'}">
-    <a href="${pageContext.request.contextPath}/cs/delete?inquiry_id=${vo.inquiry_id}" 
-       class="btn btn-outline-danger"
-       onclick="return confirm('정말 삭제하시겠습니까?');">🗑 삭제</a>
-	</c:if>
-	
-	
-  
-</section>
 
 
 
