@@ -53,6 +53,7 @@
 	            />
 	            <h4>${status.index+1}위 - ${book.bookTitle}</h4>
 	            <p>📚 장르: ${book.categoryName}</p>
+	            
 	            <p>
 	              <c:set var="rating" value="${book.avgRating}"/>
 	              <c:forEach var="i" begin="1" end="5">
@@ -63,6 +64,7 @@
 	              </c:forEach>
 	              (<fmt:formatNumber value="${book.avgRating}" pattern="#0.0"/>)
 	            </p>
+	            
 	          </div>
 	        </c:forEach>
 	      </div>

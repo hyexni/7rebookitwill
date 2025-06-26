@@ -6,17 +6,40 @@
 <%@ include file="include/layout_head.jsp" %>
 <%@ include file="include/header.jsp" %> 
 <%@ include file="include/sidebar.jsp" %>
+<%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
 <main class="main-content">
 	<div class="admin-container">
-	  <h1>💭 리뷰 관리</h1>
-	
+	  <h1>💭 리뷰 관리
+ 		 <span style="font-size: 16px; color: #ff4d4f;">
+   		 (미확인 리뷰: ${uncheckedCount}건)
+  		</span>
+	   </h1>
+	  
+	    <!-- 하나의 form으로 합침 -->
+		<form method="get" action="${pageContext.request.contextPath}/admin/review_list" class="search-form">
 		
-	  	  <!-- 🔍 검색창 -->
-		  <form method="get" action="${pageContext.request.contextPath}/admin/review_list" class="search-form">
-		    <input type="text" name="keyword" value="${param.keyword}" placeholder="도서명, 리뷰내용, 회원ID/이름 검색" />
-		    <input type="submit" value="검색">
-		  </form>
+		  <!-- 상태 필터 -->
+		  <select name="status">
+		    <option value="">🔍 상태 전체</option>
+		    <option value="Y" ${param.status == 'Y' ? 'selected' : ''}>🟢 정상</option>
+		    <option value="N" ${param.status == 'N' ? 'selected' : ''}>🟡 숨김</option>
+		    <option value="D" ${param.status == 'D' ? 'selected' : ''}>🔴 삭제</option>
+		  </select>
+		
+		  <select name="checked">
+			  <option value="">✅ 확인 여부 전체</option>
+			  <option value="N" ${param.checked == 'N' ? 'selected' : ''}>❗ 미확인</option>
+			  <option value="Y" ${param.checked == 'Y' ? 'selected' : ''}>✔️ 확인됨</option>
+		   </select>
+		  	
+		
+		  <!-- 키워드 검색 -->
+		  <input type="text" name="keyword" value="${param.keyword}" placeholder="도서명, 리뷰내용, 회원ID/이름 검색" />
+		
+		  <!-- 검색 버튼 -->
+		  <input type="submit" value="검색">
+		</form>
 		  
 		<!-- 📋 테이블 -->
 		<table>
@@ -31,13 +54,12 @@
 		      <th>상태</th>
 		      <th>확인</th>
 		      <th>요약</th>
-		      <th>상세보기</th>
 		    </tr>
 		  </thead>
 		  <tbody>
 		    <c:forEach var="review" items="${reviewList}">
 		      <!-- 목록 행 -->
-		      <tr>
+		      <tr class="review-row">
 		        <td>${review.review_id}</td>
 		        <td>${review.book_title}</td>
 		        <td>${review.member_id}</td>
@@ -48,6 +70,7 @@
 		          <c:choose>
 		            <c:when test="${review.review_status eq 'Y'}"><span class="badge badge-green">정상</span></c:when>
 		            <c:when test="${review.review_status eq 'N'}"><span class="badge badge-yellow">숨김</span></c:when>
+		            <c:when test="${review.review_status eq 'D'}"><span class="badge badge-red">삭제</span></c:when>
 		            <c:otherwise><span class="badge">-</span></c:otherwise>
 		          </c:choose>
 		        </td>
@@ -62,7 +85,6 @@
 		          </c:choose>
 		        </td>
 		        <td>${fn:substring(review.review_text, 0, 20)}...</td>
-		        <td><button type="button" class="toggleDetailBtn btn-toggle">▼ 상세보기</button></td>
 		      </tr>
 		
 		      <!-- 상세보기 줄 -->
@@ -112,17 +134,20 @@
 	  <!-- 📌 페이징 -->
 		<!-- 페이지네이션 버튼 -->
 		<div class="pagination">
-		  <a href="${pageContext.request.contextPath}/admin/review_list?page=${currentPage - 1}"
+		  <a href="${pageContext.request.contextPath}/admin/review_list?page=${currentPage - 1}
+		  			&status=${param.status}&keyword=${param.keyword}&checked=${param.checked}"
 		     class="${currentPage == 1 ? 'disabled' : ''}">&laquo;</a>
 		
 		  <c:forEach var="i" begin="1" end="${totalPages}">
-		    <a href="${pageContext.request.contextPath}/admin/review_list?page=${i}"
+		    <a href="${pageContext.request.contextPath}/admin/review_list?page=${i}
+		    			&status=${param.status}&keyword=${param.keyword}&checked=${param.checked}"
 		       class="${i == currentPage ? 'active' : ''}">
 		      ${i}
 		    </a>
 		  </c:forEach>
 		
-		  <a href="${pageContext.request.contextPath}/admin/review_list?page=${currentPage + 1}"
+		  <a href="${pageContext.request.contextPath}/admin/review_list?page=${currentPage + 1}
+		  			&status=${param.status}&keyword=${param.keyword}&checked=${param.checked}"
 		     class="${currentPage == totalPages ? 'disabled' : ''}">&raquo;</a>
 		</div>
 	</div>
@@ -132,24 +157,27 @@
  		 <input type="hidden" name="review_id" id="modalReviewId_form">
  		 <input type="hidden" name="reason" id="modalReasonHidden">
 	</form>
-	<c:if test="${not empty msg}">
-  <script>alert('${msg}');</script>
-</c:if>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-	  document.querySelectorAll('.toggleDetailBtn').forEach(btn => {
-	    btn.addEventListener('click', function () {
-	      const row = this.closest('tr').nextElementSibling;
-	      const isOpen = row.style.display === 'table-row';
-	      row.style.display = isOpen ? 'none' : 'table-row';
-	      this.textContent = isOpen ? '▼ 상세보기' : '▲ 닫기';
-	      this.classList.toggle('open', !isOpen); // 버튼 스타일 바꿔주기 위해 클래스 toggle
-	    });
-	  });
-	});
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+		  document.querySelectorAll('.review-row').forEach(row => {
+		    row.addEventListener('click', function () {
+		      const detailRow = this.nextElementSibling;
+		      const isOpen = detailRow.style.display === 'table-row';
+		      detailRow.style.display = isOpen ? 'none' : 'table-row';
+		      this.classList.toggle('open', !isOpen);  // 선택적으로 스타일 변경
+		
+		      // 옵션: 클릭 시 배경색 토글
+		      if (!isOpen) {
+		        this.style.backgroundColor = '#f9f9f9';
+		      } else {
+		        this.style.backgroundColor = '';
+		      }
+		    });
+		  });
+		});
+	</script>
 
-</script>
 	
 	
 	

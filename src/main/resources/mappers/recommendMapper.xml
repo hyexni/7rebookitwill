@@ -5,6 +5,25 @@
 
 <mapper namespace="com.itwillbs.persistence.RecommendDAO">
 
+
+
+	<!-- 구매 이력 여부 확인 -->
+	<select id="countUserPurchases" resultType="int">
+	  SELECT COUNT(*) 
+	  FROM orders o
+	  JOIN orderitem oi ON o.order_id = oi.order_id
+	  WHERE o.member_idx = #{member_idx}
+	</select>
+	
+	<!-- 찜 이력 여부 확인 -->
+	<select id="countUserWishes" resultType="int">
+	  SELECT COUNT(*) 
+	  FROM wishlist
+	  WHERE member_idx = #{member_idx}
+	</select>
+
+
+
   <!-- 1) 구매 기반 추천 + 정렬 -->
   <select id="findRecommendedBooksByPurchaseSorted"
           parameterType="map"
