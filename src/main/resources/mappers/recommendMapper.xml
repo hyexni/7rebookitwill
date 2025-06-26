@@ -33,7 +33,7 @@
       GROUP BY book_id
     ) r ON b.book_id = r.book_id
 
-    <!-- 구매 이력이 있는 카테고리만 -->
+     <!-- 추천 대상: 사용자가 구매한 장르이면서, 아직 구매하지 않은 책 -->
     WHERE b.category_id IN (
       SELECT DISTINCT b2.category_id
       FROM book b2
@@ -41,6 +41,12 @@
       JOIN orders o2 ON oi2.order_id = o2.order_id
       WHERE o2.member_idx = #{member_idx}
     )
+    AND b.book_id NOT IN (
+    SELECT oi3.book_id
+    FROM orderitem oi3
+    JOIN orders o3 ON oi3.order_id = o3.order_id
+    WHERE o3.member_idx = #{member_idx}
+    ) 
 
     <choose>
       <!-- 최신순: created_at -->
@@ -63,7 +69,7 @@
     LIMIT #{limit}
   </select>
 
-  <!-- 2) 찜 기반 추천 + 정렬 -->
+  <!-- 2) 찜 기반 추천 + 정렬 (이미 찜한 책 제외 추가됨) -->
   <select id="findRecommendedBooksByWishSorted"
           parameterType="map"
           resultType="com.itwillbs.dto.BookStatsDTO">
@@ -91,12 +97,17 @@
       GROUP BY book_id
     ) r ON b.book_id = r.book_id
 
-    <!-- 찜 이력이 있는 카테고리만 -->
+    <!-- 찜한 장르이면서, 아직 찜하지 않은 책 -->
     WHERE b.category_id IN (
       SELECT DISTINCT b2.category_id
       FROM book b2
       JOIN wishlist w ON b2.book_id = w.book_id
       WHERE w.member_idx = #{member_idx}
+    )
+    AND b.book_id NOT IN (
+      SELECT w2.book_id
+      FROM wishlist w2
+      WHERE w2.member_idx = #{member_idx}
     )
 
     <choose>
