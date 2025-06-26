@@ -10,11 +10,11 @@
 
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="include/sidebar.jsp" %> 
-
-
-
+<%@ include file="/WEB-INF/views/include/alert.jsp" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+
 
 <main class="main-content">
 	<div class="admin-container">
@@ -49,11 +49,11 @@
 	
 	    <%-- 문의 제목/내용 --%>
 	    <div style="margin-bottom: 30px;">
-	        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">제 목</h3>
+	        <h3 style="font-size: 18px; font-weight: 600; margin-top:50px; margin-bottom: 10px;">제 목</h3>
 	        <p style="margin-bottom: 20px;">${inquiry.title}</p>
 	
 	        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">내 용</h3>
-	        <p style="white-space: pre-line;">${inquiry.content}</p>
+	        <p style="white-space: pre-line; margin-bottom: 10px;">${inquiry.content}</p>
 	    </div>
 	
 	    <c:choose>

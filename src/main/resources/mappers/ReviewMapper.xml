@@ -17,6 +17,7 @@
   WHERE
     r.book_id = #{book_id}
     AND r.review_status != 'N'		<!-- 숨김 처리된 리뷰는 제외 -->
+    AND r.review_status != 'D'		<!-- 삭제 처리된 리뷰는 제외 -->
   <choose>
     <when test="sort == 'rating'">
       ORDER BY r.review_score DESC
@@ -32,6 +33,8 @@
   <select id="getReviewCount" resultType="int" parameterType="com.itwillbs.domain.Criteria">
     SELECT COUNT(*) FROM review
     WHERE book_id = #{book_id}
+    AND review_status != 'N'		<!-- 숨김 처리된 리뷰는 제외 -->
+    AND review_status != 'D'		<!-- 삭제 처리된 리뷰는 제외 -->
   </select>
   
   <!-- [리뷰 등록] -->
@@ -97,6 +100,8 @@
   SELECT IFNULL(AVG(review_score), 0)
   FROM review
   WHERE book_id = #{book_id}
+  AND review_status != 'N'		<!-- 숨김 처리된 리뷰는 제외 -->
+  AND review_status != 'D'		<!-- 삭제 처리된 리뷰는 제외 -->
 </select>
 
 </mapper>

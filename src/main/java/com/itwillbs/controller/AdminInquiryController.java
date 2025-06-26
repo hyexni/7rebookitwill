@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class AdminInquiryController {
     @RequestMapping(value = "/view", method = RequestMethod.GET)
     public String view(@RequestParam("inquiry_id") int inquiry_id, Model model) {
         InquiryVO inquiry = adminInquiryService.getInquiry(inquiry_id);
+        
+        System.out.println("[DEBUG] inquiry.member_id = " + inquiry.getMember_id());
+        
         ResponseVO response = adminInquiryService.getResponse(inquiry_id);
         model.addAttribute("inquiry", inquiry);
         model.addAttribute("response", response);
@@ -30,23 +34,41 @@ public class AdminInquiryController {
 
     // 답변 등록
     @PostMapping("/inquiry/responseInsert")
-    public String insertResponse(ResponseVO response) {
+    public String insertResponse(ResponseVO response,
+    							RedirectAttributes rttr) {
         adminInquiryService.insertResponse(response);
+        
+        // 등록 메시지
+        rttr.addFlashAttribute("msg",  "답변 등록 완료!");
+        rttr.addFlashAttribute("icon", "success");
+        
         return "redirect:/admin/view?inquiry_id=" + response.getInquiry_id();
     }
 
     // 답변 수정
     @PostMapping("/inquiry/responseUpdate")
-    public String updateResponse(ResponseVO response) {
+    public String updateResponse(ResponseVO response,
+    							RedirectAttributes rttr) {
         adminInquiryService.updateResponse(response);
+        
+        // 수정 메시지
+        rttr.addFlashAttribute("msg",  "답변 수정 완료!");
+        rttr.addFlashAttribute("icon", "success");
+        
         return "redirect:/admin/view?inquiry_id=" + response.getInquiry_id();
     }
 
     // 답변 삭제
     @GetMapping("/inquiry/responseDelete")
     public String deleteResponse(@RequestParam("response_id") int response_id,
-                                 @RequestParam("inquiry_id") int inquiry_id) {
+                                 @RequestParam("inquiry_id") int inquiry_id,
+                                 RedirectAttributes rttr) {
         adminInquiryService.deleteResponse(response_id, inquiry_id);
+        
+        // 삭제 메시지
+        rttr.addFlashAttribute("msg",  "답변 삭제 완료!");
+        rttr.addFlashAttribute("icon", "success");
+        
         return "redirect:/admin/view?inquiry_id=" + inquiry_id;
     }
     

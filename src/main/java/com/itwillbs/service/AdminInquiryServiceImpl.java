@@ -23,6 +23,7 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
 
     @Override
     public InquiryVO getInquiry(int inquiry_id) {
+    	
         return aiDao.getInquiry(inquiry_id);
     }
 

@@ -10,7 +10,7 @@
 
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="include/sidebar.jsp" %> 
-
+<%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
 
 <%@ page contentType="text/html; charset=UTF-8" %>

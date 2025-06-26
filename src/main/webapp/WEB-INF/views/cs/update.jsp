@@ -10,6 +10,7 @@
 
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+<%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
 <%-- 4. 여기서부터 '독후감' 페이지만의 고유한 컨텐츠가 시작됩니다. --%>
 

@@ -60,9 +60,9 @@
 	</div>
 	
 	<!-- 새 글 등록 버튼 -->
-	<div class="bottom-bar">
+	<div style="margin-top: 20px; text-align: right;">
 	  <a href="${pageContext.request.contextPath}/admin/notice_write">
-	    <button class="notice-btn">+ 새 글 등록</button>
+	    <button type="submit" class="btn btn-primary">+새글 등록</button>
 	  </a>
 	</div>
 </main>
