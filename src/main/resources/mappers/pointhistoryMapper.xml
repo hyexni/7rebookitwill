@@ -59,13 +59,14 @@
 </select>
 
 
-<update id="updateMemberTotalPoints2">
-        UPDATE point
-        SET    point_amount = point_amount + #{change_amount}
-        WHERE  member_idx = #{member_idx} 
-        ORDER BY change_date DESC, point_id DESC -- 1순위: 최신 날짜, 2순위: 가장 나중에 생긴 데이터(PK)
-	    LIMIT 1;
-        
+<update id="updateMemberTotalPoints">
+         UPDATE member 
+         SET point_total = (SELECT point_amount 
+                       FROM point
+                       WHERE member_idx = #{member_idx}
+                       ORDER BY point_id DESC 
+                       LIMIT 1) 
+          WHERE member_idx = #{member_idx}                     
     </update>
     
       

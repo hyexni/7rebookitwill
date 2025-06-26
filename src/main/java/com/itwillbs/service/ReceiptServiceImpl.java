@@ -141,9 +141,8 @@ public class ReceiptServiceImpl implements ReceiptService {
                 // 5. 컨트롤러로 반환할 finalVO 객체에 적립된 포인트 값을 설정합니다.
                 finalVO.setEarnedPoints(pointsToCredit);
                 System.out.println("*****************************");
-                // 6. 실제 회원 테이블의 총 포인트를 안전하게 업데이트합니다.
-//                pointhistoryDAO.updateMemberTotalPoints2(member_idx, pointsToCredit);
-               // pointhistoryDAO.updateMemberTotalPoints2(pointVO);
+               // 6. 실제 회원 테이블의 총 포인트를 안전하게 업데이트합니다.
+                pointhistoryDAO.updateMemberTotalPoints(member_idx);
             }
         }
         System.out.println("55555555555555555");

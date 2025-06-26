@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.itwillbs.domain.CategoryVO;
 import com.itwillbs.domain.MemberCategoryVO;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.PointVO;
 import com.itwillbs.persistence.CategoryDAO;
 import com.itwillbs.persistence.MemberCategoryDAO;
 import com.itwillbs.persistence.MemberDAO;
@@ -31,6 +32,9 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Inject
 	private PointHistoryService pointHistoryService;
+	
+	@Inject
+	private PointHistoryDAO pointhistoryDAO;
 	
 
 	// 서버 시간 조회
@@ -76,6 +80,10 @@ public class MemberServiceImpl implements MemberService {
 				
 				// 3. 신규 가입 축하 포인트 1000점 적립
 				pointHistoryService.addPoint(member_idx, 1000, "신규 회원가입 축하");
+				
+				//4. 적립된 포인트를 멤버테이블에 저장
+				pointhistoryDAO.updateMemberTotalPoints(member_idx);
+				
 				
 			} catch (Exception e) {
 				// ❗️ 예외 발생 시 로그를 기록하여 원인 파악을 용이하게 합니다.
