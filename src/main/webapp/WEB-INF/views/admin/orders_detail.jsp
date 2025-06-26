@@ -2,81 +2,61 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
-<%@ include file="/WEB-INF/views/include/header.jsp" %>
-<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+<%@ include file="include/layout_head.jsp" %>
+<%@ include file="include/header.jsp" %> 
+<%@ include file="include/sidebar.jsp" %>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/order.css" />
+<h2>📄 관리자 주문 상세 정보</h2>
 
-<div class="order-detail-container">
-  <h2>🧾 관리자 주문 상세 정보</h2>
+<!-- ✅ 주문 기본 정보 -->
+<table class="detail-table">
+  <tr><th>주문번호</th><td>${order.order_id}</td></tr>
+  <tr><th>회원 ID</th><td>${order.member_id}</td></tr>
+  <tr><th>회원명</th><td>${order.member_name}</td></tr>
+  <tr><th>주문일</th><td>${order.order_date}</td></tr>
+  <tr><th>총 결제금액</th><td><fmt:formatNumber value="${order.total_price}" type="currency"/></td></tr>
+  <tr><th>결제방법</th><td>${order.payment_method}</td></tr>
+  <tr><th>사용포인트</th><td>${order.used_point}</td></tr>
+  <tr><th>적립포인트</th><td>${order.earned_point}</td></tr>
+</table>
 
-  <!-- 🧍 회원 정보 -->
-  <div class="order-member-info">
-    <p><strong>회원 번호:</strong> ${order.member_idx}</p>
-  </div>
+<!-- ✅ 배송 정보 -->
+<h3>🚚 배송 정보</h3>
+<table class="detail-table">
+  <tr><th>수령인</th><td>${order.delivery.receiver_name}</td></tr>
+  <tr><th>연락처</th><td>${order.delivery.receiver_phone}</td></tr>
+  <tr><th>주소</th><td>${order.delivery.delivery_address} ${order.delivery.address_detail}</td></tr>
+  <tr><th>우편번호</th><td>${order.delivery.zipcode}</td></tr>
+  <tr><th>배송메모</th><td>${order.delivery.memo}</td></tr>
+  <tr><th>배송상태</th><td>${order.delivery.status_code}</td></tr>
+  <tr><th>운송장번호</th><td>${order.delivery.tracking_number}</td></tr>
+</table>
 
-  <!-- 📘 책 정보 -->
-  <div class="order-book-info">
-    <img src="${pageContext.request.contextPath}/resources/img/product-img/${order.book_cover}" alt="책 표지" class="book-cover" />
-    <div class="book-meta">
-      <p><strong>제목:</strong> ${order.book_title}</p>
-      <p><strong>수량:</strong> ${order.book_count}권</p>
-    </div>
-  </div>
+<p>
+  <a href="${pageContext.request.contextPath}/admin/orders_list">← 목록으로</a>
+</p>
 
-  <!-- 💳 결제 정보 -->
-  <div class="order-payment-info">
-    <h3>💰 결제 정보</h3>
-    <p><strong>총 결제 금액:</strong> <fmt:formatNumber value="${order.total_price}" type="currency" currencySymbol="₩" /></p>
-    <p><strong>결제 수단:</strong> ${order.payment_method}</p>
-    <p><strong>사용 포인트:</strong> ${order.used_point} P</p>
-    <p><strong>적립 포인트:</strong> ${order.earned_point} P</p>
-  </div>
-
-  <!-- 🚚 배송 정보 -->
-  <div class="order-delivery-info">
-    <h3>📦 배송 정보</h3>
-    <p><strong>수령인:</strong> ${order.receiver_name}</p>
-    <p><strong>연락처:</strong> ${order.receiver_phone}</p>
-    <p><strong>주소:</strong> [${order.zipcode}] ${order.delivery_address} ${order.address_detail}</p>
-    <p><strong>배송 메모:</strong> ${order.memo}</p>
-    <p><strong>배송 상태 코드:</strong> ${order.status_code}</p>
-  </div>
-
-  <!-- 기타 주문 정보 -->
-  <div class="order-etc">
-    <p><strong>주문 번호:</strong> ${order.order_id}</p>
-    <p><strong>주문일:</strong> <fmt:formatDate value="${order.order_date}" pattern="yyyy-MM-dd HH:mm:ss" /></p>
-    <p><strong>주문 상태:</strong> ${order.status}</p>
-  </div>
-</div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp" %>
-
+<!-- ✅ 스타일 -->
 <style>
-
-.order-detail-container {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 30px;
-  border: 1px solid #ddd;
-  background-color: #fefefe;
-  border-radius: 10px;
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  font-family: 'Noto Sans KR', sans-serif;
 }
-
-.order-book-info {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
+.detail-table th,
+.detail-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
 }
-.order-book-info img {
-  width: 120px;
-  border-radius: 4px;
+.detail-table th {
+  background-color: #f5f5f5;
+  width: 150px;
+  white-space: nowrap;
 }
-.order-payment-info, .order-delivery-info, .order-etc {
-  margin-bottom: 20px;
-}
-
-
 </style>
+
+
+<%-- 4. 하단 푸터를 불러옵니다. --%>
+<%@ include file="include/footer.jsp" %> 
