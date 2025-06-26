@@ -13,8 +13,6 @@
 <%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
 
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <main class="main-content">
 	<div class="admin-container">
 	  <h1>📩 1:1 문의 관리</h1>
