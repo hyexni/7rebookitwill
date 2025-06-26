@@ -2,6 +2,7 @@ package com.itwillbs.controller;
 
 import java.util.List;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,15 +48,27 @@ public class BookReportController {
      * 로그인한 사용자만 접근 가능합니다.
      */
     @RequestMapping(value = "/write", method = RequestMethod.GET)
-    public String writeGET(HttpSession session, RedirectAttributes rttr) throws Exception {
+    public String writeGET(HttpSession session, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
         logger.info("C: /bookreport/write -> writeGET() 호출");
 
-        // 로그인 확인
-        if (session.getAttribute("member_idx") == null) {
-            rttr.addFlashAttribute("auth_msg", "로그인이 필요한 기능입니다.");
-            return "redirect:/member/login"; // 로그인 페이지 주소로 변경하세요.
-        }
+        // 세션에서 회원 정보를 가져옴
+        Integer member_idx = (Integer) session.getAttribute("member_idx");
         
+        
+        if (member_idx == null) {
+            // 리다이렉트 시 메시지를 일회성으로 전달
+            rttr.addFlashAttribute("message", "로그인이 필요한 서비스입니다.");
+            
+            // ✅==== 기능 추가 시작 ====
+            // 사용자가 원래 요청했던 목적지 URL을 세션에 저장
+            String destination = request.getRequestURI();
+            session.setAttribute("redirectAfterLogin", destination);
+            logger.info("로그인 후 이동할 URL 저장: {}", destination);
+            // ✅==== 기능 추가 끝 ====
+
+            // 로그인 페이지로 이동시킴
+            return "redirect:/member/login";
+        }        
         return "/bookreport/write"; // /views/bookreport/write.jsp
     }
 
