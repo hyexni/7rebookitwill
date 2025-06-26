@@ -104,6 +104,13 @@
         <%-- [수정] 영수증 목록에 맞는 검색 기능 --%>
         <div class="search-form">
             <form action="<c:url value='/admin/receipt/list'/>" method="get">
+            
+                <%-- ================== ▼▼▼ 이 부분이 추가됩니다 ▼▼▼ ================== --%>
+              <%-- 현재 정렬 기준을 숨겨진 값으로 함께 전송하여 정렬 상태를 유지합니다. --%>
+               <input type="hidden" name="sortColumn" value="${pageMaker.cri.sortColumn}">
+               <input type="hidden" name="sortOrder" value="${pageMaker.cri.sortOrder}">
+               <%-- ================== ▲▲▲ 여기까지 추가됩니다 ▲▲▲ ================== --%>
+            
                 <select name="searchType">
                     <option value="member_id" ${pageMaker.cri.searchType == 'member_id' ? 'selected' : ''}>회원 아이디</option>
                     <option value="member_name" ${pageMaker.cri.searchType == 'member_name' ? 'selected' : ''}>회원 이름</option>
@@ -121,12 +128,18 @@
                     <th class="${pageMaker.cri.sortColumn == 'upload_id' ? pageMaker.cri.sortOrder : ''}" style="width: 8%;">
                         <a href="<c:url value='/admin/receipt/list${pageMaker.cri.sortUrl("upload_id")}' />">#번호</a>
                     </th>
-                    <th class="${pageMaker.cri.sortColumn == 'member_id' ? pageMaker.cri.sortOrder : ''}" style="width: 20%;">
-                        <a href="<c:url value='/admin/receipt/list${pageMaker.cri.sortUrl("member_id")}' />">회원ID(이름)</a>
+                    <th class="${pageMaker.cri.sortColumn == 'member_id' ? pageMaker.cri.sortOrder : ''}" style="width: 12%;">
+                        <a href="<c:url value='/admin/receipt/list${pageMaker.cri.sortUrl("member_id")}' />">회원ID</a>
+                    </th>
+                    <th class="${pageMaker.cri.sortColumn == 'member_name' ? pageMaker.cri.sortOrder : ''}" style="width: 12%;">
+                        <a href="<c:url value='/admin/receipt/list${pageMaker.cri.sortUrl("member_name")}' />">회원이름</a>
                     </th>
                     <th>판매처</th>
                     <th class="${pageMaker.cri.sortColumn == 'ocr_amount' ? pageMaker.cri.sortOrder : ''}" style="width: 12%;">
                         <a href="<c:url value='/admin/receipt/list${pageMaker.cri.sortUrl("ocr_amount")}' />">결제 금액</a>
+                    </th>
+                    <th class="${pageMaker.cri.sortColumn == 'earnedPoints' ? pageMaker.cri.sortOrder : ''}" style="width: 12%;">
+                        <a href="<c:url value='/admin/receipt/list${pageMaker.cri.sortUrl("earnedPoints")}' />">적립 포인트</a>
                     </th>
                     <th style="width: 10%;">인증 상태</th>
                     <th class="${pageMaker.cri.sortColumn == 'upload_time' ? pageMaker.cri.sortOrder : ''}" style="width: 15%;">
@@ -138,12 +151,14 @@
             <tbody>
                 <c:choose>
                     <c:when test="${not empty receiptList}">
-                        <c:forEach var="receipt" items="${receiptList}">
+                        <c:forEach var="receipt" items="${receiptList}">                          
                             <tr>
                                 <td>${receipt.upload_id}</td>
-                                <td>${receipt.member_id} (${receipt.member_name})</td>
+                                <td>${receipt.member_id} </td>
+                                <td>${receipt.member_name}</td>
                                 <td>${receipt.ocr_store}</td>
                                 <td><fmt:formatNumber value="${receipt.ocr_amount}" pattern="#,###" />원</td>
+                                <td><fmt:formatNumber value="${receipt.earnedPoints}" pattern="#,##0" />점</td>
                                 <td>
                                     <c:choose>
                                         <c:when test="${receipt.upload_status == 'SUCCESS'}"><span class="label label-success">인증완료</span></c:when>
@@ -152,7 +167,10 @@
                                 </td>
                                 <td><fmt:formatDate value="${receipt.upload_time}" pattern="yyyy-MM-dd HH:mm"/></td>
                                 <td>
-                                    <a href="<c:url value='/admin/receipt/detail?upload_id=${receipt.upload_id}'/>" class="btn btn-primary btn-xs">상세보기</a>
+                                                                 
+                                  
+								<a href="<c:url value='/admin/receiptDetail?upload_id=${receipt.upload_id}'/>" class="btn btn-primary btn-xs">상세보기</a>
+
                                 </td>
                             </tr>
                         </c:forEach>

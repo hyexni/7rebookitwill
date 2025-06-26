@@ -69,8 +69,7 @@ public class ReceiptDTO {
 				+ items + "]";
 	}
 
-    
-    
+       
     
     
 }

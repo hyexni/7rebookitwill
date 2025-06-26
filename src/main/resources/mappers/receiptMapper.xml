@@ -9,11 +9,11 @@
         INSERT INTO c7d2503t1p1.receipts (
             member_idx, originalfilename, savedfilename, filepath, file_size, file_type, 
             ocr_text, ocr_booktitle, ocr_date, ocr_amount, ocr_store, approvalnumber, 
-            upload_status, fileHash, verification_status , earnedPoints
+            upload_status, fileHash, verification_status ,earnedPoints
         ) VALUES (
             #{member_idx}, #{originalfilename}, #{savedfilename}, #{filepath}, #{file_size}, #{file_type},
             #{ocr_text}, #{ocr_booktitle}, #{ocr_date}, #{ocr_amount}, #{ocr_store}, #{approvalnumber}, 
-            #{upload_status}, #{fileHash}, #{verification_status},#{earnedPoints}
+            #{upload_status}, #{fileHash}, #{verification_status}, #{earnedPoints}
         )
     </insert>
     
@@ -36,19 +36,20 @@
     
    <!--/관리자페이지 부분  -->
    <sql id="adminSearchCondition">
-        <if test="search != null and search != ''">
-            AND (m.member_id LIKE CONCAT('%', #{search}, '%')
-                 OR m.member_name LIKE CONCAT('%', #{search}, '%')
-                 OR r.ocr_store LIKE CONCAT('%', #{search}, '%'))
+        <if test="keyword != null and keyword != ''">
+            AND (m.member_id LIKE CONCAT('%', #{keyword}, '%')
+                 OR m.member_name LIKE CONCAT('%', #{keyword}, '%')
+                 OR r.ocr_store LIKE CONCAT('%', #{keyword}, '%'))
         </if>
     </sql>
 
     <select id="getReceiptListAdmin" 
             resultType="com.itwillbs.dto.AdminReceiptDTO"
-            parameterType="com.itwillbs.domain.Criteria">
+            parameterType="com.itwillbs.domain.SearchCriteria">
+            
         SELECT 
             r.upload_id, r.member_idx, r.ocr_store, r.ocr_amount, r.ocr_date, r.upload_time, r.upload_status,
-            m.member_id, m.member_name
+            m.member_id, m.member_name , earnedPoints
         FROM 
             receipts r
         JOIN 
@@ -56,17 +57,15 @@
         <where>
             <include refid="adminSearchCondition"></include>
         </where>
-        <choose>
-            <when test="sort == 'amount_desc'">ORDER BY r.ocr_amount DESC</when>
-            <when test="sort == 'amount_asc'">ORDER BY r.ocr_amount ASC</when>
-            <otherwise>ORDER BY r.upload_id DESC</otherwise>
-        </choose>
-        LIMIT #{pageStart}, #{perPageNum}
+       ORDER BY ${sortColumn1} ${sortOrder}
+    
+    	LIMIT #{pageStart}, #{perPageNum}
+       
     </select>
     
     <select id="getReceiptTotalCount" 
             resultType="int"
-            parameterType="com.itwillbs.domain.Criteria">
+            parameterType="com.itwillbs.domain.SearchCriteria">
         SELECT 
             count(*) 
         FROM 
@@ -77,6 +76,8 @@
             <include refid="adminSearchCondition"></include>
         </where>
     </select>
+    
+   
 
 
        <!--/관리자페이지 부분  -->

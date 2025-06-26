@@ -13,6 +13,7 @@ public class AdminReceiptDTO {
     private Timestamp ocr_date;
     private Timestamp upload_time;
     private String upload_status;
+    private int earnedPoints;
     
     // Member 테이블에서 JOIN해서 가져올 필드
     private String member_id; // 예시: 회원의 아이디

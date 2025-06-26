@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+  <mapper namespace="com.itwillbs.persistence.AdminReceiptDAO">
+   <!-- 관리자에서 사용할 개인별 영수증 상세조회 -->
+     <select id="selectReceiptDetail" parameterType="int" resultType="com.itwillbs.domain.ReceiptVO">
+        SELECT r.* , m.member_name FROM
+            receipts r
+        JOIN
+            member m ON r.member_idx = m.member_idx
+        WHERE
+            r.upload_id = #{upload_id}
+    </select>
+    
+    </mapper>

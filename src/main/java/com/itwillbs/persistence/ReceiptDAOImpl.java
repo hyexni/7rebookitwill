@@ -25,10 +25,7 @@ public abstract class ReceiptDAOImpl implements ReceiptDAO {
         return sqlSession.selectOne(NAMESPACE + "countByFilename", filename);  // ✅ MyBatis 호출
     }
 
-    @Override
-    public List<ReceiptVO> selectAllReceipts() {
-        return sqlSession.selectList(NAMESPACE + "selectAllReceipts");
-    }
+  
     
     
 }

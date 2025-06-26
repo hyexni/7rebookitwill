@@ -1,7 +1,8 @@
 package com.itwillbs.service;
 
 import com.itwillbs.domain.ReceiptVO;
-import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.SearchCriteria;
+
 import com.itwillbs.dto.AdminReceiptDTO;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
@@ -28,8 +29,21 @@ public interface ReceiptService {
     ReceiptVO getReceiptDetails(int upload_id) throws Exception;
 
     /** [관리자] 페이징 처리된 전체 영수증 목록 조회 (유지) */
-    List<AdminReceiptDTO> getReceiptListAdmin(Criteria cri) throws Exception;
+    List<AdminReceiptDTO> getReceiptListAdmin(SearchCriteria cri) throws Exception;
 
     /** [관리자] 전체 영수증 개수 조회 (유지) */
-    int getReceiptTotalCount(Criteria cri) throws Exception;
+    int getReceiptTotalCount(SearchCriteria cri) throws Exception;
+    
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

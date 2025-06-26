@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.ReceiptVO;
 import com.itwillbs.domain.SearchCriteria;
 import com.itwillbs.dto.AdminReceiptDTO;
@@ -46,9 +45,12 @@ public interface ReceiptDAO {
     
     
     /** [관리자] 페이징 처리된 전체 영수증 목록 조회 */
-    public List<AdminReceiptDTO> getReceiptListAdmin(Criteria cri) throws Exception;
+    public List<AdminReceiptDTO> getReceiptListAdmin(SearchCriteria cri) throws Exception;
 
     /** [관리자] 전체 영수증 개수 조회 (페이징 계산용) */
-    public int getReceiptTotalCount(Criteria cri) throws Exception;
-	
+    public int getReceiptTotalCount(SearchCriteria cri) throws Exception;
+    
+    
+   
+    
 }
