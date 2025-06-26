@@ -41,15 +41,13 @@ public class InquiryController {
 	// 글쓰기 (정보 처리) / POST
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public String inquiryWritePOST(InquiryVO vo, HttpSession session) throws Exception {
-		// 1. 세션에 임시 로그인 회원 번호 세팅 (없을 경우만)
-	    if (session.getAttribute("member_idx") == null) {
-	        session.setAttribute("member_idx", 1); // 💡 실제 존재하는 회원 번호로
-	        System.out.println("✅ 테스트용으로 member_idx=1 세션에 저장됨");
+		// member_idx가 없으면 로그인 페이지로 이동
+		Integer member_idx = (Integer) session.getAttribute("member_idx");
+		    if (member_idx == null) {
+		        return "redirect:/member/login?needLogin=true";
 	    }
-
-	    // 2. 세션에서 member_idx 꺼내서 InquiryVO에 설정
-	    Integer member_idx = (Integer) session.getAttribute("member_idx");
-	    vo.setMember_idx(member_idx);
+		    
+	    vo.setMember_idx(member_idx);  // ✅ 이 줄 추가!
 
 	    logger.info(" vo : {}", vo);
 
@@ -65,18 +63,16 @@ public class InquiryController {
 	// http://localhost:8088/cs/list
 	// 문의 내역 (조회) / GET
 	@GetMapping("/list")
-	public String inquiryList(HttpSession session, Model model) throws Exception {
-	    System.out.println("🧪[DEBUG] iService = " + iService);
+	public String inquiryList(InquiryVO vo, HttpSession session, Model model) throws Exception {
 	    
-	    // ✅ 임시 로그인 처리 (테스트용)
-	    if (session.getAttribute("member_idx") == null) {
-	        session.setAttribute("member_idx", 1);  // 💡 테스트용 회원 번호 (예: 1번)
-	        System.out.println("✅ 테스트용으로 member_idx=1 세션에 저장됨");
+		 // member_idx가 없으면 로그인 페이지로 이동
+		Integer member_idx = (Integer) session.getAttribute("member_idx");
+		    if (member_idx == null) {
+		        return "redirect:/member/login?needLogin=true";
 	    }
-
-	    Integer member_idx = (Integer) session.getAttribute("member_idx");
-	    System.out.println("🧪[DEBUG] member_idx = " + member_idx);
-
+		    
+	    vo.setMember_idx(member_idx);  // ✅ 이 줄 추가!
+		    
 	    List<InquiryVO> inquiryList = iService.getInquiryList(member_idx);
 	    model.addAttribute("inquiryList", inquiryList);
 

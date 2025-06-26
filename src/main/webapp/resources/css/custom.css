@@ -353,68 +353,6 @@ form button {
   line-height: 45px;
 }
 
-/* custom.css에 추가 */
-input.invalid, textarea.invalid, select.invalid {
-  border: 2px solid #ffc107;
-  border-radius: 6px;
-  background-color: #fffbea; /* 부드러운 노란 배경 */
-  transition: all 0.3s ease;
-}
-
-small.text-danger {
-  font-size: 13px;
-  margin-top: 5px;
-  color: #d99e00; /* 좀 더 따뜻한 노랑 계열 */
-}
-
-/* 공통 에러 메시지 스타일 */
-.input-error {
-  border: 2px solid #f4c430 !important;
-  background-color: #fffdee;
-}
-
-.text-error {
-  color: #e53935;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 6px;
-}
-
-.text-error i {
-  font-size: 14px;
-  color: #e53935;
-}
-
-
-.form-control {
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  padding: 8px 12px;
-  font-size: 15px;
-}
-
-.form-control:focus {
-  border-color: #86b7fe;
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-  outline: none;
-}
-
-
-/* 현업에서 사용하는 경고 */
-.invalid-feedback {
-  color: #dc3545;
-  font-size: 0.9rem;
-  margin-top: 4px;
-  display: none;
-}
-
-.is-invalid {
-  border-color: #dc3545;
-  background-color: #fff;
-}
-
 /* ✅ 푸터가 덮이지 않게 레이아웃 보정 */
 html, body {
   height: 100%;
@@ -442,3 +380,23 @@ html, body {
   color: #d6336c;  /* 진한 핑크/빨강 */
   font-weight: 600;
 }
+
+
+/* 🔧 노란 테두리 제거 */
+select:required:invalid,
+input:required:invalid,
+textarea:required:invalid {
+  border: 1px solid #ccc !important;  /* 기존과 같은 회색 테두리 */
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* 🔧 포커스 상태에서도 테두리 유지 (파란선 제거) */
+select:focus,
+input:focus,
+textarea:focus {
+  border: 1px solid #4c6ef5;  /* 선택됐을 때 예쁜 파란색 테두리 */
+  outline: none;
+  box-shadow: none;
+}
+
