@@ -39,6 +39,11 @@ public class PaymentDAOImpl implements PaymentDAO {
 	}
 	
 	// 결제 처리
+	// 1. 포인트 차감
+	@Override
+	public void usePoints(PaymentDTO dto) {
+	    sqlSession.update(NAMESPACE + "usePoints", dto);
+	}
 
 	// 2. 주문 저장
 	@Override
@@ -62,6 +67,13 @@ public class PaymentDAOImpl implements PaymentDAO {
 	public void insertPayment(PaymentDTO dto) {
 	    sqlSession.insert(NAMESPACE + "insertPayment", dto);
 	}
+	
+	// 5. 포인트 적립
+	@Override
+	public void givePoints(PaymentDTO dto) {
+	    sqlSession.update(NAMESPACE + "givePoints", dto);
+	}
+
 
 	// 배송 저장
 	@Override

@@ -131,9 +131,6 @@ public class PaymentController {
     }
 
     
-    
-    
-    
     // 결제 완료
     @GetMapping("/complete")
     public String paymentComplete(HttpSession session, Model model) {
@@ -161,6 +158,7 @@ public class PaymentController {
     }
 
 
+    // 간편결제
     @GetMapping("/success")
     public String kakaoPaySuccess(
     		@RequestParam("book_id") int bookId,
@@ -192,9 +190,12 @@ public class PaymentController {
         paymentDTO.setUnit_price(unitPrice);
         paymentDTO.setQuantity(quantity);
         paymentDTO.setUsed_points(usedPoints);
-        paymentDTO.setPay_amount(payAmount);
         
+        // 결제 총액 계산
         // ✅ 결제금액의 10% 포인트 적립
+        int totalPrice = unitPrice * quantity;
+        paymentDTO.setTotal_price(totalPrice);
+        paymentDTO.setPay_amount(payAmount);
         paymentDTO.setSaved_points((int)(payAmount * 0.1));
         
         // ✅ 결제 방식 세팅
@@ -210,6 +211,9 @@ public class PaymentController {
         deliveryDTO.setAddress_detail(addressDetail);
         deliveryDTO.setMemo(memo);
 
+        // ✨ 이거 추가해줘야 DB에 제대로 들어감!
+        paymentDTO.setMember_address(deliveryDTO.getDelivery_address());
+        paymentDTO.setMember_address_detail(deliveryDTO.getAddress_detail());
 
         // 3. 결제 처리 서비스 호출 + 결과 저장
         boolean result = pService.processPayment(paymentDTO, deliveryDTO);

@@ -41,6 +41,12 @@ public class PaymentServiceImpl implements PaymentService {
 		if (dto.getUsed_points() < 0) {
 		        throw new IllegalArgumentException("포인트는 0 이상이어야 합니다.");
 		    }
+		
+		// 1. 포인트 차감
+	    if (dto.getUsed_points() > 0) {
+	        pDAO.usePoints(dto);
+	    }
+
 
 	    // 2. 주문 정보 저장
 	    pDAO.insertOrder(dto);
@@ -55,6 +61,12 @@ public class PaymentServiceImpl implements PaymentService {
 
 	    // 5. 결제 정보 저장
 	    pDAO.insertPayment(dto);
+	    
+	    // 6. 포인트 적립
+	    if (dto.getSaved_points() > 0) {
+	        pDAO.givePoints(dto);
+	    }
+
 
 	    // 7. 배송 정보 저장
 	    pDAO.insertDelivery(deliveryDTO);
