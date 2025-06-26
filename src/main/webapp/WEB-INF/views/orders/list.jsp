@@ -1,12 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/order.css" />
 
 <div class="order-list-container">
   <h2>📦 나의 주문 목록</h2>
@@ -51,7 +52,17 @@
               </td>
 
               <!-- 주문내역 -->
-              <td>${order.book_title} 외 ${order.book_count - 1}권</td>
+                <td>
+                <c:choose>
+			    <c:when test="${order.book_count == 1}">
+			      ${order.book_title}
+			    </c:when>
+			    <c:when test="${order.book_count > 1}">
+			      <c:set var="remainCount" value="${order.book_count}" />
+			      ${order.book_title} 외 <c:out value="${remainCount - 1}" />권
+			    </c:when>
+			  </c:choose>
+			</td>
 
               <!-- 주문 상태 -->
               <td>
