@@ -13,7 +13,7 @@ public class OrderDTO {
 	private int total_price;
 	private String status;
 	private String member_id;
-	private String member_name; 
+	private String member_name;
 
 	// 책 정보 (단일 주문 기준)
 	private String book_title;
@@ -30,5 +30,6 @@ public class OrderDTO {
 
 	// 배송 정보 포함
 	private DeliveryDTO delivery;
-	
+	private String delivery_status;
+
 }
