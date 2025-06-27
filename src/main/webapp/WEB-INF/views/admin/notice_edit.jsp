@@ -20,7 +20,7 @@
 	
 	  <h1>공지사항 수정</h1>
 	
-	  <form action="${pageContext.request.contextPath}/admin/edit" method="post">
+	  <form action="${pageContext.request.contextPath}/admin/notice/edit" method="post">
 	    <input type="hidden" name="notice_id" value="${notice.notice_id}" />
 	
 	    <div class="form-group">

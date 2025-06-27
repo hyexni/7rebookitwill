@@ -36,7 +36,7 @@
 			  <c:if test="${notice.fixed eq 'Y'}">
 			    <span style="font-size: 16px;">📌</span>
 			  </c:if>
-			  <a href="${pageContext.request.contextPath}/admin/read?notice_id=${notice.notice_id}"
+			  <a href="${pageContext.request.contextPath}/admin/notice/read?notice_id=${notice.notice_id}"
 			     style="font-size: 15px; font-weight: 500; color: #333; text-decoration: none;">
 			    ${notice.notice_title}
 			  </a>
@@ -46,11 +46,11 @@
 	          <fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd"/>
 	        </td>
 	        <td style="padding: 6px 8px;">
-	          <form action="${pageContext.request.contextPath}/admin/edit" method="get" style="display:inline;">
+	          <form action="${pageContext.request.contextPath}/admin/notice/edit" method="get" style="display:inline;">
 	            <input type="hidden" name="notice_id" value="${notice.notice_id}" />
 	            <button type="submit" class="btn btn-outline-primary">수정</button>
 	          </form>
-	          <form action="${pageContext.request.contextPath}/admin/delete" method="post" style="display:inline;">
+	          <form action="${pageContext.request.contextPath}/admin/notice/delete" method="post" style="display:inline;">
 	            <input type="hidden" name="notice_id" value="${notice.notice_id}" />
 	            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
 	          </form>
