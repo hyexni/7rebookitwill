@@ -40,5 +40,61 @@
         DELETE FROM book_report 
         WHERE report_id = #{report_id}
     </delete>
+    
+    
+    
+    <!-- 
+        =======================================================================
+                            검색, 정렬, 페이징 관련 쿼리
+        =======================================================================
+    -->
 
+    <!-- 
+        =======================================================================
+                   사용자 요청에 따라 수정된 검색, 정렬, 페이징 쿼리
+        =======================================================================
+    -->
+
+    <!-- 검색 조건을 처리하는 SQL 조각 -->
+    <sql id="search">
+        <if test="keyword != null and keyword != ''">
+            AND (rbook_title LIKE CONCAT('%', #{keyword}, '%')
+                 OR report_title LIKE CONCAT('%', #{keyword}, '%')
+                 OR author_name LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+    </sql>
+
+    <!-- 페이징, 검색, 정렬이 적용된 목록 조회 -->
+    <select id="selectReportList" resultType="com.itwillbs.domain.BookReportVO"  parameterType="com.itwillbs.domain.SearchCriteria">
+        SELECT *
+        FROM book_report 
+        <where>
+            1=1 <include refid="search"></include>
+        </where>
+        <if test="sortColumn != null and sortColumn != ''">
+            ORDER BY 
+            <choose>
+                <!-- OGNL 오류 수정을 위해 .toString() 추가 -->
+                <when test="sortColumn == 'report_title'.toString()">report_title</when>
+                <when test="sortColumn == 'author_name'.toString()">author_name</when>
+                <when test="sortColumn == 'rbook_title'.toString()">rbook_title</when>
+                <otherwise>report_id</otherwise>
+            </choose>
+            <choose>
+                <!-- OGNL 오류 수정을 위해 .toString() 추가 -->
+                <when test="sortOrder == 'ASC'.toString()">ASC</when>
+                <otherwise>DESC</otherwise>
+            </choose>
+        </if>
+        LIMIT #{pageStart}, #{perPageNum}
+    </select>
+
+    <!-- 검색 조건에 맞는 총 글의 개수 조회 -->
+    <select id="countReports" resultType="int"  parameterType="com.itwillbs.domain.SearchCriteria">
+        SELECT count(*)
+        FROM book_report <!-- 테이블명 수정 -->
+        <where>
+            1=1 <include refid="search"></include>
+        </where>
+    </select>
 </mapper>

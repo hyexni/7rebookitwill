@@ -88,7 +88,7 @@
     }
 
     /* 버튼 공통 스타일 */
-    .btn {
+    .btns {    	
         border-radius: 10px;
         font-weight: 700;
         padding: 12px 30px;
@@ -97,17 +97,17 @@
         cursor: pointer;
     }
     
-    .btn:hover {
+    .btns:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
     }
     
-    .btn-primary { /* 등록하기 버튼 */
+    .btns-primary { /* 등록하기 버튼 */
         background-color: #fbb710;
         color: white;
     }
     
-    .btn-secondary { /* 목록으로 버튼 */
+    .btns-secondary { /* 목록으로 버튼 */
         background-color: #adb5bd;
         color: white;
     }
@@ -129,19 +129,60 @@
         display: none; /* 기본적으로 숨김 */
         font-weight: 500;
     }
+    
+    /*           */
+    
+    
+    .btn-icon {
+  display: inline-flex; /* 아이콘과 텍스트 정렬을 위해 flex 사용 */
+  align-items: center;
+  gap: 8px; /* 아이콘과 텍스트 사이 간격 */
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff; /* 포인트 컬러 */
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
+  position: fixed;
+  bottom: 30px; /* 화면 하단에서 30px 위 */
+  right: 400px;  /* 화면 오른쪽에서 30px 왼쪽 */
+  z-index: 1000; /* 다른 요소들 위에 보이도록 설정 */
+  
+}
+
+.btn-icon:hover {
+  background-color: #0056b3; /* 더 진한 파란색 */
+}
+
+.btn-icon i {
+  font-size: 1em; /* 아이콘 크기를 텍스트와 맞춤 */
+}
+
+
 </style>
 
 <%-- ... (header, sidebar, alert include는 그대로 유지) ... --%>
+<head>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
 <%@include file="/WEB-INF/views/include/header.jsp" %> 
 <%@include file="/WEB-INF/views/include/sidebar.jsp" %>
 <%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
 <main>
 <div class="container report-container">
+<a href="/bookreport/list" class="btn-icon">  <i class="fa-solid fa-bars"></i>목록</a>
     <div class="report-form-card">
         <h1 class="page-title">✏️ 나의 독후감 작성하기</h1>
         
+        
         <%-- 유효성 검사를 위해 form에 id 추가 --%>
+     
         <form id="reportForm" action="/bookreport/write" method="post">
             <div class="mb-3">
                 <label for="report_title" class="form-label">📖 독후감 제목</label>
@@ -184,9 +225,10 @@
             </div>
             
             <div class="d-flex justify-content-end gap-2 mt-4">
-                <button type="submit" class="btn btn-primary">등록하기 ✨</button>
-                <a href="/bookreport/list" class="btn btn-secondary">목록으로</a>
-            </div>
+            
+                <button type="submit" class="btns btn-primary">등록하기 ✨</button></div>
+                
+            
         </form>
     </div>
 </div>

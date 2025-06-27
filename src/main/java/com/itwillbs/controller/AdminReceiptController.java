@@ -38,8 +38,7 @@ public class AdminReceiptController {
 
         // ========================= [ 추가된 기능 1: 기본 정렬 기준 설정 ] =========================
         // 사용자가 정렬 기준을 선택하지 않은 경우(최초 접속 시),
-        // 'upload_date' 컬럼을 기준으로 최신순(DESC) 정렬을 기본값으로 설정합니다.
-        if (cri.getSortColumn() == null || cri.getSortColumn().isEmpty()) {
+           if (cri.getSortColumn() == null || cri.getSortColumn().isEmpty()) {
             cri.setSortColumn("upload_id"); // 영수증 등록일 컬럼명 (DB 스키마에 맞게 수정 필요)
             cri.setSortOrder("DESC");         // 내림차순 (최신순)
         }

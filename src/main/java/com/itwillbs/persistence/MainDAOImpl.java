@@ -26,4 +26,37 @@ public class MainDAOImpl implements MainDAO {
         // sqlSession 객체를 사용하여 MainMapper.xml의 selectBookList 쿼리를 실행하고 결과를 List<BookVO> 형태로 반환
         return sqlSession.selectList(NAMESPACE + ".selectBookList");
     }
+    
+    
+    /**
+     * 신간 도서 목록 조회 구현
+     */
+    @Override
+    public List<BookVO> selectNewBookList(int limit) {
+        // sqlSession.selectList("네임스페이스.쿼리ID", 파라미터);
+        return sqlSession.selectList(NAMESPACE + ".selectNewBookList", limit);
+    }
+
+    /**
+     * 베스트셀러 목록 조회 구현
+     */
+    @Override
+    public List<BookVO> selectBestSellerList(int limit) {
+        // sqlSession.selectList("네임스페이스.쿼리ID", 파라미터);
+        return sqlSession.selectList(NAMESPACE + ".selectBestSellerList", limit);
+    }
+    
+    
+ // 검색용 메서드 
+    @Override
+    public List<BookVO> searchBooksByKeyword(String keyword) throws Exception {
+        return sqlSession.selectList(NAMESPACE + ".searchBooksByKeyword", keyword);
+    }
+
+    // 추천 도서 조회용 메서드 구현
+    @Override
+    public List<BookVO> selectRecommendedBooks(BookVO vo) throws Exception {
+        return sqlSession.selectList(NAMESPACE + ".selectRecommendedBooks", vo);
+    }
+    
 }
