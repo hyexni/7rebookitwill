@@ -24,8 +24,8 @@
 
 	
 <!-- 공통 CSS 불러오기 -->
-<main class="main-content">
-	<div class="admin-container" id="member-list">	
+<main class="main-content" id="member-list">
+	<div class="admin-container" >	
 		  <h1>👥 회원 관리</h1>
 		
 		  <!-- 🔍 검색 & 정렬 -->

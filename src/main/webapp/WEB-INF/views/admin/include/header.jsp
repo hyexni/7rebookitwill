@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <!DOCTYPE html>
 <body>
     <!-- Search Wrapper Area Start -->
@@ -25,19 +26,18 @@
 
 	  <!-- 왼쪽: 로고 + 텍스트 -->
 	  <!-- 왼쪽 영역 -->
-		<div class="header-left">
+		<div class="header-left" style="margin-left: 200px;">
 		  <a href="/admin/stats">
 		    <img src="${pageContext.request.contextPath}/resources/img/core-img/logo2.png" alt="ReBook 로고" class="header-logo">
 		  </a>
 		  <div class="intro-text">
-		    <h2>도서판매 전문점 <span>ReBook</span></h2>
-		    <p>관리자 페이지</p>
+		    <h2>도서판매 전문점 <span>ReBook - 관리자 페이지</span></h2>
 		  </div>
 		</div>
 
 	
 	  <!-- 오른쪽: 사용자 아이콘 -->
-	  <div class="header-right">
+	  <div class="header-right" style="margin-right: 150px;">
 	    <div class="user-dropdown">
 	      <button class="user-icon">
 	        <i class="fas fa-user-circle"></i>

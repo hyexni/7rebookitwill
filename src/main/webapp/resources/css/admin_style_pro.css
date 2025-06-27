@@ -305,6 +305,7 @@ a {
 	padding: 6px;
 }
 
+
 .dropdown-menu {
 	display: none;
 	position: absolute;
@@ -328,6 +329,10 @@ a {
 
 .dropdown-menu a:hover {
 	background-color: #f1f1f1;
+}
+
+.dropdown-menu.show {
+  display: block !important;
 }
 
 /* 검색창과 사용자 메뉴 그룹은 기존 스타일을 대부분 유지합니다. */

@@ -12,8 +12,8 @@
 <%@ include file="include/sidebar.jsp" %>  
 <%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
-<main class="main-content">
-	<div class="admin-container" id="notice-list">
+<main class="main-content" id="notice-list">
+	<div class="admin-container" >
 	<!-- 페이지 제목 -->
 	<h1>📢 공지사항 관리</h1>
 	
@@ -31,15 +31,17 @@
 	    <c:forEach var="notice" items="${noticeList}">
 	      <tr style="text-align: center; border-bottom: 1px solid #dee2e6;">
 	        <td style="padding: 6px 8px;">${notice.notice_id}</td>
+	        
 	        <td style="padding: 6px 8px;">
-			  <c:if test="${notice.fixed}">
-			    <span style="color: red; font-weight: bold;">[공지]</span>
+			  <c:if test="${notice.fixed eq 'Y'}">
+			    <span style="font-size: 16px;">📌</span>
 			  </c:if>
 			  <a href="${pageContext.request.contextPath}/admin/read?notice_id=${notice.notice_id}"
 			     style="font-size: 15px; font-weight: 500; color: #333; text-decoration: none;">
 			    ${notice.notice_title}
 			  </a>
 			</td>
+			
 	        <td style="padding: 6px 8px;">
 	          <fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd"/>
 	        </td>

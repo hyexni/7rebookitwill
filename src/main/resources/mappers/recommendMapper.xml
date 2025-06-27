@@ -90,62 +90,58 @@
 
   <!-- 2) 찜 기반 추천 + 정렬 (이미 찜한 책 제외 추가됨) -->
   <select id="findRecommendedBooksByWishSorted"
-          parameterType="map"
-          resultType="com.itwillbs.dto.BookStatsDTO">
-    SELECT
-      b.book_id      AS bookId,
-      b.book_title   AS bookTitle,
-      b.cover_image  AS coverImage,
-      b.author_name  AS authorName,
-      b.book_price   AS bookPrice,
-      COALESCE(s.totalSales, 0) AS totalSales,
-      COALESCE(r.avgRating,  0) AS avgRating
-    FROM book b
+        parameterType="map"
+        resultType="com.itwillbs.dto.BookStatsDTO">
+  SELECT
+    b.book_id      AS bookId,
+    b.book_title   AS bookTitle,
+    b.cover_image  AS coverImage,
+    b.author_name  AS authorName,
+    b.book_price   AS bookPrice,
+    COALESCE(s.totalSales, 0) AS totalSales,
+    COALESCE(r.avgRating,  0) AS avgRating
+  FROM book b
+  /* 판매량 */
+  LEFT JOIN (
+    SELECT book_id, SUM(quantity) AS totalSales
+    FROM orderitem
+    GROUP BY book_id
+  ) s ON s.book_id = b.book_id
+  /* 평점 */
+  LEFT JOIN (
+    SELECT book_id, AVG(review_score) AS avgRating
+    FROM review
+    GROUP BY book_id
+  ) r ON r.book_id = b.book_id
+  WHERE b.category_id IN (
+    SELECT DISTINCT b2.category_id
+    FROM book b2
+    JOIN wishlist w ON w.book_id = b2.book_id
+    WHERE w.member_idx = #{member_idx}
+  )
+  /* 아직 찜 안 한 책 */
+  AND NOT EXISTS (
+    SELECT 1 FROM wishlist w2
+    WHERE w2.member_idx = #{member_idx}
+      AND w2.book_id    = b.book_id
+  )
+  /* 이미 구매한 책도 제외 */
+  AND NOT EXISTS (
+    SELECT 1
+    FROM orders o
+    JOIN orderitem oi ON oi.order_id = o.order_id
+    WHERE o.member_idx = #{member_idx}
+      AND oi.book_id   = b.book_id
+  )
+  <choose>
+    <when test="sort == 'latest'">   ORDER BY b.created_at DESC </when>
+    <when test="sort == 'popular'">  ORDER BY s.totalSales DESC </when>
+    <when test="sort == 'rating'">   ORDER BY r.avgRating  DESC </when>
+    <otherwise>                      ORDER BY b.created_at DESC </otherwise>
+  </choose>
+  LIMIT #{limit}
+</select>
 
-    <!-- 판매량 집계 -->
-    LEFT JOIN (
-      SELECT book_id, SUM(quantity) AS totalSales
-      FROM orderitem
-      GROUP BY book_id
-    ) s ON b.book_id = s.book_id
-
-    <!-- 평점 집계 -->
-    LEFT JOIN (
-      SELECT book_id, AVG(review_score) AS avgRating
-      FROM review
-      GROUP BY book_id
-    ) r ON b.book_id = r.book_id
-
-    <!-- 찜한 장르이면서, 아직 찜하지 않은 책 -->
-    WHERE b.category_id IN (
-      SELECT DISTINCT b2.category_id
-      FROM book b2
-      JOIN wishlist w ON b2.book_id = w.book_id
-      WHERE w.member_idx = #{member_idx}
-    )
-    AND b.book_id NOT IN (
-      SELECT w2.book_id
-      FROM wishlist w2
-      WHERE w2.member_idx = #{member_idx}
-    )
-
-    <choose>
-      <when test="sort=='latest'">
-        ORDER BY b.created_at DESC
-      </when>
-      <when test="sort=='popular'">
-        ORDER BY s.totalSales DESC
-      </when>
-      <when test="sort=='rating'">
-        ORDER BY r.avgRating DESC
-      </when>
-      <otherwise>
-        ORDER BY b.created_at DESC
-      </otherwise>
-    </choose>
-
-    LIMIT #{limit}
-  </select>
   
   <!-- 영수증 기반으로한 데이터 가져오기 -->
   <select id="findRecommendedBooksByOcrCategorized" parameterType="java.util.Map" resultType="com.itwillbs.dto.BookStatsDTO">

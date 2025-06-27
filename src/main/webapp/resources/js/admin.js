@@ -1,4 +1,9 @@
-	document.addEventListener("DOMContentLoaded", function () {
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
 	  // ───── 1. 차트 로딩 ─────
 	  drawStatusChart();
 	

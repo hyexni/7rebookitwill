@@ -74,8 +74,7 @@
     <!-- 🔗 링크들 -->
     <div class="order-links">
       <a href="/">🏠 홈으로 가기</a>
-      <a href="/mypage/orders">📦 주문 상세 보기</a>
-      <a href="/mypage/payments">💳 결제 내역 바로가기</a>
+      <a href="/orders/detail?order_id=${orders.order_id }">📦 주문 상세 보기</a>
     </div>
 </div>
 
