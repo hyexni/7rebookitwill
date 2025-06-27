@@ -2,6 +2,7 @@ package com.itwillbs.service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,13 +63,21 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
     
     // 페이징 처리
     @Override
-    public List<InquiryVO> getInquiryList(int startRow, int pageSize, String keyword) {
-        return aiDao.getInquiryList(startRow, pageSize, keyword);
+    public List<InquiryVO> getInquiryList(Map<String, Object> paramMap) {
+        return aiDao.getInquiryList(paramMap);
     }
 
     @Override
-    public int getInquiryCount(String keyword) {
-        return aiDao.getInquiryCount(keyword);
+    public int getInquiryCount(Map<String, Object> paramMap) {
+        return aiDao.getInquiryCount(paramMap);
     }
+    
+    // 미확인 문의 수
+    @Override
+    public int getUncheckedInquiryCount() {
+        return aiDao.getUncheckedInquiryCount();
+    }
+
+    
 }
 

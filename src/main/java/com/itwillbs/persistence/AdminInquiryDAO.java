@@ -2,6 +2,7 @@ package com.itwillbs.persistence;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -34,10 +35,14 @@ public interface AdminInquiryDAO {
     void resetInquiryProcessedAt(int inquiry_id);     // 답변 삭제 시
 
     
-    // 페이징 처리
-    List<InquiryVO> getInquiryList(@Param("startRow") int startRow, 
-    							   @Param("pageSize") int pageSize,
-    							   @Param("keyword") String keyword);
-    public int getInquiryCount(@Param("keyword") String keyword);
+    // 목록
+    List<InquiryVO> getInquiryList(Map<String, Object> paramMap);
+
+    // 총 개수 (페이징용)
+    int getInquiryCount(Map<String, Object> paramMap);
+    
+    // 미답변 문의 수
+    int getUncheckedInquiryCount();
+
 
 }

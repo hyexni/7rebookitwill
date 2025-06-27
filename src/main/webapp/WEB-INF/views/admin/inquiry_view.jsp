@@ -27,14 +27,39 @@
 	            <th>분류</th>
 	            <th>문의자</th>
 	            <th>등록일자</th>
+	            <th>처리자</th>
+	            <th>처리일자</th>
 	            <th>처리상태</th>
 	        </tr>
+	        
 	        <tr>
 	            <td>${inquiry.inquiry_id}</td>
 	            <td>${inquiry.category}</td>
 	            <td>${inquiry.member_id}</td>
 	            <td><fmt:formatDate value="${inquiry.created_at}" pattern="yyyy-MM-dd" /></td>
-	            <td colspan="3">
+				
+				<!-- 처리자 -->
+	            <td>
+				  <c:choose>
+				    <c:when test="${inquiry.ad_id != null}">
+				      ${inquiry.ad_id}
+				    </c:when>
+				    <c:otherwise>-</c:otherwise>
+				  </c:choose>
+				</td>
+				
+	            <!-- 처리일자 -->
+				<td>
+				  <c:choose>
+				    <c:when test="${inquiry.response_created_at != null}">
+				      <fmt:formatDate value="${inquiry.response_created_at}" pattern="yyyy-MM-dd" />
+				    </c:when>
+				    <c:otherwise>-</c:otherwise>
+				  </c:choose>
+				</td>
+				
+				<!-- 처리상태 -->
+	            <td>
 	                <c:choose>
 	                    <c:when test="${inquiry.status eq '답변완료'}">
 	                        <span class="status-badge status-done">답변완료</span>
@@ -44,7 +69,7 @@
 	                    </c:otherwise>
 	                </c:choose>
 	            </td>
-	        </tr>
+	         </tr>
 	    </table>
 	
 	    <%-- 문의 제목/내용 --%>
