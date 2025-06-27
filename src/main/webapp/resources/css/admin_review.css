@@ -1,0 +1,139 @@
+/* -------------------- 기본 배지 스타일 -------------------- */
+.badge {
+	display: inline-block;
+	padding: 4px 10px;
+	border-radius: 20px;
+	font-size: 0.75rem;
+	font-weight: bold;
+	color: #fff;
+	min-width: 50px;
+	text-align: center;
+}
+
+.badge-blue    { background-color: #2196F3; }
+.badge-gray    { background-color: #BDBDBD; }
+.badge-green   { background-color: #4CAF50; }
+.badge-yellow  { background-color: #FFC107; color: #000; }
+.badge-red     { background-color: #F44336; }
+.badge-confirmed {
+	display: inline-block;
+	margin-top: 6px;
+	font-size: 13px;
+	color: #28a745;
+	font-weight: bold;
+}
+
+/* -------------------- 리뷰 행 스타일 -------------------- */
+.review-row {
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+.review-row:hover {
+	background-color: #f1f3f5;
+}
+.review-detail-row > td {
+	text-align: center;
+}
+.review-action-buttons {
+	display: flex;
+	justify-content: center; /* 오른쪽 말고 왼쪽 정렬로 */
+	gap: 10px;
+	flex-wrap: wrap;
+	margin-top: 10px;
+}
+
+.review-action-buttons form {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+/* -------------------- 상세내용 좌우 분리 레이아웃 -------------------- */
+.detail-flex {
+	display: flex;
+	gap: 40px;
+	align-items: flex-start;
+	flex-wrap: wrap;              /* ✅ 줄바꿈 허용 */
+}
+
+.detail-text {
+	flex: 1;
+	min-width: 0;
+	word-break: break-word;
+	overflow-wrap: break-word;
+}
+
+.detail-side {
+	width: 100%; /* 고정폭 제거 */
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 10px;
+	align-items: center;
+    justify-content: center; /* ⭐ 왼쪽 정렬 */
+}
+
+/* -------------------- 버튼 & 입력 -------------------- */
+.btn-sm {
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 13px;
+	margin-left: 4px;
+}
+
+.btn-hide {
+	background-color: #ffc107;
+	color: #212529;
+	border: none;
+}
+
+.btn-danger {
+	background-color: #ff4d4f;
+	color: white;
+	border: none;
+}
+
+.btn-check-confirm {
+	background-color: #28a745;
+	color: white;
+	border: none;
+	padding: 6px 10px;
+	margin-top: 6px;
+	border-radius: 4px;
+	font-size: 13px;
+}
+
+/* -------------------- 사유 박스 -------------------- */
+.reason-box {
+	background: #fff9db;
+	border-left: 4px solid #ffc107;
+	padding: 10px;
+	margin-top: 8px;
+	border-radius: 4px;
+	font-size: 14px;
+	color: #555;
+	word-break: break-word;
+}
+
+.reason-label {
+	font-weight: bold;
+	color: #d17a00;
+	margin-right: 6px;
+}
+
+.reason-text {
+	font-style: italic;
+}
+
+.etc-reason-input {
+	margin-top: 4px;
+	width: 100%;
+}
+
+/* admin_review.css 맨 아래 쯤 추가 */
+pre {
+  white-space: pre-wrap;   /* 줄 바꿈 허용 */
+  word-break: break-word;  /* 임의 단어도 줄 바꿈 */
+  margin: 0;               /* pre 기본 마진 제거 */
+}

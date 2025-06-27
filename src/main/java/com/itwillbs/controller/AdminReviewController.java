@@ -36,7 +36,7 @@ public class AdminReviewController {
         int pageSize = 10;
         int startRow = (page - 1) * pageSize;
 
-     // ✅ 통합 파라미터 Map
+       // ✅ 통합 파라미터 Map
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("startRow", startRow);
         paramMap.put("pageSize", pageSize);
@@ -67,7 +67,11 @@ public class AdminReviewController {
     }
     
     @PostMapping("/review_hide")
-    public String hideReview(@RequestParam int review_id, @RequestParam String reason, RedirectAttributes rttr) {
+    public String hideReview(@RequestParam int review_id, 
+				    		 @RequestParam String reason, 
+				    		 @RequestParam(required = false) String etc_reason,
+				    		 RedirectAttributes rttr) {
+    	String finalReason = reason.equals("기타") ? etc_reason : reason;
         arService.hideReview(review_id, reason);
         rttr.addFlashAttribute("msg", "리뷰 숨김 처리 완료!");
         rttr.addFlashAttribute("icon", "success");
@@ -78,7 +82,9 @@ public class AdminReviewController {
     @PostMapping("/review_delete")
     public String deleteReview(@RequestParam("review_id") int review_id,
                                @RequestParam("reason") String reason,
+                               @RequestParam(required = false) String etc_reason,
                                RedirectAttributes rttr) {
+    	String finalReason = reason.equals("기타") ? etc_reason : reason;
         arService.deleteReview(review_id, reason);
         rttr.addFlashAttribute("msg", "리뷰 삭제 완료!");
         rttr.addFlashAttribute("icon", "success");
