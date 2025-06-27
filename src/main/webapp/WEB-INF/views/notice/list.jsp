@@ -27,43 +27,43 @@
 	    </tr>
 	  </thead>
 	  <tbody>
-	    <c:forEach var="vo" items="${noticeList}">
-	      <tr class="notice-row" data-notice-id="${vo.notice_id}" style="cursor:pointer;">
-	        <td style="padding: 12px;">${vo.notice_id}</td>
+	    <c:forEach var="notice" items="${noticeList}">
+	      <tr class="clickable-row" data-notice-id="${notice.notice_id}">
+	        <td style="padding: 12px;">${notice.notice_id}</td>
 	        <td style="padding: 12px;">
-	          <c:if test="${vo.fixed}">
+	          <c:if test="${notice.fixed}">
 			    <span style="color: red; font-weight: bold;">[공지]</span>
 			  </c:if>	
-	          <a href="read?notice_id=${vo.notice_id}"
-	          	 style="font-size: 15px; font-weight: 500; color: #333; text-decoration: none;">
-	            ${vo.notice_title}
-	          </a>
+	            ${notice.notice_title}
 	        </td>
 	        <td style="padding: 12px;">
-	          <fmt:formatDate value="${vo.notice_date}" pattern="yyyy-MM-dd" />
+	          <fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd" />
 	        </td>
 	      </tr>
 	    </c:forEach>
 	  </tbody>
 	</table>
 	</div>
+	
+   <!-- 페이지네이션 버튼 -->
+	<div class="pagination">
+	  <!-- << 이전 페이지 -->
+	  <a href="${pageContext.request.contextPath}/notice/list?page=${currentPage - 1}#notice-list"
+	     <c:if test="${currentPage == 1}">class="disabled"</c:if>>&laquo;</a>
+	
+	  <!-- 페이지 번호 -->
+	  <c:forEach var="i" begin="1" end="${totalPages}">
+	    <a href="${pageContext.request.contextPath}/notice/list?page=${i}#notice-list"
+	       <c:if test="${i == currentPage}">class="active"</c:if>>${i}</a>
+	  </c:forEach>
+	
+	  <!-- >> 다음 페이지 -->
+	  <a href="${pageContext.request.contextPath}/notice/list?page=${currentPage + 1}#notice-list"
+	     <c:if test="${currentPage == totalPages}">class="disabled"</c:if>>&raquo;</a>
+	</div>
+	
 </main>	
-	   <!-- 페이지네이션 버튼 -->
-		<div class="pagination">
-		  <!-- << 이전 페이지 -->
-		  <a href="${pageContext.request.contextPath}/notice/list?page=${currentPage - 1}#notice-list"
-		     <c:if test="${currentPage == 1}">class="disabled"</c:if>>&laquo;</a>
-		
-		  <!-- 페이지 번호 -->
-		  <c:forEach var="i" begin="1" end="${totalPages}">
-		    <a href="${pageContext.request.contextPath}/notice/list?page=${i}#notice-list"
-		       <c:if test="${i == currentPage}">class="active"</c:if>>${i}</a>
-		  </c:forEach>
-		
-		  <!-- >> 다음 페이지 -->
-		  <a href="${pageContext.request.contextPath}/notice/list?page=${currentPage + 1}#notice-list"
-		     <c:if test="${currentPage == totalPages}">class="disabled"</c:if>>&raquo;</a>
-		</div>
+
 	
 	<style>
 	/* Table */
@@ -89,6 +89,21 @@
 	    background-color: #f1f3f5;
 	}
 	</style>	
+	
+	<script>
+	  // 문서가 로드되면 실행
+	  document.addEventListener("DOMContentLoaded", function () {
+	    const rows = document.querySelectorAll(".clickable-row");
+	    rows.forEach(row => {
+	      row.addEventListener("click", function () {
+	        const id = this.dataset.noticeId;
+	        if (id) {
+	          window.location.href = "/notice/read?notice_id=" + id;
+	        }
+	      });
+	    });
+	  });
+	</script>
 
 <%-- 4. 하단 푸터를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

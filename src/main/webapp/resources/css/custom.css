@@ -46,9 +46,10 @@
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   font-family: 'Noto Sans KR', sans-serif;
 }
+
 
 .notice-detail-header {
   border-bottom: 1px solid #dee2e6;
@@ -59,6 +60,7 @@
 .notice-title {
   font-size: 24px;
   font-weight: 700;
+  margin-bottom: 16px; /* ✅ 추가 */
   color: #333;
   display: flex;
   align-items: center;
@@ -70,11 +72,13 @@
   color: #ff5e57;
 }
 
+/* 작성일 */
 .notice-date {
   font-size: 14px;
   color: #888;
   text-align: right;
   margin-top: 5px;
+   margin-bottom: 24px;  /* ✅ 추가해줘! */	  
 }
 
 .notice-content {
@@ -82,9 +86,35 @@
   line-height: 1.7;
   color: #444;
   white-space: pre-wrap; /* 줄바꿈 유지 */
+  line-height: 1.8;         /* ✅ 가독성 향상 */
+  margin-top: 16px;         /* ✅ 제목과 간격 */
 }
 
+.notice-detail h2 {
+  margin-bottom: 20px;
+}
 
+.notice-detail-content {
+  font-size: 16px;
+  color: #495057;
+  line-height: 1.6;
+  margin-top: 20px;  /* 이거 꼭 넣기 */
+}
+
+/* 목록으로 돌아가기 */
+.notice-back {
+  margin-top: 40px;
+  text-align: right;
+}
+
+.notice-back a {
+  color: #4c6ef5;
+  text-decoration: none;
+  font-weight: 500;
+}
+.notice-back a:hover {
+  text-decoration: underline;
+}
 
 /* 1:1 문의 */
 .mypage-inquiry-list {

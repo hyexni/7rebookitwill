@@ -12,24 +12,27 @@
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
 
-<div class="notice-detail-wrapper">
-  <div class="notice-detail-header">
-    <h2 class="notice-title">
-      <c:if test="${notice.fixed}">
-        <span style="color: red; font-weight: bold;">[공지]</span>
-      </c:if>
-      ${notice.notice_title}
-    </h2>
-    <p class="notice-date">
-      작성일: <fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd" />
-    </p>
-  </div>
-
-  <div class="notice-content">
-    ${notice.notice_content}
-  </div>
-</div>
-
+<main class="main-content">
+	<div class="notice-detail-wrapper">
+	  <div class="notice-detail-header">
+	    <h2 class="notice-title">
+	      <c:if test="${notice.fixed}">
+	        <span style="color: red; font-weight: bold;">[공지]</span>
+	      </c:if>
+	      ${notice.notice_title}
+	    </h2>
+	    <p class="notice-date">
+	      작성일: <fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd" />
+	    </p>
+	  </div>
+	  <div class="notice-content">
+	    ${notice.notice_content}
+	  </div>
+	  <div class="notice-back">
+	    <a href="/notice/list">← 목록으로</a>
+	  </div>
+	</div>
+</main>
 
 
 <%-- 4. 하단 푸터를 불러옵니다. --%>
