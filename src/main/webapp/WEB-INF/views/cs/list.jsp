@@ -20,7 +20,7 @@
     <h1>📋 나의 1:1 문의 내역</h1>
     
     <!-- 새글 등록 버튼 -->
-	<div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+	<div style="display: flex; justify-content: flex-end; margin-bottom: 20px; margin-right: 60px;">
 	  <a href="/cs/write" class="btn-jw-new">새글 등록</a>
 	</div>
 
@@ -43,7 +43,19 @@
 	            <td>${inquiry.category}</td>
 	            <td>${inquiry.title}</td>
 	            <td><fmt:formatDate value="${inquiry.created_at}" pattern="yyyy-MM-dd" /></td>
-	            <td><span class="status received">${inquiry.status}</span></td>
+	            
+	            <td>
+				  <c:choose>
+				    <c:when test="${inquiry.status eq '접수'}">
+				      <span class="status-jw-badge status-jw-received">접수</span>
+				    </c:when>
+				    <c:when test="${inquiry.status eq '답변완료'}">
+				      <span class="status-jw-badge status-jw-done">답변완료</span>
+				    </c:when>
+				  </c:choose>
+				</td>
+
+	            
 	          </tr>
 	        </c:forEach>
 	      </tbody>
