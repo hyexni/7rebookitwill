@@ -4,6 +4,7 @@ import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import com.itwillbs.domain.BookReportVO;
+import com.itwillbs.domain.SearchCriteria;
 import com.itwillbs.persistence.BookReportDAO;
 
 @Service
@@ -18,8 +19,13 @@ public class BookReportServiceImpl implements BookReportService {
     }
 
     @Override
-    public List<BookReportVO> getReportListAll() throws Exception {
-        return brdao.getReportList();
+	public List<BookReportVO> getReportListAll(SearchCriteria cri) throws Exception {
+		return brdao.selectReportList(cri);
+	}
+   
+    @Override
+    public int countReports(SearchCriteria cri) throws Exception {
+        return brdao.countReports(cri);
     }
 
     @Override
@@ -36,4 +42,8 @@ public class BookReportServiceImpl implements BookReportService {
     public void removeReport(int report_id) throws Exception {
         brdao.deleteReport(report_id);
     }
+
+	
+    
+    
 }

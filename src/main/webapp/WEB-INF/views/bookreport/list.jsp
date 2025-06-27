@@ -1,233 +1,293 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<%-- 1. 페이지 기본 골격과 CSS/폰트 링크를 불러옵니다. --%>
+<%-- 레이아웃 상단(head, header, sidebar)을 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+<%@ include file="/WEB-INF/views/include/header.jsp" %> 
+<%@ include file="/WEB-INF/views/include/sidebar.jsp" %> 
+
 <style>
+     /* ================================================================ */
+    /* 페이지 전체 레이아웃 설정 */
+    /* ================================================================ */
+    html {
+        height: 100%;
+    }
+    body {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        font-family: 'Noto Sans KR', sans-serif;
+        color: #343a40;
+        background-color: #f8f9fa; /* 부드러운 배경색 추가 */
+    }
 
-/* =============================== */
-/* inquiry_detail.css (v2, 2025-06)*/
-/* =============================== */
+    /* ▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 여기가 가장 중요한 수정 부분입니다 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼ */
+    main {
+        flex: 1; /* footer를 하단에 고정하는 역할 */
+        display: flex; /* 자식 요소(사이드바, 콘텐츠)를 가로로 배치 */
+        justify-content: flex-start; /* 자식 요소들을 왼쪽으로 정렬! */
+        align-items: flex-start; /* 자식 요소들을 위쪽으로 정렬 */
+    }
+    /* ▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 이 코드가 왼쪽 정렬을 수행합니다 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲ */
 
-/* 기본 글꼴 & 색상 */
-body {
-  color: #212529;
-  background:#fff;
-}
+    /* 콘텐츠 컨테이너 스타일 */
+    .bookreport-container {
+        max-width: 1200px;
+        /* auto 대신 고정된 여백을 주어 정렬을 직접 제어합니다. */
+        margin: 20px 10px; 
+        /* 부모(main)가 flex-grow로 늘어나는 자식을 제어할 것이므로 여기선 너비 100%를 줍니다. */
+        width: 100%; 
+    }
 
-/* ─────────── 페이지 래퍼 ─────────── */
-.inquiry-detail {
-  /* PC : 좌우 넉넉하게 1200px */
-  max-width: 1200px;
-  margin: 60px auto;
-  padding: 0 40px;
-}
+    /* 검색 폼 */
+    .bookreport-container .search-form {
+        margin-bottom: 40px;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+    .bookreport-container .search-form select,
+    .bookreport-container .search-form input[type="text"] {
+        padding: 10px 14px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: all 0.2s;
+        min-width: 150px;
+    }
+    .bookreport-container .search-form input[type="text"] {
+        min-width: 300px;
+    }
+    .bookreport-container .search-form select:focus,
+    .bookreport-container .search-form input[type="text"]:focus {
+        outline: none;
+        border-color: #4a90e2;
+        box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+    }
+    .bookreport-container .search-form input[type="submit"] {
+        padding: 10px 25px;
+        font-size: 16px;
+        font-weight: 500;
+        color: #fff;
+        background-color: #4a90e2;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    .bookreport-container .search-form input[type="submit"]:hover {
+        background-color: #357ABD;
+    }
 
-/* 모바일 : 적당히 줄이기 */
-@media (max-width: 768px) {
-  .inquiry-detail {
-    margin: 40px 10px;
-    padding: 0 15px;
-  }
-}
+    /* 테이블 래퍼 */
+    .table-wrapper {
+        background-color: #fff;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
 
-/* ─────────── 타이틀 ─────────── */
-.inquiry-detail h1 {
-  font-size: 32px;          /* ⬆ 키웠음 */
-  font-weight: 800;
-  margin-bottom: 32px;
-  border-bottom: 3px solid #eee;
-  padding-bottom: 14px;
-}
+    /* 테이블 스타일 */
+    .bookreport-container table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+    .bookreport-container thead {
+        background-color: #fff;
+    }
+    
+    /* [수정] 모든 th의 기본 스타일을 재설정합니다. */
+    .bookreport-container th {
+        padding: 16px 0px;
+        text-align: center;
+        color: #343a40;
+        font-weight: 600;
+        font-size: 14px; /* 나머지 헤더들의 기본 폰트 크기 */
+        border-bottom: 2px solid #343a40;
+        vertical-align: middle;
+    }
+    
+    /* [추가] 요청하신 특정 헤더(#번호, 독후감 제목)의 글자 크기를 키웁니다. */
+    .bookreport-container th:nth-child(1),
+    .bookreport-container th:nth-child(2) {
+        font-size: 30px; /* 강조할 헤더의 폰트 크기 */
+    }
 
-/* ─────────── 메타 정보 ─────────── */
-.inquiry-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  font-size: 17px;          /* ⬆ */
-  color: #555;
-  margin-bottom: 28px;
-}
-.inquiry-meta div { flex: 1 1 240px; }
+    .bookreport-container td {
+        padding: 16px 20px;
+        text-align: center;
+        border-bottom: 1px solid #f1f3f5;
+        vertical-align: middle;
+        color: #495057;
+    }
+    .bookreport-container tbody tr:last-child td {
+        border-bottom: none;
+    }
 
-/* ─────────── 제목 & 본문 ─────────── */
-.inquiry-title {
-  font-size: 22px;          /* ⬆ */
-  font-weight: 700;
-  margin-bottom: 18px;
-}
-.inquiry-content {
-  font-size: 18px;          /* ⬆ */
-  line-height: 1.8;
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 24px;
-  margin-bottom: 48px;
-  white-space: pre-wrap;
-}
-.inquiry-body {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 8px;
-  font-size: 17px;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  margin-bottom: 40px;
-}
+    .bookreport-container td:nth-child(2),
+    .bookreport-container td:nth-child(3),
+    .bookreport-container td:nth-child(4) {
+        text-align: left;
+    }
 
+    .bookreport-container tbody tr {
+        transition: all 0.2s ease-in-out;
+    }
+    .bookreport-container tbody tr:hover { 
+        background-color: #f8f9fa;
+        cursor: pointer;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+    }
 
-/* ─────────── 관리자 답변 박스 ─────────── */
-.reply-box {
-  background: #f1f3f5;
-  border-left: 6px solid #4c6ef5;
-  border-radius: 8px;
-  padding: 22px 24px;
-  margin-bottom: 48px;
-}
-.reply-title {
-  font-size: 20px;          /* ⬆ */
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-.reply-body {
-  font-size: 20px;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
+    /* 클릭 정렬 화살표 */
+    .bookreport-container th a {
+        text-decoration: none; color: inherit;
+    }
+    .bookreport-container th.asc a::after,
+    .bookreport-container th.desc a::after {
+        content: '▲';
+        font-size: 10px;
+        color: #4a90e2;
+        margin-left: 5px;
+    }
+    .bookreport-container th.desc a::after { content: '▼'; }
 
+    /* 데이터 없을 때 메시지 */
+    .bookreport-container .no-records {
+        text-align: center; padding: 80px 20px; color: #868e96; font-size: 18px;
+    }
 
-.reply-date {
-  font-size: 15px;
-  color:#666;
-  text-align: right;
-  margin-top: 8px;
-}
-
-/* ─────────── 버튼 영역 ─────────── */
-.button-box {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.btn-back,
-.btn-outline-warning,
-.btn-outline-danger {
-  font-size: 16px;
-  padding: 10px 22px;
-  border-radius: 6px;
-  text-decoration: none;
-  cursor: pointer;
-  border: 1px solid transparent;         /* 항상 border 존재 */
-  box-sizing: border-box;                /* ✅ padding + border 포함 */
-  transition: all 0.2s ease;             /* 모든 속성 부드럽게 */
-  font-weight: 500;                      /* hover 시 weight 튀는 것 방지 */
-  line-height: 1.5;
-  outline: none;                         /* ✅ 크기 튐 방지 */
-}
-.btn-back {
-  background-color: #e9ecef;
-  color: #333;
-  border: 1px solid #e9ecef;
-}
-.btn-back:hover {
-  background-color: #ced4da;
-  color: #000;
-  border: 1px solid #ced4da;
-}
-
-.btn-outline-warning {
-  background-color: #fff;
-  color: #f59f00;
-  border: 1px solid #f59f00;
-}
-.btn-outline-warning:hover {
-  background-color: #f59f00;
-  color: #fff;
-}
-
-.btn-outline-danger {
-  background-color: #fff;
-  color: #ff4d4f;
-  border: 1px solid #ff4d4f;
-}
-.btn-outline-danger:hover {
-  background-color: #ff4d4f;
-  color: #fff;
-}
-
-
-/* ─────────── 수정 폼 ─────────── */
-#editForm {
-  background:#fafafa;
-  border:1px solid #eee;
-  padding:24px;
-  border-radius:8px;
-}
-#editForm label      { font-weight:600; margin-top:6px; }
-#editForm .form-control { font-size:16px; }
-
-
-
+    /* 페이지네이션 */
+    .bookreport-container .pagination {
+        margin-top: 40px; display: flex; justify-content: center;
+    }
+    .bookreport-container .pagination a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px; height: 38px;
+        margin: 0 5px;
+        text-decoration: none;
+        color: #495057;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        transition: all 0.2s;
+        font-size: 15px;
+    }
+    .bookreport-container .pagination a:hover {
+        background-color: #e9ecef;
+        border-color: #4a90e2;
+        color: #4a90e2;
+    }
+    .bookreport-container .pagination a.active {
+        background-color: #4a90e2;
+        border-color: #4a90e2;
+        color: #fff;
+        font-weight: 600;
+        cursor: default;
+    }
+    
+    .content-wrapper {
+        padding: 40px 20px;
+        padding-bottom: 80px !important; 
+    }
 </style>
+<%-- 메인 컨텐츠 영역 시작 --%>
+<div class="content-wrapper" style="background-color: #fff;">
+<main class="main-content" style="padding:20px;">
+    <div class="bookreport-container">
+        <h1>🗂️ 전체 독후감 목록</h1>
 
+        <%-- 검색 기능 --%> 
+        <div class="search-form">
+            <form action="<c:url value='/bookreport/list'/>" method="get">
+                <%-- 현재 정렬 기준을 숨겨진 값으로 함께 전송하여 정렬 상태를 유지합니다. --%>
+                <input type="hidden" name="sortColumn" value="${pageMaker.cri.sortColumn}">
+                <input type="hidden" name="sortOrder" value="${pageMaker.cri.sortOrder}">
+            
+                <%-- [수정] 검색 필드 value와 selected 조건 수정 --%>
+                <select name="searchType">
+                    <option value="report_title" ${pageMaker.cri.searchType == 'report_title' ? 'selected' : ''}>독후감 제목</option>
+                    <option value="rbook_title" ${pageMaker.cri.searchType == 'rbook_title' ? 'selected' : ''}>책 제목</option>
+                    <option value="author_name" ${pageMaker.cri.searchType == 'author_name' ? 'selected' : ''}>저자</option>
+                </select>
+                <input type="text" name="keyword" value="${pageMaker.cri.keyword}" placeholder="검색어를 입력하세요">
+                <input type="submit" value="검색">
+            </form>
+        </div>
 
-
-<%-- 2. 상단 헤더를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/header.jsp" %> 
-
-<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
-
-<%-- 4. 여기서부터 '1:1 문의 목록' 페이지만의 고유한 컨텐츠가 시작됩니다. --%>
-
-  <div class="inquiry-header">
-    <h2><i class="fa fa-clipboard-list"></i>📋 나의 독후감 리스트</h2>
-    <a href="/bookreport/write" class="btn-write">새글 등록</a>
-  </div>
-
-  <div class="table-wrapper">
-    <table class="styled-table">
-        <thead class="table-dark">
-            <tr>
-                <th>글번호</th>
-                <th>제목</th>
-                <th>도서명</th>
-                <th>저자</th>
-                <th>작성일</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="report" items="${reportList}">
-                <tr style="cursor:pointer;" onclick="location.href='/bookreport/read?report_id=${report.report_id}'">
-                    <td>${report.report_id}</td>
-                    <td><c:out value="${report.report_title}"/></td>
-                    <td><c:out value="${report.rbook_title}"/></td>
-                    <td><c:out value="${report.author_name}"/></td>
-                    <td>
-                        <fmt:formatDate value="${report.report_regdate}" pattern="yyyy-MM-dd"/>
-                    </td>
-                </tr>
-            </c:forEach>
-             <c:if test="${empty reportList}">
+        <table>
+            <thead>
                 <tr>
-                    <td colspan="4">작성된 독후감이 없습니다.</td>
+                    <%-- 클릭 정렬 기능이 적용된 테이블 헤더 --%>
+                    <th class="${pageMaker.cri.sortColumn == 'report_id' ? pageMaker.cri.sortOrder : ''}" style="width: 8%;">
+                        <a href="<c:url value='/bookreport/list${pageMaker.cri.sortUrl("report_id")}' />">#번호</a>
+                    </th>
+                    <th class="${pageMaker.cri.sortColumn == 'report_title' ? pageMaker.cri.sortOrder : ''}" style="width: auto;"> <%-- [수정] 너비 자동 조정 --%>
+                        <a href="<c:url value='/bookreport/list${pageMaker.cri.sortUrl("report_title")}' />">독후감 제목</a>
+                    </th>
+                    <th class="${pageMaker.cri.sortColumn == 'rbook_title' ? pageMaker.cri.sortOrder : ''}" style="width: 20%;">
+                        <a href="<c:url value='/bookreport/list${pageMaker.cri.sortUrl("rbook_title")}' />">도서명</a>
+                    </th>
+                    <th class="${pageMaker.cri.sortColumn == 'author_name' ? pageMaker.cri.sortOrder : ''}" style="width: 15%;">
+                        <a href="<c:url value='/bookreport/list${pageMaker.cri.sortUrl("author_name")}' />">저자</a>
+                    </th>
+                    <th class="${pageMaker.cri.sortColumn == 'report_regdate' ? pageMaker.cri.sortOrder : ''}" style="width: 15%;">
+                        <a href="<c:url value='/bookreport/list${pageMaker.cri.sortUrl("report_regdate")}' />">작성일</a>
+                    </th>
                 </tr>
-            </c:if>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <c:choose>
+                    <c:when test="${not empty bookreportList}">
+                        <c:forEach var="bookreport" items="${bookreportList}">
+                            <%-- [수정] onclick 이벤트의 변수명 오류 수정 및 URL c:url 태그 적용, 중첩된 <tr> 제거 --%>
+                            <tr onclick="location.href='<c:url value="/bookreport/read?report_id=${bookreport.report_id}&pageNum=${pageMaker.cri.page}&searchType=${pageMaker.cri.searchType}&keyword=${pageMaker.cri.keyword}" />'">
+                                <td>${bookreport.report_id}</td>
+                                <td>${bookreport.report_title}</td>
+                                <td>${bookreport.rbook_title}</td>
+                                <td>${bookreport.author_name}</td>
+                                <td><fmt:formatDate value="${bookreport.report_regdate}" pattern="yyyy-MM-dd"/></td> <%-- [수정] 날짜 형식 간단하게 변경 --%>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="5" class="no-records">독후감 내역이 없습니다.</td> <%-- [수정] colspan 5로 변경 --%>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
+            </tbody>
+        </table>
 
-    <div class="d-flex justify-content-end mt-3">
-        <a href="/bookreport/write" class="btn btn-primary">독후감 쓰기</a>
+        <%-- 개선된 페이징 UI --%>
+        <div class="pagination">
+            <c:if test="${pageMaker.prev}">
+                <a href="<c:url value='/bookreport/list${pageMaker.cri.pageUrl(pageMaker.startPage - 1)}'/>">&laquo;</a>
+            </c:if>
+            <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="pageNum">
+                <a href="<c:url value='/bookreport/list${pageMaker.cri.pageUrl(pageNum)}'/>" 
+                   class="${pageMaker.cri.page == pageNum ? 'active' : ''}">${pageNum}</a>
+            </c:forEach>
+            <c:if test="${pageMaker.next}">
+                <a href="<c:url value='/bookreport/list${pageMaker.cri.pageUrl(pageMaker.endPage + 1)}'/>">&raquo;</a>
+            </c:if>
+        </div>
     </div>
+</main>
 </div>
 
-</body>
-</html>
+<%-- 하단 푸터를 불러옵니다. --%>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>

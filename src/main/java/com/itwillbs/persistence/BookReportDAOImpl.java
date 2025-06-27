@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 import com.itwillbs.domain.BookReportVO;
+import com.itwillbs.domain.SearchCriteria;
 
 @Repository
 public class BookReportDAOImpl implements BookReportDAO {
@@ -20,8 +21,14 @@ public class BookReportDAOImpl implements BookReportDAO {
     }
 
     @Override
-    public List<BookReportVO> getReportList() throws Exception {
-        return sqlSession.selectList(NAMESPACE + ".getReportList");
+    public List<BookReportVO> selectReportList(SearchCriteria cri) throws Exception {
+        // Mapper의 getReportList -> selectReportList로 변경 (다른 CRUD와 이름 통일)
+        return sqlSession.selectList(NAMESPACE + ".selectReportList", cri);
+    }
+
+    @Override
+    public int countReports(SearchCriteria cri) throws Exception {
+        return sqlSession.selectOne(NAMESPACE + ".countReports", cri);
     }
 
     @Override

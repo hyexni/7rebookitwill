@@ -8,11 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.itwillbs.domain.BookReportVO;
+import com.itwillbs.domain.SearchCriteria;
+import com.itwillbs.dto.PageMakerDTO;
 import com.itwillbs.service.BookReportService;
 
 @Controller
@@ -25,22 +28,39 @@ public class BookReportController {
     private BookReportService brService;
 
     /**
-     * 독후감 목록 페이지
-     * 누구나 접근 가능합니다.
+     * 독후감 목록 페이지 (페이징 + 검색 + 정렬 처리)
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String listGET(Model model,HttpSession session, RedirectAttributes rttr) throws Exception {
-        logger.info("C: /bookreport/list -> listGET() 호출");
-     // 로그인 확인
+    public String listGET(@ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session, RedirectAttributes rttr) throws Exception {
+        logger.info("C: /bookreport/list -> listGET() 호출 (Search, Sort)");
+
         if (session.getAttribute("member_idx") == null) {
             rttr.addFlashAttribute("auth_msg", "로그인이 필요한 기능입니다.");
-            return "redirect:/member/login"; // 로그인 페이지 주소로 변경하세요.
+            return "redirect:/member/login";
         }
-                
-        List<BookReportVO> reportList = brService.getReportListAll();
-        model.addAttribute("reportList", reportList);
         
-        return "/bookreport/list"; // /views/bookreport/list.jsp
+        // ========================= [ 추가된 기능: 기본 정렬 기준 설정 ] =========================
+        // 정렬 조건이 파라미터로 전달되지 않은 경우, 기본값(최신순)으로 설정합니다.
+        if (cri.getSortColumn() == null || cri.getSortColumn().isEmpty()) {
+            cri.setSortColumn("report_id"); // 독후감 ID를 기준으로
+            cri.setSortOrder("DESC");       // 내림차순 정렬 (최신순)
+        }
+        // =======================================================================================
+        
+        List<BookReportVO> reportList = brService.getReportListAll(cri);
+        
+        PageMakerDTO pageMaker = new PageMakerDTO();
+        pageMaker.setCri(cri);
+        pageMaker.setTotalCount(brService.countReports(cri));
+        logger.info("1111111111111111111111111111");
+        logger.info("reportList.size"+reportList.size());
+        model.addAttribute("bookreportList", reportList);
+        
+        
+        model.addAttribute("pageMaker", pageMaker);        
+        model.addAttribute("cri", cri);
+        
+        return "/bookreport/list";
     }
 
     /**

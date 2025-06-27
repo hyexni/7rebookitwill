@@ -215,14 +215,42 @@
         color: #999;
         font-size: 16px;
     }
+  /* ✨ [CSS 추가] 페이징 컨트롤 스타일 */
+    .pagination-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+        padding: 10px 0;
+    }
+    .pagination-controls .page-link {
+        padding: 8px 14px;
+        margin: 0 4px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #555;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .pagination-controls .page-link:hover {
+        background-color: #f0f2f5;
+        color: #03c75a;
+    }
+    .pagination-controls .page-link.active {
+        background-color: #03c75a;
+        color: white;
+        border-color: #03c75a;
+        cursor: default;
+    }
 </style>
-
 <main class="main-content">
     <div class="point-history-container">
 
         <h1 class="page-title">포인트</h1>
 
-        <%-- 현재 보유 포인트 --%>
         <div class="card point-balance-card">
             <div class="label">보유 포인트</div>
             <div class="amount">
@@ -231,7 +259,6 @@
             </div>
         </div>
 
-        <%-- 월별 내역 카드 --%>
         <div class="card">
             <div class="month-selector">
                 <span class="nav-arrow">&lt;</span>
@@ -241,41 +268,26 @@
 
             <c:choose>
                 <c:when test="${not empty pointHistoryList}">
-                    <%-- 1. 월별 적립 사유별 합계 및 최대값 계산 --%>
-                    <c:set var="totalEarned" value="0" />
-                    <c:set var="receiptPoints" value="0" />
-                    <c:set var="purchasePoints" value="0" />
-                    <c:set var="reviewPoints" value="0" />
-                    <c:set var="eventPoints" value="0" />
-
+                    <%-- 월별 적립 사유별 합계 계산 --%>
+                    <c:set var="totalEarned" value="0" /><c:set var="receiptPoints" value="0" /><c:set var="purchasePoints" value="0" /><c:set var="reviewPoints" value="0" /><c:set var="eventPoints" value="0" />
                     <c:forEach var="point" items="${pointHistoryList}">
                         <c:if test="${point.change_amount > 0}">
                             <c:set var="totalEarned" value="${totalEarned + point.change_amount}" />
                             <c:choose>
-                                <c:when test="${fn:contains(point.change_reason, '영수증')}">
-                                    <c:set var="receiptPoints" value="${receiptPoints + point.change_amount}" />
-                                </c:when>
-                                <c:when test="${fn:contains(point.change_reason, '구매')}">
-                                    <c:set var="purchasePoints" value="${purchasePoints + point.change_amount}" />
-                                </c:when>
-                                <c:when test="${fn:contains(point.change_reason, '리뷰')}">
-                                    <c:set var="reviewPoints" value="${reviewPoints + point.change_amount}" />
-                                </c:when>
-                                <c:otherwise>
-                                    <c:set var="eventPoints" value="${eventPoints + point.change_amount}" />
-                                </c:otherwise>
+                                <c:when test="${fn:contains(point.change_reason, '영수증')}"><c:set var="receiptPoints" value="${receiptPoints + point.change_amount}" /></c:when>
+                                <c:when test="${fn:contains(point.change_reason, '구매')}"><c:set var="purchasePoints" value="${purchasePoints + point.change_amount}" /></c:when>
+                                <c:when test="${fn:contains(point.change_reason, '리뷰')}"><c:set var="reviewPoints" value="${reviewPoints + point.change_amount}" /></c:when>
+                                <c:otherwise><c:set var="eventPoints" value="${eventPoints + point.change_amount}" /></c:otherwise>
                             </c:choose>
                         </c:if>
                     </c:forEach>
-                    
-                    <%-- 그래프 막대 길이의 기준이 될 최대값을 찾습니다. --%>
-                    <c:set var="maxCategoryAmount" value="1" /> <%-- 0으로 나누는 것을 방지하기 위해 1로 초기화 --%>
+                    <c:set var="maxCategoryAmount" value="1" />
                     <c:if test="${receiptPoints > maxCategoryAmount}"><c:set var="maxCategoryAmount" value="${receiptPoints}" /></c:if>
                     <c:if test="${purchasePoints > maxCategoryAmount}"><c:set var="maxCategoryAmount" value="${purchasePoints}" /></c:if>
                     <c:if test="${reviewPoints > maxCategoryAmount}"><c:set var="maxCategoryAmount" value="${reviewPoints}" /></c:if>
                     <c:if test="${eventPoints > maxCategoryAmount}"><c:set var="maxCategoryAmount" value="${eventPoints}" /></c:if>
 
-                    <%-- 2. 월별 적립 혜택 요약 그래프 --%>
+                    <%-- ✨ [복원] 월별 적립 혜택 요약 그래프 --%>
                     <div class="benefit-breakdown">
                         <div class="summary">
                             <span>총 적립 혜택</span>
@@ -314,15 +326,15 @@
                             </c:if>
                         </div>
                     </div>
+                    <%-- ✨ 그래프 복원 완료 --%>
 
-                    <%-- 내역 필터 탭 --%>
+
                     <div class="history-tabs">
                         <div class="tab active" data-filter="all">전체</div>
                         <div class="tab" data-filter="earned">적립</div>
                         <div class="tab" data-filter="used">사용</div>
                     </div>
                     
-                    <%-- 3. 포인트 상세 내역 리스트 --%>
                     <div class="point-list">
                         <c:forEach var="point" items="${pointHistoryList}">
                             <div class="point-list-item" data-type="${point.change_amount > 0 ? 'earned' : 'used'}">
@@ -339,67 +351,81 @@
                         </c:forEach>
                     </div>
                     
-                    <%-- ✨ [추가] 필터링된 내역이 없을 때 보여줄 메시지 --%>
                     <div id="no-filtered-records" class="no-records" style="display: none;">
                         선택하신 조건의 내역이 없습니다.
                     </div>
+
+                    <div class="pagination-controls"></div>
 
                 </c:when>
                 <c:otherwise>
                     <p class="no-records">조회 가능한 포인트 내역이 없습니다.</p>
                 </c:otherwise>
             </c:choose>
-        </div> <%-- /.card --%>
-    </div> <%-- /.point-history-container --%>
+        </div>
+    </div>
 </main>
 
-
-<%-- ===================================================================== --%>
-<%-- ✨ [추가] 포인트 내역 필터링을 위한 자바스크립트                            --%>
-<%-- ===================================================================== --%>
 <script>
-// 페이지의 모든 HTML 요소가 로드된 후에 이 스크립트를 실행합니다.
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // 1. 필요한 HTML 요소들을 변수에 저장합니다.
-    const tabs = document.querySelectorAll('.history-tabs .tab');
-    const pointListItems = document.querySelectorAll('.point-list .point-list-item');
-    const noFilteredRecordsMessage = document.getElementById('no-filtered-records');
+    // JavaScript는 변경 사항이 없으므로 이전과 동일하게 사용합니다.
+    document.addEventListener('DOMContentLoaded', function() {
+        const itemsPerPage = 5;
+        const tabs = document.querySelectorAll('.history-tabs .tab');
+        const pointListContainer = document.querySelector('.point-list');
+        const allPointListItems = Array.from(pointListContainer.querySelectorAll('.point-list-item'));
+        const noFilteredRecordsMessage = document.getElementById('no-filtered-records');
+        const paginationContainer = document.querySelector('.pagination-controls');
 
-    // 2. 모든 탭(전체, 적립, 사용)에 클릭 이벤트를 감지하도록 설정합니다.
-    tabs.forEach(function(tab) {
-        tab.addEventListener('click', function() {
-            // (A) 클릭된 탭의 필터 종류를 가져옵니다. (예: 'all', 'earned', 'used')
-            const filterValue = this.getAttribute('data-filter');
-
-            // (B) 탭의 활성화/비활성화 스타일을 변경합니다.
-            tabs.forEach(t => t.classList.remove('active')); // 모든 탭에서 'active' 스타일 제거
-            this.classList.add('active'); // 클릭된 탭에만 'active' 스타일 추가
-
-            // (C) 모든 포인트 내역을 하나씩 확인하며 필터링합니다.
-            let visibleItemCount = 0; // 화면에 보이는 내역의 개수를 셀 변수
-            pointListItems.forEach(function(item) {
-                const itemType = item.getAttribute('data-type'); // 각 내역의 타입 ('earned' 또는 'used')
-
-                // '전체' 탭을 눌렀거나, 탭의 종류와 내역의 종류가 일치하면
-                if (filterValue === 'all' || filterValue === itemType) {
-                    item.style.display = 'flex'; // 내역을 보여줍니다. (원래 display 속성인 flex로 설정)
-                    visibleItemCount++; // 보이는 내역 개수 증가
-                } else {
-                    item.style.display = 'none'; // 종류가 다르면 내역을 숨깁니다.
-                }
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                filterAndPaginate();
             });
-
-            // (D) 필터링된 결과가 하나도 없는지 확인하고 메시지를 처리합니다.
-            if (visibleItemCount === 0) {
-                noFilteredRecordsMessage.style.display = 'block'; // 보이는 내역이 없으면 메시지 표시
-            } else {
-                noFilteredRecordsMessage.style.display = 'none'; // 내역이 있으면 메시지 숨김
-            }
         });
+
+        function filterAndPaginate() {
+            const activeFilter = document.querySelector('.history-tabs .tab.active').dataset.filter;
+            const filteredItems = allPointListItems.filter(item => {
+                const itemType = item.dataset.type;
+                return activeFilter === 'all' || activeFilter === itemType;
+            });
+            showPage(1, filteredItems);
+        }
+
+        function showPage(page, items) {
+            allPointListItems.forEach(item => item.style.display = 'none');
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageItems = items.slice(startIndex, endIndex);
+            pageItems.forEach(item => item.style.display = 'flex');
+            updatePaginationControls(page, items);
+            noFilteredRecordsMessage.style.display = items.length === 0 ? 'block' : 'none';
+            paginationContainer.style.display = items.length > 0 && Math.ceil(items.length / itemsPerPage) > 1 ? 'flex' : 'none';
+        }
+
+        function updatePaginationControls(currentPage, items) {
+            paginationContainer.innerHTML = '';
+            const totalPages = Math.ceil(items.length / itemsPerPage);
+            if (totalPages <= 1) return;
+            for (let i = 1; i <= totalPages; i++) {
+                const pageLink = document.createElement('a');
+                pageLink.className = 'page-link';
+                pageLink.textContent = i;
+                if (i === currentPage) {
+                    pageLink.classList.add('active');
+                }
+                pageLink.addEventListener('click', () => {
+                    showPage(i, items);
+                });
+                paginationContainer.appendChild(pageLink);
+            }
+        }
+
+        if (allPointListItems.length > 0) {
+            filterAndPaginate();
+        }
     });
-});
 </script>
 
-<%-- 5. 하단 푸터 --%>
 <%@include file="../include/footer.jsp" %>
