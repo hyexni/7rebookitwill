@@ -31,8 +31,8 @@
 	      <tr class="clickable-row" data-notice-id="${notice.notice_id}">
 	        <td style="padding: 12px;">${notice.notice_id}</td>
 	        <td style="padding: 12px;">
-	          <c:if test="${notice.fixed}">
-			    <span style="color: red; font-weight: bold;">[공지]</span>
+	          <c:if test="${notice.fixed eq 'Y'}">
+			     <span style="font-size: 16px;">📌</span>
 			  </c:if>	
 	            ${notice.notice_title}
 	        </td>

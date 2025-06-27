@@ -11,26 +11,30 @@
 
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jw.css">
+
 
 <main class="main-content">
-	<div class="notice-detail-wrapper">
-	  <div class="notice-detail-header">
-	    <h2 class="notice-title">
-	      <c:if test="${notice.fixed}">
-	        <span style="color: red; font-weight: bold;">[공지]</span>
+	<div class="notice-detail-jw-wrapper">
+	
+	  <div class="notice-detail-jw-header">
+	    <h2 class="notice-jw-title">
+	      <c:if test="${notice.fixed eq 'Y'}">
+	        <span style="font-size: 30px;">📌</span>
 	      </c:if>
 	      ${notice.notice_title}
 	    </h2>
-	    <p class="notice-date">
+	    <p class="notice-jw-date">
 	      작성일: <fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd" />
 	    </p>
 	  </div>
-	  <div class="notice-content">
+	  <div class="notice-jw-content">
 	    ${notice.notice_content}
 	  </div>
-	  <div class="notice-back">
+	  <div class="notice-jw-back">
 	    <a href="/notice/list">← 목록으로</a>
 	  </div>
+	
 	</div>
 </main>
 
