@@ -14,37 +14,33 @@
 
 
 <main class="main-content">
-	<div class="admin-container">
+	<div class="admin-container" id="inquiry-list">
 	  <h1>📩 1:1 문의 관리</h1>
 
     <!-- 🔍 검색 영역 -->
-    <form class="search-form" method="get" action="list">
+    <form class="search-form" method="get" action="list#inquiry-list">
         <input type="text" name="keyword" placeholder="제목/작성자 검색" value="${keyword}">
         <input type="submit" value="검색">
     </form>
 
     <!-- 📋 문의 목록 테이블 -->
-    <table class="admin-table">
+    <table>
         <thead>
             <tr>
-                <th><a href="?sort=desc" class="desc">등록번호</a></th>
-                <th>작성자</th>
-                <th>제목</th>
-                <th>문의일</th>
-                <th>처리상태</th>
-                <th>처리일자</th>
+                <th style="width: 5%;"><a href="?sort=desc" class="desc">등록번호</a></th>
+                <th style="width: 9%;">작성자</th>
+                <th style="width: 15%;">제목</th>
+                <th style="width: 9%;">문의일</th>
+                <th style="width: 9%;">처리상태</th>
+                <th style="width: 9%;">처리일자</th>
             </tr>
         </thead>
         <tbody>
             <c:forEach var="inquiry" items="${inquiryList}">
-                <tr>
+               <tr onclick="location.href='view?inquiry_id=${inquiry.inquiry_id}'" style="cursor: pointer;">
                     <td>${inquiry.inquiry_id}</td>
                     <td>${inquiry.member_id}</td>
-                    <td style="text-align: left;">
-                        <a href="view?inquiry_id=${inquiry.inquiry_id}">
-                            ${inquiry.title}
-                        </a>
-                    </td>
+                    <td>${inquiry.title}</td>
                     <td><fmt:formatDate value="${inquiry.created_at}" pattern="yyyy-MM-dd" /></td>
                     <td>
                         <c:choose>
@@ -77,17 +73,17 @@
    <!-- 페이지네이션 버튼 -->
 	<div class="pagination">
 	  <!-- << 이전 페이지 -->
-	  <a href="${pageContext.request.contextPath}/admin/list?page=${currentPage - 1}"
+	  <a href="${pageContext.request.contextPath}/admin/list?page=${currentPage - 1}#inquiry-list"
 	     <c:if test="${currentPage == 1}">class="disabled"</c:if>>&laquo;</a>
 	
 	  <!-- 페이지 번호 -->
 	  <c:forEach var="i" begin="1" end="${totalPages}">
-	    <a href="${pageContext.request.contextPath}/admin/list?page=${i}"
+	    <a href="${pageContext.request.contextPath}/admin/list?page=${i}#inquiry-list"
 	       <c:if test="${i == currentPage}">class="active"</c:if>>${i}</a>
 	  </c:forEach>
 	
 	  <!-- >> 다음 페이지 -->
-	  <a href="${pageContext.request.contextPath}/admin/list?page=${currentPage + 1}"
+	  <a href="${pageContext.request.contextPath}/admin/list?page=${currentPage + 1}#inquiry-list"
 	     <c:if test="${currentPage == totalPages}">class="disabled"</c:if>>&raquo;</a>
 	
 	 </div>
