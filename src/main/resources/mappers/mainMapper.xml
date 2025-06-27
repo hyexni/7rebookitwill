@@ -72,45 +72,40 @@
 <if test="limit != null">
             LIMIT #{limit}
         </if>
-        
-        
-        
-        
-        
+       
     </select>
     
     
-    <!-- 도서검색하기 -->
+    <select id="searchBooksByKeyword" resultType="com.itwillbs.domain.BookVO"  parameterType="java.lang.String">
+    SELECT
+        b.book_id,
+        b.book_title,
+        b.cover_image,
+        b.author_name,
+        b.book_price
+        FROM book b
+       
+        WHERE b.book_title LIKE CONCAT('%', #{_parameter}, '%')
+           OR b.author_name LIKE CONCAT('%', #{_parameter}, '%')
+           OR b.publisher LIKE CONCAT('%', #{_parameter}, '%')
     
-    <select id="searchBooksByKeyword" resultType="com.itwillbs.domain.BookVO">
-       SELECT * FROM book  
-    WHERE
-        book_title LIKE CONCAT('%', #{keyword}, '%')
-        OR author_name LIKE CONCAT('%', #{keyword}, '%')
-        OR publisher LIKE CONCAT('%', #{keyword}, '%')
-    ORDER BY
-                created_at DESC
-    </select>
-    
-    
-    
-    <!-- 도서추천하기 -->
-    <select id="selectRecommendedBooks" parameterType="com.itwillbs.domain.BookVO" resultType="com.itwillbs.domain.BookVO">
-       SELECT * FROM book  
-    WHERE
-        book_title LIKE CONCAT('%', #{keyword}, '%')
-        OR author_name LIKE CONCAT('%', #{keyword}, '%')
-        OR publisher LIKE CONCAT('%', #{keyword}, '%')
-    ORDER BY
-        created_at DESC
-   
+    ORDER BY b.created_at DESC
 </select>
     
     
+    <select id="selectRecommendedBooks" parameterType="com.itwillbs.domain.BookVO" resultType="com.itwillbs.domain.BookVO">
+        SELECT
+            book_id,
+            book_title,
+            cover_image,
+            author_name,
+            book_price
+        FROM book
+        WHERE MATCH(book_title, author_name, publisher) AGAINST(#{book_title} WITH QUERY EXPANSION)
+          AND book_id != #{book_id} LIMIT 5 </select>
+    
+    </mapper>
     
     
     
     
-    
-    
-</mapper>

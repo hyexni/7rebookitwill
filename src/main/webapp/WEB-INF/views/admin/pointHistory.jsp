@@ -167,7 +167,7 @@
         <h1>💰 고객 포인트 전체 내역</h1>
 
         <div class="search-form">
-            <%-- [수정] URL 경로를 하이픈(-)이 없는 이전 버전으로 되돌렸습니다. --%>
+            
             <%-- 컨트롤러가 @GetMapping("/admin/pointHistory") 라면 이 코드를, --%>
             <%-- @GetMapping("/admin/point-history") 라면 이전 답변의 코드를 사용하세요. --%>
             <form action="<c:url value='/admin/pointHistory'/>" method="get">

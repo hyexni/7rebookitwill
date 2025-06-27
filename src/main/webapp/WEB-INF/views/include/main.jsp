@@ -99,22 +99,84 @@
     background-color: #e0e0e0; /* 선의 색상 (기존 border 색과 유사) */
     margin: 50px auto;         /* 위아래 여백 50px, 좌우는 자동으로 가운데 정렬 */
     
-</style>
+    
+.sea-bar-contar {
+        padding: 20px 0 30px 0; /* 검색창 위아래 여백 */
+        text-align: center;
+    }
+    
+    
+    .2search-bar-container{
+    	paiing: 20px 0 30px 0;
+    	text-align : center;
+    }
 
-<div id="search-result-area" style="display:none;"></div>
+    .2search-box {
+        display: flex;
+        align-items: center;
+        max-width: 550px;
+        margin: 0 auto; /* 가운데 정렬 */
+        background-color: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 50px; /* 타원형 모양 */
+        padding: 8px 15px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
 
-<div id="main-content">
-    <div class="search-auth-area" style="padding: 20px 30px; text-align: center;">
-        <form id="headerSearchForm" onsubmit="return false;" style="display: inline-block; max-width: 600px; width: 100%;">
+    /* 검색창에 포커스(클릭)되었을 때 스타일 */
+    .2search-box:focus-within {
+        border-color: #007bff; /* 파란색 테두리 */
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+    }
+
+    .2search-input {
+        flex-grow: 1; /* 입력창이 남는 공간을 모두 차지 */
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 16px;
+        color: #333;
+        padding-left: 10px;
+    }
+
+    .2search-btn {
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 5px 10px;
+        color: #6c757d; /* 아이콘 기본 색상 */
+        font-size: 18px;
+        transition: color 0.3s;
+    }
+
+    .2search-btn:hover {
+        color: #007bff; /* 마우스 올리면 아이콘 색상 변경 */
+    }
+</style>  
+    
+
+
+
+<!-- ================================================================= -->
+<!-- 기본 메인 컨텐츠 (신간, 베스트셀러 등) -->
+<!-- ================================================================= -->
+
+     <%-- ======================================================= --%>
+    <%--   검색창 HTML 코드 삽입 위치 --%>    
+        <div class="2search-auth-area" style="padding: 20px 30px; text-align: center;">
+        <form action="${pageContext.request.contextPath}/search" method="get" style="display: inline-block; max-width: 600px; width: 100%;">
             <div class="search-container">
-                <input type="search" id="headerSearchKeyword" name="search" placeholder="찾고 싶은 도서, 저자, 출판사를 검색하세요">
+                <input type="text" name="keyword"class="search-input" placeholder="찾고 싶은 도서, 저자, 출판사를 검색하세요">
                 <button type="submit" class="search-btn">
                     <i class="fa fa-search"></i>검색
                 </button>
             </div>
         </form>
     </div>
-    
+   
+    <%-- ======================================================= --%>
+
+  
 <section style="line-height:-200px !important;font-size:2px;">
     <div class="box box-primary book-section" style="line-height: -200px !important;">
         <div class="box-header with-border" style="line-height: -200px !important;">
@@ -220,60 +282,5 @@ document.addEventListener('DOMContentLoaded', function () {
             prevEl: '#bestSellerSwiper .swiper-button-prev',
         }
     });
-});
-</script>
-
- <script type="text/javascript">
-// 페이지의 모든 HTML 요소가 로드된 후, 이 코드를 실행합니다. (jQuery의 $(document).ready와 동일)
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // 1. 필요한 HTML 요소들을 미리 찾아 변수에 저장해 둡니다.
-    const searchForm = document.getElementById('headerSearchForm');
-    const searchInput = document.getElementById('headerSearchKeyword');
-    const mainContent = document.getElementById('main-content');
-    const resultArea = document.getElementById('search-result-area');
-
-    // 2. 검색 form에서 'submit' 이벤트가 발생했을 때 실행할 함수를 연결합니다.
-    searchForm.addEventListener('submit', function(e) {
-        
-        // 3. form의 기본 동작(페이지 새로고침)을 막습니다.
-        e.preventDefault(); 
-        
-        // 4. 입력된 검색어 값을 가져옵니다.
-        const keyword = searchInput.value;
-        
-        // 5. 검색어가 비어 있는지 확인합니다.
-        if (!keyword || keyword.trim() === "") {
-            alert('검색어를 입력하세요.');
-            return;
-        }
-
-        // 6. 'fetch' API를 사용해 서버에 비동기 요청을 보냅니다. (jQuery의 $.ajax와 동일)
-        // URLSearchParams를 사용해 쿼리스트링을 안전하게 만듭니다.
-        const params = new URLSearchParams({ keyword: keyword });
-        const fetchUrl = `${window.location.origin}${pageContext.request.contextPath}/main/searchAjax?${params}`;
-
-        fetch(fetchUrl)
-            .then(response => {
-                // 서버로부터 응답을 받았을 때
-                if (!response.ok) {
-                    // 응답이 성공(200-299 상태 코드)이 아니면 에러를 발생시킴
-                    throw new Error('네트워크 응답에 문제가 있습니다.');
-                }
-                // 응답 본문을 텍스트(HTML) 형태로 변환하여 반환
-                return response.text(); 
-            })
-            .then(html => {
-                // 7. 성공적으로 HTML을 받아왔을 때 화면을 업데이트합니다.
-                mainContent.style.display = 'none'; // 기존 콘텐츠 숨기기
-                resultArea.innerHTML = html; // 결과 영역에 받아온 HTML 삽입
-                resultArea.style.display = 'block'; // 결과 영역 보여주기
-            })
-            .catch(error => {
-                // 8. 요청 과정에서 오류가 발생했을 때
-                console.error('검색 요청 실패:', error);
-                alert('검색 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-            });
-    });
 });
 </script>

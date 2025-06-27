@@ -43,7 +43,7 @@ public class MainServiceImpl implements MainService {
  // 메인 도서 검색
     @Override
     public List<BookVO> searchBooksByKeyword(String keyword) throws Exception {
-        // DAO의 올바른 메서드를 호출합니다.
+    	System.out.println("S: searchBooks(keyword) 호출");
         return mainDAO.searchBooksByKeyword(keyword);
     }
 
