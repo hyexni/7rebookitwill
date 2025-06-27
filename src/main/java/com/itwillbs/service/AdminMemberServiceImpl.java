@@ -21,13 +21,13 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	private AdminMemberDAO amDao;
 	
 	 @Override
-	    public List<MemberVO> getMemberList(String sort, int startRow, int pageSize) {
-	        return amDao.getMemberList(sort, startRow, pageSize);
+	    public List<MemberVO> getMemberList(String sort, String dir, int startRow, int pageSize) {
+	        return amDao.getMemberList(sort, dir, startRow, pageSize);
 	    }
 
 	    @Override
-	    public List<MemberVO> searchMembers(String keyword, String sort, int startRow, int pageSize) {
-	        return amDao.searchMembers(keyword, sort, startRow, pageSize);
+	    public List<MemberVO> searchMembers(String keyword, String sort, String dir, int startRow, int pageSize) {
+	        return amDao.searchMembers(keyword, sort, dir, startRow, pageSize);
 	    }
 
 	    @Override

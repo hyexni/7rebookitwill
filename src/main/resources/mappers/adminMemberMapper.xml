@@ -5,77 +5,96 @@
   
 <mapper namespace="com.itwillbs.persistence.AdminMemberDAO">
 
-	<select id="getMemberList" resultType="com.itwillbs.domain.MemberVO">
-	  SELECT 
-	    m.member_idx, m.member_id, m.member_status, m.member_nick,
-	    m.member_name, m.member_phone, m.member_email,
-	    m.point_total
-	  FROM member m
-	  <choose>
-	    <when test="sort == 'name'">
-	      ORDER BY 
-	        CASE WHEN m.member_status = 'Y' THEN 0 ELSE 1 END,
-	        m.member_name ASC
-	    </when>
-	    <when test="sort == 'point'">
-		   ORDER BY 
-		     CASE WHEN m.member_status = 'Y' THEN 0 ELSE 1 END,
-		     m.point_total DESC
-		</when>
-	    <otherwise>
-	      ORDER BY 
-	        CASE WHEN m.member_status = 'Y' THEN 0 ELSE 1 END,
-	        m.member_regdate DESC
-	    </otherwise>
-	  </choose>
-	  LIMIT #{startRow}, #{pageSize}
-	</select>
+	<!-- 정렬 방향(BIND) -->
+  <sql id="orderDir">
+    <choose>
+      <when test="dir == 'asc'">ASC</when>
+      <otherwise>DESC</otherwise>
+    </choose>
+  </sql>
 
+  <!-- ======================== -->
+  <!--   1) getMemberList       -->
+  <!-- ======================== -->
+  <select id="getMemberList" resultType="com.itwillbs.domain.MemberVO">
+    SELECT
+      m.member_idx, m.member_id, m.member_status, m.member_nick,
+      m.member_name, m.member_phone, m.member_email, m.point_total
+    FROM member m
+    <choose>
+
+      <!-- ✔ 회원 ID 정렬 추가 -->
+      <when test="sort == 'member_id'">
+        ORDER BY
+          CASE WHEN m.member_status = 'Y' THEN 0 ELSE 1 END,
+          m.member_id <include refid="orderDir"/>
+      </when>
+
+      <!-- ✔ 이름 정렬 -->
+      <when test="sort == 'name'">
+        ORDER BY
+          CASE WHEN m.member_status = 'Y' THEN 0 ELSE 1 END,
+          m.member_name <include refid="orderDir"/>
+      </when>
+
+      <!-- ✔ 포인트 정렬 -->
+      <when test="sort == 'point'">
+        ORDER BY
+          CASE WHEN m.member_status = 'Y' THEN 0 ELSE 1 END,
+          m.point_total <include refid="orderDir"/>
+      </when>
+
+      <!-- 기본: 가입일 -->
+      <otherwise>
+        ORDER BY
+          CASE WHEN m.member_status = 'Y' THEN 0 ELSE 1 END,
+          m.member_regdate <include refid="orderDir"/>
+      </otherwise>
+
+    </choose>
+    LIMIT #{startRow}, #{pageSize}
+  </select>
+
+  <!-- ======================== -->
+  <!--   2) searchMembers       -->
+  <!-- ======================== -->
+  <select id="searchMembers" resultType="com.itwillbs.domain.MemberVO">
+    SELECT
+      m.member_idx, m.member_id, m.member_status, m.member_nick,
+      m.member_name, m.member_phone, m.member_email, m.point_total
+    FROM member m
+    WHERE m.member_id   LIKE CONCAT('%', #{keyword}, '%')
+       OR m.member_name LIKE CONCAT('%', #{keyword}, '%')
+       OR m.member_email LIKE CONCAT('%', #{keyword}, '%')
+    <choose>
+      <when test="sort == 'name'">
+        ORDER BY CASE WHEN m.member_status = 'Y' THEN 0 ELSE 1 END,
+                 m.member_name <include refid="orderDir"/>
+      </when>
+      <when test="sort == 'point'">
+        ORDER BY CASE WHEN m.member_status = 'Y' THEN 0 ELSE 1 END,
+                 m.point_total <include refid="orderDir"/>
+      </when>
+      <otherwise>
+        ORDER BY CASE WHEN m.member_status = 'Y' THEN 0 ELSE 1 END,
+                 m.member_regdate <include refid="orderDir"/>
+      </otherwise>
+    </choose>
+    LIMIT #{startRow}, #{pageSize}
+  </select>
+		
 	
-	<select id="searchMembers" resultType="com.itwillbs.domain.MemberVO">
-	  SELECT 
-	    m.member_idx, m.member_id, m.member_status, m.member_nick,
-	    m.member_name, m.member_phone, m.member_email,
-	    m.point_total
-	  FROM member m
-	  WHERE m.member_id LIKE CONCAT('%', #{keyword}, '%')
-	     OR m.member_name LIKE CONCAT('%', #{keyword}, '%')
-	     OR m.member_email LIKE CONCAT('%', #{keyword}, '%')
-	  <choose>
-	    <when test="sort == 'name'">
-	      ORDER BY 
-	        CASE WHEN m.member_status = 'Y' THEN 0 ELSE 1 END,
-	        m.member_name ASC
-	    </when>
-	    <when test="sort == 'point'">
-		   ORDER BY 
-		     CASE WHEN m.member_status = 'Y' THEN 0 ELSE 1 END,
-		     m.point_total DESC
-		</when>
-	    <otherwise>
-	      ORDER BY 
-	        CASE WHEN m.member_status = 'Y' THEN 0 ELSE 1 END,
-	        m.member_regdate DESC
-	    </otherwise>
-	  </choose>
-	  LIMIT #{startRow}, #{pageSize}
-	</select>
-
-
-	  
 	<select id="getTotalCount" resultType="int">
-	  SELECT COUNT(*) FROM member
-	</select>
-	
-	<select id="getSearchCount" parameterType="String" resultType="int">
+   		 SELECT COUNT(*) FROM member
+  	</select>	
+  	
+  	<select id="getSearchCount" parameterType="String" resultType="int">
 	  SELECT COUNT(*) FROM member
 	  WHERE member_id LIKE CONCAT('%', #{keyword}, '%')
 	     OR member_name LIKE CONCAT('%', #{keyword}, '%')
 	     OR member_email LIKE CONCAT('%', #{keyword}, '%')
 	</select>
-		
-	
-	
+	  	
 	
 
 </mapper>  

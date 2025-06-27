@@ -27,7 +27,15 @@ public class AdminMemberController {
 	public String memberList(Model model, 
 	                         @RequestParam(name = "page", defaultValue = "1") int page,
 	                         @RequestParam(name = "keyword", required = false) String keyword,
-	                         @RequestParam(name = "sort", defaultValue = "regdate") String sort) {
+	                         @RequestParam(name = "sort", defaultValue = "regdate") String sort,
+	                         @RequestParam(defaultValue="desc") String dir) {
+		
+		System.out.println("🔍 keyword = " + keyword);
+		System.out.println("🔍 sort = " + sort + ", dir = " + dir);
+		
+		if (!"asc".equalsIgnoreCase(dir) && !"desc".equalsIgnoreCase(dir)) {
+		    dir = "desc";  // 또는 기본값
+		}
 
 	    int pageSize = 10;
 	    int startRow = (page - 1) * pageSize;
@@ -36,10 +44,10 @@ public class AdminMemberController {
 	    int totalCount;
 
 	    if (keyword != null && !keyword.isEmpty()) {
-	        memberList = amService.searchMembers(keyword, sort, startRow, pageSize);
+	        memberList = amService.searchMembers(keyword, sort, dir, startRow, pageSize);
 	        totalCount = amService.getSearchCount(keyword);
 	    } else {
-	        memberList = amService.getMemberList(sort, startRow, pageSize);
+	        memberList = amService.getMemberList(sort, dir, startRow, pageSize);
 	        totalCount = amService.getTotalCount();
 	    }
 
@@ -50,6 +58,7 @@ public class AdminMemberController {
 	    model.addAttribute("totalPages", totalPages);
 	    model.addAttribute("keyword", keyword);
 	    model.addAttribute("sort", sort);
+	    model.addAttribute("dir", dir);
 
 	    return "admin/member_list";
 	}

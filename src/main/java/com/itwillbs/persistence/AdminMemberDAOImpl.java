@@ -24,20 +24,29 @@ public class AdminMemberDAOImpl implements AdminMemberDAO {
 	
 	private static final String NAMESPACE="com.itwillbs.persistence.AdminMemberDAO.";
 
-	 @Override
-	    public List<MemberVO> getMemberList(String sort, int startRow, int pageSize) {
+	    @Override
+	    public List<MemberVO> getMemberList(String sort, 
+	    									String dir,
+	    									int startRow, 
+	    									int pageSize) {
 	        Map<String, Object> params = new HashMap<>();
 	        params.put("sort", sort);
+	        params.put("dir", dir);
 	        params.put("startRow", startRow);
 	        params.put("pageSize", pageSize);
 	        return sqlSession.selectList(NAMESPACE + "getMemberList", params);
 	    }
 
 	    @Override
-	    public List<MemberVO> searchMembers(String keyword, String sort, int startRow, int pageSize) {
+	    public List<MemberVO> searchMembers(String keyword, 
+	    									String sort, 
+	    									String dir,	
+	    									int startRow, 
+	    									int pageSize) {
 	        Map<String, Object> params = new HashMap<>();
 	        params.put("keyword", keyword);
 	        params.put("sort", sort);
+	        params.put("dir", dir);
 	        params.put("startRow", startRow);
 	        params.put("pageSize", pageSize);
 	        return sqlSession.selectList(NAMESPACE + "searchMembers", params);
