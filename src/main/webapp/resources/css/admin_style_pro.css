@@ -853,6 +853,18 @@ a {
 	background-color: #364fc7;
 }
 
+/* 행 전체를 클릭할 수 있게 마우스 커서 변경 */
+.row-link {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* 마우스 올렸을 때 배경색 살짝 강조 */
+.row-link:hover {
+  background-color: #f1f3f5;
+}
+
+
 /* 공지사항 상세 보기 */
 .notice-detail {
 	font-size: 16px;
@@ -910,6 +922,9 @@ a {
 	background-color: #dc3545;
 	color: white;
 	border: 1px solid #dc3545;
+	font-size: 15px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
 }
 
 /* 1:1 문의 처리 상태 배지화 */
