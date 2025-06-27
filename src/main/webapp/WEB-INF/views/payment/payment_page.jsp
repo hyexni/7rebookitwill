@@ -41,7 +41,7 @@
 
     <label for="zipcode">우편번호</label>
     <div class="zipcode-wrap">
-      <input type="text" name="zipcode" id="zipcode" readonly required>
+      <input type="text" name="zipcode" id="zipcode" readonly>
       <button type="button" onclick="execDaumPostcode()">우편번호 검색</button>
     </div>
 
@@ -60,7 +60,13 @@
       <button type="button" onclick="useAllPoints()">전액 사용</button>
     </div>
 
-    <p><strong>실 결제 금액:</strong> <span id="payAmount">${book.book_price}</span>원</p>
+    <p style="margin-top: 16px;">
+    	<strong>실 결제 금액:</strong> 
+    	<span id="payAmount" class="pay-final-price">
+    	  <fmt:formatNumber value="${book.book_price}" type="number"/>
+    	</span>원
+   	</p>
+   	
     <input type="hidden" name="pay_amount" id="payAmountInput" value="${book.book_price}">
     <!-- 아래 코드 추가 (총 결제 금액 계산용 hidden input) -->
 	<input type="hidden" id="quantityHidden" name="quantityHidden" value="1">
@@ -72,6 +78,16 @@
     </div>
   </div>
 </form>
+
+<style>
+.pay-final-price {
+  font-size: 22px;
+  font-weight: 700;
+  color: #343a40; /* 진한 그레이, 명도 대비 좋음 */
+  margin-left: 4px;
+}
+</style>
+
 
 
 <script>
@@ -242,7 +258,6 @@
 	    return true;
 	  }
 	</script>
-
 
 
 
