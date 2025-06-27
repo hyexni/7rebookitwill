@@ -1,34 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%-- 1. 페이지 기본 골격 링크 --%>
 <%@include file="/WEB-INF/views/include/layout_head.jsp" %>
 
 <style>
+      /* ================================================================ */
+    /* 페이지 전체 레이아웃 설정 */
     /* ================================================================ */
-    /* ※ 이 스타일은 layout_head.jsp의 공통 CSS 파일로 옮기는 것을 추천합니다. */
     html {
         height: 100%;
     }
     body {
         min-height: 100%;
         display: flex;
-        flex-direction: column;
-        /* 기본 폰트와 배경색 설정 */
-        font-family: 'Noto Sans KR', sans-serif;
-         color: #343a40; /* 기본 텍스트 색상 */
+        flex-direction: column;        
+        color: #343a40;
+        background-color: #f8f9fa; /* 부드러운 배경색 추가 */
     }
-    main {
-        flex: 1; 
-    }
-    /* ================================================================ */
 
+    /* ▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 여기가 가장 중요한 수정 부분입니다 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼ */
+    main {
+        flex: 1; /* footer를 하단에 고정하는 역할 */
+        display: flex; /* 자식 요소(사이드바, 콘텐츠)를 가로로 배치 */
+        justify-content: flex-start; /* 자식 요소들을 왼쪽으로 정렬! */
+        align-items: flex-start; /* 자식 요소들을 위쪽으로 정렬 */
+    }
+   
     .container {
-        max-width: 900px; /* 본문 폭을 살짝 줄여 가독성 향상 */
-        margin: 50px auto;
-        padding: 0 15px;
+       max-width: 1000px;
+        /* auto 대신 고정된 여백을 주어 정렬을 직접 제어합니다. */
+        margin: 20px 10px; 
+        /* 부모(main)가 flex-grow로 늘어나는 자식을 제어할 것이므로 여기선 너비 100%를 줍니다. */
+        width: 100%; 
     }
 
     /* 페이지 제목 스타일 */

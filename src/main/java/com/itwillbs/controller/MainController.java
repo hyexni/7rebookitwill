@@ -12,7 +12,7 @@ import com.itwillbs.domain.BookVO;
 import com.itwillbs.service.MainService;
 
 @Controller
-@RequestMapping("/include/*") // /include/ 으로 시작하는 모든 요청을 처리
+@RequestMapping("") // /include/ 으로 시작하는 모든 요청을 처리
 public class MainController {
 
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
@@ -26,7 +26,7 @@ public class MainController {
      * @param model View에 데이터를 전달하기 위한 Model 객체
      * @return 뷰 페이지의 경로
      */
-    @RequestMapping(value = "/main", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String mainPage(Model model) throws Exception {
         logger.info("mainPage() 호출 - 메인 페이지 표시");
 

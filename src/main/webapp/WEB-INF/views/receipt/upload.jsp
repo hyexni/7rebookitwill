@@ -39,6 +39,24 @@
         color: #007bff;
         min-height: 20px;
     }
+    
+    /* 버튼 공통 스타일 */
+    .btns {
+        display: flex;
+        justify-content: center;
+        width: 50%;
+        border-radius: 10px;
+        font-weight: 700;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .btns:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    }
 </style>
 
 <%-- 2. 상단 헤더 --%>
@@ -64,20 +82,12 @@
             </div>
 
             <div class="box-footer">
-                <button type="submit" class="btn btn-primary">업로드하기</button>
+                <button type="submit" class="btns btn-primary">업로드하기</button>
             </div>
         </div>
     </form>
 
-    <%-- 
-        [삭제] 기존에 텍스트로 메시지를 보여주던 부분입니다.
-        이제 JavaScript alert으로 대체되므로 이 부분은 필요 없습니다.
-    <c:if test="${not empty message}">
-        <div style="color: red; margin-top: 10px;">
-            <strong>⚠ ${message}</strong>
-        </div>
-    </c:if>
-    --%>
+    
 </div>
 
 <%-- 5. 하단 푸터 --%>
