@@ -44,14 +44,19 @@ public class AdminNoticeController {
 		
 		
 		@PostMapping("/notice_write")
-		public String adminNoticeWritePOST(HttpSession session, NoticeVO vo,
-											RedirectAttributes rttr) throws Exception {
-		    String ad_id = (String) session.getAttribute("ad_id");
+		public String adminNoticeWritePOST(HttpSession session, 
+										   NoticeVO vo,
+										   @RequestParam(value = "fixed", defaultValue = "N") String fixed,
+										   RedirectAttributes rttr) throws Exception {
+		   
+			String ad_id = (String) session.getAttribute("ad_id");
 		    if (ad_id == null) {
 		        System.out.println("❗ 관리자 세션 ad_id 없음. 임시 'admin' 사용");
 		        ad_id = "admin01"; // 디버깅용
 		    }
+		    
 		    vo.setAd_id(ad_id);
+		    vo.setFixed(fixed);          // ★ 세팅
 		    
 		    anService.adminNoticeWrite(vo);
 		    
@@ -83,7 +88,12 @@ public class AdminNoticeController {
 		
 		// 수정 처리
 		@PostMapping("edit")
-		public String editPost(NoticeVO vo, RedirectAttributes rttr) throws Exception {
+		public String editPost(NoticeVO vo, 
+							   @RequestParam(value = "fixed", defaultValue = "N") String fixed,
+							   RedirectAttributes rttr) throws Exception {
+			
+			vo.setFixed(fixed);          // ★ 수정도 동일
+			
 		    anService.updateNotice(vo);
 		    
 		    // 수정 메시지

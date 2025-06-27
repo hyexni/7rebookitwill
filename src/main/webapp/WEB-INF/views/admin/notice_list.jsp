@@ -31,15 +31,17 @@
 	    <c:forEach var="notice" items="${noticeList}">
 	      <tr style="text-align: center; border-bottom: 1px solid #dee2e6;">
 	        <td style="padding: 6px 8px;">${notice.notice_id}</td>
+	        
 	        <td style="padding: 6px 8px;">
-			  <c:if test="${notice.fixed}">
-			    <span style="color: red; font-weight: bold;">[공지]</span>
+			  <c:if test="${notice.fixed eq 'Y'}">
+			    <span style="font-size: 16px;">📌</span>
 			  </c:if>
 			  <a href="${pageContext.request.contextPath}/admin/read?notice_id=${notice.notice_id}"
 			     style="font-size: 15px; font-weight: 500; color: #333; text-decoration: none;">
 			    ${notice.notice_title}
 			  </a>
 			</td>
+			
 	        <td style="padding: 6px 8px;">
 	          <fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd"/>
 	        </td>

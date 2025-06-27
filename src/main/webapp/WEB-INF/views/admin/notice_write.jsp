@@ -25,10 +25,24 @@
 		      <label for="notice_content">내용</label>
 		      <textarea id="notice_content" name="notice_content" rows="8" placeholder="내용을 입력하세요" required></textarea>
 		    </div>
+		    
+			<!-- notice_write.jsp, notice_edit.jsp 공통 -->
+			<div class="form-group" style="margin-top:20px;">
+			  <label>
+			    <input type="checkbox"
+			           name="fixed"
+			           value="Y"
+			           <c:if test="${notice.fixed eq 'Y'}">checked</c:if> />
+			    상단에 고정하기
+			  </label>
+			</div>
 		
 		    <div class="form-group btn-wrapper">
 		      <button type="submit" class="btn-primary">등록</button>
 		    </div>
+		    
+
+		    
 		  </form>
 		</div>
 </main>

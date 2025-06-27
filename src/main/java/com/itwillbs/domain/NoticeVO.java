@@ -12,7 +12,7 @@ public class NoticeVO {
 	private String notice_content;
 	private Timestamp notice_date;
 	private Timestamp updated_at;
-	private boolean fixed;
+	private String fixed;
 	
 
 }

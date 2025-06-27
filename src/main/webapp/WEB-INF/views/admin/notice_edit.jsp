@@ -36,6 +36,17 @@
 	    <div class="form-group btn-wrapper">
 	      <button type="submit" class="btn-primary">수정 완료</button>
 	    </div>
+	    
+		<!-- notice_write.jsp, notice_edit.jsp 공통 -->
+		<div class="form-group" style="margin-top:20px;">
+		  <label>
+		    <input type="checkbox"
+		           name="fixed"
+		           value="Y"
+		           <c:if test="${notice.fixed eq 'Y'}">checked</c:if> />
+		    상단에 고정하기
+		  </label>
+		</div>
 	  </form>
 	</div>
 </main>

@@ -36,14 +36,6 @@ public class AdminNoticeDAOImpl implements AdminNoticeDAO{
 		logger.info(" 관리자 공지사항 글쓰기 완료! ");
 		
 	}
-
-
-	// 공지사항 목록 조회
-	/*
-	 * @Override public List<NoticeVO> getNoticeList() throws Exception { return
-	 * sqlSession.selectList(NAMESPACE + "getNoticeList"); }
-	 */
-	
 	
 	// 공지사항 상세/수정/삭제 메서드
 	@Override
