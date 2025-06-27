@@ -11,20 +11,10 @@
           b.book_title,
           b.cover_image,
           b.author_name,
-          b.book_price,
-         COALESCE(s.totalSales, 0) AS totalSales,
+          b.book_price,        
          COALESCE(r.avgRating,  0) AS avgRating
           FROM book b
-          
         
-        
-        <!--판매량(salesCount) 집계 -->
-           LEFT JOIN (
-      SELECT book_id, SUM(quantity) AS totalSales
-      FROM orderitem
-      GROUP BY book_id
-    ) s ON b.book_id = s.book_id
-
         
         
            <!--평균 평점(averageRating)  집계 -->
@@ -42,5 +32,69 @@
         
         
     </select>
+    
+    
+    <select id="selectNewBookList" resultType="com.itwillbs.domain.BookVO">
+        SELECT
+            b.book_id,
+            b.book_title,
+            b.cover_image,
+            b.author_name,
+            b.book_price
+        FROM
+            book b
+        ORDER BY
+            b.created_at DESC
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
+        
+    </select>
+    
+    <select id="selectBestSellerList" resultType="com.itwillbs.domain.BookVO">
+        SELECT
+          b.book_id,
+          b.book_title,
+          b.cover_image,
+          b.author_name,
+          b.book_price,
+         COALESCE(s.totalSales, 0) AS totalSales         
+          FROM book b
+          
+        
+        
+        <!--판매량(salesCount) 집계 -->
+           LEFT JOIN (
+      SELECT book_id, SUM(quantity) AS totalSales
+      FROM orderitem
+      GROUP BY book_id
+    ) s ON b.book_id = s.book_id
+<if test="limit != null">
+            LIMIT #{limit}
+        </if>
+        
+        
+        
+        
+        
+    </select>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 </mapper>

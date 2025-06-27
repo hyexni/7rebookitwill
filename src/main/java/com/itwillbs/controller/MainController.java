@@ -4,11 +4,14 @@ import java.util.List;
 import javax.inject.Inject; // 또는 @Autowired
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.itwillbs.domain.BookVO;
+import com.itwillbs.service.BookService;
 import com.itwillbs.service.MainService;
 
 @Controller
@@ -26,7 +29,7 @@ public class MainController {
      * @param model View에 데이터를 전달하기 위한 Model 객체
      * @return 뷰 페이지의 경로
      */
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/aa", method = RequestMethod.GET)
     public String mainPage(Model model) throws Exception {
         logger.info("mainPage() 호출 - 메인 페이지 표시");
 
@@ -41,4 +44,24 @@ public class MainController {
         // /WEB-INF/views/main/main.jsp 파일을 View로 지정
         return "/include/main";
     }
+    
+    
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String main(Model model) {
+
+        // 신간 도서 목록 (5개)
+        List<BookVO> newBookList = mainService.getNewBookList(5);
+        
+        // 베스트셀러 목록 (5개)
+        List<BookVO> bestSellerList = mainService.getBestSellerList(5);
+
+        model.addAttribute("newBookList", newBookList);
+        model.addAttribute("bestSellerList", bestSellerList);
+
+        return "/include/main";
+    }
+   
+
+    
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import javax.inject.Inject; // 또는 @Autowired
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.itwillbs.domain.BookVO;
 import com.itwillbs.persistence.MainDAO;
@@ -22,5 +23,18 @@ public class MainServiceImpl implements MainService {
         
         // DAO를 호출하여 DB 처리 결과를 반환받음
         return mainDAO.getBookList();
+    }
+    
+    @Autowired
+    private MainDAO dao; // MainDAO 인터페이스를 주입받음
+
+    @Override
+    public List<BookVO> getNewBookList(int count) {
+        return dao.selectNewBookList(count);
+    }
+
+    @Override
+    public List<BookVO> getBestSellerList(int count) {
+        return dao.selectBestSellerList(count);
     }
 }

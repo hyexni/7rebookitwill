@@ -11,5 +11,20 @@ public interface MainService {
      * @throws Exception
      */
     public List<BookVO> getBookList() throws Exception;
+    
+    
+    /**
+     * 화면에 표시할 신간 도서 목록을 가져옵니다.
+     * @param count 가져올 도서의 수
+     * @return 신간 도서 리스트
+     */
+    public List<BookVO> getNewBookList(int count);
+    
+    /**
+     * 화면에 표시할 베스트셀러 목록을 가져옵니다.
+     * @param count 가져올 도서의 수
+     * @return 베스트셀러 리스트
+     */
+    public List<BookVO> getBestSellerList(int count);
 
 }
