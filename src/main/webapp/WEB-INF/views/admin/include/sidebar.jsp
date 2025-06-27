@@ -34,7 +34,7 @@
 					  <li><a href="/admin/stats">관리자 홈</a></li>
 					  <li><a href="/admin/member_list">회원 관리</a></li>
 					  <li><a href="/admin/book">도서 관리</a></li>
-					  <li><a href="/admin/sales">판매 관리</a></li>
+					  <li><a href="/admin/orders_list">판매 관리</a></li>
 					  <li><a href="/admin/pointHistory">포인트 관리</a></li>
 					  <li><a href="/admin/review_list">리뷰 관리</a></li>
 					  <li><a href="/admin/receiptList">영수증 관리</a></li>
