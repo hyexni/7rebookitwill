@@ -69,11 +69,11 @@
               <!-- 배송 상태 -->
 			<td>
 			  <c:choose>
-			    <c:when test="${order.delivery.status_code == '배송중'}">
-			      <span class="badge badge-blue">🚚  배송중</span>
+			    <c:when test="${order.delivery_status eq '배송중'}">
+			      <span class="badge badge-blue">🚚 배송중</span>
 			    </c:when>
-			    <c:when test="${order.delivery.status_code == '배송완료'}">
-			      <span class="badge badge-green">✅  배송완료</span>
+			    <c:when test="${order.delivery_status eq '배송완료'}">
+			      <span class="badge badge-green">✅ 배송완료</span>
 			    </c:when>
 			    <c:otherwise>
 			      <span class="badge badge-gray">📦 배송 준비중</span>
