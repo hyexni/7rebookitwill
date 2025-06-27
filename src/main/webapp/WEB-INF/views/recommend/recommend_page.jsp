@@ -11,6 +11,7 @@
 
 <%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jw.css">
 
 <!-- 로그인 안 된 경우 -->
 <c:if test="${needLogin}">
@@ -23,33 +24,33 @@
 
 <!-- ✅ 로그인 된 경우 -->
 <c:if test="${not empty sessionScope.member_idx}">
-  <div style="padding: 40px;">
-
+  
+	<main class="main-content" id="recommend">
+	  <div class="jw-container">
 	
-    <h2 style="margin-bottom: 20px;">📚 나만을 위한 도서 추천</h2>
-    
-    <script>
-  		console.log("▶ session member_idx:", "${sessionScope.member_idx}");
-	</script>
-    
-    <!-- 드롭다운 (정렬 기능) -->
-    <%@ include file="sort.jsp" %>
-
-    <hr style="margin: 30px 0;">
-
-	<!-- 🛒 구매 기반 추천 include -->
-    <h3>🛒 구매 도서 기반 추천</h3>
-    <%@ include file="purchase.jsp" %>
-
-    <hr style="margin: 30px 0;">
-
-    <!-- 💖 찜 기반 추천 include -->
-    <h3>💖 찜한 도서 기반 추천</h3>
-    <%@ include file="wishlist.jsp" %>
-
-	</div>
+		    <h1>📚 나만을 위한 도서 추천</h1>
+		    
+		    <script>
+		  		console.log("▶ session member_idx:", "${sessionScope.member_idx}");
+			</script>
+		    
+		    <!-- 드롭다운 (정렬 기능) -->
+		    <%@ include file="sort.jsp" %>
+		
+			<!-- 🛒 구매 기반 추천 include -->
+		    <h1 style="text-align: left; font-size: 20px">🛒 구매 도서 기반 추천</h1>
+		    <%@ include file="purchase.jsp" %>
+		
+		    <hr style="margin: 30px 0;">
+		
+		    <!-- 💖 찜 기반 추천 include -->
+		    <h1 style="text-align: left; font-size: 20px">💖 찜한 도서 기반 추천</h1>
+		    <%@ include file="wishlist.jsp" %>
+	
+		</div>
+	</main>  
+	
 </c:if>
-
 
 
 <%-- 4. 하단 푸터를 불러옵니다. --%>
