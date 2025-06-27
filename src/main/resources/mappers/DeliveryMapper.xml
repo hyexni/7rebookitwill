@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.persistence.DeliveryDAO">
+
+  <!-- ✅ 배송 상태(status_code) 업데이트 -->
+  <update id="updateStatus" parameterType="map">
+    UPDATE delivery
+    SET status_code = #{status_code}
+    WHERE order_id = #{order_id}
+  </update>
+  
+<!--  ✅ 운송장 번호 + 택배사 등록 -->
+  <update id="updateTrackingInfo">
+  UPDATE delivery
+  SET tracking_number = #{tracking_number},
+      shipper_name = #{shipper_name}
+  WHERE order_id = #{order_id}
+</update>
+
+</mapper>

@@ -17,5 +17,6 @@ public class DeliveryDTO {
 	// 추가
 	private String status_code; // 배송 상태
 	private String tracking_number; // 운송장 번호
+	private String shipper_name;
 
 }
