@@ -11,7 +11,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/")
@@ -76,19 +78,38 @@ public class AdminInquiryController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String inquiryList(@RequestParam(defaultValue = "1") int page,
                               @RequestParam(value = "keyword", required = false) String keyword,
+                              @RequestParam(value = "category", required = false) String category,
+                              @RequestParam(value = "status", required = false) String status,  // ✅ 추가
                               Model model) throws Exception {
+    	
+    	if (page < 1) page = 1;  // 💡 음수 방지
     	int pageSize = 10;
         int startRow = (page - 1) * pageSize;
 
-        List<InquiryVO> inquiryList = adminInquiryService.getInquiryList(startRow, pageSize, keyword);
-        int totalCount = adminInquiryService.getInquiryCount(keyword);
-        int totalPages = (int)Math.ceil((double)totalCount / pageSize);
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("category", category);
+        paramMap.put("status", status);  // ✅ 추가
+        paramMap.put("keyword", keyword);
+        paramMap.put("startRow", startRow);
+        paramMap.put("pageSize", pageSize);
+
+        List<InquiryVO> inquiryList = adminInquiryService.getInquiryList(paramMap);
+        int count = adminInquiryService.getInquiryCount(paramMap);
         
+        int totalPages = (int) Math.ceil((double) count / pageSize);
+
         model.addAttribute("inquiryList", inquiryList);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalCount", totalCount);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("keyword", keyword); // ✅ 검색어 유지용
+        model.addAttribute("count", count);
+        model.addAttribute("pageNum", page);
+        model.addAttribute("currentPage", page);         // ✅ 페이지네이션에 쓰는 경우 대비
+        model.addAttribute("totalPages", totalPages);    // ✅ 페이지 수 전달
+        model.addAttribute("category", category); // 필터 유지용
+        model.addAttribute("status", status);  // ✅ 추가
+        model.addAttribute("keyword", keyword);
+        
+        // 미확인
+        int uncheckedCount = adminInquiryService.getUncheckedInquiryCount();
+        model.addAttribute("uncheckedCount", uncheckedCount);
         
         return "admin/inquiry_list";
     }

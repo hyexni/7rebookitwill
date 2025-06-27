@@ -584,11 +584,14 @@ a {
 	gap: 10px;
 }
 
-.admin-container .search-form select, .admin-container .search-form input[type="text"]
+.admin-container .search-form select, 
+.admin-container .search-form input[type="text"]
 	{
 	padding: 9px 12px;
 	border: 1px solid #dee2e6;
 	border-radius: 4px;
+	width: auto;              /* 글자 수에 따라 넓이 자동 조절 */
+	min-width: 240px;  /* 🔥 추가: 기본 너비 확보 */
 	font-size: 15px;
 	transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -621,6 +624,7 @@ a {
 	width: 100%;
 	border-collapse: collapse;
 	font-size: 15px;
+	 table-layout: fixed; /* ⭐ 열 너비 고정 */
 }
 
 .admin-container thead {
@@ -930,59 +934,7 @@ a {
 	border-right: none;
 }
 
-/* 리뷰 상태 */
-.badge {
-	display: inline-block;
-	padding: 4px 10px;
-	border-radius: 20px;
-	font-size: 0.75rem;
-	font-weight: bold;
-	color: #fff;
-	min-width: 50px;
-	text-align: center;
-}
 
-.badge-blue {
-	background-color: #2196F3;
-}
-
-.badge-gray {
-	background-color: #BDBDBD;
-}
-
-.badge-green {
-	background-color: #4CAF50;
-}
-
-.badge-yellow {
-	background-color: #FFC107;
-	color: #000;
-}
-
-.badge-red {
-	background-color: #F44336;
-}
-
-.review-detail-row>td {
-	text-align: center;
-}
-
-.review-action-buttons {
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	gap: 15px;
-	flex-wrap: wrap;
-	margin-top: 10px;
-}
-
-.review-row {
-    cursor: pointer;
-    transition: background-color 0.2s;
- }
- .review-row:hover {
-   background-color: #f1f3f5;
- }
 
 .input-small {
 	width: 120px;
@@ -1113,3 +1065,39 @@ a {
 	font-size: 16px;
 	margin-top: 4px;
 }
+
+
+
+/* 테이블 컬럼명 누를 시 정렬되는 거! */
+/* 정렬 가능한 컬럼 스타일 */
+th > a.sortable {
+  color: #4c6ef5;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+th > a.sortable:hover {
+  text-decoration: underline;
+}
+
+/* 정렬 아이콘 스타일 */
+th > a.sortable span {
+  font-size: 12px;
+  color: #4c6ef5;
+}
+th > a.sortable span.neutral {
+  color: #adb5bd; /* 중립 회색 */
+}
+
+.sortable .neutral {
+  color: #adb5bd;
+  font-size: 12px;
+  margin-left: 3px;
+}
+/* 테이블 컬럼명 누를 시 정렬되는 거! */
+
+

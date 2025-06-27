@@ -13,12 +13,12 @@
 <%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
 <main class="main-content">
-	<div class="admin-container">
+	<div class="admin-container" id="notice-list">
 	<!-- 페이지 제목 -->
 	<h1>📢 공지사항 관리</h1>
 	
 	<!-- 공지사항 테이블 -->
-	<table class="admin-table">
+	<table>
 	  <thead style="background-color: #f8f9fa;">
 	    <tr>
 	      <th style="padding: 12px;">등록번호</th>
@@ -30,8 +30,8 @@
 	  <tbody>
 	    <c:forEach var="notice" items="${noticeList}">
 	      <tr style="text-align: center; border-bottom: 1px solid #dee2e6;">
-	        <td style="padding: 12px;">${notice.notice_id}</td>
-	        <td style="padding: 12px;">
+	        <td style="padding: 6px 8px;">${notice.notice_id}</td>
+	        <td style="padding: 6px 8px;">
 			  <c:if test="${notice.fixed}">
 			    <span style="color: red; font-weight: bold;">[공지]</span>
 			  </c:if>
@@ -40,10 +40,10 @@
 			    ${notice.notice_title}
 			  </a>
 			</td>
-	        <td style="padding: 12px;">
+	        <td style="padding: 6px 8px;">
 	          <fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd"/>
 	        </td>
-	        <td style="padding: 12px;">
+	        <td style="padding: 6px 8px;">
 	          <form action="${pageContext.request.contextPath}/admin/edit" method="get" style="display:inline;">
 	            <input type="hidden" name="notice_id" value="${notice.notice_id}" />
 	            <button type="submit" class="btn btn-outline-primary">수정</button>
@@ -60,7 +60,7 @@
 	</div>
 	
 	<!-- 새 글 등록 버튼 -->
-	<div style="margin-top: 20px; text-align: right;">
+	<div style="margin-top: 20px; margin-right: 115px; text-align: right;">
 	  <a href="${pageContext.request.contextPath}/admin/notice_write">
 	    <button type="submit" class="btn btn-primary">+새글 등록</button>
 	  </a>
@@ -70,17 +70,17 @@
 	<!-- 페이징 -->
 	<!-- 페이지네이션 버튼 -->
 	<div class="pagination">
-	  <a href="${pageContext.request.contextPath}/admin/notice_list?page=${currentPage - 1}"
+	  <a href="${pageContext.request.contextPath}/admin/notice_list?page=${currentPage - 1}#notice-list"
 	     class="${currentPage == 1 ? 'disabled' : ''}">&laquo;</a>
 	
 	  <c:forEach var="i" begin="1" end="${totalPages}">
-	    <a href="${pageContext.request.contextPath}/admin/notice_list?page=${i}"
+	    <a href="${pageContext.request.contextPath}/admin/notice_list?page=${i}#notice-list"
 	       class="${i == currentPage ? 'active' : ''}">
 	      ${i}
 	    </a>
 	  </c:forEach>
 	
-	  <a href="${pageContext.request.contextPath}/admin/notice_list?page=${currentPage + 1}"
+	  <a href="${pageContext.request.contextPath}/admin/notice_list?page=${currentPage + 1}#notice-list"
 	     class="${currentPage == totalPages ? 'disabled' : ''}">&raquo;</a>
 	</div>
 

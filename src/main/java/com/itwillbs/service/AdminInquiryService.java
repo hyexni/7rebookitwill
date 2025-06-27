@@ -1,6 +1,7 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itwillbs.domain.InquiryVO;
 import com.itwillbs.domain.ResponseVO;
@@ -21,6 +22,9 @@ public interface AdminInquiryService {
     void deleteResponse(int response_id, int inquiry_id);
     
     // 페이징 처리
-    List<InquiryVO> getInquiryList(int startRow, int pageSize, String keyword);
-    int getInquiryCount(String keyword);
+    List<InquiryVO> getInquiryList(Map<String, Object> paramMap);
+    int getInquiryCount(Map<String, Object> paramMap);
+    
+    int getUncheckedInquiryCount();  // 미확인 문의 수
+    
 }

@@ -71,17 +71,29 @@
     	SELECT 
 		    i.inquiry_id,
 		    m.member_id,
+		    i.category,
 		    i.title,
 		    i.status,
 		    i.created_at,
 		    i.processed_at, 
+		    r.ad_id AS ad_id,  
 		    r.created_at AS response_created_at
 	   FROM inquiry i
 	   JOIN member m ON i.member_idx = m.member_idx
 	   LEFT JOIN response r ON i.inquiry_id = r.inquiry_id
 	   <where>
+	    <!-- 분류 필터 -->
+	    <if test="category != null and category != ''">
+	      i.category = #{category}
+	    </if>
+	    <if test="status != null and status != ''">
+          AND i.status = #{status}
+        </if>
+	    <!-- 키워드(제목 + 회원ID) -->
 	    <if test="keyword != null and keyword != ''">
-	      (i.title LIKE CONCAT('%', #{keyword}, '%') OR m.member_id LIKE CONCAT('%', #{keyword}, '%'))
+	      <if test="category != null and category != ''">AND</if>
+	      (i.title LIKE CONCAT('%', #{keyword}, '%')
+	       OR m.member_id LIKE CONCAT('%', #{keyword}, '%'))
 	    </if>
  	   </where>
 	   ORDER BY 
@@ -101,9 +113,14 @@
 	 	 FROM inquiry i
 	 	 JOIN member m ON i.member_idx = m.member_idx
 	 	 <where>
-	 	   <if test="keyword != null and keyword != ''">
-	  	    (i.title LIKE CONCAT('%', #{keyword}, '%') OR m.member_id LIKE CONCAT('%', #{keyword}, '%'))
-	 	   </if>
+	 	   <if test="category != null and category != ''">
+		      i.category = #{category}
+		    </if>
+		    <if test="keyword != null and keyword != ''">
+		      <if test="category != null and category != ''">AND</if>
+		      (i.title LIKE CONCAT('%', #{keyword}, '%')
+		       OR m.member_id LIKE CONCAT('%', #{keyword}, '%'))
+		  </if>
 		 </where>
 	  </select>
 	  
@@ -119,23 +136,39 @@
 		  <result property="status" column="status"/>
 		  <result property="created_at" column="created_at"/>
 		  <result property="processed_at" column="processed_at"/>
+		  <result property="ad_id" column="ad_id"/>
+  		  <result property="response_created_at" column="response_created_at"/>
 		</resultMap>
 		
-		<select id="getInquiry" resultMap="InquiryWithMemberId">
-		  SELECT 
-		    i.inquiry_id,
-		    i.member_idx,
-		    i.category,
-		    i.title,
-		    i.content,
-		    i.status,
-		    i.created_at,
-		    i.processed_at,
-		    m.member_id AS member_id
-		  FROM inquiry i
-		  JOIN member m ON i.member_idx = m.member_idx
-		  WHERE i.inquiry_id = #{inquiry_id}
-		  </select>
+	<select id="getInquiry" resultMap="InquiryWithMemberId">
+	  SELECT 
+	    i.inquiry_id,
+	    i.member_idx,
+	    i.category,
+	    i.title,
+	    i.content,
+	    i.status,
+	    i.created_at,
+	    i.processed_at,
+	    m.member_id AS member_id,
+	    r.ad_id AS ad_id,  
+    	r.created_at AS response_created_at 
+	  FROM inquiry i
+	  JOIN member m ON i.member_idx = m.member_idx
+	  LEFT JOIN response r ON i.inquiry_id = r.inquiry_id
+	  WHERE i.inquiry_id = #{inquiry_id}
+	  </select>
+		  
+		  
+	 	<select id="getUncheckedInquiryCount" resultType="int">
+		    SELECT COUNT(*) FROM inquiry
+		    WHERE status = '접수'
+		</select>
+	 	  
+		  
+		  
+		  
+		  
 	  
 
 </mapper>

@@ -53,7 +53,8 @@ public class AdminReviewDAOImpl implements AdminReviewDAO {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("review_id", review_id);
         paramMap.put("reason", reason);
-        sqlSession.update(NAMESPACE + "deleteReview", review_id);
+        
+        sqlSession.update(NAMESPACE + "deleteReview", paramMap);
     }
     
     

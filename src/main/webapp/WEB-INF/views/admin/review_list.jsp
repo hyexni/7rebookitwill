@@ -8,26 +8,29 @@
 <%@ include file="include/sidebar.jsp" %>
 <%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin_review.css">
+
+
 <main class="main-content">
-	<div class="admin-container">
+	<div class="admin-container" id="review-list">
 	  <h1>💭 리뷰 관리
  		 <span style="font-size: 16px; color: #ff4d4f;">
    		 (미확인 리뷰: ${uncheckedCount}건)
-  		</span>
+  		 </span>
 	   </h1>
 	  
 	    <!-- 하나의 form으로 합침 -->
-		<form method="get" action="${pageContext.request.contextPath}/admin/review_list" class="search-form">
+		<form method="get" action="${pageContext.request.contextPath}/admin/review_list#review-list" class="search-form" id="searchForm">
 		
 		  <!-- 상태 필터 -->
-		  <select name="status">
+		  <select name="status" onchange="document.getElementById('searchForm').submit()">
 		    <option value="">🔍 상태 전체</option>
 		    <option value="Y" ${param.status == 'Y' ? 'selected' : ''}>🟢 정상</option>
 		    <option value="N" ${param.status == 'N' ? 'selected' : ''}>🟡 숨김</option>
 		    <option value="D" ${param.status == 'D' ? 'selected' : ''}>🔴 삭제</option>
 		  </select>
 		
-		  <select name="checked">
+		  <select name="checked" onchange="this.form.submit()">
 			  <option value="">✅ 확인 여부 전체</option>
 			  <option value="N" ${param.checked == 'N' ? 'selected' : ''}>❗ 미확인</option>
 			  <option value="Y" ${param.checked == 'Y' ? 'selected' : ''}>✔️ 확인됨</option>
@@ -35,7 +38,7 @@
 		  	
 		
 		  <!-- 키워드 검색 -->
-		  <input type="text" name="keyword" value="${param.keyword}" placeholder="도서명, 리뷰내용, 회원ID/이름 검색" />
+		  <input type="text" name="keyword" value="${param.keyword}" placeholder="도서명, 리뷰내용, 회원ID 검색" />
 		
 		  <!-- 검색 버튼 -->
 		  <input type="submit" value="검색">
@@ -45,15 +48,14 @@
 		<table>
 		  <thead>
 		    <tr>
-		      <th>리뷰ID</th>
-		      <th>도서명</th>
-		      <th>회원ID</th>
-		      <th>작성자</th>
-		      <th>작성일</th>
-		      <th>평점</th>
-		      <th>상태</th>
-		      <th>확인</th>
-		      <th>요약</th>
+		      <th style="width: 10%;">리뷰ID</th>
+		      <th style="width: 20%;">도서명</th>
+		      <th style="width: 24%;">요약</th>
+		      <th style="width: 5%;">평점</th>
+		      <th style="width: 8%;">상태</th>
+		      <th style="width: 10%;">회원ID</th>
+		      <th style="width: 10%;">작성일</th>
+		      <th style="width: 8%;">확인</th>
 		    </tr>
 		  </thead>
 		  <tbody>
@@ -62,9 +64,7 @@
 		      <tr class="review-row">
 		        <td>${review.review_id}</td>
 		        <td>${review.book_title}</td>
-		        <td>${review.member_id}</td>
-		        <td>${review.member_name}</td>
-		        <td><fmt:formatDate value="${review.review_date}" pattern="yyyy-MM-dd" /></td>
+		        <td>${fn:substring(review.review_text, 0, 20)}...</td>
 		        <td>${review.review_score}</td>
 		        <td>
 		          <c:choose>
@@ -74,6 +74,8 @@
 		            <c:otherwise><span class="badge">-</span></c:otherwise>
 		          </c:choose>
 		        </td>
+		        <td>${review.member_id}</td>
+		        <td><fmt:formatDate value="${review.review_date}" pattern="yyyy-MM-dd" /></td>
 		        <td>
 		          <c:choose>
 		            <c:when test="${review.review_checked eq 'Y'}">
@@ -84,49 +86,88 @@
 		            </c:otherwise>
 		          </c:choose>
 		        </td>
-		        <td>${fn:substring(review.review_text, 0, 20)}...</td>
 		      </tr>
 		
 		      <!-- 상세보기 줄 -->
-		      <tr class="review-detail-row" style="display:none;">
-		        <td colspan="10">
-		          <p><strong>전체 리뷰 내용:</strong><br>${review.review_text}</p>
-		
-		          <!-- ✅ 숨김/삭제/확인 처리 버튼 일렬 정렬 -->
-		          <div class="review-action-buttons">
-		            <!-- 숨김 -->
-		            <form method="post" action="${pageContext.request.contextPath}/admin/review_hide" style="display:flex; align-items:center;">
-		              <input type="hidden" name="review_id" value="${review.review_id}" />
-		              <input type="text" name="reason" placeholder="숨김 사유" required class="input-small" />
-		              <button type="submit" class="btn-sm btn-hide">숨김</button>
-		            </form>
-		
-		            <!-- 삭제 -->
-		            <form method="post" action="${pageContext.request.contextPath}/admin/review_delete" style="display:flex; align-items:center; margin-left:10px;" onsubmit="return confirm('정말 삭제하시겠습니까?')">
-		              <input type="hidden" name="review_id" value="${review.review_id}" />
-		              <input type="text" name="reason" placeholder="삭제 사유" required class="input-small" />
-		              <button type="submit" class="btn-sm btn-danger">삭제</button>
-		            </form>
-		
-		            <!-- 확인 -->
-		            <c:if test="${review.review_checked eq 'N'}">
-		              <form method="post" action="${pageContext.request.contextPath}/admin/review_check" style="margin-left:10px;">
-		                <input type="hidden" name="review_id" value="${review.review_id}" />
-		               <button type="submit" class="btn-check-confirm">
- 							 <span>✅</span> 이 리뷰 확인 처리
-					   </button>
-		              </form>
-		            </c:if>
-		            <c:if test="${review.review_checked eq 'Y'}">
-		              <span class="badge badge-confirmed" style="margin-left:10px;">✅ 이 리뷰는 확인 완료됨</span>
-		            </c:if>
-		          </div>
-		        </td>
-		      </tr>
-		    </c:forEach>
+			<tr class="review-detail-row" style="display:none;">
+			  <td colspan="8">
+			    <!-- ① 내용 + ② 버튼/사유 칸을 flex로 나눔 -->
+			    <div class="detail-flex">
+			      
+			      <!-- ① 전체 리뷰 내용 -->
+			      <div class="detail-text">
+			        <strong>전체 리뷰 내용:</strong><br>
+			        <pre>${review.review_text}</pre>
+			      </div>
+			
+			      <!-- ② 버튼/사유 -->
+			      <div class="detail-side">
+			        
+			        <!-- ▼ 버튼 영역 : 조건별로 노출 -->
+			        <c:if test="${review.review_checked eq 'N' && review.review_status eq 'Y'}">
+			          <!-- 숨김 -->
+			          <form method="post" action="${pageContext.request.contextPath}/admin/review_hide">
+			            <input type="hidden" name="review_id" value="${review.review_id}">
+			            <select name="reason" class="reason-select" data-idx="${review.review_id}" onchange="toggleEtcReason(this)">
+			              <option value="">숨김 사유 선택</option>
+			              <option value="욕설/비방">욕설/비방</option>
+			              <option value="도배성 내용">도배성 내용</option>
+			              <option value="광고/홍보">광고/홍보</option>
+			              <option value="부적절한 표현">부적절한 표현</option>
+			              <option value="기타">기타</option>
+			            </select>
+			            <input type="text" name="etc_reason" class="etc-reason-input"
+			                   placeholder="기타 사유 입력" style="display:none;">
+			            <button type="submit" class="btn-sm btn-hide">숨김</button>
+			          </form>
+			
+			          <!-- 삭제 -->
+			          <form method="post" action="${pageContext.request.contextPath}/admin/review_delete"
+			                onsubmit="return confirm('정말 삭제하시겠습니까?')">
+			            <input type="hidden" name="review_id" value="${review.review_id}">
+			            <select name="reason" class="reason-select" onchange="toggleEtcReason(this)">
+			              <option value="">삭제 사유 선택</option>
+			              <option value="욕설/비방">욕설/비방</option>
+			              <option value="도배성 내용">도배성 내용</option>
+			              <option value="광고/홍보">광고/홍보</option>
+			              <option value="부적절한 표현">부적절한 표현</option>
+			              <option value="기타">기타</option>
+			            </select>
+			            <input type="text" name="etc_reason" class="etc-reason-input"
+			                   placeholder="기타 사유 입력" style="display:none;">
+			            <button type="submit" class="btn-sm btn-danger">삭제</button>
+			          </form>
+			        </c:if>
+			
+			        <!-- 확인 버튼 (미확인일 때만) -->
+			        <c:if test="${review.review_checked eq 'N'}">
+			          <form method="post" action="${pageContext.request.contextPath}/admin/review_check">
+			            <input type="hidden" name="review_id" value="${review.review_id}">
+			            <button type="submit" class="btn-check-confirm">✅ 확인</button>
+			          </form>
+			        </c:if>
+			
+			        <!-- 확인 완료 뱃지 -->
+			        <c:if test="${review.review_checked eq 'Y'}">
+			          <span class="badge badge-confirmed">✅ 확인 완료</span>
+			        </c:if>
+			
+			        <!-- ▼ 사유 박스 : 숨김(D)/삭제(N)일 때만 노출 -->
+			        <c:if test="${review.review_status ne 'Y'}">
+			          <div class="reason-box">
+			            <span class="reason-label">📌 처리 사유</span>
+			            <span class="reason-text">${review.reason}</span>
+			          </div>
+			        </c:if>
+			      </div><!-- /.detail-side -->
+			
+			    </div><!-- /.detail-flex -->
+			  </td>
+			</tr>
+			</c:forEach>
 		
 		    <c:if test="${empty reviewList}">
-		      <tr><td colspan="10">조회된 리뷰가 없습니다.</td></tr>
+		      <tr><td colspan="8">조회된 리뷰가 없습니다.</td></tr>
 		    </c:if>
 		  </tbody>
 		</table>
@@ -135,19 +176,19 @@
 		<!-- 페이지네이션 버튼 -->
 		<div class="pagination">
 		  <a href="${pageContext.request.contextPath}/admin/review_list?page=${currentPage - 1}
-		  			&status=${param.status}&keyword=${param.keyword}&checked=${param.checked}"
+		  			&status=${param.status}&keyword=${param.keyword}&checked=${param.checked}#review-list"
 		     class="${currentPage == 1 ? 'disabled' : ''}">&laquo;</a>
 		
 		  <c:forEach var="i" begin="1" end="${totalPages}">
 		    <a href="${pageContext.request.contextPath}/admin/review_list?page=${i}
-		    			&status=${param.status}&keyword=${param.keyword}&checked=${param.checked}"
+		    			&status=${param.status}&keyword=${param.keyword}&checked=${param.checked}#review-list"
 		       class="${i == currentPage ? 'active' : ''}">
 		      ${i}
 		    </a>
 		  </c:forEach>
 		
 		  <a href="${pageContext.request.contextPath}/admin/review_list?page=${currentPage + 1}
-		  			&status=${param.status}&keyword=${param.keyword}&checked=${param.checked}"
+		  			&status=${param.status}&keyword=${param.keyword}&checked=${param.checked}#review-list"
 		     class="${currentPage == totalPages ? 'disabled' : ''}">&raquo;</a>
 		</div>
 	</div>
@@ -177,6 +218,21 @@
 		  });
 		});
 	</script>
+	
+	<!-- 기타 사유 입력 필드 제어 -->
+	<script>
+	  function toggleEtcReason(selectElement) {
+	    const form = selectElement.closest("form");
+	    const etcInput = form.querySelector(".etc-reason-input");
+	    if (selectElement.value === "기타") {
+	      etcInput.style.display = "inline-block";
+	    } else {
+	      etcInput.style.display = "none";
+	      etcInput.value = ""; // 기타 선택 안하면 입력값 제거
+	    }
+	  }
+	</script>
+	
 
 	
 	

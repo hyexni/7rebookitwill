@@ -15,6 +15,10 @@ public class InquiryVO {
 	private String status;				// 처리 상태
 	private Timestamp created_at;		// 작성 일시
 	private Timestamp processed_at;
-
+	
+	
+	// 문의 답변에 필요 (DB에 없어도 됨)
+	private String ad_id;
+	private Timestamp response_created_at;
 	
 }
