@@ -13,8 +13,8 @@
 <%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
 
-<main class="main-content">
-	<div class="admin-container" id="inquiry-list">
+<main class="main-content" id="inquiry-list">
+	<div class="admin-container" >
 	  <h1>📩 1:1 문의 관리
 	  	<span style="font-size: 16px; color: #ff4d4f;">
    		 (미답변 문의: ${uncheckedCount}건)

@@ -12,8 +12,8 @@
 <%@ include file="include/sidebar.jsp" %>  
 <%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
-<main class="main-content">
-	<div class="admin-container" id="notice-list">
+<main class="main-content" id="notice-list">
+	<div class="admin-container" >
 	<!-- 페이지 제목 -->
 	<h1>📢 공지사항 관리</h1>
 	

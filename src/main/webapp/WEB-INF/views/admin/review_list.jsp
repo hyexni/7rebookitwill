@@ -11,8 +11,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin_review.css">
 
 
-<main class="main-content">
-	<div class="admin-container" id="review-list">
+<main class="main-content" id="review-list">
+	<div class="admin-container" >
 	  <h1>💭 리뷰 관리
  		 <span style="font-size: 16px; color: #ff4d4f;">
    		 (미확인 리뷰: ${uncheckedCount}건)
