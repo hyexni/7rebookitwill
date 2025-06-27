@@ -29,7 +29,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
         
-
+<!-- [추가] jQuery 라이브러리 (CDN 방식) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     
 
 

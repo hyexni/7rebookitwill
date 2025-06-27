@@ -71,7 +71,7 @@ a {
     outline: 0 solid transparent;
     color: $dark-color;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 20px;
     &:hover,
     &:focus {
         @include transition(all 500ms ease 0s);
@@ -79,7 +79,7 @@ a {
         outline: 0 solid transparent;
         color: $dark-color;
         font-weight: 400;
-        font-size: 12px;
+        font-size: 20px;
     }
 }
 

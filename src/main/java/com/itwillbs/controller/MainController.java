@@ -1,5 +1,6 @@
 package com.itwillbs.controller;
 
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject; // 또는 @Autowired
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ public class MainController {
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @Inject
+    
     private MainService mainService; // MainService 객체 주입
 
     /**
@@ -69,32 +71,40 @@ public class MainController {
     
     // 메인화면 검색창 실행
     
- // AJAX 검색 요청을 처리하는 메서드
-    @GetMapping("/main/searchAjax")
-    public String searchAjax(String keyword, Model model) throws Exception {
-        
-        logger.info("AJAX Search Start! Keyword: " + keyword);
 
-        // 1. 키워드로 도서를 검색합니다. (수정된 서비스 메서드 호출)
-        List<BookVO> searchResult = mainService.searchBooksByKeyword(keyword);
-        model.addAttribute("bookList", searchResult); 
-        logger.info("Search Result Count: " + (searchResult != null ? searchResult.size() : 0));
+    /**
+     * 메인 검색창에서 키워드를 받아 검색 결과를 보여주는 메서드
+     */
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String search(
+            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+            Model model) {
 
-        // 2. 검색 결과가 있을 경우, 연관 도서 추천 로직을 실행합니다.
-        if (searchResult != null && !searchResult.isEmpty()) {
-            // 검색된 첫 번째 책을 추천의 기준으로 삼습니다.
-            BookVO baseBook = searchResult.get(0); 
-            logger.info("Base book for recommendation: " + baseBook.getBook_title());
-            
-            // 새롭게 추가한 추천 도서 서비스 메서드를 호출합니다.
-            List<BookVO> recommendedList = mainService.getRecommendedBooks(baseBook);
-            
-            // 추천 도서 목록을 모델에 추가합니다.
-            model.addAttribute("recommendedList", recommendedList);
-            logger.info("Recommended Book Count: " + (recommendedList != null ? recommendedList.size() : 0));
+        logger.info("C: /search 호출, keyword: {}", keyword);
+
+        try {
+            // 예외 발생 가능성이 있는 코드를 try 블록으로 감쌉니다.
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                // ServiceImpl 또는 DAO에서 Exception을 던지도록 수정되었을 가능성이 높습니다.
+                // 여기서는 searchBooksByKeyword 메서드명을 그대로 사용하겠습니다.
+                List<BookVO> searchResult = mainService.searchBooksByKeyword(keyword); 
+
+                model.addAttribute("bookList", searchResult); 
+                logger.info("Search Result Count: {}", (searchResult != null ? searchResult.size() : 0));
+            }
+        } catch (Exception e) {
+            // 예외가 발생했을 때 실행될 코드
+            logger.error("검색 처리 중 예외 발생", e); // 1. 서버 로그에 에러를 기록합니다 (개발자 확인용).
+            model.addAttribute("errorMessage", "검색 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요."); // 2. 사용자에게 보여줄 에러 메시지를 Model에 담습니다.
         }
+        
+        // 검색 키워드는 try-catch와 상관없이 항상 View로 전달합니다.
+        model.addAttribute("keyword", keyword);
 
-        // 3. 결과를 표시할 JSP (부분 뷰)로 이동합니다.
-        return "/main/searchResult"; 
+        // 결과 또는 에러 메시지를 보여줄 JSP 페이지 경로를 반환합니다.
+        return "include/searchResult";
     }
 }
+
+
+
