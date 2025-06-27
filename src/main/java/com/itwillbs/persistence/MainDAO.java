@@ -30,5 +30,12 @@ public interface MainDAO {
      * @return 베스트셀러 리스트
      */
     public List<BookVO> selectBestSellerList(@Param("limit") int limit);
+    
+    
+    // 검색용 메서드 
+    public List<BookVO> searchBooksByKeyword(String keyword) throws Exception;
+
+    // 추천 도서 조회용 메서드
+    public List<BookVO> selectRecommendedBooks(BookVO vo) throws Exception;
 	
 }

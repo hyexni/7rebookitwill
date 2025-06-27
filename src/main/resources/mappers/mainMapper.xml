@@ -80,15 +80,31 @@
     </select>
     
     
+    <!-- 도서검색하기 -->
+    
+    <select id="searchBooksByKeyword" resultType="com.itwillbs.domain.BookVO">
+       SELECT * FROM book  
+    WHERE
+        book_title LIKE CONCAT('%', #{keyword}, '%')
+        OR author_name LIKE CONCAT('%', #{keyword}, '%')
+        OR publisher LIKE CONCAT('%', #{keyword}, '%')
+    ORDER BY
+                created_at DESC
+    </select>
     
     
     
-    
-    
-    
-    
-    
-    
+    <!-- 도서추천하기 -->
+    <select id="selectRecommendedBooks" parameterType="com.itwillbs.domain.BookVO" resultType="com.itwillbs.domain.BookVO">
+       SELECT * FROM book  
+    WHERE
+        book_title LIKE CONCAT('%', #{keyword}, '%')
+        OR author_name LIKE CONCAT('%', #{keyword}, '%')
+        OR publisher LIKE CONCAT('%', #{keyword}, '%')
+    ORDER BY
+        created_at DESC
+   
+</select>
     
     
     

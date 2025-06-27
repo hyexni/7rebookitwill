@@ -25,6 +25,7 @@ public class MainServiceImpl implements MainService {
         return mainDAO.getBookList();
     }
     
+    //메인 도서화면 출력 (신간, 베스트셀러_)
     @Autowired
     private MainDAO dao; // MainDAO 인터페이스를 주입받음
 
@@ -36,5 +37,20 @@ public class MainServiceImpl implements MainService {
     @Override
     public List<BookVO> getBestSellerList(int count) {
         return dao.selectBestSellerList(count);
+    }
+    
+    
+ // 메인 도서 검색
+    @Override
+    public List<BookVO> searchBooksByKeyword(String keyword) throws Exception {
+        // DAO의 올바른 메서드를 호출합니다.
+        return mainDAO.searchBooksByKeyword(keyword);
+    }
+
+    // 추천 도서 로직
+    @Override
+    public List<BookVO> getRecommendedBooks(BookVO vo) throws Exception {
+        // 추천 도서 조회를 담당하는 DAO 메서드를 호출합니다.
+        return mainDAO.selectRecommendedBooks(vo);
     }
 }

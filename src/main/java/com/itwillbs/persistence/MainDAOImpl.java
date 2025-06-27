@@ -46,4 +46,17 @@ public class MainDAOImpl implements MainDAO {
         return sqlSession.selectList(NAMESPACE + ".selectBestSellerList", limit);
     }
     
+    
+ // 검색용 메서드 
+    @Override
+    public List<BookVO> searchBooksByKeyword(String keyword) throws Exception {
+        return sqlSession.selectList(NAMESPACE + ".searchBooksByKeyword", keyword);
+    }
+
+    // 추천 도서 조회용 메서드 구현
+    @Override
+    public List<BookVO> selectRecommendedBooks(BookVO vo) throws Exception {
+        return sqlSession.selectList(NAMESPACE + ".selectRecommendedBooks", vo);
+    }
+    
 }

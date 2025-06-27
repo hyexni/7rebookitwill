@@ -26,5 +26,15 @@ public interface MainService {
      * @return 베스트셀러 리스트
      */
     public List<BookVO> getBestSellerList(int count);
+    
+    
+    
+    // 검색용 메서드
+    public List<BookVO> searchBooksByKeyword(String keyword) throws Exception;
+
+    // 추천 도서 조회용 메서드
+    public List<BookVO> getRecommendedBooks(BookVO vo) throws Exception;
+
+	
 
 }

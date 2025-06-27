@@ -15,6 +15,7 @@
     .auth-buttons {
         display: flex; /* Flexbox 레이아웃 사용 */
         align-items: center; /* 세로 중앙 정렬 */
+        justify-content: space-between;
         justify-content: flex-end; /* 오른쪽 끝으로 정렬 */
     }
 
@@ -163,27 +164,7 @@ body:first-line {
 </head>
 
 <body>
-    <!-- Search Wrapper Area Start -->
-    <div class="search-wrapper section-padding-100">
-        <div class="search-close">
-            <i class="fa fa-close" aria-hidden="true"></i>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="search-content">
-                        <form action="#" method="get">
-                            <input type="search" name="search" id="search" placeholder="Type your keyword...">
-                            <button type="submit">
-                                <img src="${pageContext.request.contextPath }/resources/img/core-img/search.png" alt="">
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+   
     <%-- ##### 새로운 메인 검색/소개 영역 시작 ##### --%>
     <section class="main-visual-area">
         <%-- 1. 왼쪽: 로고와 소개 문구 --%>
@@ -198,14 +179,7 @@ body:first-line {
             <p>도서구매, 영수증적립시스템까지 모든 것을 한번에!</p>
         </div>
 
-        <%-- 2. 오른쪽: 검색창과 버튼들 --%>
-        <div class="search-auth-area">
-            <div class="search-container">
-                <input type="search" name="search" placeholder="도서, 저자, 출판사 검색">
-                <button type="submit" class="search-btn">
-                    <i class="fa fa-search"></i>검색
-                </button>
-            </div>
+      
 
             <div class="auth-buttons">
                 <%-- 로그인 되어 있지 않은 경우 --%>
@@ -226,3 +200,5 @@ body:first-line {
             </div>
         </div>
     </section>
+    
+ 
