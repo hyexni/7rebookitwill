@@ -934,59 +934,7 @@ a {
 	border-right: none;
 }
 
-/* 리뷰 상태 */
-.badge {
-	display: inline-block;
-	padding: 4px 10px;
-	border-radius: 20px;
-	font-size: 0.75rem;
-	font-weight: bold;
-	color: #fff;
-	min-width: 50px;
-	text-align: center;
-}
 
-.badge-blue {
-	background-color: #2196F3;
-}
-
-.badge-gray {
-	background-color: #BDBDBD;
-}
-
-.badge-green {
-	background-color: #4CAF50;
-}
-
-.badge-yellow {
-	background-color: #FFC107;
-	color: #000;
-}
-
-.badge-red {
-	background-color: #F44336;
-}
-
-.review-detail-row>td {
-	text-align: center;
-}
-
-.review-action-buttons {
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	gap: 15px;
-	flex-wrap: wrap;
-	margin-top: 10px;
-}
-
-.review-row {
-    cursor: pointer;
-    transition: background-color 0.2s;
- }
- .review-row:hover {
-   background-color: #f1f3f5;
- }
 
 .input-small {
 	width: 120px;
