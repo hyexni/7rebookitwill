@@ -8,17 +8,17 @@
 	    grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
 	    gap: 30px;
 	    margin-top: 30px;
-	  ">
+	  " class="admin-container">
 	  <!-- 도넛 차트 -->
 	  <div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:20px;
 	  			display:flex;flex-direction:column;height:280px;">
-	    <h4 style="text-align:center;margin-bottom:10px;">회원 상태 비율</h4>
+	    <h1 style="font-size: 20px;">회원 상태 비율</h1>
 	    <canvas id="statusChart" style="flex:1;width:100% !important;height:auto !important;"></canvas>
 	  </div>
 	  <!-- 막대 차트 -->
 	  <div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:20px;
 	  			display:flex;flex-direction:column;height:280px;">
-	    <h4 style="text-align:center;margin-bottom:10px;">가입자 수 추이</h4>
+	    <h1 style="font-size: 20px;">가입자 수 추이</h1>
 	    <canvas id="joinChart" style="flex:1;width:100% !important;height:auto !important;"></canvas>
 	  </div>
 	</div>

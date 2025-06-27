@@ -9,7 +9,7 @@
 
 <!-- ────────────────────────────────────── -->
 	<!-- 4) 슬라이더 레이아웃 -->
-	<h2 style="margin-top: 50px;">📊 인기 도서 순위</h2>
+	<hr style="margin-top: 60px; margint-bottom:60px;">
 	  <div style="
 	    display: grid;
 	    grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
@@ -18,7 +18,7 @@
 	  ">
 	  <!-- 판매량 -->
 	  <div style="flex:1; width:500px;">
-	    <h3>📘 판매량 상위 도서</h3>
+	    <h1>📘 판매량 상위 도서</h1>
 	    <div class="swiper salesSwiper">
 	      <div class="swiper-wrapper">
 	        <c:forEach var="book" items="${topSellingBooks}" varStatus="status">
@@ -41,7 +41,7 @@
 	  
 	  <!-- 별점 -->
 	  <div style="flex:1; min-width:300px; max-width:500px;">
-	    <h3>⭐ 별점 평균 상위 도서</h3>
+	    <h1>⭐ 별점 평균 상위 도서</h1>
 	    <div class="swiper ratingSwiper">
 	      <div class="swiper-wrapper">
 	        <c:forEach var="book" items="${topRatedBooks}" varStatus="status">

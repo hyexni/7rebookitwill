@@ -5,40 +5,27 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%-- 1. 페이지 기본 골격과 공통 CSS/폰트 링크를 불러옵니다. --%>
 <%@ include file="include/layout_head.jsp" %>
-
-<%-- 2. 상단 헤더를 불러옵니다. --%>
 <%@ include file="include/header.jsp" %> 
-
-<%-- 3. 왼쪽 사이드바 메뉴를 불러옵니다. --%>
 <%@ include file="include/sidebar.jsp" %>  
 
-		<!-- SweetAlert2 라이브러리 불러오기 -->
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-		
-			<c:if test="${not empty msg}">
-			  <script>
-			    window.addEventListener('DOMContentLoaded', () => {
-			      Swal.fire({
-			        icon: '${icon}',      // success, error 등
-			        title: '${msg}'       // ex. 최고관리자님 환영합니다 👑
-			      });
-			    });
-			  </script>
-			</c:if>
+<%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
 <!-- 1) 공통 CSS/JS (한 번만) -->
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- Swiper -->
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin_style_pro.css">
+ <!-- header-dropdown js -->
+   <script src="${pageContext.request.contextPath}/resources/js/header-dropdown.js"></script>
+    
 
+<main class="main-content">
 <!-- stats.jsp 본문 -->
-<div style="padding: 40px; background: #fff; width: 100%; max-width: 1280px; margin: 0 auto;">
+<div style="padding: 40px; background: #fff; width: 100%; max-width: 1280px; margin: 0 auto;" class="admin-container">
 
 	<!-- 2) 차트 그리드 -->
-	<h2 style="margin-top: 40px;">📊 관리자 페이지</h2>
 	
 	<!-- 📌 스타일 정의 -->
 	<style>
@@ -105,7 +92,7 @@
 	
 	<!-- 도서 카드 -->
 	<%@ include file="/WEB-INF/views/admin/stats_bookCard.jsp" %> 
-	
+</main>	
 	
 
 </div>	
