@@ -26,7 +26,13 @@
 	
 	      <p class="order-status">📄 주문 상태: <strong>${order.status}</strong></p>
 	      <p class="delivery-status">🚚 배송 상태: <strong>${order.delivery.status_code}</strong></p>
-	    </div>
+	    	<c:if test="${not empty order.delivery.status_code}">
+			  <div class="shipping-info">
+			    <p><strong>택배사:</strong> ${order.delivery.shipper_name}</p>
+			    <p><strong>송장번호:</strong> ${order.delivery.tracking_number}</p>
+			  </div>
+			</c:if>
+	    	</div>
 	  </div>
 	</div>
 
@@ -168,6 +174,20 @@
 }
 .back-btn:hover {
   background-color: #ffe8a1;
+  
 }
+.shipping-info {
+  margin-top: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+.shipping-info p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #333;
+}
+
 </style>
 

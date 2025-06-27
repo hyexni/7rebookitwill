@@ -43,53 +43,78 @@
   </association>
 </resultMap>
   <!-- ✅ 1. 사용자 - 주문 상세 조회 -->
-  <select id="getOrderDetailByMember" parameterType="java.util.Map" resultMap="orderWithDeliveryMap">
-    SELECT 
-      o.order_id, o.member_idx, o.order_date, o.total_price, o.status,
-      oi.book_id,
-      MIN(b.book_title) AS book_title,
-      MIN(b.cover_image) AS book_cover,
-      COUNT(*) AS book_count,
-      p.pay_method AS payment_method,
-      p.used_points AS used_point,
-      CEIL(o.total_price * 0.1) AS earned_point,
-      d.receiver_name, d.receiver_phone, d.zipcode,
-      d.delivery_address, d.address_detail, d.memo,
-      d.status_code, d.tracking_number
-    FROM orders o
-    JOIN orderitem oi ON o.order_id = oi.order_id
-    JOIN book b ON oi.book_id = b.book_id
-    JOIN payment p ON o.order_id = p.order_id
-    JOIN delivery d ON o.order_id = d.order_id
-    WHERE o.order_id = #{order_id}
-      AND o.member_idx = #{member_idx}
-    GROUP BY 
-      o.order_id, o.member_idx, o.order_date, o.total_price, o.status,
-      oi.book_id,
-      p.pay_method, p.used_points,
-      d.receiver_name, d.receiver_phone, d.zipcode,
-      d.delivery_address, d.address_detail, d.memo,
-      d.status_code, d.tracking_number
-  </select>
+<select id="getOrderDetailByMember" parameterType="java.util.Map" resultMap="orderWithDeliveryMap">
+  SELECT 
+    o.order_id, o.member_idx, o.order_date, o.total_price, o.status,
+    oi.book_id,
+    MIN(b.book_title) AS book_title,
+    MIN(b.cover_image) AS book_cover,
+    COUNT(*) AS book_count,
+    p.pay_method AS payment_method,
+    p.used_points AS used_point,
+    CEIL(o.total_price * 0.1) AS earned_point,
+    d.status_code AS delivery_status,
+    d.status_code,
+    d.status_code AS delivery_status,
+    d.shipper_name,
+    d.tracking_number,
+    d.receiver_name,
+    d.receiver_phone,
+    d.zipcode,
+    d.delivery_address,
+    d.address_detail,
+    d.memo
+  
+  FROM orders o
+  JOIN orderitem oi ON o.order_id = oi.order_id
+  JOIN book b ON oi.book_id = b.book_id
+  JOIN payment p ON o.order_id = p.order_id
+  JOIN delivery d ON o.order_id = d.order_id
+
+  WHERE o.order_id = #{order_id}
+    AND o.member_idx = #{member_idx}
+    
+  GROUP BY 
+    o.order_id, o.member_idx, o.order_date, o.total_price, o.status,
+    oi.book_id,
+    p.pay_method, p.used_points,
+    d.status_code, d.shipper_name, d.tracking_number,
+    d.receiver_name, d.receiver_phone, d.zipcode,
+    d.delivery_address, d.address_detail, d.memo
+</select>
+
 
  <!--  사용자- 페이징된 주문 목록 조회  -->
-  <select id="getOrdersByMemberPaged" parameterType="com.itwillbs.domain.Criteria" resultType="com.itwillbs.dto.OrderDTO">
+ <select id="getOrdersByMemberPaged" parameterType="com.itwillbs.domain.Criteria" resultType="com.itwillbs.dto.OrderDTO">
   SELECT 
     o.order_id, o.member_idx, o.order_date, o.total_price, o.status,
     MIN(b.book_id) AS book_id,   
     MIN(b.book_title) AS book_title,
     MIN(b.cover_image) AS book_cover,
-    MIN(d.status_code) AS delivery_status,
+    d.status_code AS delivery_status,           <!-- ✅ 최신 배송 상태 -->
     COUNT(*) AS book_count
   FROM orders o
   JOIN orderitem oi ON o.order_id = oi.order_id
   JOIN book b ON oi.book_id = b.book_id
-  JOIN delivery d ON o.order_id = d.order_id  
+
+  <!-- ✅ 최신 배송 정보만 JOIN -->
+  JOIN (
+    SELECT d1.order_id, d1.status_code
+    FROM delivery d1
+    JOIN (
+      SELECT order_id, MAX(delivery_id) AS max_id
+      FROM delivery
+      GROUP BY order_id
+    ) d2 ON d1.order_id = d2.order_id AND d1.delivery_id = d2.max_id
+  ) d ON o.order_id = d.order_id
+
   WHERE o.member_idx = #{member_idx}
+
   GROUP BY o.order_id
   ORDER BY o.order_id DESC
   LIMIT #{offset}, #{perPageNum}
 </select>
+ 
 
   <!--  사용자 - 주문 수 조회(페이징용)  -->
     <select id="getOrderCountByMember" parameterType="int" resultType="int">
