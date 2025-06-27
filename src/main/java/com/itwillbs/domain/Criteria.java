@@ -22,7 +22,15 @@ public class Criteria {
 	
 	// 도서 ID (리뷰 페이징용)
 	private int book_id;
+	
+	// ✅ 관리자 주문 목록 필터용
+	private String member_id;         // 주문자 ID 검색
+	private String payment_status;    // 결제 상태 필터
+	private String delivery_status;   // 배송 상태 필터
 
+	// ✅ 사용자 주문 조회용
+	private int member_idx;
+	
 	//  현재 페이지 번호(기본값 1)
 	private int page = 1;
 
@@ -82,6 +90,11 @@ public class Criteria {
         next = endPage * perPageNum < totalCount;
         
    
+    }
+    
+    // LIMIT #{offset}, #{perPageNum} 에서 offset 계산용 (MyBatis에서 자주 사용)
+    public int getOffset() {
+        return (page - 1) * perPageNum;
     }
 }
 

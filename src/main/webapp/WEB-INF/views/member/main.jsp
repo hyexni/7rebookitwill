@@ -66,7 +66,7 @@
       <div class="mypage-box">
         <h4 class="box-title">3. 주문/배송 조회</h4>
         <p class="box-desc">내 주문 내역과 배송 상태를 확인해요.</p>
-        <a href="/order/list" class="mypage-btn">주문 확인</a>
+        <a href="${pageContext.request.contextPath}/orders/list" class="mypage-btn">주문 확인</a>
       </div>
 
       <div class="mypage-box">

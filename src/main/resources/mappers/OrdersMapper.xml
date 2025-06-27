@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.persistence.OrdersDAO">
+
+<resultMap id="orderWithDeliveryMap" type="com.itwillbs.dto.OrderDTO">
+  <!-- 주문 정보 -->
+  <id property="order_id" column="order_id" />
+  <result property="member_idx" column="member_idx" />
+  <result property="member_id" column="member_id" />       
+  <result property="member_name" column="member_name" />  
+  <result property="order_date" column="order_date" />
+  <result property="total_price" column="total_price" />
+  <result property="status" column="status" />
+
+  <!-- 책 정보 -->
+  <result property="book_title" column="book_title" />
+  <result property="book_cover" column="book_cover" />
+  <result property="book_count" column="book_count" />
+  <result property="book_id" column="book_id" />
+
+  <!-- 결제 정보 -->
+  <result property="payment_method" column="payment_method" />
+  <result property="used_point" column="used_point" />
+  <result property="earned_point" column="earned_point" />
+
+  <!-- ✅ OrderDTO에 직접 있는 배송 상태 -->
+  <result property="delivery_status" column="delivery_status" />
+
+  <!-- ✅ 배송 정보 (DeliveryDTO) 매핑 -->
+  <association property="delivery" javaType="com.itwillbs.dto.DeliveryDTO">
+    <result property="status_code" column="status_code" />
+    <result property="tracking_number" column="tracking_number" />
+    <result property="shipper_name" column="shipper_name" />
+    <result property="receiver_name" column="receiver_name" />
+    <result property="receiver_phone" column="receiver_phone" />
+    <result property="zipcode" column="zipcode" />
+    <result property="delivery_address" column="delivery_address" />
+    <result property="address_detail" column="address_detail" />
+    <result property="memo" column="memo" />
+  </association>
+</resultMap>
+  <!-- ✅ 1. 사용자 - 주문 상세 조회 -->
+  <select id="getOrderDetailByMember" parameterType="java.util.Map" resultMap="orderWithDeliveryMap">
+    SELECT 
+      o.order_id, o.member_idx, o.order_date, o.total_price, o.status,
+      oi.book_id,
+      MIN(b.book_title) AS book_title,
+      MIN(b.cover_image) AS book_cover,
+      COUNT(*) AS book_count,
+      p.pay_method AS payment_method,
+      p.used_points AS used_point,
+      CEIL(o.total_price * 0.1) AS earned_point,
+      d.receiver_name, d.receiver_phone, d.zipcode,
+      d.delivery_address, d.address_detail, d.memo,
+      d.status_code, d.tracking_number
+    FROM orders o
+    JOIN orderitem oi ON o.order_id = oi.order_id
+    JOIN book b ON oi.book_id = b.book_id
+    JOIN payment p ON o.order_id = p.order_id
+    JOIN delivery d ON o.order_id = d.order_id
+    WHERE o.order_id = #{order_id}
+      AND o.member_idx = #{member_idx}
+    GROUP BY 
+      o.order_id, o.member_idx, o.order_date, o.total_price, o.status,
+      oi.book_id,
+      p.pay_method, p.used_points,
+      d.receiver_name, d.receiver_phone, d.zipcode,
+      d.delivery_address, d.address_detail, d.memo,
+      d.status_code, d.tracking_number
+  </select>
+
+ <!--  사용자- 페이징된 주문 목록 조회  -->
+  <select id="getOrdersByMemberPaged" parameterType="com.itwillbs.domain.Criteria" resultType="com.itwillbs.dto.OrderDTO">
+  SELECT 
+    o.order_id, o.member_idx, o.order_date, o.total_price, o.status,
+    MIN(b.book_id) AS book_id,   
+    MIN(b.book_title) AS book_title,
+    MIN(b.cover_image) AS book_cover,
+    MIN(d.status_code) AS delivery_status,
+    COUNT(*) AS book_count
+  FROM orders o
+  JOIN orderitem oi ON o.order_id = oi.order_id
+  JOIN book b ON oi.book_id = b.book_id
+  JOIN delivery d ON o.order_id = d.order_id  
+  WHERE o.member_idx = #{member_idx}
+  GROUP BY o.order_id
+  ORDER BY o.order_id DESC
+  LIMIT #{offset}, #{perPageNum}
+</select>
+
+  <!--  사용자 - 주문 수 조회(페이징용)  -->
+    <select id="getOrderCountByMember" parameterType="int" resultType="int">
+    SELECT COUNT(*) FROM orders WHERE member_idx = #{member_idx}
+  </select>
+  
+
+  <!-- ✅ 3. 관리자 - 주문 상세 조회 -->
+	<select id="getOrderDetailById" parameterType="int" resultMap="orderWithDeliveryMap">
+	 SELECT 
+	   o.order_id, o.member_idx, o.order_date, o.total_price, o.status,
+	   m.member_id, m.member_name,                       
+	   MIN(b.book_title) AS book_title,
+   	   MIN(b.cover_image) AS book_cover,
+  	   COUNT(*) AS book_count,
+       p.pay_method AS payment_method,
+	   p.used_points AS used_point,
+       CEIL(o.total_price * 0.1) AS earned_point,
+       d.receiver_name, d.receiver_phone, d.zipcode,
+       d.delivery_address, d.address_detail, d.memo,
+       d.status_code, d.tracking_number
+	   FROM orders o
+	   JOIN member m ON o.member_idx = m.member_idx    
+	   JOIN orderitem oi ON o.order_id = oi.order_id
+	   JOIN book b ON oi.book_id = b.book_id
+	   JOIN payment p ON o.order_id = p.order_id
+	   JOIN delivery d ON o.order_id = d.order_id
+	   WHERE o.order_id = #{order_id}
+	   GROUP BY 
+	   o.order_id, o.member_idx, o.order_date, o.total_price, o.status,
+	   m.member_id, m.member_name,                        
+	   p.pay_method, p.used_points,
+	   d.receiver_name, d.receiver_phone, d.zipcode,
+       d.delivery_address, d.address_detail, d.memo,
+       d.status_code, d.tracking_number
+	</select>
+	
+	<!-- 결제 상태 변경  -->
+	<update id="updatePaymentStatus" parameterType="map">
+  UPDATE orders
+  SET status = #{status}
+  WHERE order_id = #{order_id}
+</update>
+
+<!-- 관리자 - 페이징된 전체 주문 목록 조회 -->
+<select id="getPagedOrders" parameterType="com.itwillbs.domain.Criteria" resultMap="orderWithDeliveryMap">
+  SELECT 
+    o.order_id,
+    o.member_idx,
+    o.order_date,
+    o.total_price,
+    o.status,
+    m.member_id,
+    m.member_name,
+    MIN(b.book_title) AS book_title,
+    MIN(b.cover_image) AS book_cover,
+    d.status_code AS delivery_status,
+    d.tracking_number,
+    d.shipper_name,
+    COUNT(*) AS book_count
+  FROM orders o
+  JOIN member m ON o.member_idx = m.member_idx
+  JOIN orderitem oi ON o.order_id = oi.order_id
+  JOIN book b ON oi.book_id = b.book_id
+
+  <!-- ✅ 최신 배송 상태 + 운송장 정보까지 포함 -->
+  JOIN (
+    SELECT d1.order_id, d1.status_code, d1.tracking_number, d1.shipper_name
+    FROM delivery d1
+    JOIN (
+      SELECT order_id, MAX(delivery_id) AS max_id
+      FROM delivery
+      GROUP BY order_id
+    ) d2 ON d1.order_id = d2.order_id AND d1.delivery_id = d2.max_id
+  ) d ON o.order_id = d.order_id
+
+  <where>
+    <if test="member_id != null and member_id != ''">
+      AND m.member_id LIKE CONCAT('%', #{member_id}, '%')
+    </if>
+    <if test="payment_status != null and payment_status != ''">
+      AND o.status = #{payment_status}
+    </if>
+    <if test="delivery_status != null and delivery_status != ''">
+      AND d.status_code = #{delivery_status}
+    </if>
+  </where>
+
+  GROUP BY o.order_id
+  ORDER BY o.order_id DESC
+  LIMIT #{offset}, #{perPageNum}
+</select>
+  
+  	<!--  관리자 - 전체 주문 수 조회(페이징용) -->
+    <select id="getTotalOrderCount" parameterType="com.itwillbs.domain.Criteria" resultType="int">
+    SELECT COUNT(*)
+    FROM orders o
+    JOIN member m ON o.member_idx = m.member_idx
+    <where>
+      <if test="member_id != null and member_id != ''">
+        AND m.member_id LIKE CONCAT('%', #{member_id}, '%')
+      </if>
+      <if test="payment_status != null and payment_status != ''">
+        AND o.status = #{payment_status}
+      </if>
+      <if test="delivery_status != null and delivery_status != ''">
+        AND EXISTS (
+          SELECT 1 FROM delivery d
+          WHERE d.order_id = o.order_id
+          AND d.status_code = #{delivery_status}
+        )
+      </if>
+    </where>
+  </select>
+  
+  <!-- 관리자 배송 상태 업데이트 -->
+<update id="updateDeliveryStatus" parameterType="map">
+  UPDATE delivery
+  SET status_code = #{status}
+  WHERE order_id = #{order_id}
+</update>
+  
+  
+  
+
+</mapper>
