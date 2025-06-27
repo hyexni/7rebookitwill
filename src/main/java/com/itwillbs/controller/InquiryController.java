@@ -69,18 +69,25 @@ public class InquiryController {
 	// http://localhost:8088/cs/list
 	// 문의 내역 (조회) / GET
 	@GetMapping("/list")
-	public String inquiryList(InquiryVO vo, HttpSession session, Model model) throws Exception {
+	public String inquiryList(@RequestParam(defaultValue = "1") int page, 
+							  HttpSession session, Model model) throws Exception {
 	    
 		 // member_idx가 없으면 로그인 페이지로 이동
 		Integer member_idx = (Integer) session.getAttribute("member_idx");
 		    if (member_idx == null) {
 		        return "redirect:/member/login?needLogin=true";
 	    }
+		
+	    int pageSize = 10;
+	    int startRow = (page - 1) * pageSize;
 		    
-	    vo.setMember_idx(member_idx);  // ✅ 이 줄 추가!
-		    
-	    List<InquiryVO> inquiryList = iService.getInquiryList(member_idx);
+	    List<InquiryVO> inquiryList = iService.getInquiryListPage(member_idx, startRow, pageSize);
+	    int totalCount = iService.getInquiryCount(member_idx);
+	    int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
 	    model.addAttribute("inquiryList", inquiryList);
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", totalPages);
 
 	    return "/cs/list";
 	}

@@ -1,6 +1,7 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itwillbs.domain.InquiryVO;
 import com.itwillbs.domain.ResponseVO;
@@ -11,8 +12,11 @@ public interface InquiryDAO {
 	public void insertInquiry(InquiryVO vo) throws Exception;
 	
 	// 1:1 문의 목록
-	 List<InquiryVO> getInquiryList(int member_idx);
+	 List<InquiryVO> getInquiryListPage(Map<String, Object> paramMap);
 	 
+	// 전체 개수 조회
+    int getInquiryCount(int member_idx);
+	    
 	// 상세 조회
 	 InquiryVO getInquiry(int inquiry_id);
 	 

@@ -50,6 +50,25 @@
 	    </table>
 	  </div>
     </div>
+    
+       <!-- 페이지네이션 버튼 -->
+		<div class="pagination">
+		  <!-- << 이전 페이지 -->
+		  <a href="${pageContext.request.contextPath}/cs/list?page=${currentPage - 1}#cs-list"
+		     <c:if test="${currentPage == 1}">class="disabled"</c:if>>&laquo;</a>
+		
+		  <!-- 페이지 번호 -->
+		  <c:forEach var="i" begin="1" end="${totalPages}">
+		    <a href="${pageContext.request.contextPath}/cs/list?page=${i}#cs-list"
+		       <c:if test="${i == currentPage}">class="active"</c:if>>${i}</a>
+		  </c:forEach>
+		
+		  <!-- >> 다음 페이지 -->
+		  <a href="${pageContext.request.contextPath}/cs/list?page=${currentPage + 1}#cs-list"
+		     <c:if test="${currentPage == totalPages}">class="disabled"</c:if>>&raquo;</a>
+		</div>
+    
+    
 </main>
 
 

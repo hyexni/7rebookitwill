@@ -16,20 +16,24 @@
 <%-- 4. 여기서부터 '문의 상세조회' 페이지만의 고유한 컨텐츠가 시작됩니다. --%>
 
 <div class="inquiry-detail">
-  <h1>문의 상세</h1>
+  <h1 class="page-title">
+  	<span style="font-size: 28px;">💬</span> 
+  	${vo.title}</h1>
 
   <!-- 메타 정보 -->
-  <div class="inquiry-meta">
-    <div><strong>번호:</strong> ${vo.inquiry_id}</div>
-    <div><strong>작성일:</strong> <fmt:formatDate value="${vo.created_at}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
-    <div><strong>분류:</strong> ${vo.category}</div>
-    <div><strong>상태:</strong> ${vo.status}</div>
+  <div class="inquiry-info-card">
+	  <!-- 제목과 내용 -->
+	  <div class="inquiry-meta">
+	    <div><strong>번호:</strong> ${vo.inquiry_id}</div>
+	    <div><strong>작성일:</strong> <fmt:formatDate value="${vo.created_at}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
+	    <div><strong>분류:</strong> ${vo.category}</div>
+	    <div><strong>상태:</strong> ${vo.status}</div>
+	  <hr class="inquiry-divider" />
+	  <div class="inquiry-title-line"> ${vo.content}</div>
   </div>
-
-  <!-- 제목과 내용 -->
-  <div class="inquiry-title">제목: ${vo.title}</div>
-  <div class="inquiry-body">${vo.content}</div>
-
+</div>
+	  
+	  
 	<!-- 관리자 답변 (없으면 출력 안 됨) -->
 	<c:if test="${not empty responseVO}">
 	  <div class="reply-box">
@@ -44,12 +48,12 @@
 
   <!-- 수정/삭제/목록 버튼 -->
   <div class="button-box">
-    <a href="/cs/list" class="btn-back">목록으로</a>
+    <a href="/cs/list" class="btn-jw-inquiry-gray">목록으로</a>
 
     <c:if test="${vo.status eq '접수'}">
       <button class="btn btn-outline-warning" onclick="document.getElementById('editForm').style.display='block'">✏ 수정하기</button>
       <a href="${pageContext.request.contextPath}/cs/delete?inquiry_id=${vo.inquiry_id}" 
-         class="btn btn-outline-danger"
+         class="btn btn-jw-inquiry-red"
          onclick="return confirm('정말 삭제하시겠습니까?');">🗑 삭제</a>
     </c:if>
   </div>
@@ -65,8 +69,9 @@
 
         <label class="mt-3">내용</label>
         <textarea name="content" class="form-control" rows="5">${vo.content}</textarea>
-
-        <button type="submit" class="btn btn-primary mt-3">수정 완료</button>
+	<div class="button-box">
+        <button type="submit" class="btn btn-jw-inquiry-blue">수정 완료</button>
+    </div>    
       </form>
     </div>
   </c:if>

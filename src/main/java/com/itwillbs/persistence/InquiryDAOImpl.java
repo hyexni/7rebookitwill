@@ -1,6 +1,8 @@
 package com.itwillbs.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -22,7 +24,7 @@ public class InquiryDAOImpl implements InquiryDAO {
 	@Inject
 	private SqlSession sqlSession;
 	
-	private static final String NAMESPACE="com.itwillbs.mapper.inquiryMapper.";
+	private static final String NAMESPACE="com.itwillbs.persistence.InquiryDAO.";
 
 	@Override
 	public void insertInquiry(InquiryVO vo) throws Exception {
@@ -39,10 +41,20 @@ public class InquiryDAOImpl implements InquiryDAO {
 	
 	// 1:1 문의 목록
 	@Override
-	public List<InquiryVO> getInquiryList(int member_idx) {
-        // inquiryMapper.xml의 getInquiryList 쿼리 호출
-        return sqlSession.selectList(NAMESPACE + "getInquiryList", member_idx);
+	public List<InquiryVO> getInquiryListPage(int member_idx, int startRow, int pageSize) {
+		
+		Map<String, Object> params = new HashMap<>();
+        params.put("member_idx", member_idx);
+        params.put("startRow", startRow);
+        params.put("pageSize", pageSize);
+        
+        return sqlSession.selectList(NAMESPACE + "getInquiryListPage", params);
     }
+	
+	@Override
+	public int getInquiryCount(int member_idx) {
+	    return sqlSession.selectOne(NAMESPACE + "getInquiryCount", member_idx);
+	}
 
 
 	@Override

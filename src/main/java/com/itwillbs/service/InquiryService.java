@@ -14,7 +14,8 @@ public interface InquiryService {
 	public void inquiryWrite(InquiryVO vo) throws Exception;
 	
 	// 1:1 문의 목록
-	List<InquiryVO> getInquiryList(int member_idx);
+	List<InquiryVO> getInquiryListPage(int member_idx, int startRow, int pageSize);
+	int getInquiryCount(int member_idx);
 	
 	// 상세 조회
 	InquiryVO getInquiry(int inquiry_id);

@@ -36,23 +36,54 @@ body {
   padding-bottom: 14px;
 }
 
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 32px;
+  border-bottom: 3px solid #eee;
+  padding-bottom: 14px;
+}
+
+.page-title .emoji {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.page-title .title-text {
+  line-height: 1;
+}
+
+
 /* ─────────── 메타 정보 ─────────── */
 .inquiry-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
-  font-size: 17px;          /* ⬆ */
-  color: #555;
-  margin-bottom: 28px;
+  font-size: 15px;
+  color: #495057;
 }
-.inquiry-meta div { flex: 1 1 240px; }
+.inquiry-meta div {
+  flex: 1 1 220px;
+}
 
 /* ─────────── 제목 & 본문 ─────────── */
 .inquiry-title {
-  font-size: 22px;          /* ⬆ */
+  font-size: 24px;
   font-weight: 700;
-  margin-bottom: 18px;
+  margin: 32px 0 20px 0;
+  border-left: 4px solid #4c6ef5;
+  padding-left: 12px;
 }
+
+.inquiry-title-line {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
 .inquiry-content {
   font-size: 18px;          /* ⬆ */
   line-height: 1.8;
@@ -63,13 +94,40 @@ body {
   white-space: pre-wrap;
 }
 .inquiry-body {
-  background-color: #f8f9fa;
-  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #e9ecef;
   border-radius: 8px;
-  font-size: 17px;
-  line-height: 1.7;
+  padding: 28px;
+  line-height: 1.8;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
   white-space: pre-wrap;
+}
+
+.page-title {
+  display:flex;
+  align-items:center; gap:10px;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 32px;
+  border-bottom: 3px solid #eee;
+  padding-bottom: 14px;
+}
+
+.inquiry-divider {
+  border: none;
+  height: 1px;
+  background-color: #dee2e6;
+  margin: 12px 0 20px 0;
+}
+
+.inquiry-info-card {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  padding: 24px 28px;
   margin-bottom: 40px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
 }
 
 
@@ -107,55 +165,91 @@ body {
 
 /* ─────────── 버튼 영역 ─────────── */
 .button-box {
+  margin-top: 40px;
   display: flex;
-  justify-content: flex-end;
   gap: 12px;
-  flex-wrap: wrap;
-}
-.btn-back,
-.btn-outline-warning,
-.btn-outline-danger {
-  font-size: 16px;
-  padding: 10px 22px;
-  border-radius: 6px;
-  text-decoration: none;
-  cursor: pointer;
-  border: 1px solid transparent;         /* 항상 border 존재 */
-  box-sizing: border-box;                /* ✅ padding + border 포함 */
-  transition: all 0.2s ease;             /* 모든 속성 부드럽게 */
-  font-weight: 500;                      /* hover 시 weight 튀는 것 방지 */
-  line-height: 1.5;
-  outline: none;                         /* ✅ 크기 튐 방지 */
-}
-.btn-back {
-  background-color: #e9ecef;
-  color: #333;
-  border: 1px solid #e9ecef;
-}
-.btn-back:hover {
-  background-color: #ced4da;
-  color: #000;
-  border: 1px solid #ced4da;
+  justify-content: center;
 }
 
-.btn-outline-warning {
-  background-color: #fff;
-  color: #f59f00;
-  border: 1px solid #f59f00;
-}
-.btn-outline-warning:hover {
-  background-color: #f59f00;
-  color: #fff;
+
+.btn-jw-inquiry-red {
+  all: unset; /* 💣 Bootstrap 기본 버튼 스타일 제거 */
+  display: inline-block;
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #dc3545 !important;
+  background-color: transparent !important;
+  background-image: none;
+  border: 1px solid #dc3545 !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+  transition: background-color 0.2s ease !important;
 }
 
-.btn-outline-danger {
-  background-color: #fff;
-  color: #ff4d4f;
-  border: 1px solid #ff4d4f;
+.btn-jw-inquiry-red:hover {
+  background-color: #dc3545 !important;
+  color: #ffffff !important;
 }
-.btn-outline-danger:hover {
-  background-color: #ff4d4f;
-  color: #fff;
+
+
+.btn-fix-hover {
+  transition: none !important;
+  outline: none !important;
+  border-width: 1px !important;
+  font-weight: 500 !important;
+  padding: 8px 16px !important;
+}
+
+.btn-fix-hover:hover {
+  transition: none !important;
+  transform: none !important;
+  border-width: 1px !important;
+  padding: 8px 16px !important;
+}
+
+.btn-jw-inquiry-gray {
+  all: unset; /* 💣 Bootstrap 기본 버튼 스타일 제거 */
+  display: inline-block;
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #495057 !important;
+  background-color: #f1f3f5 !important;
+  border: 1px solid #dee2e6 !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.btn-jw-inquiry-gray:hover {
+  background-color: #e9ecef !important;
+  color: #212529 !important;
+}
+
+.btn-jw-inquiry-blue {
+  all: unset; /* 💣 Bootstrap 기본 버튼 스타일 제거 */
+  display: inline-block;
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #ffffff !important;
+  background-color: #4c6ef5 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.btn-jw-inquiry-blue:hover {
+  background-color: #364fc7 !important;
+  color: #ffffff !important;
 }
 
 
@@ -168,3 +262,68 @@ body {
 }
 #editForm label      { font-weight:600; margin-top:6px; }
 #editForm .form-control { font-size:16px; }
+
+
+
+
+
+
+
+/**** css 수정중 ****/
+/* ───── meta 박스를 카드형으로 묶기 ───── */
+.inquiry-meta-box {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+}
+.inquiry-meta-box div {
+  flex: 1 1 200px;
+  font-size: 15px;
+  color: #495057;
+}
+.inquiry-meta-box strong {
+  color: #212529;
+}
+
+.inquiry-meta-box div strong{color:#212529}
+
+/* ───── 본문 말풍선 느낌 ───── */
+.inquiry-body{
+  background:#fff;
+  border:1px solid #e9ecef;
+  box-shadow:0 2px 4px rgba(0,0,0,.04);
+  border-radius:8px;
+  padding:28px;
+  font-size:17px;
+  line-height:1.8;
+  white-space:pre-wrap;
+  margin-bottom:48px;
+}
+
+/* ───── 버튼 공통 (3종 전부 같은 패밀리!) ───── */
+.btn-jw{
+  all:unset;
+  display:inline-block;
+  padding:8px 20px;
+  font-size:14px;
+  font-weight:500;
+  border-radius:4px;
+  text-decoration:none;
+  cursor:pointer;
+  box-sizing:border-box;
+  transition:background-color .15s ease,color .15s ease;border-color .15s ease;
+}
+.btn-jw-gray   {color:#495057; background:#f1f3f5; border:1px solid #dee2e6;}
+.btn-jw-red    {color:#dc3545; background:transparent; border:1px solid #dc3545;}
+.btn-jw-yellow {color:#f59f00; background:transparent; border:1px solid #f59f00;}
+
+.btn-jw-gray:hover   {background:#e9ecef;}
+.btn-jw-red:hover    {background:#dc3545; color:#fff;}
+.btn-jw-yellow:hover {background:#f59f00; color:#fff;}
+
