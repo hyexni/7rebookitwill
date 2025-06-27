@@ -33,9 +33,11 @@ public class AdminMemberController {
 		System.out.println("🔍 keyword = " + keyword);
 		System.out.println("🔍 sort = " + sort + ", dir = " + dir);
 		
-		if (!"asc".equalsIgnoreCase(dir) && !"desc".equalsIgnoreCase(dir)) {
-		    dir = "desc";  // 또는 기본값
-		}
+		 // 정렬 방향 유효성 체크 (소문자 통일 + 공백 제거)
+		    dir = dir.toLowerCase().trim();
+		    if (!dir.equals("asc") && !dir.equals("desc")) {
+		        dir = "desc";
+		    }
 
 	    int pageSize = 10;
 	    int startRow = (page - 1) * pageSize;
