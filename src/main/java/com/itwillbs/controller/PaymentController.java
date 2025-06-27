@@ -50,7 +50,7 @@ public class PaymentController {
             session.setAttribute("redirectAfterLogin", redirectUrl);
             return "redirect:/member/login";
         }
-        
+
         // 1. 도서 정보
         BookVO book = pService.getBookInfo(book_id);
         if (book == null) {

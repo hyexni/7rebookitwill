@@ -34,7 +34,7 @@
     <h3><i class="fa fa-truck"></i> 배송 정보 입력</h3>
 
     <label for="receiver_name">수령인</label>
-    <input type="text" name="receiver_name" id="receiver_name" value="${member.member_name}" required>
+    <input type="text" name="receiver_name" id="receiver_name" value="<c:out value='${member.member_name}' default='회원' />" required>
 
     <label for="receiver_phone">연락처</label>
     <input type="text" name="receiver_phone" id="receiver_phone" value="${member.member_phone}" required>
@@ -118,7 +118,8 @@
 	  
 	  document.getElementById("kakaoPayBtn").addEventListener("click", function () {
 		    if (!validateForm()) return;
-		    const receiverName = document.querySelector("input[name='receiver_name']").value.trim();
+		  	  const receiverName = document.querySelector("input[name='receiver_name']").value.trim();
+		   	  const orderName = receiverName ? receiverName + " 님의 도서 결제" : "회원 님의 도서 결제";
 			  const receiverPhone = document.querySelector("input[name='receiver_phone']").value.trim();
 			  const zipcode = document.querySelector("input[name='zipcode']").value.trim();
 			  const address = document.querySelector("input[name='delivery_address']").value.trim();
@@ -178,7 +179,7 @@
 		    tossPayments.requestPayment('카카오페이', {
 		      amount: realAmount,
 		      orderId: 'order-' + new Date().getTime(),
-		      orderName: `${receiverName} 님의 도서 결제`,
+		      orderName,
 		      customerName: receiverName,
 		      successUrl: successUrl,
 		      failUrl: 'http://localhost:8088/payment/fail'
