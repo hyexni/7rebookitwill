@@ -37,7 +37,7 @@
         <div class="mobile-nav">
             <!-- Navbar Brand -->
             <div class="amado-navbar-brand">
-                <a href="index.html"><img src="${pageContext.request.contextPath }/resources/img/core-img/logo3.png" alt=""></a>
+                <a href="/"><img src="${pageContext.request.contextPath }/resources/img/core-img/logo3.png" alt=""></a>
             </div>
             <!-- Navbar Toggler -->
             <div class="amado-navbar-toggler">
@@ -53,7 +53,7 @@
             </div>
             <!-- Logo -->
             <div class="logo">
-                <a href="index.html"><img src="${pageContext.request.contextPath }/resources/img/core-img/logo3.png" alt=""></a>
+                <a href="/"><img src="${pageContext.request.contextPath }/resources/img/core-img/logo3.png" alt=""></a>
             </div>
             <!-- Amado Nav -->
             <nav class="amado-nav">

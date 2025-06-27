@@ -13,8 +13,7 @@
     html, body {
         height: 100%;
         margin: 0;
-        padding: 0;
-        font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+        padding: 0;       
     }
 
     /* --- Sticky Footer를 위한 핵심 페이지 레이아웃 --- */
@@ -107,7 +106,7 @@
             </p>
         </div>
         <div class="footer-links">
-            <a href="/terms">이용약관</a>
+            <a href="/include/usenotice">이용약관</a>
             <a href="/privacy"><strong>개인정보처리방침</strong></a>
             <a href="/faq">자주묻는 질문(FAQ)</a>
         </div>
@@ -197,7 +196,6 @@
         background-color: #0056b3;
     }
 </style>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         
@@ -211,7 +209,10 @@
         }
 
         if (getCookie("recommendPopupShown_v1") === "true") {
-            console.log("오늘은 이미 추천 팝업을 봤습니다.");
+            console.log("1시간 내에 이미 추천 팝업을 봤습니다.");
+            // [참고] 팝업은 안 띄우지만, 플로팅 버튼은 항상 보이게 할 수 있습니다.
+            // 필요하다면 아래 주석을 해제하세요.
+            // reopenBtn.style.display = 'flex'; 
             return; 
         }
 
@@ -244,12 +245,15 @@
                 });
 
                 const modal = document.getElementById('recommend-modal');
-                showModal(modal); // [수정] 팝업 보여주는 로직을 함수로 분리
+                showModal(modal);
                 
                 // [추가] 플로팅 버튼도 함께 보여줌
                 reopenBtn.style.display = 'flex';
 
-                setCookie("recommendPopupShown_v1", "true", 1);
+                // [수정] 쿠키 만료 시간을 1일에서 1시간으로 변경합니다.
+                // 1일 = 1, 1시간 = 1/24
+                setCookie("recommendPopupShown_v1", "true", 1/24); 
+
             })
             .catch(error => {
                 console.error('추천 도서 로딩 중 문제 발생:', error);
@@ -259,7 +263,7 @@
     // --- 이벤트 리스너 및 제어 함수 영역 ---
     const modal = document.getElementById('recommend-modal');
     const closeBtn = document.getElementById('modal-close');
-    const reopenBtn = document.getElementById('reopen-recommend-btn'); // [수정] reopenBtn을 여기서도 선언
+    const reopenBtn = document.getElementById('reopen-recommend-btn');
 
     // 팝업을 보여주는 함수
     function showModal(modalElement) {
@@ -271,7 +275,7 @@
     function closeModal() {
         modal.classList.remove('show');
         setTimeout(() => modal.style.display = 'none', 300);
-    }
+    }   
     
     // 닫기 버튼 클릭 이벤트
     closeBtn.addEventListener('click', closeModal);
@@ -293,11 +297,13 @@
         let expires = "";
         if (days) {
             const date = new Date();
+            // days 값에 소수점이 있어도 정확하게 밀리초로 계산됩니다.
             date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
             expires = "; expires=" + date.toUTCString();
         }
         document.cookie = name + "=" + (value || "")  + expires + "; path=/";
     }
+
     function getCookie(name) {
         const nameEQ = name + "=";
         const ca = document.cookie.split(';');
@@ -309,10 +315,6 @@
         return null;
     }
 </script>
-
-<%-- ================================================================== --%>
-<%--                영수증 기반 추천 도서 팝업 기능 끝                  --%>
-<%-- ================================================================== --%>
 
 
 </body>

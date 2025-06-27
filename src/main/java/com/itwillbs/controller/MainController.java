@@ -51,10 +51,10 @@ public class MainController {
     public String main(Model model) {
 
         // 신간 도서 목록 (5개)
-        List<BookVO> newBookList = mainService.getNewBookList(5);
+        List<BookVO> newBookList = mainService.getNewBookList(10);
         
         // 베스트셀러 목록 (5개)
-        List<BookVO> bestSellerList = mainService.getBestSellerList(5);
+        List<BookVO> bestSellerList = mainService.getBestSellerList(10);
 
         model.addAttribute("newBookList", newBookList);
         model.addAttribute("bestSellerList", bestSellerList);
