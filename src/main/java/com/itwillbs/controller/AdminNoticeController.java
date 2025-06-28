@@ -49,13 +49,7 @@ public class AdminNoticeController {
 										   @RequestParam(value = "fixed", defaultValue = "N") String fixed,
 										   RedirectAttributes rttr) throws Exception {
 		   
-			String ad_id = (String) session.getAttribute("ad_id");
-		    if (ad_id == null) {
-		        System.out.println("❗ 관리자 세션 ad_id 없음. 임시 'admin' 사용");
-		        ad_id = "admin01"; // 디버깅용
-		    }
-		    
-		    vo.setAd_id(ad_id);
+
 		    vo.setFixed(fixed);          // ★ 세팅
 		    
 		    anService.adminNoticeWrite(vo);

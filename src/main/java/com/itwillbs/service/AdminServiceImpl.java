@@ -14,9 +14,9 @@ public class AdminServiceImpl implements AdminService {
 	private AdminDAO adminDAO;
 	
 	@Override
-	public AdminVO login(String id, String pw) {
+	public AdminVO login(String ad_id, String ad_pw) {
 		
-		return adminDAO.adminLoginCheck(id, pw);
+		return adminDAO.adminLoginCheck(ad_id, ad_pw);
 	}
 	
 	

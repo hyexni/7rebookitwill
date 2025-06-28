@@ -33,5 +33,15 @@
         <property name="uploadTempDir" value="file:/C:/upload/tmp" />
         <property name="maxInMemorySize" value="1048576" />
     </bean>
+    
+    <mvc:interceptors>
+	    <mvc:interceptor>
+	        <mvc:mapping path="/admin/**"/>
+	        <mvc:exclude-mapping path="/admin/login"/>
+	        <mvc:exclude-mapping path="/admin/logout"/>
+	        <bean class="com.itwillbs.config.AdminInterceptor"/>
+	    </mvc:interceptor>
+	</mvc:interceptors>
+    
 
 </beans>

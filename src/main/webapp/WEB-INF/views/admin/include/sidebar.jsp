@@ -26,7 +26,7 @@
             </div>
             <!-- Logo -->
             <div class="logo">
-                <a href="${pageContext.request.contextPath }/admin/stats"><img src="${pageContext.request.contextPath }/resources/img/core-img/logo3.png" alt="관리자 홈 로고"></a>
+                <a href="/"><img src="${pageContext.request.contextPath }/resources/img/core-img/logo3.png" alt=""></a>
             </div>
             <!-- Amado Nav -->
             <nav class="amado-nav">

@@ -19,10 +19,10 @@ public class AdminDAOImpl implements AdminDAO {
 	private static final String NAMESPACE = "com.itwillbs.persistence.AdminDAO.";
 
 	@Override
-	public AdminVO adminLoginCheck(String id, String pw) {
+	public AdminVO adminLoginCheck(String ad_id, String ad_pw) {
 		Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("admin_id", id);
-        paramMap.put("admin_pw", pw);
+        paramMap.put("ad_id", ad_id);
+        paramMap.put("ad_pw", ad_pw);
         return sqlSession.selectOne(NAMESPACE + "adminLoginCheck", paramMap);
     }
 	
