@@ -27,17 +27,21 @@
 	  </div>
 	
 	  <div class="btn-wrapper">
+	  
+	  	<a href="${pageContext.request.contextPath}/admin/notice_list" class="btn btn-outline-primary">목록</a>
+	  
+	     <form action="${pageContext.request.contextPath}/admin/notice/edit" method="get" style="display:inline;">
+	            <input type="hidden" name="notice_id" value="${notice.notice_id}" />
+	            <button type="submit" class="btn btn-outline-primary">수정</button>
+         </form>
+         
 	    <form action="${pageContext.request.contextPath}/admin/notice/delete" method="post" style="display: inline;">
 	      <input type="hidden" name="notice_id" value="${notice.notice_id}" />
 	      <button type="submit" class="btn btn-outline-danger" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
 	    </form>
 	    
-	     <form action="${pageContext.request.contextPath}/admin/notice/edit" method="get" style="display:inline;">
-	            <input type="hidden" name="notice_id" value="${notice.notice_id}" />
-	            <button type="submit" class="btn btn-outline-primary">수정</button>
-         </form>
 	
-	    <a href="${pageContext.request.contextPath}/admin/notice_list" class="btn btn-outline-primary">목록</a>
+	    
 	  </div>
 	</div>
 </main>
