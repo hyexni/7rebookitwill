@@ -41,14 +41,9 @@ public class InquiryDAOImpl implements InquiryDAO {
 	
 	// 1:1 문의 목록
 	@Override
-	public List<InquiryVO> getInquiryListPage(int member_idx, int startRow, int pageSize) {
+	public List<InquiryVO> getInquiryListPage(Map<String, Object> paramMap) {
 		
-		Map<String, Object> params = new HashMap<>();
-        params.put("member_idx", member_idx);
-        params.put("startRow", startRow);
-        params.put("pageSize", pageSize);
-        
-        return sqlSession.selectList(NAMESPACE + "getInquiryListPage", params);
+        return sqlSession.selectList(NAMESPACE + "getInquiryListPage", paramMap);
     }
 	
 	@Override
