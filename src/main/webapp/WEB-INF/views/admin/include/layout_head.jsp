@@ -33,6 +33,10 @@
 	<!-- Swiper JS -->
 	<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 	
+	<!-- 홈 로그인 JS -->
+	 <!-- header-dropdown js -->
+     <script src="${pageContext.request.contextPath}/resources/js/header-dropdown.js"></script>
+	
 	<link rel="icon" href="${pageContext.request.contextPath}/favicon.ico" type="image/x-icon" />
 
 	<!-- Chart.js CDN -->

@@ -1,6 +1,8 @@
 package com.itwillbs.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -31,12 +33,23 @@ public class InquiryServiceImpl implements InquiryService {
 	
 	// 1:1 문의 목록
 	@Override
-	public List<InquiryVO> getInquiryList(int member_idx) {
-		// DAO 통해 DB에서 해당 회원의 문의 리스트 가져오기
-		return iDAO.getInquiryList(member_idx);
+	public List<InquiryVO> getInquiryListPage(int member_idx, int startRow, int pageSize) {
+		 Map<String, Object> paramMap = new HashMap<>();
+		    paramMap.put("member_idx", member_idx);
+		    paramMap.put("startRow", startRow);
+		    paramMap.put("pageSize", pageSize);
+		    return iDAO.getInquiryListPage(paramMap);
 	}
 	
 	
+	
+	@Override
+	public int getInquiryCount(int member_idx) {
+		
+		return iDAO.getInquiryCount(member_idx);
+	}
+
+
 	// 상세 조회
 	@Override
 	public InquiryVO getInquiry(int inquiry_id) {

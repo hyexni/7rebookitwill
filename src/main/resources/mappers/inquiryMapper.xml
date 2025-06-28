@@ -15,11 +15,19 @@
 	
 	
 	<!-- 문의 내역 리스트 가져오기 -->
-	  <select id="getInquiryList" parameterType="int" resultType="com.itwillbs.domain.InquiryVO">
-	    SELECT * FROM inquiry
-	    WHERE member_idx = #{member_idx}
-	    ORDER BY created_at DESC
+	  <select id="getInquiryListPage" parameterType="map" resultType="com.itwillbs.domain.InquiryVO">
+	     SELECT *
+	     FROM inquiry
+	     WHERE member_idx = #{member_idx}
+	     ORDER BY inquiry_id DESC
+	     LIMIT #{startRow}, #{pageSize}
 	  </select>
+	  
+  <!-- 전체 개수 조회 -->
+	  <select id="getInquiryCount" resultType="int">
+	    SELECT COUNT(*) FROM inquiry
+	    WHERE member_idx = #{member_idx}
+	  </select>  
 	
 	
 	

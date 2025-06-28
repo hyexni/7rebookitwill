@@ -20,7 +20,7 @@
     <h1>📋 나의 1:1 문의 내역</h1>
     
     <!-- 새글 등록 버튼 -->
-	<div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+	<div style="display: flex; justify-content: flex-end; margin-bottom: 20px; margin-right: 60px;">
 	  <a href="/cs/write" class="btn-jw-new">새글 등록</a>
 	</div>
 
@@ -43,13 +43,44 @@
 	            <td>${inquiry.category}</td>
 	            <td>${inquiry.title}</td>
 	            <td><fmt:formatDate value="${inquiry.created_at}" pattern="yyyy-MM-dd" /></td>
-	            <td><span class="status received">${inquiry.status}</span></td>
+	            
+	            <td>
+				  <c:choose>
+				    <c:when test="${inquiry.status eq '접수'}">
+				      <span class="status-jw-badge status-jw-received">접수</span>
+				    </c:when>
+				    <c:when test="${inquiry.status eq '답변완료'}">
+				      <span class="status-jw-badge status-jw-done">답변완료</span>
+				    </c:when>
+				  </c:choose>
+				</td>
+
+	            
 	          </tr>
 	        </c:forEach>
 	      </tbody>
 	    </table>
 	  </div>
     </div>
+    
+       <!-- 페이지네이션 버튼 -->
+		<div class="pagination">
+		  <!-- << 이전 페이지 -->
+		  <a href="${pageContext.request.contextPath}/cs/list?page=${currentPage - 1}#cs-list"
+		     <c:if test="${currentPage == 1}">class="disabled"</c:if>>&laquo;</a>
+		
+		  <!-- 페이지 번호 -->
+		  <c:forEach var="i" begin="1" end="${totalPages}">
+		    <a href="${pageContext.request.contextPath}/cs/list?page=${i}#cs-list"
+		       <c:if test="${i == currentPage}">class="active"</c:if>>${i}</a>
+		  </c:forEach>
+		
+		  <!-- >> 다음 페이지 -->
+		  <a href="${pageContext.request.contextPath}/cs/list?page=${currentPage + 1}#cs-list"
+		     <c:if test="${currentPage == totalPages}">class="disabled"</c:if>>&raquo;</a>
+		</div>
+    
+    
 </main>
 
 

@@ -44,7 +44,17 @@
 	      </button>
 	      <div class="dropdown-menu">
 	        <a href="/admin/stats">서비스 홈</a>
-	        <a href="/member/logout">로그아웃</a>
+	        
+	        <div class="admin-dropdown-menu">
+			  <c:choose>
+			    <c:when test="${not empty sessionScope.ad_id}">
+			      <a href="${pageContext.request.contextPath}/admin/logout">로그아웃</a>
+			    </c:when>
+			    <c:otherwise>
+			      <a href="${pageContext.request.contextPath}/admin/login">로그인</a>
+			    </c:otherwise>
+			  </c:choose>
+			</div>
 	      </div>
 	    </div>
 	  </div>

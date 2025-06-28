@@ -312,3 +312,23 @@
   text-decoration: none;
   font-weight: 500;
 }
+
+/* 1:1 문의 상태 뱃지 */
+.status-jw-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 12px;
+  color: white;
+}
+
+/* 상태별 색상 구분 */
+.status-jw-received {
+  background-color: #868e96; /* 접수: 회색 */
+}
+
+.status-jw-done {
+  background-color: #51cf66; /* 답변완료: 초록 */
+}
+

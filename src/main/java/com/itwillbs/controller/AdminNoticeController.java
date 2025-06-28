@@ -49,13 +49,7 @@ public class AdminNoticeController {
 										   @RequestParam(value = "fixed", defaultValue = "N") String fixed,
 										   RedirectAttributes rttr) throws Exception {
 		   
-			String ad_id = (String) session.getAttribute("ad_id");
-		    if (ad_id == null) {
-		        System.out.println("❗ 관리자 세션 ad_id 없음. 임시 'admin' 사용");
-		        ad_id = "admin01"; // 디버깅용
-		    }
-		    
-		    vo.setAd_id(ad_id);
+
 		    vo.setFixed(fixed);          // ★ 세팅
 		    
 		    anService.adminNoticeWrite(vo);
@@ -71,7 +65,7 @@ public class AdminNoticeController {
 		// http://localhost:8088/admin/notice_read
 		// 공지사항 상세/수정/삭제
 		// 상세보기
-		@GetMapping("read")
+		@GetMapping("notice/read")
 		public String read(@RequestParam("notice_id") int notice_id, Model model) throws Exception {
 		    model.addAttribute("notice", anService.getNoticeById(notice_id));
 		    return "admin/notice_read";
@@ -79,7 +73,7 @@ public class AdminNoticeController {
 
 		// http://localhost:8088/admin/notice_edit
 		// 수정폼
-		@GetMapping("edit")
+		@GetMapping("notice/edit")
 		public String editForm(@RequestParam("notice_id") int notice_id, Model model) throws Exception {
 		    model.addAttribute("notice", anService.getNoticeById(notice_id));
 		    return "admin/notice_edit";
@@ -87,7 +81,7 @@ public class AdminNoticeController {
 
 		
 		// 수정 처리
-		@PostMapping("edit")
+		@PostMapping("notice/edit")
 		public String editPost(NoticeVO vo, 
 							   @RequestParam(value = "fixed", defaultValue = "N") String fixed,
 							   RedirectAttributes rttr) throws Exception {
@@ -100,11 +94,11 @@ public class AdminNoticeController {
 	        rttr.addFlashAttribute("msg",  "공지 수정 완료!");
 	        rttr.addFlashAttribute("icon", "success");
 		    
-		    return "redirect:/admin/read?notice_id=" + vo.getNotice_id();
+		    return "redirect:/admin/notice/read?notice_id=" + vo.getNotice_id();
 		}
 
 		// 삭제 처리
-		@PostMapping("delete")
+		@PostMapping("notice/delete")
 		public String delete(@RequestParam("notice_id") int notice_id,
 							RedirectAttributes rttr) throws Exception {
 		    anService.deleteNotice(notice_id);
