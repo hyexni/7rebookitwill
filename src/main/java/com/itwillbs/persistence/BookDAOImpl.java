@@ -1,6 +1,7 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -28,6 +29,18 @@ public class BookDAOImpl implements BookDAO {
 
 	// 로그 출력용 Logger 객체
 	private static final Logger logger = LoggerFactory.getLogger(BookDAOImpl.class);
+	
+	//  도서 재고 상태 변경
+	@Override
+	public void updateBookStatus(Map<String, Object> paramMap) {
+	sqlSession.update(NAMESPACE + ".updateBookStatus", paramMap);
+	    }
+
+	//  도서 카테고리 변경
+    @Override
+    public void updateBookCategory(Map<String, Object> paramMap) {
+        sqlSession.update(NAMESPACE + ".updateBookCategory", paramMap);
+    }
 
 	/**
 	 * [도서 목록 조회]
@@ -58,6 +71,25 @@ public class BookDAOImpl implements BookDAO {
 		logger.info("getBookDetail() 호출됨 - bookId: {}", bookId);
 		return sqlSession.selectOne(NAMESPACE + ".selectBookDetail", bookId);
 	}
+	
+	// 도서 등록
+    @Override
+    public void insertBook(BookVO bookVO) {
+        sqlSession.insert(NAMESPACE + ".insertBook", bookVO);
+    }
+    
+    // 도서 수정
+    @Override
+    public void updateBook(BookVO bookVO) throws Exception {
+        logger.debug("📘 BookDAO - updateBook 호출: {}", bookVO);
+        sqlSession.update(NAMESPACE + ".updateBook", bookVO);
+    }
+    
+    // 도서 삭제
+    @Override
+    public void deleteBook(int book_id) {
+        sqlSession.delete(NAMESPACE + ".deleteBook", book_id);
+    }
 	
 	
 	/**

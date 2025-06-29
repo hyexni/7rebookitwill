@@ -27,5 +27,8 @@ public class BookVO {
 	private int salesCount;        // 판매 수량 (orderitem 기반)
 	private double averageRating;  // 평균 평점 (review 기반)
 	private int reviewCount;       // 리뷰 개수 (review 기반)
+	
+	// 관리자
+	private String category_name_ko;
 
 }
