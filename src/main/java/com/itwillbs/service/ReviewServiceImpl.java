@@ -58,4 +58,21 @@ public class ReviewServiceImpl implements ReviewService {
 	public Double getAverageRating(int book_id) {
 		return reviewDAO.getAverageRating(book_id);
 	}
+	
+	// 회원별 리뷰 목록 조회 
+	@Override
+	public List<ReviewVO> getReviewsByMember(int member_idx) {
+	    return reviewDAO.getReviewsByMember(member_idx);
+	}
+	
+	// 회원별 리뷰 목록 페이징 처리 
+	@Override
+	public List<ReviewVO> getReviewsByMemberPaging(Criteria cri) {
+	    return reviewDAO.getReviewsByMemberPaging(cri);
+	}
+
+	@Override
+	public int getReviewCountByMember(int member_idx) {
+	    return reviewDAO.getReviewCountByMember(member_idx);
+	}
 }

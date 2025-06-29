@@ -27,5 +27,11 @@ public interface ReviewService {
 
 	// 평균 별점
 	public Double getAverageRating(int book_id);
+	
+	// [회원별 리뷰 목록 조회]
+	List<ReviewVO> getReviewsByMember(int member_idx);
 
+	// [회원별 리뷰 목록 페이징 처리]
+	List<ReviewVO> getReviewsByMemberPaging(Criteria cri);
+	int getReviewCountByMember(int member_idx);
 }

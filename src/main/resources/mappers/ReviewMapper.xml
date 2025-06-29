@@ -104,4 +104,23 @@
   AND review_status != 'D'		<!-- 삭제 처리된 리뷰는 제외 -->
 </select>
 
+	<!-- [회원별 리뷰 목록 조회] -->
+	<select id="getReviewsByMemberPaging" resultType="com.itwillbs.domain.ReviewVO" parameterType="com.itwillbs.domain.Criteria">
+	  SELECT r.*, b.book_title
+	  FROM review r
+	  LEFT JOIN book b ON r.book_id = b.book_id
+	  WHERE r.member_idx = #{member_idx}
+	    AND r.review_status != 'N'
+	    AND r.review_status != 'D'
+	  ORDER BY r.review_date DESC
+	  LIMIT #{offset}, #{perPageNum}
+	</select>
+	
+	<select id="getReviewCountByMember" resultType="int" parameterType="int">
+	  SELECT COUNT(*) FROM review
+	  WHERE member_idx = #{member_idx}
+	    AND review_status != 'N'
+	    AND review_status != 'D'
+	</select>
+
 </mapper>
