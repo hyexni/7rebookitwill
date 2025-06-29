@@ -35,7 +35,7 @@ public class Criteria {
 	private int page = 1;
 
 	// 한 페이지에 보여줄 항목 수
-	private int perPageNum = 20;
+	private int perPageNum = 10;
 
 	// 페이지 번호 유효성 체크
 	public void setPage(int page) {
@@ -44,7 +44,7 @@ public class Criteria {
 
 	// 한 페이지당 항목 수 유효성 체크
 	public void setPerPageNum(int perPageNum) {
-		this.perPageNum = (perPageNum <= 0 || perPageNum > 100) ? 20 : perPageNum;
+		this.perPageNum = (perPageNum <= 0 || perPageNum > 100) ? 10 : perPageNum;
 	}
 
 	// LIMIT 쿼리에서 사용할 시작 인덱스 계산
