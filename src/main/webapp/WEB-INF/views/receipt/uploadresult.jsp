@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
 <%-- 1. 페이지 기본 골격과 공통 CSS/폰트 링크를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
-
 
     <title>OCR 결과 보기</title>
     <style>
@@ -127,7 +127,7 @@
         <%-- ★★★★★ uploadResult 객체에 추가한 earnedPoints를 출력합니다. ★★★★★ --%>
         <%-- ========================================================== --%>
         <div class="highlight">
-            <p>적립된 포인트: <strong><fmt:formatNumber value="${uploadResult.earnedPoints}" pattern="#,##0" /> 점</strong></p>
+            <p>적립된 포인트:  <strong>✨<fmt:formatNumber value="${uploadResult.earnedPoints}" pattern="#,##0" /> 점</strong></p>
         </div>
         
         
@@ -169,3 +169,23 @@
     <%-- 5. 하단 푸터 --%>
 <%@include file="../include/footer.jsp" %>
 
+<script>
+    // 페이지가 렌더링되자마자 즉시 실행되는 함수
+    (function() {
+        // JSTL 변수를 JavaScript 변수로 안전하게 가져옵니다.
+        const msg = "${fn:escapeXml(msg)}";
+        const icon = "${icon}";
+
+        // msg 변수에 내용이 있는지 확인합니다.
+        if (msg && msg.trim().length > 0) {
+            
+            // 내용이 있으면 SweetAlert2 팝업을 즉시 실행합니다.
+            Swal.fire({
+                icon: icon || 'info', // icon 값이 없으면 'info'를 기본값으로 사용
+                html: msg.replaceAll("\\n", "<br/>"), // 줄바꿈 처리
+                confirmButtonColor: '#0056b3',
+                confirmButtonText: '확인'
+            });
+        }
+    })();
+</script>

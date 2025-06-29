@@ -31,6 +31,9 @@
         
 <!-- [추가] jQuery 라이브러리 (CDN 방식) -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!--alter 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
 
 

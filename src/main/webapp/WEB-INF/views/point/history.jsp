@@ -25,6 +25,10 @@
         background-color: #f0f2f5; /* 밝은 회색 배경 */
         font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
     }
+    
+    .point-history-container{
+    	width : 1200px;
+    }
 
     /* 페이지 제목 */
     .point-page-container .page-title {
@@ -40,6 +44,7 @@
         padding: 24px;
         border-radius: 18px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        fons-size:20px;
         margin-bottom: 20px;
     }
 
@@ -287,7 +292,9 @@
                     <c:if test="${reviewPoints > maxCategoryAmount}"><c:set var="maxCategoryAmount" value="${reviewPoints}" /></c:if>
                     <c:if test="${eventPoints > maxCategoryAmount}"><c:set var="maxCategoryAmount" value="${eventPoints}" /></c:if>
 
-                    <%-- ✨ [복원] 월별 적립 혜택 요약 그래프 --%>
+
+					 <c:set var="maxCategoryAmount" value="50000" />
+                    <%-- ✨ 월별 적립 혜택 요약 그래프 --%>
                     <div class="benefit-breakdown">
                         <div class="summary">
                             <span>총 적립 혜택</span>

@@ -77,7 +77,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         if (file.getSize() > maxFileSize) {
             // 파일 크기가 10MB를 초과하는 경우, 예외를 발생시킵니다.
-            throw new IllegalStateException("업로드 가능한 파일 최대 크기는 10MB입니다.");
+        	throw new ReceiptProcessingException("영수증 정보를 추출하는 데 실패했습니다.\n이미지 품질이나 형식을 확인해주세요.");
         }
         // ======================================================================
 
@@ -86,7 +86,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     	
         String fileHash = generateFileHash(file);
         if (receiptDAO.countByFileHash(fileHash) > 0) {
-            throw new IllegalStateException("동일한 내용의 파일이 이미 등록되어 있습니다.");
+            throw new ReceiptProcessingException("동일한 내용의 파일이 이미 등록되어 있습니다.");
         }
 
         // 2. 물리적 파일 저장
@@ -97,7 +97,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         byte[] imageBytes = file.getBytes();
         ReceiptDTO ocrDto = callGeminiApi(imageBytes, file.getContentType());
         if (ocrDto == null) {
-            throw new RuntimeException("영수증 정보를 추출하는 데 실패했습니다. 이미지 품질이나 형식을 확인해주세요.");
+            throw new ReceiptProcessingException("영수증 정보를 추출하는 데 실패했습니다. 이미지 품질이나 형식을 확인해주세요.");
         }
         
        System.out.println(ocrDto);
@@ -323,7 +323,7 @@ public class ReceiptServiceImpl implements ReceiptService {
             // 예외 발생 시 로그를 남기고, 필요한 경우 상위로 예외를 다시 던집니다.
             System.err.println("Gemini 응답 처리 중 심각한 오류 발생: " + e.getMessage());
             e.printStackTrace();
-            throw new RuntimeException("유효한 도서구매영수증이 아닙니다.", e); // 원인 예외(e)를 포함하여 throw
+            throw new ReceiptProcessingException("유효한 도서구매 영수증이 아닙니다.\n인식할 수 없는 형식이거나, 도서 영수증이 아닌 것 같습니다.", e);
         }
     }
 

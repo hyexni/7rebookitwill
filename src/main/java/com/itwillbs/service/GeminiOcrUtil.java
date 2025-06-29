@@ -77,13 +77,17 @@ public class GeminiOcrUtil {
             String extractedJson = parseApiResponse(response);
             return objectMapper.readValue(extractedJson, OcrResult.class);
 
+            // ================== [수정] 예외 처리 부분만 변경 ==================
         } catch (IOException e) {
             System.err.println("IO 오류: " + e.getMessage());
-            throw new RuntimeException("영수증 이미지 처리 중 IO 오류 발생", e);
+            // RuntimeException 대신 ReceiptProcessingException으로 래핑하여 비즈니스 오류임을 명확히 함
+            throw new ReceiptProcessingException("영수증 이미지 파일을 처리하는 중 오류가 발생했습니다.", e);
         } catch (Exception e) {
             System.err.println("예상치 못한 오류: " + e.getMessage());
-            throw new RuntimeException("영수증 분석 실패", e);
+            // 다른 모든 예외도 ReceiptProcessingException으로 통일하여 일관성 유지
+            throw new ReceiptProcessingException("영수증을 분석하는 데 실패했습니다. 이미지 상태를 확인하거나 잠시 후 다시 시도해주세요.", e);
         }
+        // ================== 수정 끝 ==================
     }
 
     // 응답 텍스트에서 JSON 파싱 (```json 코드 블럭 제거)
