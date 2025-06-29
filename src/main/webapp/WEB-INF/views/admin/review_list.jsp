@@ -88,7 +88,7 @@
 		        </td>
 		      </tr>
 		
-		      <!-- 상세보기 줄 -->
+		    <!-- 상세보기 줄 -->
 			<tr class="review-detail-row" style="display:none;">
 			  <td colspan="8">
 			    <!-- ① 내용 + ② 버튼/사유 칸을 flex로 나눔 -->
@@ -97,7 +97,7 @@
 			      <!-- ① 전체 리뷰 내용 -->
 			      <div class="detail-text">
 			        <strong>전체 리뷰 내용:</strong><br>
-			        <pre>${review.review_text}</pre>
+			        ${review.review_text}
 			      </div>
 			
 			      <!-- ② 버튼/사유 -->
