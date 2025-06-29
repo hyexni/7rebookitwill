@@ -1,5 +1,6 @@
 package com.itwillbs.controller;
 
+import com.itwillbs.domain.AdminVO;
 import com.itwillbs.domain.InquiryVO;
 import com.itwillbs.domain.ResponseVO;
 import com.itwillbs.service.AdminInquiryService;
@@ -14,6 +15,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin/")
@@ -37,7 +40,21 @@ public class AdminInquiryController {
     // 답변 등록
     @PostMapping("/inquiry/responseInsert")
     public String insertResponse(ResponseVO response,
+    							 HttpSession session,
     							RedirectAttributes rttr) {
+    	
+    	// ✅ 세션에서 관리자 정보 꺼내기
+        AdminVO admin = (AdminVO) session.getAttribute("admin");
+
+        if (admin == null) {
+	        rttr.addFlashAttribute("msg", "세션이 만료되었습니다. 다시 로그인해주세요.");
+	        rttr.addFlashAttribute("icon", "error");
+	        return "redirect:/admin/login";
+	    }
+		
+		response.setAd_id(admin.getAd_id());  // ✅ 관리자 ID 주입
+    	
+    	// 답변 저장
         adminInquiryService.insertResponse(response);
         
         // 등록 메시지

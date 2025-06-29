@@ -4,22 +4,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+@Component
 public class AdminInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, 
 							HttpServletResponse response, 
 							Object handler) throws Exception {
-		 String uri = request.getRequestURI(); 
+		
+		String uri = request.getRequestURI(); 
 		System.out.println("[🛡️ 인터셉터 작동중] 요청 URI: " + uri);
 		
 		HttpSession session = request.getSession();
-		Object ad_id = session.getAttribute("ad_id");
 		
-		if(ad_id == null) {
+		Object admin = session.getAttribute("admin");
+		
+		if(admin == null) {
 			System.out.println("[⚠️ 인터셉터] 로그인 필요 → 리다이렉트!");
 			response.sendRedirect(request.getContextPath() + "/admin/login?needLogin=true");
 			return false;

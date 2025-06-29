@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.domain.AdminVO;
 import com.itwillbs.domain.NoticeVO;
 import com.itwillbs.service.AdminNoticeService;
 
@@ -49,8 +50,20 @@ public class AdminNoticeController {
 										   @RequestParam(value = "fixed", defaultValue = "N") String fixed,
 										   RedirectAttributes rttr) throws Exception {
 		   
-
+			
+			AdminVO admin = (AdminVO) session.getAttribute("admin"); // ✅ 세션에서 관리자 정보 꺼냄
+			System.out.println("DEBUG ▶ admin = " + admin);
+			System.out.println("DEBUG ▶ admin.getAd_id() = " + (admin != null ? admin.getAd_id() : "null"));
+			
+			if (admin == null) {
+		        rttr.addFlashAttribute("msg", "세션이 만료되었습니다. 다시 로그인해주세요.");
+		        rttr.addFlashAttribute("icon", "error");
+		        return "redirect:/admin/login";
+		    }
+			
+			vo.setAd_id(admin.getAd_id());  // ✅ 관리자 ID 주입
 		    vo.setFixed(fixed);          // ★ 세팅
+
 		    
 		    anService.adminNoticeWrite(vo);
 		    

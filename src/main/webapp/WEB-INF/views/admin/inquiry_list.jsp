@@ -114,17 +114,20 @@
    <!-- 페이지네이션 버튼 -->
 	<div class="pagination">
 	  <!-- << 이전 페이지 -->
-	  <a href="${pageContext.request.contextPath}/admin/list?page=${currentPage - 1}#inquiry-list"
+	  <a href="${pageContext.request.contextPath}/admin/list?page=${currentPage - 1}
+	  			&category=${param.category}&status=${param.status}&keyword=${param.keyword}#inquiry-list"
 	     <c:if test="${currentPage == 1}">class="disabled"</c:if>>&laquo;</a>
 	
 	  <!-- 페이지 번호 -->
 	  <c:forEach var="i" begin="1" end="${totalPages}">
-	    <a href="${pageContext.request.contextPath}/admin/list?page=${i}#inquiry-list"
+	    <a href="${pageContext.request.contextPath}/admin/list?page=${i}
+	    		&category=${param.category}&status=${param.status}&keyword=${param.keyword}#inquiry-list"
 	       <c:if test="${i == currentPage}">class="active"</c:if>>${i}</a>
 	  </c:forEach>
 	
 	  <!-- >> 다음 페이지 -->
-	  <a href="${pageContext.request.contextPath}/admin/list?page=${currentPage + 1}#inquiry-list"
+	  <a href="${pageContext.request.contextPath}/admin/list?page=${currentPage + 1}
+	  			&category=${param.category}&status=${param.status}&keyword=${param.keyword}#inquiry-list"
 	     <c:if test="${currentPage == totalPages}">class="disabled"</c:if>>&raquo;</a>
 	
 	 </div>

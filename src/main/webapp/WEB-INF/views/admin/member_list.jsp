@@ -46,7 +46,7 @@
 			        <a href="${pageContext.request.contextPath}/admin/member_list?page=1&sort=regdate&dir=${fn:trim(toggleDir)}
 			        			&keyword=${encodedKeyword}#member-list"
 			        	title="가입일 순 정렬" class="sortable">
-			          번호(가입일)
+			          번호
 			          <c:choose>
 					      <c:when test="${sort == 'regdate'}">
 					        <span>${dir == 'asc' ? '▲' : '▼'}</span>

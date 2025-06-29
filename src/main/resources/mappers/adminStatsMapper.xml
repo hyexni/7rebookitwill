@@ -60,7 +60,7 @@
 		LIMIT 10
 	</select>
 	
-	<!-- 도서별 판매량 TOP5 -->
+	<!-- 도서별 판매량 TOP10 -->
 	<select id="getTopSellingBooks" resultType="com.itwillbs.dto.BookStatsDTO">
 	    SELECT 
 	        b.book_id,
@@ -73,10 +73,10 @@
 	    JOIN category c ON b.category_id = c.category_id
 	    GROUP BY b.book_id
 	    ORDER BY totalSales DESC
-	    LIMIT 5
+	    LIMIT 10
 	</select>
 	
-	<!-- 별점 높은 도서 TOP5 (리뷰 수 2개 이상 필터링 포함) -->
+	<!-- 별점 높은 도서 TOP10 (리뷰 수 2개 이상 필터링 포함) -->
 	<select id="getTopRatedBooks" resultType="com.itwillbs.dto.BookStatsDTO">
 	    SELECT 
 	        b.book_id,
@@ -91,7 +91,7 @@
 	    GROUP BY b.book_id
 	    HAVING totalReviews >= 2
 	    ORDER BY avgRating DESC, totalReviews DESC
-	    LIMIT 5
+	    LIMIT 10
 	</select>	
 	
 

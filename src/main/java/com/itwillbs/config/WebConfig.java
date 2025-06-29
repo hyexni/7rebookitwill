@@ -2,6 +2,7 @@ package com.itwillbs.config;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -54,9 +55,15 @@ public class WebConfig implements WebMvcConfigurer {
 		
 	}
 
+	@Autowired
+	private AdminInterceptor adminInterceptor;
+	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new AdminInterceptor())
+		
+		System.out.println("✅ AdminInterceptor 등록됨");
+		
+		registry.addInterceptor(adminInterceptor)
         .addPathPatterns("/admin/**")                       // /admin/으로 시작하는 모든 요청 감시
         .excludePathPatterns(
             "/admin/login", 		 // 로그인 페이지는 예외

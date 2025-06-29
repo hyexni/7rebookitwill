@@ -17,7 +17,7 @@
 	    margin-top: 30px;
 	  ">
 	  <!-- 판매량 -->
-	  <div style="flex:1; width:500px;">
+	  <div style="flex:1; min-width:300px; max-width: 800px;">
 	    <h1>📘 판매량 상위 도서</h1>
 	    <div class="swiper salesSwiper">
 	      <div class="swiper-wrapper">
@@ -40,7 +40,7 @@
 	  
 	  
 	  <!-- 별점 -->
-	  <div style="flex:1; min-width:300px; max-width:500px;">
+	  <div style="flex:1; min-width:300px; max-width: 800px;">
 	    <h1>⭐ 별점 평균 상위 도서</h1>
 	    <div class="swiper ratingSwiper">
 	      <div class="swiper-wrapper">
@@ -72,7 +72,6 @@
 	    </div>
 	  </div>
 	</div>
-	
 	<!-- ──────────────────────────────────────── -->
 	<!-- 5) 슬라이더 초기화 (autoplay: false + setInterval 동기화) -->
 	<style>
@@ -83,7 +82,7 @@
 	    padding:15px;
 	    background:#fff;
 	    box-sizing:border-box;
-	    width:800px;
+	    width:100%;
 	    min-height:350px;
 	    display:flex;
 	    flex-direction:column;

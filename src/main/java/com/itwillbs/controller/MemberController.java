@@ -150,7 +150,7 @@ public class MemberController {
 		// 1. 관리자 로그인 시도
 		AdminVO admin = adminService.login(id, pw);
 		if (admin != null) {
-		    session.setAttribute("adminLogin", admin);
+		    session.setAttribute("admin", admin);
 		    rttr.addFlashAttribute("msg", admin.getAd_nick() + "님, 환영합니다 👑");
 		    rttr.addFlashAttribute("icon", "success");
 		    return "redirect:/admin/stats";

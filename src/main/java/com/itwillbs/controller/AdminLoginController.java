@@ -34,7 +34,7 @@ public class AdminLoginController {
         AdminVO admin = adminService.login(ad_id, ad_pw);
         
         if (admin != null) {
-            session.setAttribute("ad_id", admin.getAd_id());
+            session.setAttribute("admin", admin);
             
             rttr.addFlashAttribute("msg", admin.getAd_nick() + "님, 환영합니다 👑");
 		    rttr.addFlashAttribute("icon", "success");
