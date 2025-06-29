@@ -27,6 +27,8 @@ public interface ReceiptService {
      * @throws Exception
      */
     ReceiptVO getReceiptDetails(int upload_id) throws Exception;
+    
+       
 
     /** [관리자] 페이징 처리된 전체 영수증 목록 조회 (유지) */
     List<AdminReceiptDTO> getReceiptListAdmin(SearchCriteria cri) throws Exception;
@@ -36,14 +38,9 @@ public interface ReceiptService {
     
    
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+   
     
 }
+
+    
+    

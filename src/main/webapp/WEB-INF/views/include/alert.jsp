@@ -2,15 +2,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<!--
-  msg가 비어있지 않을 때만 알림창 스크립트를 실행합니다.
-  컨트롤러에서 flash attribute로 보낸 msg와 icon을 받아서 처리합니다.
--->
 <c:if test="${not empty msg}">
-  <!-- SweetAlert2 라이브러리 CDN 불러오기 -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
   <script>
-    window.onload = function() {
+    /**
+     * [수정] 올바른 addEventListener 사용법
+     * window 객체에 'load' 이벤트가 발생했을 때(페이지 로딩 완료 시),
+     * 뒤따라오는 콜백 함수(function)를 실행하도록 '등록'합니다.
+     */
+    window.addEventListener('load', function() {
       Swal.fire({
         // 아이콘 종류: success, error, warning, info, question 중 하나
         // icon이 없으면 기본값 'info' 사용
@@ -19,11 +19,12 @@
         // 메시지 출력
         // fn:escapeXml() 로 XSS 공격 방지 (특수문자 이스케이프 처리)
         // replaceAll("\n", "<br/>") 로 줄바꿈 문자 \n 을 HTML 줄바꿈 태그 <br/> 로 변환
-         html: "${fn:escapeXml(msg)}".replaceAll("\\n", "<br/>"),
+        html: "${fn:escapeXml(msg)}".replaceAll("\\n", "<br/>"),
 
         // 확인 버튼 색상 커스텀
-        confirmButtonColor: '#f4a261'
+        confirmButtonColor: '#0056b3', // 가독성이 좋은 색으로 유지하는 것을 추천합니다.
+        confirmButtonText: '확인'
       });
-    };
+    });
   </script>
 </c:if>
