@@ -2,15 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<head>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
-
-<div class="wrapper">
   <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+ </head>
+ <body>
+<div class="wrapper">
   <%@ include file="/WEB-INF/views/include/header.jsp" %>
   <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
   <%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
-  <div class="content">
+  <div class="main-content">
     <div class="join-container">
       <h2>회원가입</h2>
       <form action="/member/join" method="post" onsubmit="return validateForm();">
@@ -82,6 +84,8 @@
           <input type="text" id="member_address" name="member_address" required readonly>
           <button type="button" onclick="execDaumPostcode();">주소 검색</button>
         </div>
+        
+        <input type="hidden" id="zipcode" name="zipcode" />
 
         <label for="member_address_detail">상세주소:</label>
         <input type="text" id="member_address_detail" name="member_address_detail" required>
@@ -100,7 +104,11 @@
       </form>
     </div>
   </div>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </div>
+</body>
+
+
 
 <!-- ✅ 자바스크립트 -->
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -315,6 +323,9 @@ function execDaumPostcode() {
         }
       }
 
+      // 우편번호 추가 
+      document.getElementById("zipcode").value = data.zonecode;
+      
       document.getElementById("member_address").value = addr;
       document.getElementById("member_address_detail").value = "";
       document.getElementById("member_address_detail").focus();

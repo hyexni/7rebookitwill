@@ -206,7 +206,7 @@ public class MemberController {
 		int member_idx = loginUser.getMember_idx();
 
 		try {
-			int totalPoint = pointHistoryService.getTotalPoints(member_idx); // ✅ 요거!
+			int totalPoint = pointHistoryService.getTotalPoints(member_idx); 
 			model.addAttribute("totalPoint", totalPoint);
 		} catch (Exception e) {
 			e.printStackTrace();
