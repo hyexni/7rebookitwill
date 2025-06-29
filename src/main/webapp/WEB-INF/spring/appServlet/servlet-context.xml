@@ -13,6 +13,7 @@
 
     <!-- Static Resource Mapping -->
 	<mvc:resources mapping="/upload/reviews/**" location="file:/C:/upload/reviews/" />
+	<mvc:resources mapping="/upload/books/**" location="file:///C:/upload/books/" />
     <mvc:resources mapping="/resources/**" location="/resources/" />
    <!--  <mvc:resources mapping="/receipt/img/bg-img/**" location="/resources/receipt/img/bg-img/" /> -->
 
