@@ -48,9 +48,9 @@
       <tr>
         <th>기존 표지</th>
         <td>
-          <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}"
-               onerror="this.src='${pageContext.request.contextPath}/resources/img/product-img/placeholder.png'"
-               width="100" />
+          <img src="/upload/books/${book.cover_image}"
+		     onerror="this.src='/resources/img/product-img/placeholder.png'"
+		     width="100" />
         </td>
       </tr>
       <tr>

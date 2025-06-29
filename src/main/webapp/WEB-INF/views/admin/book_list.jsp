@@ -85,10 +85,10 @@
             <tr>
               <td>${book.book_id}</td>
               <td>
-			  <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}"
-			       onerror="this.src='${pageContext.request.contextPath}/resources/img/product-img/placeholder.png'"
-			       width="50" />
-				</td>      
+			 	<img src="/upload/books/${book.cover_image}"
+				     onerror="this.src='/resources/img/product-img/placeholder.png'"
+				     width="50" />
+			  </td>      
               <td>${book.book_title}</td>
               <td>${book.author_name}</td>
               <td>${book.publisher}</td>

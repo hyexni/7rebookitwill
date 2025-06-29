@@ -15,8 +15,9 @@
   <!-- 1. 왼쪽: 이미지 + 별점 -->
   <div class="book-image-column">
     <div class="book-image">
-      <img src="${pageContext.request.contextPath}/resources/img/product-img/${empty book.cover_image ? 'no_image.png' : book.cover_image}" 
-           alt="${book.book_title}" />
+      <img src="/upload/books/${book.cover_image}"
+	     onerror="this.onerror=null; this.src='/resources/img/product-img/no_image.png';"
+	     alt="${book.book_title}" />
     </div>
     <c:if test="${averageRating > 0}">
       <div class="avg-star-box">
@@ -86,9 +87,7 @@
           <option value="rating" ${reviewSort == 'rating' ? 'selected' : ''}>⭐ 평점순</option>
         </select>
       </form>
-     	<c:if test="${not empty loginUser}">
-	  <button class="write-review-btn" onclick="checkLoginBeforeWrite()">🖋 리뷰 작성</button>
-	</c:if>
+      <button class="write-review-btn" onclick="checkLoginBeforeWrite()">🖋 리뷰 작성</button>
     </div>
   </div>
 

@@ -16,9 +16,10 @@
       <div class="wishlist-grid">
         <c:forEach var="item" items="${wishlist}">
           <div class="wishlist-card" data-book-id="${item.book_id}">
-            <img class="product-img"
-                 src="${pageContext.request.contextPath}/resources/img/product-img/${item.cover_image}"
-                 alt="${item.book_title}" />
+           <img class="product-img"
+			     src="/upload/books/${item.cover_image}"
+			     onerror="this.src='/resources/img/product-img/placeholder.png'"
+			     alt="${item.book_title}" />
 
             <div class="wishlist-title">
               <a href="${pageContext.request.contextPath}/book/view?book_id=${item.book_id}">

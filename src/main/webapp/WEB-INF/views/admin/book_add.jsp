@@ -70,16 +70,18 @@
         <td><textarea name="book_summary" rows="5" cols="60"></textarea></td>
       </tr>
       <tr>
-        <th>표지 이미지</th>
-        <td><input type="file" name="upload" accept="image/*" /></td>
-      </tr>
+		  <th>표지 이미지</th>
+		  <td>
+		    <input type="file" name="upload" accept="image/*" />
+		  </td>
+		</tr>
     </table>
 
     <div style="margin-top: 20px;">
       <button type="submit">📘 등록하기</button>
-      <a href="${pageContext.request.contextPath}/admin/book_list">
-        <button type="button">목록으로</button>
-      </a>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/book_list'">
+		    목록으로
+		  </button>
     </div>
   </form>
 </main>

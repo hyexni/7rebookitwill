@@ -57,16 +57,11 @@
   <div class="book-item">
 
     <!-- 책 이미지 -->
-    <div class="book-cover-wrapper">
-      <c:choose>
-        <c:when test="${empty book.cover_image}">
-          <img src="${pageContext.request.contextPath}/resources/img/product-img/placeholder.png" alt="기본 이미지" />
-        </c:when>
-        <c:otherwise>
-          <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}" alt="${book.book_title}" />
-        </c:otherwise>
-      </c:choose>
-    </div>
+   <div class="book-cover-wrapper">
+	  <img src="/upload/books/${book.cover_image}"
+	       onerror="this.onerror=null; this.src='/resources/img/product-img/placeholder.png';"
+	       alt="${book.book_title}" />
+	</div>
 
     <!-- 책 정보 -->
     <div class="book-info">
