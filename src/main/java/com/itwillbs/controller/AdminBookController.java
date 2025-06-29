@@ -99,7 +99,7 @@ public class AdminBookController {
         bookService.updateBookCategory(book_id, category_id);
         redirect.addFlashAttribute("msg", "카테고리가 변경되었습니다.");
         redirect.addFlashAttribute("icon", "success");
-
+        
         return "redirect:/admin/book_list";
     }
 
@@ -115,6 +115,41 @@ public class AdminBookController {
         model.addAttribute("categoryList", categoryList);
 
         return "admin/book_add";  // → /WEB-INF/views/admin/book_add.jsp
+    }
+    // ✅ 도서 등록 처리
+    @PostMapping("/book_add")
+    public String bookAddSubmit(@ModelAttribute BookVO bookVO,
+                                @RequestParam("upload") MultipartFile upload,
+                                RedirectAttributes rttr) throws Exception {
+
+        logger.debug("📘 도서 등록 요청: {}", bookVO);
+
+        if (!upload.isEmpty()) {
+            // ✅ 외부 경로 설정
+            String uploadPath = "C:/upload/books";
+
+            // ✅ 폴더 없으면 생성
+            File folder = new File(uploadPath);
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+
+            // ✅ 파일명 설정 및 저장
+            String fileName = UUID.randomUUID().toString() + "_" + upload.getOriginalFilename();
+            File saveFile = new File(uploadPath, fileName);
+            upload.transferTo(saveFile);
+
+            // ✅ DB에는 파일명만 저장
+            bookVO.setCover_image(fileName);
+        }
+
+        // DB 저장
+        bookService.insertBook(bookVO);
+
+        rttr.addFlashAttribute("msg", "도서가 등록되었습니다.");
+        rttr.addFlashAttribute("icon", "success");
+
+        return "redirect:/admin/book_list";
     }
     
 
@@ -132,17 +167,18 @@ public class AdminBookController {
         return "admin/book_edit";
     }
 
-    // 📘 도서 수정 처리
     @PostMapping("/book_edit")
     public String bookEditSubmit(@ModelAttribute BookVO bookVO,
                                  @RequestParam("upload") MultipartFile upload,
-                                 HttpServletRequest request,
                                  RedirectAttributes rttr) throws Exception {
 
         logger.debug(" 도서 수정 요청: {}", bookVO);
 
         if (!upload.isEmpty()) {
-            String uploadPath = request.getSession().getServletContext().getRealPath("/resources/img/product-img");
+            String uploadPath = "C:/upload/books";
+            File folder = new File(uploadPath);
+            if (!folder.exists()) folder.mkdirs();
+
             String fileName = UUID.randomUUID().toString() + "_" + upload.getOriginalFilename();
             upload.transferTo(new File(uploadPath, fileName));
             bookVO.setCover_image(fileName);
@@ -151,6 +187,8 @@ public class AdminBookController {
         bookService.updateBook(bookVO);
 
         rttr.addFlashAttribute("msg", "도서 정보가 수정되었습니다.");
+        rttr.addFlashAttribute("icon", "success");
+
         return "redirect:/admin/book_list";
     }
 
@@ -162,10 +200,11 @@ public class AdminBookController {
 
         try {
             bookService.deleteBook(book_id);
+            logger.debug("✅ 도서 삭제 성공");
             rttr.addFlashAttribute("msg", "도서가 삭제되었습니다.");
             rttr.addFlashAttribute("icon", "success");
         } catch (Exception e) {
-            logger.error("도서 삭제 실패", e);
+            logger.error("❌ 도서 삭제 실패", e);
             rttr.addFlashAttribute("msg", "삭제 중 오류가 발생했습니다.");
             rttr.addFlashAttribute("icon", "error");
         }

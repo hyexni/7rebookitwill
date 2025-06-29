@@ -81,5 +81,7 @@ public class BookServiceImpl implements BookService {
     public void deleteBook(int book_id) {
         bookDAO.deleteBook(book_id);
     }
+    
+
 		
 }
