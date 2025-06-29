@@ -71,7 +71,8 @@
 }
 
 .payment-right input[type="text"],
-.payment-right input[type="number"] {
+.payment-right input[type="number"],
+.payment-right input[type="tel"] {
   width: 100%;
   padding: 10px;
   margin-top: 4px;
