@@ -62,6 +62,7 @@
 	min-width: 0;
 	word-break: break-word;
 	overflow-wrap: break-word;
+	font-size: 18px;
 }
 
 .detail-side {
@@ -136,4 +137,19 @@ pre {
   white-space: pre-wrap;   /* 줄 바꿈 허용 */
   word-break: break-word;  /* 임의 단어도 줄 바꿈 */
   margin: 0;               /* pre 기본 마진 제거 */
+}
+
+
+/* 되돌리기 버튼 */
+.btn-undo {
+  padding: 6px 14px;
+  font-size: 13px;
+  border: none;
+  border-radius: 4px;
+  background: #6c757d;
+  color: #fff;
+  cursor: pointer;
+}
+.btn-undo:hover {
+  background: #5c636a;
 }

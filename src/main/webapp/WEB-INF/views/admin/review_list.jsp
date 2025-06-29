@@ -141,7 +141,7 @@
 			
 			        <!-- 확인 버튼 (미확인일 때만) -->
 			        <c:if test="${review.review_checked eq 'N'}">
-			          <form method="post" action="${pageContext.request.contextPath}/admin/review_check">
+			          <form method="post" action="${pageContext.request.contextPath}/admin/review_check" class="check-form">
 			            <input type="hidden" name="review_id" value="${review.review_id}">
 			            <button type="submit" class="btn-check-confirm">✅ 확인</button>
 			          </form>
@@ -217,6 +217,24 @@
 		    });
 		  });
 		});
+		
+		 /* ─── 확인 버튼 실수 방지 ─── */
+		  document.querySelectorAll('.check-form').forEach(f => {
+		    f.addEventListener('submit', e => {
+		      // 같은 상세 영역 안에 숨김/삭제 select가 있는지 확인
+		      const area = f.closest('.detail-side');
+		      const hideSel   = area.querySelector('form[action$="review_hide"]   select');
+		      const delSel    = area.querySelector('form[action$="review_delete"] select');
+		      const hideVal   = hideSel ? hideSel.value : '';
+		      const deleteVal = delSel ? delSel.value : '';
+		
+		      if (!hideVal && !deleteVal) {           // 이유 하나도 안 골랐음
+		        if (!confirm('숨김·삭제 사유가 선택되지 않았습니다.\n리뷰를 그냥 “정상 확인” 처리할까요?')) {
+		          e.preventDefault();                 // 취소하면 전송 막기
+		        }
+		      }
+		    });
+		  });
 	</script>
 	
 	<!-- 기타 사유 입력 필드 제어 -->
@@ -232,7 +250,6 @@
 	    }
 	  }
 	</script>
-	
 
 	
 	
