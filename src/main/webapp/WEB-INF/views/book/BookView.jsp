@@ -86,7 +86,9 @@
           <option value="rating" ${reviewSort == 'rating' ? 'selected' : ''}>⭐ 평점순</option>
         </select>
       </form>
-      <button class="write-review-btn" onclick="checkLoginBeforeWrite()">🖋 리뷰 작성</button>
+     	<c:if test="${not empty loginUser}">
+	  <button class="write-review-btn" onclick="checkLoginBeforeWrite()">🖋 리뷰 작성</button>
+	</c:if>
     </div>
   </div>
 

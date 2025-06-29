@@ -183,7 +183,7 @@ public class MemberController {
 	public String memberLogoutGET(HttpSession session, RedirectAttributes rttr) {
 		session.invalidate();
 		rttr.addFlashAttribute("message", "로그아웃 되었습니다.");
-		return "redirect:/member/main";
+		return "redirect:/;";
 	}
 	
 	// 관리자 로그아웃
@@ -206,7 +206,7 @@ public class MemberController {
 		int member_idx = loginUser.getMember_idx();
 
 		try {
-			int totalPoint = pointHistoryService.getTotalPoints(member_idx); // ✅ 요거!
+			int totalPoint = pointHistoryService.getTotalPoints(member_idx); 
 			model.addAttribute("totalPoint", totalPoint);
 		} catch (Exception e) {
 			e.printStackTrace();

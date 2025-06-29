@@ -23,11 +23,13 @@
   INSERT INTO member (
     member_id, member_pw, member_name, member_email,
     member_phone, member_nick, member_address, member_address_detail,
+    zipcode,
     member_status, member_regdate
   )
   VALUES (
     #{member_id}, #{member_pw}, #{member_name}, #{member_email},
     #{member_phone}, #{member_nick}, #{member_address}, #{member_address_detail},
+    #{zipcode},
     'Y', NOW()
   )
 	</insert>
