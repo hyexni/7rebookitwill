@@ -136,6 +136,8 @@
   </div>
 </div>
 
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+
 <script>
 
 document.addEventListener('DOMContentLoaded', function () {

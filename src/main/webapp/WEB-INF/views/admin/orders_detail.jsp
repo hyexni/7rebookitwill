@@ -67,6 +67,8 @@
   </section>
 </main>
 
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+
 <style>
 
 /* 주문 상세 타이틀 */
