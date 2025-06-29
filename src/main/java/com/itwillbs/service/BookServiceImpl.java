@@ -61,5 +61,25 @@ public class BookServiceImpl implements BookService {
 
         bookDAO.updateBookCategory(map);
     }
+    
+
+    @Override
+    public void insertBook(BookVO bookVO) {
+    	logger.debug("📘 도서 등록 - 서비스단 실행");
+        bookDAO.insertBook(bookVO);
+    }
+    
+    // 도서 수정
+    @Override
+    public void updateBook(BookVO bookVO) throws Exception {
+        logger.debug("📘 BookService - updateBook 호출: {}", bookVO);
+        bookDAO.updateBook(bookVO);
+    }
+    
+    // 도서삭제
+    @Override
+    public void deleteBook(int book_id) {
+        bookDAO.deleteBook(book_id);
+    }
 		
 }

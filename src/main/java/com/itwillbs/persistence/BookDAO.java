@@ -26,6 +26,15 @@ public interface BookDAO {
 	// 도서 카테고리 변경
 	void updateBookCategory(Map<String, Object> paramMap);
 	
+	// 도서 등록
+	void insertBook(BookVO bookVO);
+	
+    // 도서 수정
+    void updateBook(BookVO bookVO) throws Exception;
+    
+    // 도서 삭제
+    void deleteBook(int book_id);
+	
 
     /**
      * [신규] 책 제목의 일부(키워드)를 포함하는 모든 도서 목록을 조회합니다.

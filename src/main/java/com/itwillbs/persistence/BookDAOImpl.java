@@ -72,6 +72,25 @@ public class BookDAOImpl implements BookDAO {
 		return sqlSession.selectOne(NAMESPACE + ".selectBookDetail", bookId);
 	}
 	
+	// 도서 등록
+    @Override
+    public void insertBook(BookVO bookVO) {
+        sqlSession.insert(NAMESPACE + ".insertBook", bookVO);
+    }
+    
+    // 도서 수정
+    @Override
+    public void updateBook(BookVO bookVO) throws Exception {
+        logger.debug("📘 BookDAO - updateBook 호출: {}", bookVO);
+        sqlSession.update(NAMESPACE + ".updateBook", bookVO);
+    }
+    
+    // 도서 삭제
+    @Override
+    public void deleteBook(int book_id) {
+        sqlSession.delete(NAMESPACE + ".deleteBook", book_id);
+    }
+	
 	
 	/**
      * [신규] 책 제목 LIKE 검색 구현

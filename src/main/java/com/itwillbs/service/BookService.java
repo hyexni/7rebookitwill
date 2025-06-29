@@ -20,6 +20,16 @@ public interface BookService {
 
     //  카테고리 변경
     void updateBookCategory(int book_id, int category_id);
+    
+    // 도서 등록
+    void insertBook(BookVO bookVO);
+    
+    // 도서 수정
+    void updateBook(BookVO bookVO) throws Exception;
+    
+    // 도서 삭제
+    void deleteBook(int book_id);
+
 }
 
 	

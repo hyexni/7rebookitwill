@@ -15,7 +15,6 @@
         b.publisher,
         b.publish_date,
         b.book_price,
-        -- 재고가 0이면 품절로 표시, 아니면 원래 상태 유지
         CASE 
             WHEN b.book_stock = 0 THEN '품절'
             ELSE b.stock_status
@@ -37,9 +36,12 @@
     LEFT JOIN category c ON b.category_id = c.category_id   <!-- 카테고리 이름 연결 -->
     <where>
     <if test="search != null and search != ''">
-        AND (b.book_title LIKE CONCAT('%', #{search}, '%')
-             OR b.author_name LIKE CONCAT('%', #{search}, '%'))
-    </if>
+    AND (
+        b.book_title LIKE CONCAT('%', #{search}, '%')
+        OR b.author_name LIKE CONCAT('%', #{search}, '%')
+        OR b.publisher LIKE CONCAT('%', #{search}, '%')
+    )
+	</if>
     <if test="category_id != null and category_id != ''">
         AND b.category_id = #{category_id}
     </if>
@@ -79,9 +81,12 @@
         SELECT COUNT(*) FROM book
         <where>
             <if test="search != null and search != ''">
-                AND (book_title LIKE CONCAT('%', #{search}, '%')
-                     OR author_name LIKE CONCAT('%', #{search}, '%'))
-            </if>
+			    AND (
+			        book_title LIKE CONCAT('%', #{search}, '%')
+			        OR author_name LIKE CONCAT('%', #{search}, '%')
+			        OR publisher LIKE CONCAT('%', #{search}, '%')
+			    )
+			</if>
             <if test="category_id != null and category_id != ''">
                 AND category_id = #{category_id}
             </if>
@@ -97,6 +102,11 @@
 	    WHERE book_id = #{bookId}
 	</select>
 	
+	<!--  도서 삭제  -->
+	<delete id="deleteBook" parameterType="int">
+ 	 DELETE FROM book WHERE book_id = #{book_id}
+	</delete>
+	
 
 <!--  영수증에 추출된 책 목록 가져오기 -->
 
@@ -104,7 +114,41 @@
         SELECT * FROM book  
         WHERE book_title LIKE CONCAT('%', #{bookTitle}, '%')
     </select>
+    
+    <!-- 도서 등록 -->
+	  <insert id="insertBook">
+	    INSERT INTO book (
+	      book_title, author_name, publisher, publish_date,
+	      book_price, book_stock, stock_status, book_summary,
+	      cover_image, category_id, isbn, created_at, updated_at
+	    )
+	    VALUES (
+	      #{book_title}, #{author_name}, #{publisher}, #{publish_date},
+	      #{book_price}, #{book_stock}, #{stock_status}, #{book_summary},
+	      #{cover_image}, #{category_id}, #{isbn}, NOW(), NOW()
+	    )
+	  </insert>
 
 
+	<!-- 기존 mapper 내부에 추가 -->
+	<update id="updateBook" parameterType="com.itwillbs.domain.BookVO">
+	  UPDATE book
+	  SET
+	    book_title = #{book_title},
+	    author_name = #{author_name},
+	    publisher = #{publisher},
+	    publish_date = #{publish_date},
+	    book_price = #{book_price},
+	    book_stock = #{book_stock},
+	    stock_status = #{stock_status},
+	    category_id = #{category_id},
+	    isbn = #{isbn},
+	    book_summary = #{book_summary},
+	    <if test="cover_image != null and cover_image != ''">
+	      cover_image = #{cover_image},
+	    </if>
+	    updated_at = NOW()
+	  WHERE book_id = #{book_id}
+	</update>
 
 </mapper>
