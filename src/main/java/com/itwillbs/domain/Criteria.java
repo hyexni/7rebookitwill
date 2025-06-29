@@ -96,5 +96,8 @@ public class Criteria {
     public int getOffset() {
         return (page - 1) * perPageNum;
     }
+    
+    // ✅ 재고 상태 필터용 추가
+    private String stock_status;    
 }
 
