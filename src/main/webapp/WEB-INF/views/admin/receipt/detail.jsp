@@ -148,5 +148,4 @@
     </div>
     
     <%-- 5. 하단 푸터 --%>
-<%@include file="../include/footer.jsp" %>
-
+    <%@ include file="/WEB-INF/views/include/footer.jsp" %>

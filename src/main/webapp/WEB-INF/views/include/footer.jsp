@@ -106,9 +106,9 @@
             </p>
         </div>
         <div class="footer-links">
-            <a href="/include/usenotice">이용약관</a>
-            <a href="/privacy"><strong>개인정보처리방침</strong></a>
-            <a href="/faq">자주묻는 질문(FAQ)</a>
+            <a href="<c:url value='/terms'/>"><b>이용약관</b></a>
+               <a href="<c:url value='/privacy'/>"><strong>개인정보처리방침</strong></a>
+             <a href="<c:url value='/fnq'/>">자주묻는 질문(FAQ)</a>
         </div>
     </div>
 </footer>

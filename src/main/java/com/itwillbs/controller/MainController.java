@@ -104,6 +104,25 @@ public class MainController {
         // 결과 또는 에러 메시지를 보여줄 JSP 페이지 경로를 반환합니다.
         return "include/searchResult";
     }
+    
+  //이용약관 출력하기//
+  	@GetMapping("/terms")
+      public String showTermsPage() {
+          return "notice/terms";
+      }
+      
+      // 개인정보처리방침 등 출력하기
+         @GetMapping("/privacy")
+      public String showPrivacyPage() {
+          return "notice/privacy";
+      }
+         
+         // 자주묻는 질문 출력하기
+         @GetMapping("/fnq")
+      public String showFnqPage() {
+          return "notice/fnq";
+      }
+            
 }
 
 
