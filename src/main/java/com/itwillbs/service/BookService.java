@@ -14,5 +14,12 @@ public interface BookService {
 
 	// 도서 상세 정보 조회 기능 정의 - book_id 기준 단건 조회
 	BookVO getBookDetail(int bookId);
+	
+    //  재고 상태 변경
+    void updateBookStatus(int book_id, String stock_status);
 
+    //  카테고리 변경
+    void updateBookCategory(int book_id, int category_id);
 }
+
+	

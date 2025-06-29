@@ -1,6 +1,7 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itwillbs.domain.BookVO;
 import com.itwillbs.domain.Criteria;
@@ -18,6 +19,12 @@ public interface BookDAO {
 
 	// [도서 상세 조회] - 도서 ID 기준
 	BookVO getBookDetail(int bookId);
+	
+	// 도서 재고 상태 (판매중 / 품절) 변경
+	void updateBookStatus(Map<String, Object> paramMap);
+	
+	// 도서 카테고리 변경
+	void updateBookCategory(Map<String, Object> paramMap);
 	
 
     /**

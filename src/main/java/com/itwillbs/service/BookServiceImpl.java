@@ -1,6 +1,8 @@
 package com.itwillbs.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -36,9 +38,28 @@ public class BookServiceImpl implements BookService {
 	}
 	
 	// 도서 상세 정보 조회 기능 구현
-	// Mapper 호출
 	@Override
 	public BookVO getBookDetail(int bookId) {
 		return bookDAO.getBookDetail(bookId);
+		
 	}
+	
+	// ✅ 도서 상태 변경
+    @Override
+    public void updateBookStatus(int book_id, String stock_status) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("book_id", book_id);
+        map.put("stock_status", stock_status);
+
+        bookDAO.updateBookStatus(map);
+    }
+	// ✅ 카테고리 변경
+    public void updateBookCategory(int book_id, int category_id) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("book_id", book_id);
+        map.put("category_id", category_id);
+
+        bookDAO.updateBookCategory(map);
+    }
+		
 }
