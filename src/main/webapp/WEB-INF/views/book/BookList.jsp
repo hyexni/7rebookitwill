@@ -16,18 +16,17 @@
 
 <div class="book-page-container">
 
-  <!-- 📂 카테고리 영역 -->
-  <aside class="category-sidebar">
-    <h3>카테고리</h3>
-    <a href="${pageContext.request.contextPath}/book/list?search=${param.search}&sort=${param.sort}"
-       class="${empty param.category_id ? 'active' : ''}">전체</a>
-    <c:forEach var="cate" items="${categoryList}">
-      <a href="${pageContext.request.contextPath}/book/list?category_id=${cate.category_id}&search=${param.search}&sort=${param.sort}"
-         class="${param.category_id == cate.category_id.toString() ? 'active' : ''}">
-        ${cate.category_name_ko}
-      </a>
-    </c:forEach>
-  </aside>
+ <!-- 📂 상단 카테고리 필터 -->
+<div class="category-bar">
+  <a href="${pageContext.request.contextPath}/book/list?search=${param.search}&sort=${param.sort}"
+     class="category-btn ${empty param.category_id ? 'active' : ''}">전체</a>
+  <c:forEach var="cate" items="${categoryList}">
+    <a href="${pageContext.request.contextPath}/book/list?category_id=${cate.category_id}&search=${param.search}&sort=${param.sort}"
+       class="category-btn ${param.category_id == cate.category_id.toString() ? 'active' : ''}">
+      ${cate.category_name_ko}
+    </a>
+  </c:forEach>
+</div>
 
   <!-- 📘 오른쪽 도서 콘텐츠 -->
   <main class="book-content">
@@ -49,36 +48,37 @@
 </div>
 
     <!-- 도서 목록 -->
-    <div class="book-grid">
+    <div class="book-list">
       <c:if test="${empty bookList}">
         <p class="no-books">🔍 해당 조건에 맞는 도서가 없습니다.</p>
       </c:if>
-     <c:forEach var="book" items="${bookList}">
-  <div class="book-card">
+    
+    <c:forEach var="book" items="${bookList}">
+  <div class="book-item">
 
-  <!-- ✅ 도서 이미지: 기본 이미지 분기 처리 -->
-<c:choose>
-  <c:when test="${empty book.cover_image}">
-    <img class="book-cover"
-         src="${pageContext.request.contextPath}/resources/img/product-img/placeholder.png"
-         alt="기본 이미지" />
-  </c:when>
-  <c:otherwise>
-    <img class="book-cover"
-         src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}"
-         alt="${book.book_title}" />
-  </c:otherwise>
-</c:choose>
+    <!-- 책 이미지 -->
+    <div class="book-cover-wrapper">
+      <c:choose>
+        <c:when test="${empty book.cover_image}">
+          <img src="${pageContext.request.contextPath}/resources/img/product-img/placeholder.png" alt="기본 이미지" />
+        </c:when>
+        <c:otherwise>
+          <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}" alt="${book.book_title}" />
+        </c:otherwise>
+      </c:choose>
+    </div>
 
-    <!-- 도서 정보 -->
-    <p class="book-title">${book.book_title}</p>
-    <p class="book-author">${book.author_name}</p>
-    <p class="book-price">${book.book_price}원</p>
+    <!-- 책 정보 -->
+    <div class="book-info">
+      <h4>${book.book_title}</h4>
+      <p>${book.author_name}</p>
+      <p>${book.book_price}원</p>
+    </div>
 
     <!-- 상세보기 버튼 -->
-    <a href="${pageContext.request.contextPath}/book/view?book_id=${book.book_id}" class="btn-detail">
-      상세보기
-    </a>
+    <div class="book-actions">
+      <a href="${pageContext.request.contextPath}/book/view?book_id=${book.book_id}" class="btn-detail">상세보기</a>
+    </div>
 
   </div>
 </c:forEach>
@@ -101,8 +101,6 @@
   </c:if>
 </div>
 
-    <!-- 푸터 여백 확보 -->
-    <div style="height: 120px;"></div>
   </main>
 </div>
 
