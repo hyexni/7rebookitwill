@@ -57,6 +57,8 @@
 	  }
 	</style>
 	
+	
+		 <h1>ReBook 회원 통계</h1>
 	<div class="stats-container">
 	  <div class="stats-card">
 	    <div style="font-size: 14px; color: #555;">전체 회원 수</div>
