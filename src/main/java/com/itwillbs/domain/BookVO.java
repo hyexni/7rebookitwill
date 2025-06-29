@@ -2,6 +2,9 @@ package com.itwillbs.domain;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -30,5 +33,6 @@ public class BookVO {
 	
 	// 관리자
 	private String category_name_ko;
+	private MultipartFile cover_image_file; // 업로드 파일 받는 용도
 
 }
