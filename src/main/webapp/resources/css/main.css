@@ -1,5 +1,6 @@
+@charset "UTF-8";
 
-/* ✅ 기본 설정 */
+
 body {
   font-family: 'Noto Sans KR', sans-serif;
   background-color: #f8f8f8;
@@ -10,7 +11,7 @@ html, body {
   height: 100%;
 }
 
-/* ✅ wrapper 및 레이아웃 */
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -18,10 +19,11 @@ html, body {
 }
 .main-content {
   flex: 1;
-  padding: 40px;
+  padding-bottom: 100px;
   background-color: #f8f8f8;
-  padding-bottom: 60px;
+   box-sizing: border-box;
 }
+
 .footer {
   background-color: black;
   color: antiquewhite;
@@ -29,7 +31,7 @@ html, body {
   width: 100%;
 }
 
-/* ✅ 공통 input */
+
 input[type="text"],
 input[type="password"],
 input[type="email"],
@@ -42,7 +44,7 @@ select {
   box-sizing: border-box;
 }
 
-/* ✅ 버튼 스타일 */
+
 button[type="button"],
 button[type="submit"] {
   padding: 10px 16px;
@@ -62,10 +64,10 @@ button[type="submit"]:hover {
   background-color: #e6b800;
 }
 
-/* ✅ 로그인 / 회원가입 container */
+
 .join-container, .login-container {
   max-width: 600px;
-  margin: 60px auto;
+  margin: 0 auto;
   background-color: white;
   padding: 40px 30px 100px;
   border-radius: 12px;
@@ -77,7 +79,7 @@ button[type="submit"]:hover {
   margin-bottom: 30px;
 }
 
-/* ✅ 라벨 */
+
 label {
   display: block;
   margin-top: 18px;
@@ -86,7 +88,7 @@ label {
   color: #222;
 }
 
-/* ✅ inline-field: 통신사 + 휴대폰 */
+
 .inline-field {
   display: flex;
   gap: 20px;
@@ -100,7 +102,7 @@ label {
 .inline-field .field-box:first-child { flex: 0.8; }
 .inline-field .field-box:last-child { flex: 2; }
 
-/* ✅ 주소 + 상세주소 한 줄 */
+
 .address-field {
   display: flex;
   gap: 10px;
@@ -114,7 +116,6 @@ label {
   flex-shrink: 0;
 }
 
-/* ✅ 관심 카테고리 */
 .category-group {
   display: flex;
   flex-wrap: wrap;
@@ -126,7 +127,7 @@ label {
   font-weight: normal;
 }
 
-/* ✅ 마이페이지 */
+
 .mypage-container {
   max-width: 960px;
   margin: 0 auto;
@@ -150,7 +151,7 @@ label {
   font-size: 17px;
 }
 
-/* 💰 포인트 박스 */
+
 .point-box {
   display: flex;
   align-items: center;
@@ -181,7 +182,7 @@ label {
   letter-spacing: -0.5px;
 }
 
-/* ✅ 마이페이지 항목 박스 */
+
 .mypage-boxes {
   display: flex;
   flex-direction: column;
@@ -255,7 +256,7 @@ label {
   margin-top: 10px;
 }
 
-/* 회원 정보 보기 */
+
 .info-card {
   background-color: #fff;
   border: 1px solid #eee;
@@ -358,7 +359,7 @@ label {
   background-color: #ffcc00;
 }
 
-/* ✅ 버튼 공통 기본 스타일 */
+
 .btn {
   display: inline-block;
   padding: 12px 24px;

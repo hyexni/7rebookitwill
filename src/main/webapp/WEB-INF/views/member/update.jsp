@@ -4,12 +4,12 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 
-<div class="wrapper">
   <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
   <%@ include file="/WEB-INF/views/include/header.jsp" %>
   <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
   <%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
+<div class="wrapper">
   <div class="content">
     <div class="join-container">
       <h2>📝 회원 정보 수정</h2>
@@ -63,8 +63,6 @@
       </form>
     </div>
   </div>
-
-  <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 </div>
 
@@ -213,4 +211,5 @@
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+  <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
