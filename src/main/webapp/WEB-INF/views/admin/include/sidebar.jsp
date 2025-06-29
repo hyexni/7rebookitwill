@@ -53,34 +53,6 @@
 				</ul>
              </nav>
             
-            
-            <!-- 푸터 여백 주기 -->
-            <div class="cart-fav-search mb-100">
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-                <a href="#" class="fav-nav"></a>
-            </div>
-            
             <script>
 			  function toggleSubMenu(element) {
 			    const submenu = element.nextElementSibling;
