@@ -17,7 +17,6 @@
         display: flex;
         flex-direction: column;        
         color: #343a40;
-        background-color: #f8f9fa; /* 부드러운 배경색 추가 */
     }
 
     /* ▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 여기가 가장 중요한 수정 부분입니다 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼ */

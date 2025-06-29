@@ -18,7 +18,7 @@
         flex-direction: column;
         font-family: 'Noto Sans KR', sans-serif;
         color: #343a40;
-        background-color: #f8f9fa; /* 부드러운 배경색 추가 */
+       
     }
 
     main {
