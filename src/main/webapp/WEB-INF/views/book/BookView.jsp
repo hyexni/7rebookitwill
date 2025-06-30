@@ -15,9 +15,9 @@
   <!-- 1. 왼쪽: 이미지 + 별점 -->
   <div class="book-image-column">
     <div class="book-image">
-      <img src="/upload/books/${book.cover_image}"
-	     onerror="this.onerror=null; this.src='/resources/img/product-img/no_image.png';"
-	     alt="${book.book_title}" />
+      <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}"
+     onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/resources/img/product-img/no_image.png';"
+     alt="${book.book_title}" />
     </div>
     <c:if test="${averageRating > 0}">
       <div class="avg-star-box">

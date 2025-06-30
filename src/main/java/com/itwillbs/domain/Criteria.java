@@ -97,7 +97,10 @@ public class Criteria {
         return (page - 1) * perPageNum;
     }
     
-    // ✅ 재고 상태 필터용 추가
-    private String stock_status;    
+    // 재고 상태 필터용 추가
+    private String stock_status;
+    
+    // 도서 상태 필드 추가
+    private String status;
 }
 

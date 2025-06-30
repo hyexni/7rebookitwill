@@ -41,6 +41,17 @@ public class BookDAOImpl implements BookDAO {
     public void updateBookCategory(Map<String, Object> paramMap) {
         sqlSession.update(NAMESPACE + ".updateBookCategory", paramMap);
     }
+    
+    // 관리자용 도서 목록 조회 (삭제된 책 포함)
+    @Override
+    public List<BookVO> getBookListForAdmin(Criteria cri) {
+        return sqlSession.selectList(NAMESPACE + ".getBookListForAdmin", cri);
+    }
+
+    @Override
+    public int getBookCountForAdmin(Criteria cri) {
+        return sqlSession.selectOne(NAMESPACE + ".getBookCountForAdmin", cri);
+    }
 
 	/**
 	 * [도서 목록 조회]
@@ -87,10 +98,9 @@ public class BookDAOImpl implements BookDAO {
     
     // 도서 삭제
     @Override
-    public void deleteBook(int book_id) {
-        sqlSession.delete(NAMESPACE + ".deleteBook", book_id);
+    public void updateBookStatusToDeleted(Map<String, Object> param) {
+        sqlSession.update(NAMESPACE + ".updateBookStatusToDeleted", param);
     }
-	
 	
 	/**
      * [신규] 책 제목 LIKE 검색 구현

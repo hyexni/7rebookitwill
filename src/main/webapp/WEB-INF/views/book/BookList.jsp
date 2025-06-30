@@ -58,9 +58,9 @@
 
     <!-- 책 이미지 -->
    <div class="book-cover-wrapper">
-	  <img src="/upload/books/${book.cover_image}"
-	       onerror="this.onerror=null; this.src='/resources/img/product-img/placeholder.png';"
-	       alt="${book.book_title}" />
+	 <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}"
+     onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/resources/img/product-img/placeholder.png';"
+     alt="${book.book_title}" />
 	</div>
 
     <!-- 책 정보 -->

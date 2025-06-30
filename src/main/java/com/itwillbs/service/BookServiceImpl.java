@@ -65,23 +65,35 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void insertBook(BookVO bookVO) {
-    	logger.debug("📘 도서 등록 - 서비스단 실행");
+    	logger.debug(" 도서 등록 - 서비스단 실행");
         bookDAO.insertBook(bookVO);
     }
     
     // 도서 수정
     @Override
     public void updateBook(BookVO bookVO) throws Exception {
-        logger.debug("📘 BookService - updateBook 호출: {}", bookVO);
+        logger.debug(" BookService - updateBook 호출: {}", bookVO);
         bookDAO.updateBook(bookVO);
     }
     
     // 도서삭제
     @Override
     public void deleteBook(int book_id) {
-        bookDAO.deleteBook(book_id);
+        logger.debug("BookService - deleteBook: 상태를 '삭제됨'으로 변경");
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("book_id", book_id);
+        bookDAO.updateBookStatusToDeleted(map);
     }
     
+    // 관리자용 도서 목록 조회 및 도서 총 개수 조회
+    @Override
+    public List<BookVO> getBookListForAdmin(Criteria cri) {
+        return bookDAO.getBookListForAdmin(cri);
+    }
 
-		
+    @Override
+    public int getBookCountForAdmin(Criteria cri) {
+        return bookDAO.getBookCountForAdmin(cri);
+    }
 }

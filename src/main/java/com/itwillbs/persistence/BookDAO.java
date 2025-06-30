@@ -32,8 +32,14 @@ public interface BookDAO {
     // 도서 수정
     void updateBook(BookVO bookVO) throws Exception;
     
-    // 도서 삭제
-    void deleteBook(int book_id);
+    // 도서 status를 '삭제됨'으로 변경 (실제 삭제 X)
+    void updateBookStatusToDeleted(Map<String, Object> param);
+    
+    // 관리자용 도서 목록 조회
+    public List<BookVO> getBookListForAdmin(Criteria cri);
+
+    // 관리자용 도서 총 개수 조회
+    public int getBookCountForAdmin(Criteria cri);
 	
 
     /**

@@ -29,6 +29,10 @@ public interface BookService {
     
     // 도서 삭제
     void deleteBook(int book_id);
+    
+    // 관리자용 도서 목록 조회, 도서 총 개수 조회
+    List<BookVO> getBookListForAdmin(Criteria cri);
+    int getBookCountForAdmin(Criteria cri);
 
 }
 

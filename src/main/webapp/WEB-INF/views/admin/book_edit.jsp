@@ -1,10 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%@ include file="../include/layout_head.jsp" %>
-<%@ include file="../include/header.jsp" %>
-<%@ include file="../include/sidebar.jsp" %>
+<%@ include file="include/layout_head.jsp" %>
+<%@ include file="include/header.jsp" %>
+<%@ include file="include/sidebar.jsp" %>
+
 <%@ include file="/WEB-INF/views/include/alert.jsp" %>
+
 
 <main class="main-content">
   <h2>📘 도서 수정</h2>
@@ -12,6 +15,7 @@
   <form method="post" action="${pageContext.request.contextPath}/admin/book_edit"
         enctype="multipart/form-data">
     <input type="hidden" name="book_id" value="${book.book_id}" />
+     <input type="hidden" name="status" value="${book.status}" />
 
     <table class="form-table">
       <tr><th>제목</th><td><input type="text" name="book_title" value="${book.book_title}" required /></td></tr>
@@ -36,9 +40,9 @@
         <td>
           <select name="category_id">
             <c:forEach var="cat" items="${categoryList}">
-              <option value="${cat.category_id}" ${cat.category_id eq book.category_id ? 'selected' : ''}>
-                ${cat.category_id}. ${cat.category_name_ko}
-              </option>
+              <option value="${cat.category_id}" <c:if test="${cat.category_id == book.category_id}">selected</c:if>>
+				  ${cat.category_id}. ${cat.category_name_ko}
+				</option>
             </c:forEach>
           </select>
         </td>
@@ -48,15 +52,18 @@
       <tr>
         <th>기존 표지</th>
         <td>
-          <img src="/upload/books/${book.cover_image}"
-		     onerror="this.src='/resources/img/product-img/placeholder.png'"
+         <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}"
+		     onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/resources/img/product-img/placeholder.png';"
 		     width="100" />
         </td>
       </tr>
       <tr>
-        <th>새 표지 업로드</th>
-        <td><input type="file" name="upload" accept="image/*" /></td>
-      </tr>
+  <th>새 표지 파일명</th>
+  <td>
+    <input type="text" name="cover_image" value="${fn:escapeXml(book.cover_image)}" />
+    <small>/resources/img/product-img/ 경로 기준, 예: book01.jpg</small>
+  </td>
+</tr>
     </table>
 
     <div style="margin-top: 20px;">
@@ -68,7 +75,7 @@
   </form>
 </main>
 
-<%@ include file="../include/footer.jsp" %>
+<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 <style>
 /* 📚 도서 등록 메인 영역 */

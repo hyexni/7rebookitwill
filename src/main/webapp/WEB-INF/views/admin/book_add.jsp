@@ -7,6 +7,7 @@
 
 <%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
+
 <main class="main-content">
   <h2>📘 도서 등록</h2>
 
@@ -72,7 +73,8 @@
       <tr>
 		  <th>표지 이미지</th>
 		  <td>
-		    <input type="file" name="upload" accept="image/*" />
+		    <input type="text" name="cover_image" placeholder="예: book01.jpg" required />
+		    <small style="color: #888;">* /resources/img/product-img/ 안에 있는 파일명을 입력하세요</small>
 		  </td>
 		</tr>
     </table>

@@ -33,6 +33,6 @@ public class BookVO {
 	
 	// 관리자
 	private String category_name_ko;
-	private MultipartFile cover_image_file; // 업로드 파일 받는 용도
+	private String status; 
 
 }

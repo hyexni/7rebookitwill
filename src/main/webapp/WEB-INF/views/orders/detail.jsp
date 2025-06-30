@@ -17,9 +17,9 @@
 	  <div class="book-info">
 	    <!-- 📌 책 이미지 클릭 시 상세 페이지로 이동 -->
 	    <a href="${pageContext.request.contextPath}/book/view?book_id=${order.book_id}">
-	     <img 
-		  src="/upload/books/${order.book_cover}" 
-		  onerror="this.src='${pageContext.request.contextPath}/resources/img/product-img/placeholder.png'" 
+	    <img 
+		  src="${pageContext.request.contextPath}/resources/img/product-img/${order.book_cover}" 
+		  onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/resources/img/product-img/placeholder.png'" 
 		  alt="${order.book_title}" 
 		  class="book-cover-clickable" />
 	    </a>
