@@ -2,7 +2,9 @@ package com.itwillbs.service;
 
 import java.sql.Timestamp; // Timestamp 사용을 위해 추가
 import java.time.LocalDateTime; // LocalDateTime 사용을 위해 추가
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -97,8 +99,49 @@ public class PointHistoryServiceImpl implements PointHistoryService {
         return pointHistoryDAO.getPointHistoryCount(cri);
     }
 
-    
-    
+    @Override
+    public Map<String, Long> getMonthlyAccrualStats() {
+        // DAO로부터 DB 조회 결과를 List<Map<...>> 형태로 받음
+        List<Map<String, Object>> statsList = pointHistoryDAO.getMonthlyAccrualStats(); // pointMapper -> pointDAO
+        
+        // 이하 데이터 가공 로직은 동일
+        Map<String, Long> statsMap = new HashMap<>();
+        statsMap.put("신규 회원가입 축하", 0L);
+        statsMap.put("영수증 인증 적립", 0L);
+        statsMap.put("결제 적립금", 0L);
+
+        for (Map<String, Object> stat : statsList) {
+            String reason = (String) stat.get("reason");
+            Long total = ((Number) stat.get("total")).longValue();
+            
+            if (reason != null) {
+                statsMap.put(reason, total);
+            }
+        }
+        return statsMap;
+    }
+
+    @Override
+    public Map<String, Long> getMonthlyUsageStats() {
+        List<Map<String, Object>> statsList = pointHistoryDAO.getMonthlyUsageStats(); // pointMapper -> pointDAO
+        
+        // 이하 데이터 가공 로직은 동일
+        Map<String, Long> statsMap = new HashMap<>();
+        statsMap.put("적립", 0L);
+        statsMap.put("사용", 0L);
+
+        for (Map<String, Object> stat : statsList) {
+            String type = (String) stat.get("type");
+            Long total = ((Number) stat.get("total")).longValue();
+
+            if ("accrual".equals(type)) {
+                statsMap.put("적립", total);
+            } else if ("usage".equals(type)) {
+                statsMap.put("사용", total);
+            }
+        }
+        return statsMap;
+    }
     
     
     

@@ -5,7 +5,9 @@ import com.itwillbs.domain.ReceiptVO;
 import com.itwillbs.domain.SearchCriteria;
 import com.itwillbs.dto.PointHistoryDTO;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface PointHistoryService {
 	
@@ -39,4 +41,9 @@ public interface PointHistoryService {
     // [수정] 파라미터를 SearchCriteria 객체로 변경
     public int getPointHistoryCount(SearchCriteria cri);
     
+    
+    // c차트
+    Map<String, Long> getMonthlyAccrualStats();
+
+    Map<String, Long> getMonthlyUsageStats();
 }

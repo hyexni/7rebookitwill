@@ -1,6 +1,7 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -38,7 +39,13 @@ public interface PointHistoryDAO {
     // 파라미터를 SearchCriteria 객체로 변경
     public int getPointHistoryCount(SearchCriteria cri);
 	
+    // [차트용] 월간 사유별 적립 통계
+    List<Map<String, Object>> getMonthlyAccrualStats();
 
+    // [차트용] 월간 적립/사용 통계
+    List<Map<String, Object>> getMonthlyUsageStats();
+    
+    
 
 
 }

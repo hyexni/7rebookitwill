@@ -51,6 +51,12 @@ public class AdminPointController {
 
         model.addAttribute("historyList", historyList);
         model.addAttribute("pageMaker", pageMaker);
+        
+     // [차트용] 월간 통계 데이터 조회 및 모델에 추가
+        model.addAttribute("accrualStats", pointHistoryService.getMonthlyAccrualStats());
+        model.addAttribute("usageStats", pointHistoryService.getMonthlyUsageStats());
+
+      
 
         // ========================= [ 수정된 부분 2: cri 객체 전달 ] =========================
         // @ModelAttribute("cri")로 인해 자동으로 모델에 추가되지만,
