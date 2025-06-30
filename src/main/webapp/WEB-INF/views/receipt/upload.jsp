@@ -2,9 +2,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%-- 컨트롤러로부터 'msg' 라는 이름의 속성(Attribute)이 전달된 경우에만 아래 코드를 실행 --%>
+${loginUser }@@@@@@@@@
+${member_idx}@@@@@@@@@
+${id }@@@@@@@@@
+${loginUser.member_nick}@@@@@@@@@@@@
 
 <%-- 1. 페이지 기본 골격과 공통 CSS/폰트 링크를 불러옵니다. --%>
 <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+<%-- 2. 상단 헤더 --%>
+<%@ include file="/WEB-INF/views/include/header.jsp" %> 
 <%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
 
@@ -59,8 +65,7 @@
     }
 </style>
 
-<%-- 2. 상단 헤더 --%>
-<%@ include file="/WEB-INF/views/include/header.jsp" %> 
+
 
 <%-- 3. 왼쪽 사이드바 --%>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
