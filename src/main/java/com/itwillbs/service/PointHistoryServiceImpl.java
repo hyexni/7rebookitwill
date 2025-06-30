@@ -143,6 +143,37 @@ public class PointHistoryServiceImpl implements PointHistoryService {
         return statsMap;
     }
     
-    
+    /**
+     * [관리자] 특정 회원에게 포인트를 수동으로 지급하는 트랜잭션 메소드
+     */
+    // 데이터 변경이 2회 이상 발생하므로 반드시 트랜잭션 처리를 해야 합니다.
+    // 작업 중 하나라도 실패하면 모든 DB 변경사항이 롤백됩니다.
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void addPointByAdmin(int member_idx, int change_amount, String change_reason) throws Exception {
+        
+        // 1. 대상 회원이 있는지, 현재 포인트는 얼마인지 조회
+        //    (회원 존재 여부 체크 로직은 필요에 따라 추가)
+        Integer currentPoints = pointHistoryDAO.selectMemberPoints(member_idx);
+        if (currentPoints == null) {
+            // 포인트 내역이 없는 신규 회원일 경우 0으로 처리
+            currentPoints = 0; 
+        }
+
+        // 2. 지급 후 새로운 총 포인트 계산
+        int newTotalPoints = currentPoints + change_amount;
+
+        // 3. 포인트 내역(point) 테이블에 기록할 정보를 PointVO에 담기
+        PointVO pointVO = new PointVO();
+        pointVO.setMember_idx(member_idx);
+        pointVO.setChange_amount(change_amount);
+        pointVO.setPoint_amount(newTotalPoints);  
+        pointVO.setChange_reason(change_reason);
+        pointVO.setPoint_status("관리자 지급");
+        
+        // 2. DAO를 호출하여 DB에 '내역'만 기록하고 끝냅니다.
+        pointHistoryDAO.insertPointHistory(pointVO);
+    }
+
     
 }

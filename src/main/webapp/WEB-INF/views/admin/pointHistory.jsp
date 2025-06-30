@@ -210,6 +210,8 @@
                 <input type="text" name="keyword" value="${pageMaker.cri.keyword}" placeholder="검색어를 입력하세요">
                 <input type="submit" value="검색">
             </form>
+
+				<a href="<c:url value='/admin/add' />" id="grantPointBtn">✨ 포인트 지급하기</a>
         </div>
         
         

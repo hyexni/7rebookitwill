@@ -46,4 +46,16 @@ public interface PointHistoryService {
     Map<String, Long> getMonthlyAccrualStats();
 
     Map<String, Long> getMonthlyUsageStats();
+    
+    /**
+     * [관리자] 특정 회원에게 포인트를 수동으로 지급합니다.
+     * @param memberIdx 포인트를 받을 회원의 ID
+     * @param pointsToAdd 지급할 포인트
+     * @param reason 지급 사유
+     */
+    public void addPointByAdmin(int member_idx, int change_amount, String change_reason) throws Exception;
+
+    
+    
+    
 }

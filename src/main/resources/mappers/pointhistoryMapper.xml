@@ -45,8 +45,8 @@
     </select>
      
 <insert id="insertPointHistory" parameterType="com.itwillbs.domain.PointVO">
-        INSERT INTO point (member_idx, point_amount,change_amount, change_reason, change_date)
-        VALUES (#{member_idx}, #{change_amount},  #{change_amount}, #{change_reason}, NOW())
+        INSERT INTO point (member_idx, point_amount,change_amount, change_reason, change_date, point_status)
+        VALUES (#{member_idx}, #{point_amount},  #{change_amount}, #{change_reason}, NOW(),#{point_status})
     </insert>
 
 
@@ -173,6 +173,11 @@
     GROUP BY
         CASE WHEN change_amount > 0 THEN 'accrual' ELSE 'usage' END
     </select>
+    
+    <insert id="insertPointHistoryForAdmin" parameterType="com.itwillbs.domain.PointVO">
+      INSERT INTO point (member_idx, point_amount,change_amount, change_reason, change_date,point_status)
+        VALUES (#{member_idx}, #{change_amount},  #{change_amount}, #{change_reason}, NOW(),"관리자지급")
+    </insert>
             
             <!-- 관리자 모드 끝 -->
 

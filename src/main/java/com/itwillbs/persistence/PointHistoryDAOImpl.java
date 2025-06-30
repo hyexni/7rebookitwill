@@ -96,4 +96,13 @@ public class PointHistoryDAOImpl implements PointHistoryDAO {
     public List<Map<String, Object>> getMonthlyUsageStats() {
         return sqlSession.selectList(NAMESPACE + ".getMonthlyUsageStats");
     }
+    
+ // ==============================================================================
+    // ================ 관리자 포인트 지급 기능에 필요한 메소드 구현 =======================
+    // ==============================================================================
+    @Override
+    public void updateMemberTotalPointByAdmin(PointVO pointVO) throws Exception {
+        // 매퍼에 추가한 'updateMemberTotalPointByAdmin' ID를 호출합니다.
+        sqlSession.update(NAMESPACE + ".updateMemberTotalPointByAdmin", pointVO);
+    }
 }
