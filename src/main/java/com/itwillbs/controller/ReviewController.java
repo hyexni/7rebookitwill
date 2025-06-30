@@ -2,6 +2,7 @@ package com.itwillbs.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.BookVO;
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.service.BookService;
@@ -344,4 +346,36 @@ public class ReviewController {
 
 
     }
+    
+    /**
+     * 📄 내가 작성한 리뷰 목록 페이지
+     * - 로그인 유저의 member_idx로 리뷰 조회
+     * - reviewService.getReviewsByMember(member_idx) 호출
+     * - member/review.jsp 로 이동
+     */
+    @GetMapping("/mylist")
+    public String myReviewList(@RequestParam(value = "page", defaultValue = "1") int page,
+                               HttpSession session, Model model) {
+
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/member/login";
+        }
+
+        Criteria cri = new Criteria();
+        cri.setPage(page);
+        cri.setMember_idx(loginUser.getMember_idx());
+
+        int totalCount = reviewService.getReviewCountByMember(loginUser.getMember_idx());
+        cri.setTotalCount(totalCount); // 👉 페이징 계산
+        // setTotalCount() 안에서 startPage, endPage 등 계산됨
+
+        List<ReviewVO> reviewList = reviewService.getReviewsByMemberPaging(cri);
+
+        model.addAttribute("reviewList", reviewList);
+        model.addAttribute("cri", cri);
+
+        return "member/review";
+    }
+    
 }

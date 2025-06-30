@@ -18,7 +18,10 @@
 
   <!-- ✅ 1. 도서 정보 카드 -->
   <div class="book-info">
-    <img src="${pageContext.request.contextPath}/resources/img/product-img/${order.book_cover}" alt="${order.book_title}" />
+    <img 
+  src="/upload/books/${order.book_cover}" 
+  onerror="this.src='${pageContext.request.contextPath}/resources/img/product-img/placeholder.png'" 
+  alt="${order.book_title}" />
     <div class="book-text">
       <h3>${order.book_title}</h3>
       <p>수량: ${order.book_count}권</p>

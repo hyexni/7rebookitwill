@@ -33,11 +33,13 @@
   <!-- 카테고리 -->
   <label for="category_id">카테고리: </label>
   <select name="category_id" id="category_id">
-    <option value="">전체</option>
+    <option value="0" ${empty cri.category_id || cri.category_id == '0' ? 'selected' : ''}>전체</option>
     <c:forEach var="category" items="${categoryList}">
-      <option value="${category.category_id}" ${cri.category_id eq category.category_id ? 'selected' : ''}>
-        ${category.category_id}. ${category.category_name_ko}
-      </option>
+      <c:set var="catId" value="${category.category_id}" />
+		<option value="${catId}" 
+		  <c:if test="${cri.category_id eq catId}">selected</c:if>>
+		  ${catId}. ${category.category_name_ko}
+		</option>
     </c:forEach>
   </select>
 
@@ -81,14 +83,14 @@
           <tr><td colspan="10">등록된 도서가 없습니다.</td></tr>
         </c:when>
         <c:otherwise>
-          <c:forEach var="book" items="${bookList}" varStatus="status">
-            <tr>
+          <<c:forEach var="book" items="${bookList}" varStatus="status">
+ 			 <tr class="${book.status eq '삭제됨' ? 'deleted-row' : ''}">
               <td>${book.book_id}</td>
               <td>
-			  <img src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}"
-			       onerror="this.src='${pageContext.request.contextPath}/resources/img/product-img/placeholder.png'"
-			       width="50" />
-				</td>      
+			 	<img src="${pageContext.request.contextPath}/resources/img/product-img/${book.cover_image}"
+				     onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/resources/img/product-img/placeholder.png';"
+				     width="50" />
+			  </td>      
               <td>${book.book_title}</td>
               <td>${book.author_name}</td>
               <td>${book.publisher}</td>
@@ -115,9 +117,10 @@
                   <input type="hidden" name="book_id" value="${book.book_id}" />
                   <select name="category_id">
                     <c:forEach var="cat" items="${categoryList}">
-                      <option value="${cat.category_id}" ${book.category_id == cat.category_id ? 'selected' : ''}>
-					  ${cat.category_id}. ${cat.category_name_ko}
-					</option>
+                      <option value="${cat.category_id}" 
+						  <c:if test="${book.category_id == cat.category_id}">selected</c:if>>
+						  ${cat.category_id}. ${cat.category_name_ko}
+						</option>
                     </c:forEach>
                   </select>
                   <button type="submit">변경</button>
@@ -151,20 +154,20 @@
     </tbody>
   </table>
 
-  <!-- 페이징 바 -->
-  <div class="pagination">
-    <c:if test="${cri.prev}">
-      <a href="?page=${cri.startPage - 1}&sort=${cri.sort}">이전</a>
-    </c:if>
+ <!-- ✅ 올바른 페이징 바 -->
+<div class="pagination">
+  <c:if test="${pageDTO.prev}">
+    <a href="?page=${pageDTO.startPage - 1}&sort=${cri.sort}&category_id=${cri.category_id}&stock_status=${cri.stock_status}&search=${cri.search}">이전</a>
+  </c:if>
 
-    <c:forEach begin="${cri.startPage}" end="${cri.endPage}" var="p">
-      <a href="?page=${p}&sort=${cri.sort}" class="${cri.page == p ? 'active' : ''}">${p}</a>
-    </c:forEach>
+  <c:forEach begin="${pageDTO.startPage}" end="${pageDTO.endPage}" var="p">
+    <a href="?page=${p}&sort=${cri.sort}&category_id=${cri.category_id}&stock_status=${cri.stock_status}&search=${cri.search}" class="${cri.page == p ? 'active' : ''}">${p}</a>
+  </c:forEach>
 
-    <c:if test="${cri.next}">
-      <a href="?page=${cri.endPage + 1}&sort=${cri.sort}">다음</a>
-    </c:if>
-  </div>
+  <c:if test="${pageDTO.next}">
+    <a href="?page=${pageDTO.endPage + 1}&sort=${cri.sort}&category_id=${cri.category_id}&stock_status=${cri.stock_status}&search=${cri.search}">다음</a>
+  </c:if>
+</div>
 </main>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
@@ -356,5 +359,12 @@
   background-color: #e9ecef;
 }
 
+
+/* 🚫 삭제된 도서용 스타일 */
+.deleted-row {
+  background-color: #f0f0f0 !important;
+  color: #aaa !important;
+  text-decoration: line-through;
+}
 
 </style>

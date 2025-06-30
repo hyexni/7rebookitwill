@@ -7,6 +7,7 @@
 
 <%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
+
 <main class="main-content">
   <h2>📘 도서 등록</h2>
 
@@ -70,16 +71,19 @@
         <td><textarea name="book_summary" rows="5" cols="60"></textarea></td>
       </tr>
       <tr>
-        <th>표지 이미지</th>
-        <td><input type="file" name="upload" accept="image/*" /></td>
-      </tr>
+		  <th>표지 이미지</th>
+		  <td>
+		    <input type="text" name="cover_image" placeholder="예: book01.jpg" required />
+		    <small style="color: #888;">* /resources/img/product-img/ 안에 있는 파일명을 입력하세요</small>
+		  </td>
+		</tr>
     </table>
 
     <div style="margin-top: 20px;">
       <button type="submit">📘 등록하기</button>
-      <a href="${pageContext.request.contextPath}/admin/book_list">
-        <button type="button">목록으로</button>
-      </a>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/book_list'">
+		    목록으로
+		  </button>
     </div>
   </form>
 </main>

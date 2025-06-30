@@ -67,4 +67,21 @@ public class ReviewDAOImpl implements ReviewDAO {
 	public Double getAverageRating(int book_id) {
 		return sqlSession.selectOne(NAMESPACE + "getAverageRating", book_id);
 	}
+	
+	   // ✅ [회원별 리뷰 목록 조회]
+    @Override
+    public List<ReviewVO> getReviewsByMember(int member_idx) {
+        return sqlSession.selectList(NAMESPACE + ".getReviewsByMember", member_idx);
+    }
+    
+    // [회원별 리뷰 목록 페이징 처리]
+    @Override
+    public List<ReviewVO> getReviewsByMemberPaging(Criteria cri) {
+        return sqlSession.selectList(NAMESPACE + ".getReviewsByMemberPaging", cri);
+    }
+
+    @Override
+    public int getReviewCountByMember(int member_idx) {
+        return sqlSession.selectOne(NAMESPACE + ".getReviewCountByMember", member_idx);
+    }
 }

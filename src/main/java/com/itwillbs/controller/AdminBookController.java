@@ -1,11 +1,8 @@
 package com.itwillbs.controller;
 
-import java.io.File;
 import java.util.List;
-import java.util.UUID;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +13,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.BookVO;
 import com.itwillbs.domain.CategoryVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.dto.BookPageDTO;
 import com.itwillbs.persistence.CategoryDAO;
 import com.itwillbs.service.BookService;
 
@@ -42,29 +39,38 @@ public class AdminBookController {
      */
     @GetMapping("/book_list")
     public String bookList(Criteria cri, Model model) {
-        logger.debug(" 관리자 도서 목록 요청: {}", cri);
+        logger.debug("📘 관리자 도서 목록 요청: {}", cri);
+        
+        // ✅ "전체" 또는 "0"이면 조건에서 제외되도록 null 처리
+        if (cri.getCategory_id() != null && (cri.getCategory_id().equals("0") || cri.getCategory_id().trim().isEmpty())) {
+            cri.setCategory_id(null);
+        }
 
-        // 전체 도서 수 조회 (페이징용)
-        int totalCount = bookService.getBookCount(cri);
-        cri.setTotalCount(totalCount);
+        // 🔹 도서 전체 수 (삭제 포함)
+        int totalCount = bookService.getBookCountForAdmin(cri);
 
-        // 도서 목록 조회
-        List<BookVO> bookList = bookService.getBookList(cri);
+        // 🔹 도서 목록 조회
+        List<BookVO> bookList = bookService.getBookListForAdmin(cri);
 
-        // ✅ 자동으로 품절 처리: 재고가 0인데 품절이 아닐 경우 업데이트
+        // 🔹 자동 품절 처리
         for (BookVO book : bookList) {
             if (book.getBook_stock() == 0 && !"품절".equals(book.getStock_status())) {
                 bookService.updateBookStatus(book.getBook_id(), "품절");
-                logger.debug(" 자동 품절 처리됨 - book_id: {}", book.getBook_id());
+                logger.debug("✅ 자동 품절 처리됨 - book_id: {}", book.getBook_id());
             }
         }
 
-        // 카테고리 목록 가져오기 (번호 + 이름 표시용)
+        // 🔹 카테고리 목록
         List<CategoryVO> categoryList = categoryDAO.getCategoryList();
 
+        // 🔹 페이징 계산용 DTO
+        BookPageDTO pageDTO = new BookPageDTO(cri, totalCount);
+
+        // 🔹 모델 저장
         model.addAttribute("bookList", bookList);
-        model.addAttribute("cri", cri);
         model.addAttribute("categoryList", categoryList);
+        model.addAttribute("cri", cri);           // 검색 조건/정렬 등
+        model.addAttribute("pageDTO", pageDTO);   // 페이지네이션 정보
 
         return "admin/book_list";
     }
@@ -99,7 +105,7 @@ public class AdminBookController {
         bookService.updateBookCategory(book_id, category_id);
         redirect.addFlashAttribute("msg", "카테고리가 변경되었습니다.");
         redirect.addFlashAttribute("icon", "success");
-
+        
         return "redirect:/admin/book_list";
     }
 
@@ -114,7 +120,23 @@ public class AdminBookController {
         List<CategoryVO> categoryList = categoryDAO.getCategoryList();
         model.addAttribute("categoryList", categoryList);
 
-        return "admin/book_add";  // → /WEB-INF/views/admin/book_add.jsp
+        return "admin/book_add";  
+    }
+    // ✅ 도서 등록 처리
+    @PostMapping("/book_add")
+    public String bookAddSubmit(@ModelAttribute BookVO bookVO,
+                                RedirectAttributes rttr) throws Exception {
+
+        logger.debug("📘 도서 등록 요청: {}", bookVO);
+
+
+        // DB 저장
+        bookService.insertBook(bookVO);
+
+        rttr.addFlashAttribute("msg", "도서가 등록되었습니다.");
+        rttr.addFlashAttribute("icon", "success");
+
+        return "redirect:/admin/book_list";
     }
     
 
@@ -132,45 +154,53 @@ public class AdminBookController {
         return "admin/book_edit";
     }
 
-    // 📘 도서 수정 처리
     @PostMapping("/book_edit")
     public String bookEditSubmit(@ModelAttribute BookVO bookVO,
-                                 @RequestParam("upload") MultipartFile upload,
-                                 HttpServletRequest request,
                                  RedirectAttributes rttr) throws Exception {
 
-        logger.debug(" 도서 수정 요청: {}", bookVO);
+        logger.debug("📘 도서 수정 요청: {}", bookVO);
 
-        if (!upload.isEmpty()) {
-            String uploadPath = request.getSession().getServletContext().getRealPath("/resources/img/product-img");
-            String fileName = UUID.randomUUID().toString() + "_" + upload.getOriginalFilename();
-            upload.transferTo(new File(uploadPath, fileName));
-            bookVO.setCover_image(fileName);
+        if (bookVO.getCover_image() != null && !bookVO.getCover_image().isEmpty()) {
+            logger.debug("✅ 새로운 커버 이미지 파일명: {}", bookVO.getCover_image());
+        } else {
+            logger.warn("⚠️ 커버 이미지가 비어 있음! 기존 이미지 유지하려면 값 유지 필수");
         }
 
+        // ✅ DB 반영
         bookService.updateBook(bookVO);
 
         rttr.addFlashAttribute("msg", "도서 정보가 수정되었습니다.");
+        rttr.addFlashAttribute("icon", "success");
+
         return "redirect:/admin/book_list";
     }
 
     // ✅ 도서 삭제
     @PostMapping("/book_delete")
     public String deleteBook(@RequestParam("book_id") int book_id,
+                             @ModelAttribute("cri") Criteria cri,
                              RedirectAttributes rttr) {
         logger.debug("🗑 도서 삭제 요청: book_id = {}", book_id);
 
         try {
             bookService.deleteBook(book_id);
+            logger.debug("✅ 도서 삭제 성공");
+
             rttr.addFlashAttribute("msg", "도서가 삭제되었습니다.");
             rttr.addFlashAttribute("icon", "success");
+
+            // 🔹 삭제 후 마지막 페이지로 이동 (Criteria 기준)
+            int totalCount = bookService.getBookCountForAdmin(cri);  // 관리자 전용 도서 수 조회
+            int lastPage = (int) Math.ceil((double) totalCount / cri.getPerPageNum());
+
+            return "redirect:/admin/book_list?page=" + lastPage;
+
         } catch (Exception e) {
-            logger.error("도서 삭제 실패", e);
+            logger.error("❌ 도서 삭제 실패", e);
             rttr.addFlashAttribute("msg", "삭제 중 오류가 발생했습니다.");
             rttr.addFlashAttribute("icon", "error");
+            return "redirect:/admin/book_list";
         }
-
-        return "redirect:/admin/book_list";
     }
 
 }

@@ -44,44 +44,66 @@ public class BookController {
 	 * book/BookList.jsp로 이동
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public String bookList(@RequestParam(value = "category_id", required = false) String category_id,
-			@RequestParam(value = "search", required = false) String search,
-			@RequestParam(value = "sort", required = false, defaultValue = "recent") String sort,
-			@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+	public String bookList(
+	    @RequestParam(value = "category_id", required = false) String category_id,
+	    @RequestParam(value = "search", required = false) String search,
+	    @RequestParam(value = "sort", required = false, defaultValue = "recent") String sort,
+	    @RequestParam(value = "stock_status", required = false) String stock_status,
+	    @RequestParam(value = "page", defaultValue = "1") int page,
+	    Model model) {
 
-		logger.info("bookList() 호출 - category_id={}, search={}, sort={}, page={}",
-				new Object[] { category_id, search, sort, page });
+	    logger.info("bookList() 호출 - category_id={}, search={}, sort={}, stock_status={}, page={}",
+	            new Object[] { category_id, search, sort, stock_status, page });
 
-		// 1️⃣ 카테고리 목록 조회 (상단 필터용)
-		List<CategoryVO> categoryList = categoryService.getCategoryList();
-		model.addAttribute("categoryList", categoryList);
+	    // 1️⃣ 카테고리 목록 조회 (항상 먼저!)
+	    List<CategoryVO> categoryList = categoryService.getCategoryList();
+	    model.addAttribute("categoryList", categoryList);
 
-		// 2️⃣ Criteria 객체 생성 후 요청 파라미터 설정
-		Criteria criteria = new Criteria();
-		criteria.setCategory_id(category_id);
-		criteria.setSearch(search);
-		criteria.setSort(sort);
-		criteria.setPage(page);
-		criteria.setPerPageNum(10);
+	    // 2️⃣ Criteria 객체 생성 + 기본 값 설정
+	    Criteria criteria = new Criteria();
+	    criteria.setPage(page);
+	    criteria.setPerPageNum(10);  // 한 페이지당 도서 수
+	    criteria.setStatus("정상");   // 기본 상태 조건
 
-		// 3️⃣ 도서 목록 및 전체 개수 조회
-		List<BookVO> bookList = bookService.getBookList(criteria);
-		int totalCount = bookService.getBookCount(criteria);
-		criteria.setTotalCount(totalCount);
+	    // 3️⃣ 조건 처리
+	 // "전체" 또는 공백이면 null 처리
+	    if (category_id != null && (category_id.equals("전체") || category_id.trim().isEmpty())) {
+	        category_id = null;
+	    }
+	    criteria.setCategory_id(category_id);  // 항상 세팅 (null일 수도 있음)
 
-		BookPageDTO pageDTO = new BookPageDTO(criteria, totalCount);
-		model.addAttribute("pageDTO", pageDTO);     // 👉 BookPageDTO는 pageDTO로
-		model.addAttribute("criteria", criteria);   // 👉 Criteria는 criteria 그대로
-		
-		// 4️⃣ JSP에서 사용할 데이터 추가
-		model.addAttribute("bookList", bookList);
-		model.addAttribute("totalCount", totalCount);
-		model.addAttribute("page", page);
-		model.addAttribute("selectedCategory", category_id);
-		model.addAttribute("search", search);
-		model.addAttribute("sort", sort);
+	    if (search != null && !search.trim().isEmpty()) {
+	        criteria.setSearch(search);
+	    }
 
-		return "book/BookList";
+	    if (sort != null && !sort.trim().isEmpty()) {
+	        criteria.setSort(sort);
+	    }
+
+	    if (stock_status != null && !stock_status.trim().isEmpty() && !"전체".equals(stock_status)) {
+	        criteria.setStock_status(stock_status);
+	    }
+
+	    logger.debug("💡 최종 Criteria: {}", criteria);
+
+	    // 4️⃣ 도서 목록 + 총 개수 조회
+	    List<BookVO> bookList = bookService.getBookList(criteria);
+	    int totalCount = bookService.getBookCount(criteria);
+	    criteria.setTotalCount(totalCount);
+
+	    BookPageDTO pageDTO = new BookPageDTO(criteria, totalCount);
+
+	    // 5️⃣ 모델 데이터 전달
+	    model.addAttribute("bookList", bookList);
+	    model.addAttribute("totalCount", totalCount);
+	    model.addAttribute("pageDTO", pageDTO);
+	    model.addAttribute("criteria", criteria);
+	    model.addAttribute("selectedCategory", category_id);
+	    model.addAttribute("search", search);
+	    model.addAttribute("sort", sort);
+	    model.addAttribute("stock_status", stock_status);
+
+	    return "book/BookList";
 	}
 
 	/**

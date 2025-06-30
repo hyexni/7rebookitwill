@@ -35,8 +35,10 @@
               <!-- 책 이미지 -->
               <td>
 				  <a href="${pageContext.request.contextPath}/book/view?book_id=${order.book_id}">
-				    <img src="${pageContext.request.contextPath}/resources/img/product-img/${order.book_cover}" 
-				         alt="${order.book_title}" class="order-book-img" />
+				  <img src="${pageContext.request.contextPath}/resources/img/product-img/${order.book_cover}" 
+     onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/resources/img/product-img/placeholder.png'" 
+     alt="${order.book_title}" class="order-book-img" />
+				   
 				  </a>
 			  </td>
 
