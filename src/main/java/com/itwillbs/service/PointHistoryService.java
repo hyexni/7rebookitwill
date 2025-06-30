@@ -5,7 +5,9 @@ import com.itwillbs.domain.ReceiptVO;
 import com.itwillbs.domain.SearchCriteria;
 import com.itwillbs.dto.PointHistoryDTO;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface PointHistoryService {
 	
@@ -38,5 +40,22 @@ public interface PointHistoryService {
 
     // [수정] 파라미터를 SearchCriteria 객체로 변경
     public int getPointHistoryCount(SearchCriteria cri);
+    
+    
+    // c차트
+    Map<String, Long> getMonthlyAccrualStats();
+
+    Map<String, Long> getMonthlyUsageStats();
+    
+    /**
+     * [관리자] 특정 회원에게 포인트를 수동으로 지급합니다.
+     * @param memberIdx 포인트를 받을 회원의 ID
+     * @param pointsToAdd 지급할 포인트
+     * @param reason 지급 사유
+     */
+    public void addPointByAdmin(int member_idx, int change_amount, String change_reason) throws Exception;
+
+    
+    
     
 }

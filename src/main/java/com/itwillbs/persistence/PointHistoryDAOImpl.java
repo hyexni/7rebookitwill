@@ -1,6 +1,8 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -83,5 +85,24 @@ public class PointHistoryDAOImpl implements PointHistoryDAO {
     public int getPointHistoryCount(SearchCriteria cri) {
         // 단일 행을 조회할 때는 selectOne 메서드를 사용합니다.
         return sqlSession.selectOne(NAMESPACE + ".getPointHistoryCount", cri);
+    }
+    
+    @Override
+    public List<Map<String, Object>> getMonthlyAccrualStats() {
+        return sqlSession.selectList(NAMESPACE + ".getMonthlyAccrualStats");
+    }
+
+    @Override
+    public List<Map<String, Object>> getMonthlyUsageStats() {
+        return sqlSession.selectList(NAMESPACE + ".getMonthlyUsageStats");
+    }
+    
+ // ==============================================================================
+    // ================ 관리자 포인트 지급 기능에 필요한 메소드 구현 =======================
+    // ==============================================================================
+    @Override
+    public void updateMemberTotalPointByAdmin(PointVO pointVO) throws Exception {
+        // 매퍼에 추가한 'updateMemberTotalPointByAdmin' ID를 호출합니다.
+        sqlSession.update(NAMESPACE + ".updateMemberTotalPointByAdmin", pointVO);
     }
 }

@@ -38,9 +38,10 @@
 
     <label for="receiver_phone">연락처</label>
 	<input type="tel" name="receiver_phone" id="receiver_phone"
-	       value="${member.member_phone}"
-	       pattern="[0-9]{10,11}" maxlength="11"
-	       required>
+       value="${member.member_phone}"
+       placeholder="예: 010-1234-5678"
+       pattern="^01[016789]-\d{3,4}-\d{4}$"
+       required>
 	       
     <label for="zipcode">우편번호</label>
     <div class="zipcode-wrap">
@@ -60,7 +61,7 @@
     <label for="usedPoints">보유 포인트: <strong>${point_total}P</strong></label>
     <div class="point-box">
       <input type="number" id="usedPoints" name="used_points" value="0" min="0"
-       max="${pointMax}">
+       max="${point_total}">
       <button type="button" onclick="useAllPoints()">전액 사용</button>
     </div>
 
@@ -136,16 +137,27 @@
 		  }
 		
 		  // ⑤ 연락처 형식(숫자 10~11자리) 재확인
-		  const phone = document.getElementById('receiver_phone').value.replace(/[^0-9]/g, '');
-		  if (!/^[0-9]{10,11}$/.test(phone)) {
-		    alert('연락처는 10~11자리 숫자로 입력해주세요.');
-		    document.getElementById('receiver_phone').style.borderColor = '#ff6b6b';
-		    document.getElementById('receiver_phone').focus();
-		    return false;
-		  }
+		  const phone = document.getElementById('receiver_phone').value.trim();
+			if (!/^01[016789]-\d{3,4}-\d{4}$/.test(phone)) {
+			  alert('연락처 형식이 올바르지 않습니다.\n예: 010-1234-5678');
+			  document.getElementById('receiver_phone').style.borderColor = '#ff6b6b';
+			  document.getElementById('receiver_phone').focus();
+			  return false;
+			}
 		
 		  return true; // 통과!
 		}
+		  
+		// 폰 번호 자동 하이픈 (함수 추출 예시)
+		 function autoHyphen(e) {
+		   let v = e.target.value.replace(/[^0-9]/g, '');
+		   if (v.length < 4) return (e.target.value = v);
+		   if (v.length < 8) return (e.target.value = v.slice(0, 3) + '-' + v.slice(3));
+		   e.target.value = v.slice(0, 3) + '-' + v.slice(3, 7) + '-' + v.slice(7, 11);
+		 }
+
+		 document.getElementById('receiver_phone').addEventListener('input', autoHyphen);
+  
 
   
 	  // DomContentLoaded 안에 나머지 로직

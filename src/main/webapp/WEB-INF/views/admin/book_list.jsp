@@ -359,10 +359,12 @@
   background-color: #e9ecef;
 }
 
+
 /* 🚫 삭제된 도서용 스타일 */
 .deleted-row {
   background-color: #f0f0f0 !important;
   color: #aaa !important;
   text-decoration: line-through;
 }
+
 </style>

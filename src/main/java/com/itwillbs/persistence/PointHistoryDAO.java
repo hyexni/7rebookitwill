@@ -1,6 +1,7 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -38,7 +39,22 @@ public interface PointHistoryDAO {
     // 파라미터를 SearchCriteria 객체로 변경
     public int getPointHistoryCount(SearchCriteria cri);
 	
+    // [차트용] 월간 사유별 적립 통계
+    List<Map<String, Object>> getMonthlyAccrualStats();
 
+    // [차트용] 월간 적립/사용 통계
+    List<Map<String, Object>> getMonthlyUsageStats();
+    
+ // ==============================================================================
+    // ================ 관리자 포인트 지급 기능에 필요한 메소드 추가 =======================
+    // ==============================================================================
+    /**
+     * [관리자용] 계산된 최종 포인트를 member 테이블에 직접 업데이트합니다.
+     * 서비스단에서 '기존 포인트 + 지급 포인트' 계산을 마친 후 호출됩니다.
+     * @param pointVO member_idx와 최종 포인트인 point_amount를 담고 있어야 합니다.
+     * @throws Exception
+     */
+    public void updateMemberTotalPointByAdmin(PointVO pointVO) throws Exception;
 
 
 }

@@ -322,8 +322,8 @@ public class ReceiptServiceImpl implements ReceiptService {
         } catch (Exception e) {
             // 예외 발생 시 로그를 남기고, 필요한 경우 상위로 예외를 다시 던집니다.
             System.err.println("Gemini 응답 처리 중 심각한 오류 발생: " + e.getMessage());
-            e.printStackTrace();
-            throw new ReceiptProcessingException("유효한 도서구매 영수증이 아닙니다.\n인식할 수 없는 형식이거나, 도서 영수증이 아닌 것 같습니다.", e);
+           // e.printStackTrace();
+            throw new ReceiptProcessingException("유효한 도서구매 영수증이 아닙니다. 인식할 수 없는 형식이거나, 도서 영수증이 아닌 것 같습니다.");
         }
     }
 

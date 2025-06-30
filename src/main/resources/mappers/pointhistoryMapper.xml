@@ -45,8 +45,8 @@
     </select>
      
 <insert id="insertPointHistory" parameterType="com.itwillbs.domain.PointVO">
-        INSERT INTO point (member_idx, point_amount,change_amount, change_reason, change_date)
-        VALUES (#{member_idx}, #{change_amount},  #{change_amount}, #{change_reason}, NOW())
+        INSERT INTO point (member_idx, point_amount,change_amount, change_reason, change_date, point_status)
+        VALUES (#{member_idx}, #{point_amount},  #{change_amount}, #{change_reason}, NOW(),#{point_status})
     </insert>
 
 
@@ -139,6 +139,45 @@
             member m ON p.member_idx = m.member_idx
         WHERE 1=1
             <include refid="searchCondition"/> </select>
+            
+            
+            
+            
+              <select id="getMonthlyAccrualStats" resultType="map">
+        SELECT
+        change_reason AS reason,
+        SUM(change_amount) AS total
+    FROM
+        point 
+    WHERE
+        change_amount > 0
+        AND change_reason IN ('신규 회원가입 축하', '영수증 인증 적립', '결제 적립금') 
+        AND change_date >= DATE_FORMAT(NOW(), '%Y-%m-01')
+    GROUP BY
+        change_reason
+    </select>
+    
+
+    <select id="getMonthlyUsageStats" resultType="map">
+        SELECT
+        CASE
+            WHEN change_amount > 0 THEN 'accrual'
+            ELSE 'usage'
+        END AS type,
+        SUM(ABS(change_amount)) AS total
+    FROM
+        point
+    WHERE
+        change_date >= DATE_FORMAT(NOW(), '%Y-%m-01')        
+  
+    GROUP BY
+        CASE WHEN change_amount > 0 THEN 'accrual' ELSE 'usage' END
+    </select>
+    
+    <insert id="insertPointHistoryForAdmin" parameterType="com.itwillbs.domain.PointVO">
+      INSERT INTO point (member_idx, point_amount,change_amount, change_reason, change_date,point_status)
+        VALUES (#{member_idx}, #{change_amount},  #{change_amount}, #{change_reason}, NOW(),"관리자지급")
+    </insert>
             
             <!-- 관리자 모드 끝 -->
 
