@@ -60,12 +60,24 @@ LEFT JOIN category c ON b.category_id = c.category_id
         AND b.stock_status = #{stock_status}
     </if>
 </where>
+GROUP BY b.book_id
+
 <choose>
-    <when test="sort == 'sales'">ORDER BY sales_count DESC</when>
-    <when test="sort == 'recent'">ORDER BY b.created_at DESC</when>
-    <when test="sort == 'review'">ORDER BY review_count DESC</when>
-    <when test="sort == 'rating'">ORDER BY average_rating DESC</when>
-    <otherwise>ORDER BY b.book_id DESC</otherwise>
+  <when test="sort == 'sales'">
+    ORDER BY sales_count DESC, b.book_id DESC
+  </when>
+  <when test="sort == 'recent'">
+    ORDER BY b.created_at DESC, b.book_id DESC
+  </when>
+  <when test="sort == 'review'">
+    ORDER BY review_count DESC, b.book_id DESC
+  </when>
+  <when test="sort == 'rating'">
+    ORDER BY average_rating DESC, b.book_id DESC
+  </when>
+  <otherwise>
+    ORDER BY b.book_id DESC
+  </otherwise>
 </choose>
 LIMIT #{pageStart}, #{perPageNum}
 </select>
@@ -211,7 +223,7 @@ LIMIT #{pageStart}, #{perPageNum}
 	
 	<update id="updateBook" parameterType="com.itwillbs.domain.BookVO">
 	  UPDATE book
-	  SET
+	  <set>
 	    book_title = #{book_title},
 	    author_name = #{author_name},
 	    publisher = #{publisher},
@@ -227,6 +239,7 @@ LIMIT #{pageStart}, #{perPageNum}
 	      cover_image = #{cover_image},
 	    </if>
 	    updated_at = NOW()
+	    </set>
 	  WHERE book_id = #{book_id}
 	</update>
 	
