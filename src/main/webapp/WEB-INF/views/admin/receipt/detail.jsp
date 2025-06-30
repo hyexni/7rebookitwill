@@ -4,7 +4,7 @@
 
 
 <%-- 1. 페이지 기본 골격과 공통 CSS/폰트 링크를 불러옵니다. --%>
-<%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+<%@ include file="/WEB-INF/views/admin/include/layout_head.jsp" %>
 
 
     <title>OCR 결과 보기</title>
@@ -60,10 +60,10 @@
     </style>
 
 <%-- 2. 상단 헤더 --%>
-<%@ include file="/WEB-INF/views/include/header.jsp" %> 
+<%@ include file="/WEB-INF/views/admin/include/header.jsp" %> 
 
 <%-- 3. 왼쪽 사이드바 --%>
-<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+<%@ include file="/WEB-INF/views/admin/include/sidebar.jsp" %>
 
 
     <div class="container">

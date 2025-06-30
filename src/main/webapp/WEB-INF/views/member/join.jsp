@@ -2,16 +2,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
+  <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
-  <%@ include file="/WEB-INF/views/include/layout_head.jsp" %>
+
  </head>
  <body>
-<div class="wrapper">
+
   <%@ include file="/WEB-INF/views/include/header.jsp" %>
   <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
   <%@ include file="/WEB-INF/views/include/alert.jsp" %>
 
+<div class="wwrapper">
   <div class="main-content">
     <div class="join-container">
       <h2>회원가입</h2>

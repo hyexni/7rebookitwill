@@ -98,20 +98,63 @@
         background-color: #364fc7;
     }
 
-    /* 테이블 */
-    .admin-point-containerssss table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 15px;
+   
+/* 테이블 전체에 고정 레이아웃을 적용하여 성능과 예측 가능성을 높입니다. */
+.admin-point-containerssss table {
+    table-layout: fixed;
+    /* width: 100%; 는 이미 있으므로 추가할 필요 없습니다. */
+}
+
+/* th와 td의 내용이 길어질 경우 ... 으로 표시되도록 설정 (선택사항) */
+.admin-point-containerssss th,
+.admin-point-containerssss td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* 각 컬럼의 너비를 순서대로 지정합니다. (nth-child) */
+/* 1. 내역번호 */
+.admin-point-containerssss th:nth-child(1),
+.admin-point-containerssss td:nth-child(1) { width: 8%; }
+
+/* 2. 멤버고유번호 */
+.admin-point-containerssss th:nth-child(2),
+.admin-point-containerssss td:nth-child(2) { width: 10%; }
+
+/* 3. 회원 아이디 */
+.admin-point-containerssss th:nth-child(3),
+.admin-point-containerssss td:nth-child(3) { width: 12%; }
+
+/* 4. 변경일시 (내용이 길기 때문에 넓게) */
+.admin-point-containerssss th:nth-child(4),
+.admin-point-containerssss td:nth-child(4) { width: 18%; }
+
+/* 5. 변경 사유 */
+.admin-point-containerssss th:nth-child(5),
+.admin-point-containerssss td:nth-child(5) { width: 15%; }
+
+/* 6. 변경 포인트 */
+.admin-point-containerssss th:nth-child(6),
+.admin-point-containerssss td:nth-child(6) { width: 10%; }
+
+/* 7. 적용 후 포인트 */
+.admin-point-containerssss th:nth-child(7),
+.admin-point-containerssss td:nth-child(7) { width: 12%; }
+
+/* 8. 상태 */
+.admin-point-containerssss th:nth-child(8),
+.admin-point-containerssss td:nth-child(8) { width: 10%; }
     }
     .admin-point-containerssss thead {
         background-color: #f8f9fa;
     }
-    .admin-point-containerssss th, 
-    .admin-point-containerssss td {
-        padding: 14px 10px;
-        text-align: center;
-        border-bottom: 1px solid #dee2e6;
+/*     .admin-point-containerssss th,  */
+/*     .admin-point-containerssss td { */
+/*         padding: 14px 10px; */
+/*         text-align: center; */
+/*         border-bottom: 1px solid #dee2e6; */
     }
     .admin-point-containerssss th {
         color: #495057;
@@ -259,6 +302,7 @@
                     <th class="${pageMaker.cri.sortColumn == 'point_id' ? pageMaker.cri.sortOrder : ''}">
                         <a href="<c:url value='/admin/pointHistory${pageMaker.cri.sortUrl("point_id")}' />">내역번호</a>
                     </th>
+					<th>멤버고유번호</th>
                     <th class="${pageMaker.cri.sortColumn == 'member_id' ? pageMaker.cri.sortOrder : ''}">
                         <a href="<c:url value='/admin/pointHistory${pageMaker.cri.sortUrl("member_id")}' />">회원 아이디</a>
                     </th>
@@ -277,7 +321,8 @@
                         <c:forEach var="history" items="${historyList}">
                             <tr>
                                 <td>${history.point_id}</td>
-                                <td>${history.member_id}</td>
+                                <td>${history.member_idx}</td>
+                                <td>${history.member_id}</td>                                                                
                                 <td><fmt:formatDate value="${history.change_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                 <td>${history.change_reason}</td>
                                 <td><fmt:formatNumber value="${history.change_amount}" pattern="+ #,##0;- #,##0"/></td>
