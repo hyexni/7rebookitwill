@@ -185,6 +185,30 @@
         font-weight: 500;
         cursor: default;
     }
+
+	.grantPointBtn {
+	font-size : 20px 
+	}
+	
+	/* [추가] 포인트 지급하기 버튼 스타일 */
+#grantPointBtn {
+    display: inline-block;
+    padding: 10px 25px; /* 버튼 크기 */
+    background-color: #20c997; /* 버튼 배경색 (산뜻한 녹색) */
+    color: white; /* 글자색 */
+    font-size: 16px; /* 폰트 크기 (인라인 스타일 대신 CSS로 관리) */
+    font-weight: 600; /* 폰트 굵기 */
+    text-align: center;
+    text-decoration: none; /* 링크 밑줄 제거 */
+    border-radius: 5px; /* 버튼 모서리 둥글게 */
+    transition: background-color 0.2s ease-in-out; /* 부드러운 전환 효과 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 약간의 그림자 효과 */
+}
+
+/* 버튼에 마우스를 올렸을 때 스타일 */
+#grantPointBtn:hover {
+    background-color: #12b886; /* 살짝 어두운 색으로 변경 */
+    color: white;
 </style>
 
 
@@ -211,7 +235,7 @@
                 <input type="submit" value="검색">
             </form>
 
-				<a href="<c:url value='/admin/add' />" id="grantPointBtn">✨ 포인트 지급하기</a>
+				<a href="<c:url value='/admin/add' />" id="grantPointBtn" style="font-size:20px">✨ 포인트 지급하기</a>
         </div>
         
         
