@@ -14,15 +14,11 @@
 
 
     <select id="findCategoryIdsBySimilarTitle" resultType="java.lang.Integer">
-<!--         SELECT category_id -->
-<!--         FROM book -->
-<!--         WHERE  -->
-<!--             MATCH(book_title) AGAINST(#{ocr_booktitle} IN NATURAL LANGUAGE MODE) -->
             
 SELECT category_id
  FROM book
- WHERE MATCH(book_title) AGAINST(#{ocr_booktitle} WITH QUERY EXPANSION);
+ WHERE MATCH(book_title, book_summary) AGAINST(#{ocr_booktitle} WITH QUERY EXPANSION);
     </select>
-    
+
     
 </mapper>

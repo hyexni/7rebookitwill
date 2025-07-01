@@ -32,6 +32,23 @@
         FROM c7d2503t1p1.receipts 
         WHERE originalfilename = #{filename}
     </select>
+    
+    <!-- 목록보기 -->
+ <select id="selectMyReceiptList" resultType="com.itwillbs.domain.ReceiptVO">
+        SELECT 
+            r.upload_id, r.member_idx, r.ocr_store, r.ocr_amount, r.ocr_date, r.upload_time, r.upload_status,
+            m.member_id, m.member_name , r.earnedPoints
+        FROM 
+            receipts r
+        JOIN 
+            member m ON r.member_idx = m.member_idx
+        ORDER BY
+            upload_id DESC
+    </select>
+
+    
+    
+    
   <!--  사용자 부분 -->   
     
    <!--/관리자페이지 부분  -->

@@ -36,13 +36,10 @@
     
     <select id="selectNewBookList" resultType="com.itwillbs.domain.BookVO">
         SELECT
-            b.book_id,
-            b.book_title,
-            b.cover_image,
-            b.author_name,
-            b.book_price
+            b.book_id, b.book_title, b.cover_image, b.author_name, b.book_price
         FROM
             book b
+            where stock_status='판매중'
         ORDER BY
             b.created_at DESC
         <if test="limit != null">
@@ -53,23 +50,17 @@
     
     <select id="selectBestSellerList" resultType="com.itwillbs.domain.BookVO">
         SELECT
-          b.book_id,
-          b.book_title,
-          b.cover_image,
-          b.author_name,
-          b.book_price,
+          b.book_id, b.book_title, b.cover_image, b.author_name, b.book_price,
          COALESCE(s.totalSales, 0) AS totalSales         
           FROM book b
-          
-        
-        
+         
         <!--판매량(salesCount) 집계 -->
            LEFT JOIN (
       SELECT book_id, SUM(quantity) AS totalSales
       FROM orderitem
-      GROUP BY book_id
-    ) s ON b.book_id = s.book_id
-<if test="limit != null">
+      GROUP BY book_id) s ON b.book_id = s.book_id
+      where stock_status='판매중'
+      <if test="limit != null">
             LIMIT #{limit}
         </if>
        
