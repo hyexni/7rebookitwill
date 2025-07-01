@@ -46,9 +46,11 @@ public class PointHistoryController {
             session.setAttribute("redirectAfterLogin", fullRequestUrl);
             logger.info("로그인 후 리다이렉트될 URL 저장: {}", fullRequestUrl);
             
-            // RedirectAttributes 사용
-            redirectAttributes.addFlashAttribute("message", "포인트 내역을 보려면 로그인이 필요합니다.");
-            return "redirect:/member/login";
+            redirectAttributes.addFlashAttribute("msg", "포인트 내역을 보려면 로그인이 필요합니다.");
+            redirectAttributes.addFlashAttribute("icon", "warning");
+
+	    	return "redirect:/member/login";
+            
         }
 
         try {

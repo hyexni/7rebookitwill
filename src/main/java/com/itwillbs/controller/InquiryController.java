@@ -46,7 +46,13 @@ public class InquiryController {
 		// member_idx가 없으면 로그인 페이지로 이동
 		Integer member_idx = (Integer) session.getAttribute("member_idx");
 		    if (member_idx == null) {
-		        return "redirect:/member/login?needLogin=true";
+		    	
+		    	
+		    	rttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다.");
+		    	rttr.addFlashAttribute("icon", "warning");
+
+		    	return "redirect:/member/login";
+
 	    }
 		    
 	    vo.setMember_idx(member_idx);  // ✅ 이 줄 추가!
@@ -70,12 +76,17 @@ public class InquiryController {
 	// 문의 내역 (조회) / GET
 	@GetMapping("/list")
 	public String inquiryList(@RequestParam(defaultValue = "1") int page, 
-							  HttpSession session, Model model) throws Exception {
+							  HttpSession session, Model model, RedirectAttributes rttr) throws Exception {
 	    
 		 // member_idx가 없으면 로그인 페이지로 이동
 		Integer member_idx = (Integer) session.getAttribute("member_idx");
 		    if (member_idx == null) {
-		        return "redirect:/member/login?needLogin=true";
+		    	
+		    	rttr.addFlashAttribute("msg", "1:1 문의 내역을 보려면 로그인이 필요합니다.");
+		    	rttr.addFlashAttribute("icon", "warning");
+
+		    	return "redirect:/member/login";
+
 	    }
 		
 	    int pageSize = 10;

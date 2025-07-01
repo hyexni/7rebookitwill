@@ -182,8 +182,8 @@ public class MemberController {
 	@GetMapping("/logout")
 	public String memberLogoutGET(HttpSession session, RedirectAttributes rttr) {
 		session.invalidate();
-		rttr.addFlashAttribute("message", "로그아웃 되었습니다.");
-		return "redirect:/;";
+		rttr.addFlashAttribute("msg", "로그아웃 되었습니다.");
+		return "redirect:/";
 	}
 	
 	// 관리자 로그아웃
