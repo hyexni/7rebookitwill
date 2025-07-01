@@ -48,7 +48,7 @@ public class PointHistoryServiceImpl implements PointHistoryService {
      */
     @Transactional
     @Override
-    public void addPoint(int member_idx, int change_amount, String change_reason) throws Exception {
+    public void addPoint(int member_idx, int change_amount, String change_reason, String point_status) throws Exception {
         
     	 // 특정 사유일 경우 실행하지 않음
         if ("영수증 인증 적립".equals(change_reason)) {
@@ -60,6 +60,7 @@ public class PointHistoryServiceImpl implements PointHistoryService {
         pointVO.setMember_idx(member_idx);
         pointVO.setChange_amount(change_amount);
         pointVO.setChange_reason(change_reason);
+        pointVO.setPoint_status("적립 완료");
         
         // 2. DAO를 호출하여 DB에 '내역'만 기록하고 끝냅니다.
         pointHistoryDAO.insertPointHistory(pointVO);

@@ -19,7 +19,7 @@ public interface PointHistoryService {
     public Integer getTotalPoints(int memberIdx) throws Exception;
 
    // ✨ 포인트 적립/사용 메서드
-    public void addPoint(int member_idx, int change_amount, String change_reason) throws Exception;
+    public void addPoint(int member_idx, int change_amount, String change_reason, String point_status) throws Exception;
 
    // 포인트를 멤버테이블에 업데이트 하는 메서드
     public void  updateMemberTotalPoints(int member_idx) throws Exception;
