@@ -4,6 +4,8 @@ import com.itwillbs.domain.ReceiptVO;
 import com.itwillbs.domain.SearchCriteria;
 
 import com.itwillbs.dto.AdminReceiptDTO;
+import com.itwillbs.dto.ReceiptDTO;
+
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public interface ReceiptService {
      */
     ReceiptVO getReceiptDetails(int upload_id) throws Exception;
     
+    //사용자의 영수증 내역 확인//
+    public List<ReceiptDTO> getMyReceiptList(Integer member_idx);
+    
        
 
     /** [관리자] 페이징 처리된 전체 영수증 목록 조회 (유지) */
@@ -35,6 +40,12 @@ public interface ReceiptService {
 
     /** [관리자] 전체 영수증 개수 조회 (유지) */
     int getReceiptTotalCount(SearchCriteria cri) throws Exception;
+
+
+
+
+
+	
     
    
     

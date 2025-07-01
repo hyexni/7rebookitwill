@@ -80,6 +80,12 @@
         <p class="box-desc">작성한 리뷰를 확인하고 수정·삭제할 수 있어요.</p>
         <a href="${pageContext.request.contextPath}/review/mylist" class="mypage-btn">리뷰 보기</a>
       </div>
+      
+      <div class="mypage-box">
+        <h4 class="box-title">6. 영수증인증 목록</h4>
+        <p class="box-desc">영수증 인증 목록을 확인할 수 있어요.</p>
+        <a href="${pageContext.request.contextPath}/receipt/myReceipts" class="mypage-btn">바로 가기</a>
+      </div>
     </div>
   </div> <%-- ✅ mypage-container 닫기 --%>
 

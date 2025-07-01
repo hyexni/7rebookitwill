@@ -26,14 +26,14 @@ public class BookReportController {
     
     @Inject
     private BookReportService brService;
-
-    /**
-     * 독후감 목록 페이지 (페이징 + 검색 + 정렬 처리)
-     */
+    
+    
+    
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String listGET(@ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session, RedirectAttributes rttr) throws Exception {
         logger.info("C: /bookreport/list -> listGET() 호출 (Search, Sort)");
 
+        // 로그인 체크
         if (session.getAttribute("member_idx") == null) {
         	
         	rttr.addFlashAttribute("msg", "독후감은 로그인이 필요한 서비스입니다.");
@@ -41,30 +41,32 @@ public class BookReportController {
 	    	
             return "redirect:/member/login";
         }
-        
-        // ========================= [ 추가된 기능: 기본 정렬 기준 설정 ] =========================
-        // 정렬 조건이 파라미터로 전달되지 않은 경우, 기본값(최신순)으로 설정합니다.
+
+        // 로그인한 회원의 member_idx를 cri에 세팅
+        int member_idx = (int) session.getAttribute("member_idx");
+        cri.setMember_idx(member_idx); // 🔥 핵심
+
+        // 정렬 기본값 설정
         if (cri.getSortColumn() == null || cri.getSortColumn().isEmpty()) {
-            cri.setSortColumn("report_id"); // 독후감 ID를 기준으로
-            cri.setSortOrder("DESC");       // 내림차순 정렬 (최신순)
+            cri.setSortColumn("report_id");
+            cri.setSortOrder("DESC");
         }
-        // =======================================================================================
-        
+
+        // 독후감 목록 조회 (작성자 필터 포함됨)
         List<BookReportVO> reportList = brService.getReportListAll(cri);
-        
+
         PageMakerDTO pageMaker = new PageMakerDTO();
         pageMaker.setCri(cri);
-        pageMaker.setTotalCount(brService.countReports(cri));
-        logger.info("1111111111111111111111111111");
-        logger.info("reportList.size"+reportList.size());
+        pageMaker.setTotalCount(brService.countReports(cri));        
+
         model.addAttribute("bookreportList", reportList);
-        
-        
         model.addAttribute("pageMaker", pageMaker);        
         model.addAttribute("cri", cri);
         
         return "/bookreport/list";
     }
+
+
 
     /**
      * 글쓰기 페이지 요청 (GET)

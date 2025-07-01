@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.itwillbs.domain.ReceiptVO;
 import com.itwillbs.domain.SearchCriteria;
 import com.itwillbs.dto.AdminReceiptDTO;
+import com.itwillbs.dto.ReceiptDTO;
 
 
 
@@ -44,11 +45,25 @@ public interface ReceiptDAO {
     public void updateUserPoint(Map<String, Object> params);
     
     
+    // 회원 영수증 목록
+    
+    public List<ReceiptDTO> selectMyReceiptList(Integer member_idx);
+	
+
+    
+    
     /** [관리자] 페이징 처리된 전체 영수증 목록 조회 */
     public List<AdminReceiptDTO> getReceiptListAdmin(SearchCriteria cri) throws Exception;
 
     /** [관리자] 전체 영수증 개수 조회 (페이징 계산용) */
     public int getReceiptTotalCount(SearchCriteria cri) throws Exception;
+
+    
+    
+
+    
+    
+
     
     
    

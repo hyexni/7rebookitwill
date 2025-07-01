@@ -199,7 +199,8 @@
         font-weight: 600;
         cursor: default;
     }
-
+    
+}
 </style>
 
 <%-- 메인 컨텐츠 영역 시작 --%>
@@ -209,20 +210,27 @@
 
         <%-- 검색 기능 --%> 
         <div class="search-form-wrapper">
-            <form action="<c:url value='/bookreport/list'/>" method="get">
-                <%-- 현재 정렬 기준을 숨겨진 값으로 함께 전송하여 정렬 상태를 유지합니다. --%>
-                <input type="hidden" name="sortColumn" value="${pageMaker.cri.sortColumn}">
-                <input type="hidden" name="sortOrder" value="${pageMaker.cri.sortOrder}">
-            
-                <select name="searchType">
-                    <option value="report_title" ${pageMaker.cri.searchType == 'report_title' ? 'selected' : ''}>독후감 제목</option>
-                    <option value="rbook_title" ${pageMaker.cri.searchType == 'rbook_title' ? 'selected' : ''}>책 제목</option>
-                    <option value="author_name" ${pageMaker.cri.searchType == 'author_name' ? 'selected' : ''}>저자</option>
-                </select>
-                <input type="text" name="keyword" value="${pageMaker.cri.keyword}" placeholder="검색어를 입력하세요">
-                <input type="submit" value="검색">
-            </form>
-        </div>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 15px;">
+        <!-- 검색 form -->
+        <form action="<c:url value='/bookreport/list'/>" method="get" style="display: flex; align-items: center; gap: 15px;">
+            <input type="hidden" name="sortColumn" value="${pageMaker.cri.sortColumn}">
+            <input type="hidden" name="sortOrder" value="${pageMaker.cri.sortOrder}">
+        
+            <select name="searchType">
+                <option value="report_title" ${pageMaker.cri.searchType == 'report_title' ? 'selected' : ''}>독후감 제목</option>
+                <option value="rbook_title" ${pageMaker.cri.searchType == 'rbook_title' ? 'selected' : ''}>책 제목</option>
+                <option value="author_name" ${pageMaker.cri.searchType == 'author_name' ? 'selected' : ''}>저자</option>
+            </select>
+            <input type="text" name="keyword" value="${pageMaker.cri.keyword}" placeholder="검색어를 입력하세요">
+            <input type="submit" value="검색">
+        </form>
+
+        <!-- 글쓰기 form (같은 라인에 붙임) -->
+        <form action="<c:url value='/bookreport/write'/>" method="get">
+            <input type="submit" value="글쓰기" style="background-color: #28a745;">
+        </form>
+    </div>
+</div>
 
         <div class="2tables-2">
             <table class="book-report-table">

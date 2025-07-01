@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class SearchCriteria {
+	
 
     // 페이징 정보
     private int page = 1;
@@ -66,4 +67,19 @@ public class SearchCriteria {
                 .queryParam("sortOrder", order);
         return builder.toUriString();
     }
+
+    
+    
+    
+    private int member_idx;
+
+    public int getMember_idx() {
+        return member_idx;
+    }
+
+    public void setMember_idx(int member_idx) {
+        this.member_idx = member_idx;
+    }
+
+
 }

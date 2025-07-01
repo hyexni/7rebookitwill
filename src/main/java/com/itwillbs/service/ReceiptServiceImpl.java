@@ -26,6 +26,7 @@ import com.itwillbs.persistence.ReceiptDAO;
 import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
+
+
+
 
 @Service
 @RequiredArgsConstructor // final 필드에 대한 생성자를 자동으로 생성합니다.
@@ -335,7 +339,13 @@ public class ReceiptServiceImpl implements ReceiptService {
 
 	        
     
-
+    @Override
+    public List<ReceiptDTO> getMyReceiptList(Integer member_idx) { 
+        
+        return receiptDAO.selectMyReceiptList(member_idx);
+    }
+    
+  
      
     //관리자페이지 //
 
