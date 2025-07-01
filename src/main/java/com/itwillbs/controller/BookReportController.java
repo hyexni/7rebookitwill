@@ -35,7 +35,10 @@ public class BookReportController {
         logger.info("C: /bookreport/list -> listGET() 호출 (Search, Sort)");
 
         if (session.getAttribute("member_idx") == null) {
-            rttr.addFlashAttribute("auth_msg", "로그인이 필요한 기능입니다.");
+        	
+        	rttr.addFlashAttribute("msg", "독후감은 로그인이 필요한 서비스입니다.");
+	    	rttr.addFlashAttribute("icon", "warning");
+	    	
             return "redirect:/member/login";
         }
         
@@ -77,7 +80,8 @@ public class BookReportController {
         
         if (member_idx == null) {
             // 리다이렉트 시 메시지를 일회성으로 전달
-            rttr.addFlashAttribute("message", "로그인이 필요한 서비스입니다.");
+        	rttr.addFlashAttribute("msg", "독후감은 로그인이 필요한 서비스입니다.");
+	    	rttr.addFlashAttribute("icon", "warning");
             
             // ✅==== 기능 추가 시작 ====
             // 사용자가 원래 요청했던 목적지 URL을 세션에 저장

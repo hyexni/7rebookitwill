@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.service.ReceiptRecommendationService;
 import com.itwillbs.service.RecommendService;
@@ -115,11 +116,15 @@ public class RecommendController {
 	@GetMapping("/all")
 	public String recommendAll(HttpSession session,
 	                           @RequestParam(value = "sort", required = false, defaultValue="") String sort,
-	                           Model model) throws Exception {
+	                           Model model, RedirectAttributes rttr) throws Exception {
 
 		Integer memberIdx = (Integer) session.getAttribute("member_idx");
 	    if (memberIdx == null) {
-	        return "redirect:/member/login?needLogin=true";
+	    	
+	    	rttr.addFlashAttribute("msg", "개인 맞춤 추천은 로그인이 필요한 서비스입니다.");
+	    	rttr.addFlashAttribute("icon", "warning");
+
+	    	return "redirect:/member/login";
 	    }
 
 	    // null-safe sort
