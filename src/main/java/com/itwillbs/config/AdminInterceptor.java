@@ -23,10 +23,14 @@ public class AdminInterceptor implements HandlerInterceptor {
 		
 		Object admin = session.getAttribute("admin");
 		
-		if(admin == null) {
-			System.out.println("[⚠️ 인터셉터] 로그인 필요 → 리다이렉트!");
-			response.sendRedirect(request.getContextPath() + "/admin/login?needLogin=true");
-			return false;
+		if (admin == null) {
+		    System.out.println("[⚠️ 인터셉터] 로그인 필요 → 리다이렉트!");
+		    
+		    session.setAttribute("msg", "관리자 로그인이 필요합니다.");
+		    session.setAttribute("icon", "warning");
+		    
+		    response.sendRedirect(request.getContextPath() + "/admin/login");
+		    return false;
 		}
 		
 		return true;

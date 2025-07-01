@@ -25,6 +25,10 @@
         // 확인 버튼 색상 커스텀
         confirmButtonColor: '#0056b3', // 가독성이 좋은 색으로 유지하는 것을 추천합니다.
         confirmButtonText: '확인'
+        
+       	<c:remove var="msg" scope="session"/>
+    	<c:remove var="icon" scope="session"/>
+    	
       });
       </c:if>
     });
