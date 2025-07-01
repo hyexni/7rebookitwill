@@ -79,7 +79,7 @@ public class MemberServiceImpl implements MemberService {
 				}
 				
 				// 3. 신규 가입 축하 포인트 1000점 적립
-				pointHistoryService.addPoint(member_idx, 1000, "신규 회원가입 축하");
+				pointHistoryService.addPoint(member_idx, 1000, "신규 회원가입 축하","적립 완료");
 				
 				//4. 적립된 포인트를 멤버테이블에 저장
 				pointhistoryDAO.updateMemberTotalPoints(member_idx);
