@@ -17,7 +17,9 @@
 
     <select id="getReportList" resultType="com.itwillbs.domain.BookReportVO">
         SELECT * FROM book_report 
+        where member_idx=#{member_idx}
         ORDER BY report_id DESC
+        
     </select>
 
     <select id="getReport" resultType="com.itwillbs.domain.BookReportVO">
@@ -64,30 +66,34 @@
         </if>
     </sql>
 
-    <!-- 페이징, 검색, 정렬이 적용된 목록 조회 -->
-    <select id="selectReportList" resultType="com.itwillbs.domain.BookReportVO"  parameterType="com.itwillbs.domain.SearchCriteria">
-        SELECT *
-        FROM book_report 
-        <where>
-            1=1 <include refid="search"></include>
-        </where>
-        <if test="sortColumn != null and sortColumn != ''">
-            ORDER BY 
-            <choose>
-                <!-- OGNL 오류 수정을 위해 .toString() 추가 -->
-                <when test="sortColumn == 'report_title'.toString()">report_title</when>
-                <when test="sortColumn == 'author_name'.toString()">author_name</when>
-                <when test="sortColumn == 'rbook_title'.toString()">rbook_title</when>
-                <otherwise>report_id</otherwise>
-            </choose>
-            <choose>
-                <!-- OGNL 오류 수정을 위해 .toString() 추가 -->
-                <when test="sortOrder == 'ASC'.toString()">ASC</when>
-                <otherwise>DESC</otherwise>
-            </choose>
-        </if>
-        LIMIT #{pageStart}, #{perPageNum}
-    </select>
+   <!-- 페이징, 검색, 정렬이 적용된 목록 조회 -->
+<select id="selectReportList" resultType="com.itwillbs.domain.BookReportVO" parameterType="com.itwillbs.domain.SearchCriteria">
+    SELECT *
+    FROM book_report
+    <where>
+        1=1
+        AND member_idx = #{member_idx}
+        <include refid="search"/>
+    </where>
+    
+    <if test="sortColumn != null and sortColumn != ''">
+        ORDER BY 
+        <choose>
+            <!-- OGNL 오류 수정을 위해 .toString() 추가 -->
+            <when test="sortColumn == 'report_title'.toString()">report_title</when>
+            <when test="sortColumn == 'author_name'.toString()">author_name</when>
+            <when test="sortColumn == 'rbook_title'.toString()">rbook_title</when>
+            <otherwise>report_id</otherwise>
+        </choose>
+        <choose>
+            <when test="sortOrder == 'ASC'.toString()">ASC</when>
+            <otherwise>DESC</otherwise>
+        </choose>
+    </if>
+
+    LIMIT #{pageStart}, #{perPageNum}
+</select>
+
 
     <!-- 검색 조건에 맞는 총 글의 개수 조회 -->
     <select id="countReports" resultType="int"  parameterType="com.itwillbs.domain.SearchCriteria">
