@@ -50,7 +50,7 @@
                     <th style="width: 12%;">거래 일시</th>
                     <th style="width: 10%;">적립 포인트</th> <th style="width: 12%;">인증 상태</th>
                     <th style="width: 15%;">업로드 날짜</th>
-                    <th style="width: 8%;">상세</th>
+<!--                     <th style="width: 8%;">상세</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -74,9 +74,9 @@
                                     </c:choose>
                                 </td>
                                 <td><fmt:formatDate value="${receipt.upload_time}" pattern="yyyy-MM-dd HH:mm"/></td>
-                                <td>
-                                    <a href="<c:url value='/admin/receiptDetail?upload_id=${receipt.upload_id}'/>" class="btn-detail">보기</a>
-                                </td>
+<!--                                 <td> -->
+<%--                                     <a href="<c:url value='/admin/receiptDetail?upload_id=${receipt.upload_id}'/>" class="btn-detail">보기</a> --%>
+<!--                                 </td> -->
                             </tr>
                         </c:forEach>
                     </c:when>
