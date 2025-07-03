@@ -243,7 +243,7 @@ public class ReceiptServiceImpl implements ReceiptService {
      * Google Gemini API를 호출하여 이미지에서 텍스트 정보를 추출합니다.
      */
     private ReceiptDTO callGeminiApi(byte[] imageBytes, String mimeType) throws Exception {
-        String projectId = "gen-lang-client-0137886470"; // [필수] 자신의 프로젝트 ID로 변경
+        String projectId = "your_project_ID"; // [필수] 자신의 프로젝트 ID로 변경
         String location = "us-central1";              // 미국
         String modelName = "gemini-2.0-flash-001";         // 사용할 모델
 
