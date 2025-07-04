@@ -18,7 +18,7 @@ import java.util.List;
 
 public class GeminiOcrUtil {
 
-    private static final String PROJECT_ID = "gen-lang-client-0137886470";
+    private static final String PROJECT_ID = "your_project_id";
     private static final String LOCATION = "us-central1";
     private static final String MODEL_NAME = "gemini-2.0-flash-001";
 

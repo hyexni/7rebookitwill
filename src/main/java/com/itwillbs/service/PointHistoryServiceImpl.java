@@ -46,28 +46,41 @@ public class PointHistoryServiceImpl implements PointHistoryService {
      * [가장 간단한 방식]
      * 포인트 변동 내역을 DB에 기록하기만 하는 메소드입니다.
      */
-    @Transactional
-    @Override
-    public void addPoint(int member_idx, int change_amount, String change_reason, String point_status) throws Exception {
-        
-    	 // 특정 사유일 경우 실행하지 않음
-        if ("영수증 인증 적립".equals(change_reason)) {
-            return; // 메소드 종료
-        }
-    	
-        // 1. 전달받은 정보로 PointVO 객체를 만듭니다.
-        PointVO pointVO = new PointVO();
-        pointVO.setMember_idx(member_idx);
-        pointVO.setChange_amount(change_amount);
-        pointVO.setChange_reason(change_reason);
-        pointVO.setPoint_status("적립 완료");
-        
-        // 2. DAO를 호출하여 DB에 '내역'만 기록하고 끝냅니다.
-        pointHistoryDAO.insertPointHistory(pointVO);
+    
+    
+ @Transactional
+@Override
+public void addPoint(int member_idx, int change_amount, String change_reason, String point_status) throws Exception {
+
+    // 특정 사유일 경우 실행하지 않음
+    if ("영수증 인증 적립".equals(change_reason)) {
+        return; // 메소드 종료
     }
 
-
+    // 1. 회원의 현재 총 포인트를 조회합니다.
     
+    Integer currentPoint = pointHistoryDAO.getTotalPoints(member_idx);
+    if (currentPoint == null) {
+        currentPoint = 0;
+    }
+
+    // 2. 새로운 총 포인트를 계산합니다.
+    int newPointAmount = currentPoint + change_amount;
+
+    // 3. 전달받은 정보와 계산된 값으로 PointVO 객체를 생성합니다.
+    PointVO pointVO = new PointVO();
+    pointVO.setMember_idx(member_idx);
+    pointVO.setChange_amount(change_amount);
+    pointVO.setChange_reason(change_reason);
+    pointVO.setPoint_status("적립 완료");
+    pointVO.setPoint_amount(newPointAmount); // ✨ 계산된 새로운 총 포인트를 설정합니다.
+
+    // 4. DAO를 호출하여 DB에 포인트 변동 '내역'을 기록합니다.
+    pointHistoryDAO.insertPointHistory(pointVO);
+ }
+ 
+ 
+
    //영수증으로 적립된 포인트 가져오기
 	@Override
 	public int earnPointsFromReceipt(ReceiptVO receipt) throws Exception {
