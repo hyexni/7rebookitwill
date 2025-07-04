@@ -31,7 +31,7 @@
         <tr><th>주문 번호</th><td>${orders.order_id}</td></tr>
         <tr>
         	<th>결제 금액</th>
-        	<td><fmt:formatNumber value="${payment.pay_amount}" type="currency" currencySymbol="₩"/></td>
+        	<td><fmt:formatNumber value="${payment.pay_amount}" pattern="₩#,##0"/></td>
        	</tr>
         <tr>
         	<th>결제 수단</th>

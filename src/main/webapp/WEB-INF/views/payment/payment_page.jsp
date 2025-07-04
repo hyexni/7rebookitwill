@@ -193,7 +193,7 @@
 			      return;
 			    }
 	
-			    const successUrl = 'http://localhost:8088/payment/success'
+			    const successUrl = 'http://c7d2503t1p1.itwillbs.com/payment/success'
 			      + '?book_id=' + bookId
 			      + '&unit_price=' + unitPrice
 			      + '&quantity=' + quantity
@@ -213,7 +213,7 @@
 			      orderName,
 			      customerName: receiverName,
 			      successUrl: successUrl,
-			      failUrl: 'http://localhost:8088/payment/fail'
+			      failUrl: 'http://c7d2503t1p1.itwillbs.com/payment/fail'
 			    });
 			  });  
 	 	 });
